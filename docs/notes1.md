@@ -38,7 +38,7 @@ Chat group on messenger "git good" established.
 We meet on Tuesdays (12:15-14:00) and Thursdays (14:15-16:00). We will take
 attendance every time.
 
-Tuesdays meeting room is the room we're in (TODO)
+Tuesdays meeting room is Høyteknologisenteret, Grupperom 205M3
 
 Thursdays meeting room is still a topic of debate. Possible places include:
 * Eirik's place
