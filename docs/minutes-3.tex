@@ -1,0 +1,134 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[left=3.5cm, right=3.5cm]{geometry}
+
+\title{Minutes of meeting \#3}
+\author{Group 6}
+\date{Tuesday, 2018-02-13 12:15-14:00}
+
+\begin{document}
+\maketitle
+
+\section{Attendance}
+\begin{tabular}{l l}
+    Benjamin Dyhre Bjønnes     & present \\
+    Robin el Salim             & present \\
+    Sverre Magnus Engø         & present \\
+    Robin Grundvåg             & present \\
+    Vegard Itland              & present \\
+    Eirik Jørgensen            & present \\
+    Loc Tri Le                 & present \\
+    Stian Soltvedt             & present
+\end{tabular}
+
+\section{Pre-meeting catchup}
+
+\paragraph{Subtask \#2-4 workload distribution}
+
+Workload was finally distributed properly. Currently the responsibilities are as follows:\\\\
+
+\begin{tabular}{l l}
+    Benjamin Dyhre Bjønnes     & User manual \\
+    Robin el Salim             & System requirements and game objective \\
+    Sverre Magnus Engø         & System requirements and game objective \\
+    Robin Grundvåg             & User stories \\
+    Vegard Itland              & Minutes-of-meeting and class diagram \\
+    Eirik Jørgensen            & User manual \\
+    Loc Tri Le                 & Use case diagrams \\
+    Stian Soltvedt             & Team process and project organization
+\end{tabular}
+
+\paragraph{Role of group leader}
+
+The team has discussed the role of the group leader over, and found that it might be better to assign this task to a person with more programming experience, due to the increased ability to judge the tasks to be assigned and distribute them fairly across the team. He is also willing to take on more of a meeting leader role. For the time being, Sverre will keep the title of team leader, with this being susceptible to change at the start of the next iteration.
+
+\section{Main topic: Process and project organization}
+
+The team has determined to use an agile process for the project. We will keep meeting twice a week, unless otherwise determined, with each meeting consisting mainly of:
+
+1. Discuss the tasks completed since last meeting
+
+2. Define new tasks
+
+3. Assigning new tasks to team members \newline
+
+\noindent
+A more thorough description of the process will be presented in the process and project plan.
+
+\paragraph{Git policy}
+
+A few git usage policies have been suggested:
+
+1. Use \texttt{git pull} over \texttt{git fetch} for simplicity
+
+2. Everyone works on their own separate branch for development
+
+3. Use \texttt{git commit -m "[filename] change description"} commit message format
+
+4. Make many smaller commits rather than a few huge ones
+
+5. Remember to push your changes
+
+6. Merge using \texttt{--no-ff} \newline
+
+\noindent
+It has also been suggested that we adopt the branching model imposed by git-flow, but not the tool git-flow itself. This would imply creating a new branch for each feature, and merging them into a branch named \texttt{develop} when features are completed, only merging with \texttt{master} when doing a "release". This trades some simplicity for a tried-and-tested structure which clearly shows the history of the development process.
+
+Whichever policy we end up adopting, they will take effect once development starts, which will presumably be next iteration.
+
+\paragraph{Use of GitLab issues}
+
+The TA suggested that we make use of issues on GitLab for topics on which we need input from the TA. We will create such issues as they are required.
+
+\paragraph{User stories}
+
+Based on the explanation from TA, it appears the subject of the user stories is two-fold: Discussing different issues and risks associated with working on a project or in a team, and discussing the ways we expect the application to respond to different kinds of user interaction. We will create a list of user stories to include as part of the product specification.
+
+\paragraph{Core competence crash course}
+
+In order to bring everyone up to speed with useful tools, we held a small crash course on markdown. Due to lack of time and other tasks taking precedence, we did not hold a crash course on the use of git, which we must put off until later. LaTeX was considered too complex to go through in the space of time available, but team members are expected to be able to come to terms with this technology at a working level on their own.
+
+\textbf{Markdown cheat sheet:} https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+
+\paragraph{Other}
+
+\subparagraph{Indigo Studio}
+
+Indigo Studio was suggested as a tool for creating a mockup of the chess game layout. We will consider this as an option.
+
+\subparagraph{Inspiration from other chess implementations}
+
+A number of previous implementations of chess have been suggested as sources of inspiration for this project. Among these are:
+
+- https://lichess.org
+
+- https://github.com/ornicar/lila
+
+- https://github.com/isair/OpenChess \newline
+
+\noindent
+The possibility of using an existing implementation of the AI has also been suggested. This might prove to be a very cost-effective way to implement the AI part of the chess game. We're also open to draw on free graphics resources due to the lack of high artistic competence in our lineup.
+
+\subparagraph{Testing}
+
+It was proposed that the people writing the code should also be responsible for writing some tests for it, as they are the ones who know the code best and are thus perhaps most fit to test it. However, it was also proposed to have another test writer who isn't as close to the code, in order to prevent the familiarity with the code to write the tests to fit the code, not the other way around. If Sverre will not remain the team leader for the next iteration, he is a potential candidate for this role.
+
+\section{Meeting review}
+
+\paragraph{What worked?}
+
+There wasn't anything in particular during this meeting which stood out, but the team's assessment seems to be that it generally went quite smooth, and that we were relatively productive. There was a lot less confusion about what each of the members were supposed to do than after last meeting.
+
+\paragraph{What didn't work?}
+
+The structure of the meeting was a bit loose. For instance, we begun with the main topic instead of the pre-meeting catchup, which we got back to later. Throughout the meeting, we found that it was difficult to keep the group focused, and in particular we noticed that when some individuals had issues to be resolved that demanded their attention, we lost the ability to progress the meeting properly, since we couldn't communicate with the group as a whole. This meeting's agenda could perhaps have been prepared a bit better.
+
+\section{Conclusion}
+
+We finished dividing the tasks of subtasks \#2-4 among the team members, and further discussed team organization, process and tools, as well as received clarifications and suggestions from the TA. Next meeting, we plan to discuss the retrospective and presentation subtasks (tasks \#5-6). Hopefully we will also by then be mostly done with subtasks \#2-4, which puts us on track to finish this assignment in time.
+
+\paragraph{Next meeting}
+
+The next meeting will be held in Høyteknologisenteret, group room 205M3 or 209N1, depending on what's available, on Thursday 2018-02-15 at 12:15-14:00
+
+\end{document}
