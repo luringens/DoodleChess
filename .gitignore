@@ -1,3 +1,7 @@
 *.swp
 *.log
 *.aux
+docs/classdiagram.png
+docs/classdiagram.xml
+docs/use-cases.tex
+docs/use-cases.pdf
