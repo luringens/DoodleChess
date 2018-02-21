@@ -87,57 +87,58 @@ As a chess player, i expect the chess pieces to behave like they do in regular c
 
 \paragraph{Extensions:}\mbox{}\\
 \begin{easylist}[enumerate]
-# At any time, current player may exit the game
+\ListProperties(Hide1=100,Hide3=100,Hide5=100,Numbers=a,Style2*=,Mark2=.)
+# *a. At any time, current player may exit the game
 ## Chess application aborts current game
 ## On next startup, chess application displays an option to continue previous game
-###. The player selects to continue the game
+### *a.2a. The player selects to continue the game
 #### The game is resumed from the start of the aborted turn
-### The player starts a new game
+### *a.2b. The player starts a new game
 #### The aborted game is discarded
-# At any time during their turn, the player may resign the game
+# *b. At any time during their turn, the player may resign the game
 ## Chess application asks for confirmation
-### Current player confirms resignation
+### *b.1a. Current player confirms resignation
 #### Chess application records resignation
 #### Chess application ends current game with opponent player as the victor
 #### Chess application performs player ranking calculations
 #### Chess application displays the information that the player has resigned
 #### Current player exits the game
-### Current player cancels resignation
+### *b.1b. Current player cancels resignation
 #### Resume turn from last step
-# Current player selects one of opponent player's pieces, or a square with no piece on it
+# 1a. Current player selects one of opponent player's pieces, or a square with no piece on it
 ## Chess application ignores the input
-# Current player selects a piece which cannot move under the current conditions
+# 1b. Current player selects a piece which cannot move under the current conditions
 ## Chess application displays a notice saying the piece cannot move
-### Current player deselects piece
+### 1b.1a. Current player deselects piece
 #### Resume turn from step 1
-### Current player selects a different piece which cannot move
+### 1b.1b. Current player selects a different piece which cannot move
 #### Repeat step 1b
-### Current player selects a different piece which can move
+### 1b.1c. Current player selects a different piece which can move
 #### Resume turn from step 2
-# Current player selects a square which is not indicated
+# 3a. Current player selects a square which is not indicated
 ## Chess application ignores the input
-# Current player selects a different piece
+# 3b. Current player selects a different piece
 ## Resume turn from step 1 or any step 1 extension as appropriate
-# The move is invalid (should not happen under normal circumstances)
+# 4a. The move is invalid (should not happen under normal circumstances)
 ## Chess application displays an error message
 ## Chess application sends anonymous error report to developers
 ## Resume turn from step 1
-# The move was to an empty square
+# 5a. The move was to an empty square
 ## Chess application updates position of moved piece on board
 ## Resume turn from step 6
-# The move was to a square containing an opponent player's piece
+# 5b. The move was to a square containing an opponent player's piece
 ## Chess application removes opponent player's piece from board
 ## Chess application updates position of moved piece on board
 ## Resume turn from step 6
-# The move resulted in a promotion
+# 6a. The move resulted in a promotion
 ## Chess application replaces pawn with queen
-# The move results in check
+# 8a. The move results in check
 ## Chess application shows notice that opponent player is in check
-# The move results in check mate
+# 8b. The move results in check mate
 ## Chess application shows notice that opponent player is in check mate
 ## Chess application ends current game with current player as the victor
 ## Chess application performs player ranking calculations
-# The game has ended
+# 10a. The game has ended
 ## Chess application does not start opponent player's turn
 ## Chess application displays option to exit the game
 \end{easylist}
@@ -204,53 +205,54 @@ As a chess player, i expect the chess pieces to behave like they do in regular c
 
 \paragraph{Extensions:}\mbox{}\\
 \begin{easylist}[enumerate]
-# King is in check
+\ListProperties(Hide1=100,Hide3=100,Hide5=100,Numbers=a,Style2*=,Mark2=.)
+# 1a. King is in check
 ## Compute moves for relevant pieces
-### Information about current player is available
+### 1a.1a. Information about current player is available
 #### Perform steps 1a.1b.1-4
 #### Perform steps 1a.1c.1-5 for all other current player pieces
-### Information about piece to move is available, king is selected
+### 1a.1b. Information about piece to move is available, king is selected
 #### Compute places king could go on an empty board
 #### Eliminate positions occupied by current player pieces
 #### Eliminate positions threatened by opponent player pieces
 #### Compute pieces which can block the piece threatening the king
-### Information about piece to move is available, other piece selected
+### 1a.1c. Information about piece to move is available, other piece selected
 #### Compute positions piece could go on an empty board
 #### Eliminate positions occupied by current player pieces
 #### Eliminate positions blocked by current player or opponent player pieces
 #### Eliminate positions which open up a different line of attack on the king
 #### Eliminate positions which do not block the current line of attack on the king
 ## Resume from step 7
-# King has previously moved
+# 2a. King has previously moved
 ## Resume froms step 3
-# King has not previously moved
+# 2b. King has not previously moved
 ## Check whether castles have moved
-### Both castles have moved
+### 2b.1a. Both castles have moved
 #### Resume froms step 3
-### At least one castle has not moved
+### 2b.1b. At least one castle has not moved
 #### Check for all unmoved castles if path is clear
 #### If path blocked by other pieces, do not add castling move for this castle
 #### If part of path threatened by opponent player piece, do not add castling move for this castle
 #### If path is clear, add castling move to list
-# Information about piece to move is available, piece is not king
+# 2a. Information about piece to move is available, piece is not king
 ## Do not check if castling is possible
-# Information about current player is available
+# 3a. Information about current player is available
 ## Perform step 3b.1 for all pawns of current player
-# Information about piece to move is available, piece is pawn
+# 3b. Information about piece to move is available, piece is pawn
 ## Check if en passant can be performed
-### Pawn is not on 5th rank
+### 3b.1a. Pawn is not on 5th rank
 #### Do not add en passant move for this pawn
-### No piece on adjacent files is opponent player pawn
+### 3b.1b. No piece on adjacent files is opponent player pawn
 #### Do not add en passant move for this pawn
-### Last move in move history was not double step forward by adjacent pawn
+### 3b.1c. Last move in move history was not double step forward by adjacent pawn
 #### Do not add en passant move for this pawn
-### En passant can be performed
+### 3b.1d. En passant can be performed
 #### Add en passant move for this pawn to list
-# Information about piece to move is available, piece is not pawn
+# 3c. Information about piece to move is available, piece is not pawn
 ## Do not check if en passant is possible
 \end{easylist}
 
-\textbf{Special requirements:} Computation should be as fast as possible, in order to create the best possible user experience. \\
+\paragraph{Special requirements:} Computation should be as fast as possible, in order to create the best possible user experience. \\
 
 \paragraph{Technology and data variations list:}\mbox{}\\
 \begin{easylist}[itemize]
@@ -258,7 +260,7 @@ As a chess player, i expect the chess pieces to behave like they do in regular c
 # Version which computes all possible moves for a given piece
 \end{easylist}
 
-\textbf{Frequency of occurrence:} Computation for all possible moves of a player will normally only happen in order to compute possible moves for AI, the frequency of which ranges from every few seconds to several minutes depending on how long the human player takes to make a move. Computation for a specific piece may be very frequent during player turns, perhaps continual. \\
+\paragraph{Frequency of occurrence:} Computation for all possible moves of a player will normally only happen in order to compute possible moves for AI, the frequency of which ranges from every few seconds to several minutes depending on how long the human player takes to make a move. Computation for a specific piece may be very frequent during player turns, perhaps continual. \\
 
 \paragraph{Open issues:}\mbox{}\\
 \begin{easylist}[itemize]
