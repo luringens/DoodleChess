@@ -1,5 +1,7 @@
 # Team: SYNTAX_HIGHLIGHTERS
 
+![Logo](assets/logo.png)
+
 Meeting time: Tuesdays, 12-14 and Thursdays, 14-16
 
 Coach: Jonathan Prieto-Cubides(jcu043@uib.no)
