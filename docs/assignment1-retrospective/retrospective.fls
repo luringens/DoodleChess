@@ -1,0 +1,63 @@
+PWD c:/Projects/UIB/inf112/obliger/gruppe-6/docs/assignment1-retrospective
+INPUT C:/Users/robin/AppData/Local/MiKTeX/2.9/miktex/data/le/pdftex/pdflatex.fmt
+INPUT c:/Projects/UIB/inf112/obliger/gruppe-6/docs/assignment1-retrospective/retrospective.tex
+OUTPUT retrospective.log
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/article.cls
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/article.cls
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/size10.clo
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/size10.clo
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/inputenc.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/inputenc.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/utf8.def
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/utf8.def
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/t1enc.dfu
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/t1enc.dfu
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/ot1enc.dfu
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/ot1enc.dfu
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/omsenc.dfu
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/omsenc.dfu
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/geometry/geometry.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/geometry/geometry.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/graphics/keyval.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/graphics/keyval.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/generic/oberdiek/ifpdf.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/generic/oberdiek/ifpdf.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/generic/oberdiek/ifvtex.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/generic/oberdiek/ifvtex.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/generic/ifxetex/ifxetex.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/generic/ifxetex/ifxetex.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/geometry/geometry.cfg
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/geometry/geometry.cfg
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/easylist/easylist.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/easylist/easylist.sty
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/adobe/zapfding/pzdr.tfm
+INPUT retrospective.aux
+INPUT retrospective.aux
+OUTPUT retrospective.aux
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmr17.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmr12.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmr8.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmr6.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmmi12.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmmi8.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmmi6.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmsy10.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmsy8.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmsy6.tfm
+OUTPUT retrospective.pdf
+INPUT C:/Users/robin/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmr12.tfm
+INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmbx12.tfm
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/omscmr.fd
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/omscmr.fd
+INPUT retrospective.aux
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb

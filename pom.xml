@@ -91,6 +91,14 @@
 				<artifactId>gdx-backend-ios</artifactId>
 				<version>1.2.0</version>
 			</dependency>
+
+			<!-- Junit dependency -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.11</version>
+				<scope>test</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -124,30 +132,30 @@
 		<profile>
 			<id>desktop</id>
 			<modules>
-				<module>desktop</module>
+				<module>src/desktop</module>
 			</modules>
 		</profile>
 		<profile>
 			<id>android</id>
 			<modules>
-				<module>android</module>
+				<module>src/android</module>
 			</modules>
 		</profile>
 		<profile>
 			<id>html</id>
 			<modules>
-				<module>html</module>
+				<module>src/html</module>
 			</modules>
 		</profile>
 		<profile>
 			<id>ios</id>
 			<modules>
-				<module>ios</module>
+				<module>src/ios</module>
 			</modules>
 		</profile>
 	</profiles>
 
 	<modules>
-		<module>core</module>
+		<module>src/core</module>
 	</modules>
 </project>

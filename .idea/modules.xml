@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/chess.iml" filepath="$PROJECT_DIR$/chess.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core/chess-core.iml" filepath="$PROJECT_DIR$/core/chess-core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/desktop/chess-desktop.iml" filepath="$PROJECT_DIR$/desktop/chess-desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/core/chess-core.iml" filepath="$PROJECT_DIR$/src/core/chess-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/desktop/chess-desktop.iml" filepath="$PROJECT_DIR$/src/desktop/chess-desktop.iml" />
     </modules>
   </component>
 </project>

@@ -1,4 +1,4 @@
-package com.syntax_highlighters.core;
+package com.syntax_highlighters.test.core;
 
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Texture;
