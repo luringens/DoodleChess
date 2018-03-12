@@ -3,6 +3,8 @@ package com.syntax_highlighters.chess;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.syntax_highlighters.chess.entities.IPlayer;
+
 /**
  * Game class keeping track of the game state.
  *
