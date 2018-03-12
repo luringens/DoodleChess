@@ -47,8 +47,8 @@ public class Position {
     @Override
     public String toString() {
         // novalidity
-        char file = 'a' + (this.x-1);
-        char rank = '0' + this.y;
+        char file = (char) ('a' + (this.x-1));
+        char rank = (char) ('0' + this.y);
         return "" + file + rank;
     }
 
@@ -87,8 +87,8 @@ public class Position {
         
         char file = lowerPos.charAt(0);
         char rank = lowerPos.charAt(1);
-        assert "abcdefgh".contains(file);
-        assert "12345678".contains(rank);
+        assert "abcdefgh".contains(""+file);
+        assert "12345678".contains(""+rank);
         
         int xPos = (int)(file - 'a' + 1);
         int yPos = (int)(rank - '0');

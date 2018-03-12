@@ -1,5 +1,8 @@
 package com.syntax_highlighters.chess;
 
+import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.entities.IPlayer;
+
 /**
  * Holds the current state of the board.
  *
