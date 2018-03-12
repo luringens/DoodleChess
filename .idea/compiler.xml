@@ -10,6 +10,10 @@
         <module name="chess-desktop" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="1.8" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="chess" target="1.8" />
+      <module name="chess-core" target="1.8" />
+      <module name="chess-desktop" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
