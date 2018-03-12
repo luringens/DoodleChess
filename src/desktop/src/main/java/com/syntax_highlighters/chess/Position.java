@@ -1,4 +1,5 @@
 package com.syntax_highlighters.chess;
+import java.util.Objects; // Objects.hash
 
 /**
  * Position on a grid (x, y).
@@ -65,7 +66,7 @@ public class Position {
     /**
      * Return the position mirrored horizontally onto the other side of the board.
      *
-     * @param boardHeight The number of columns on the board
+     * @param boardWidth The number of columns on the board
      * @return The mirrored position
      */
     public Position mirrorHorizontal(int boardWidth) {
@@ -89,8 +90,36 @@ public class Position {
         assert "abcdefgh".contains(file);
         assert "12345678".contains(rank);
         
-        int xPos = (int)(file - 'a' + 1)
-        int yPos = (int)(rank - '0')
+        int xPos = (int)(file - 'a' + 1);
+        int yPos = (int)(rank - '0');
         return new Position(xPos, yPos);
+    }
+
+    /**
+     * Custom equality method.
+     *
+     * Two positions are equal if their x and y coordinates are equal.
+     *
+     * @param other The object to test for equality
+     * @return true if the object is equal to this Position, false otherwise
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (!(other instanceof Position)) return false;
+        Position o = (Position) other;
+        return o.x == this.x && o.y == this.y;
+    }
+
+    /**
+     * Custom hashCode method.
+     *
+     * Use Objects.hash for simplicity. Considers the x and y coordinate.
+     *
+     * @return The hash of the Position
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(new Integer(this.x), new Integer(this.y));
     }
 }
