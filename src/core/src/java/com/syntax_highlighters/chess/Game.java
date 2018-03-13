@@ -47,17 +47,16 @@ public class Game {
      * @return If the move was valid and performed.
      */
     public boolean performMove(Position from, Position to) {
+        IChessPiece piece = getPieceAtPosition(from);
+        
+        // Check that the piece exists
+        if (piece == null) return false; // there is no piece at the given position
+        
         // Check that the piece belongs to the current player
-        // Check that the move is valid
-        // Perform move
-
-        if (nextPlayerWhite && whiteAI) {
-            // Perform White AI move
-        }
-        else if (!nextPlayerWhite && blackAI) {
-            // Perform Black AI move
-        }
-        return false;
+        if (piece.isWhite() != nextPlayerWhite) return false; // wrong color of piece
+        
+        // Performs move if valid, returns whether move was performed
+        return board.movePiece(piece, to);
     }
 
     public Move PerformAIMoves() {
