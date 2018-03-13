@@ -15,6 +15,8 @@ public class Move {
     private IChessPiece piece;
     private Position oldPos;
     private Position newPos;
+    private boolean hasDoneMove = false;
+    private IChessPiece tookPiece = null;
     
     /**
      * Constructor.
@@ -63,5 +65,21 @@ public class Move {
      */
     public boolean isWhite() {
         return this.piece.isWhite();
+    }
+
+    public void DoMove(Board b) {
+        if (hasDoneMove) throw new RuntimeException("Move has already been done.");
+        hasDoneMove = true;
+        tookPiece = b.getAtPosition(newPos);
+        b.forceMovePiece(piece, newPos);
+    }
+
+    public void UndoMove(Board b) {
+        if (!hasDoneMove) throw new RuntimeException("Can not undo a move that has not been done");
+        hasDoneMove = false;
+        b.forceMovePiece(piece, oldPos);
+        if (tookPiece != null) {
+            b.putAtPosition(newPos, tookPiece);
+        }
     }
 }
