@@ -1,6 +1,44 @@
 package com.syntax_highlighters.chess.entities;
 
-public abstract class AbstractChessPiece implements IChessPiece {
+public abstract class AbstractChessPiece implements IChessPiece {allPossibleMoves(Board board);
+    private boolean isWhite;
+    private Position position;
+    
+    /**
+     * Constructor.
+     *
+     * @param isWhite Whether or not the piece is white
+     * @param pos The position the piece is created at
+     */
+    public AbstractChessPiece(Position pos, boolean isWhite) {
+        this.isWhite = isWhite;
+        this.position = pos;
+    }
+
+    @Override
+    public void isWhite() {
+        return isWhite;
+    }
+
+    @Override
+    public Position getPosition() {
+        return this.position;
+    }
+
+    @Override
+    public boolean canMoveTo(Position pos, Board board) {
+        return allPossibleMoves(board).contains(pos);
+    }
+    
+    @Override
+    abstract public List<Move> allPossibleMoves(Board board);
+
+    @Override
+    abstract public IChessPiece copy();
+
+    @Override
+    abstract public int getScore();
+    
     /**
      * Convenicence method for creation of IChessPiece.
      *

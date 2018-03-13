@@ -11,8 +11,8 @@ import java.util.List;
  * The board state is stored in a 8x8 grid containing the pieces (null values
  * signifying empty squares).
  *
- * The white player starts at rows 0 and 1 (zero-based).
- * The black player starts at rows 6 and 7 (zero-based).
+ * The white player starts at rows 1 and 2
+ * The black player starts at rows 7 and 8
  */
 public class Board {
     // constants, just in case
@@ -22,16 +22,31 @@ public class Board {
     IChessPiece[][] pieces;
     
     /**
-     * Sets up a new board with the white and black players.
+     * Sets up a new board with the white and black players in their starting
+     * positions.
      */
     public void setupNewGame() {
         IChessPiece[][] pieces = new IChessPiece[BOARD_HEIGHT][BOARD_WIDTH];
 
-        // TODO: figure out a good way to put all the pieces correctly
-        // Option 1: Just specify everything
-        // Option 2: Use "fromChessNotation"
-        //   - What is this a method of? AbstractChessPiece?
-        // Option 3: ???
+        String[] blackPieces = new String[]{
+            "RA8", "NB8", "BC8", "QD8", "KE8", "BF8", "NG8", "RH8"
+            "PA7", "PB7", "PC7", "PD7", "PE7", "PF7", "PG7", "PH7",
+        };
+        
+        String[] whitePieces = new String[]{
+            "PA2", "PB2", "PC2", "PD2", "PE2", "PF2", "PG2", "PH2",
+            "RA1", "NB1", "BC1", "QD1", "KE1", "BF1", "NG1", "RH1"
+        };
+
+        for (String p : whitePieces) {
+            IChessPiece piece = AbstractChessPiece.fromChessNotation(p, true);
+            putAtPosition(piece.getPosition(), piece);
+        }
+        
+        for (String p : blackPieces) {
+            IChessPiece piece = AbstractChessPiece.fromChessNotation(p, false);
+            putAtPosition(piece.getPosition(), piece);
+        }
     }
 
     /**
@@ -66,7 +81,13 @@ public class Board {
         return pieces[pos.getY()-1][pos.getX()-1];
     }
 
+    // TODO JavaDoc
     public List<IChessPiece> getAllPieces() {
+        throw new NotImplementedException();
+    }
+
+    // TODO JavaDoc
+    public Board copy() {
         throw new NotImplementedException();
     }
 }
