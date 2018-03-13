@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.syntax_highlighters.test</groupId>
+	<groupId>com.syntax_highlighters.chess</groupId>
 	<artifactId>chess</artifactId>
 	<version>1.0</version>
 	<packaging>pom</packaging>
@@ -125,24 +125,6 @@
 			<id>desktop</id>
 			<modules>
 				<module>src/desktop</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>android</id>
-			<modules>
-				<module>src/android</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>html</id>
-			<modules>
-				<module>src/html</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>ios</id>
-			<modules>
-				<module>src/ios</module>
 			</modules>
 		</profile>
 	</profiles>
