@@ -2,6 +2,9 @@ package com.syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.entities.IPlayer;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.util.List;
 
 /**
  * Holds the current state of the board.
@@ -20,12 +23,9 @@ public class Board {
     IChessPiece[][] pieces;
     
     /**
-     * Sets up a new game with the white and black players.
-     *
-     * @param white The white player
-     * @param black The black player
+     * Sets up a new board with the white and black players.
      */
-    public void setupNewGame(IPlayer white, IPlayer black) {
+    public void setupNewGame() {
         IChessPiece[][] pieces = new IChessPiece[BOARD_HEIGHT][BOARD_WIDTH];
 
         // TODO: figure out a good way to put all the pieces correctly
@@ -65,5 +65,9 @@ public class Board {
         assert pos.getY() <= BOARD_HEIGHT;
         
         return pieces[pos.getY()-1][pos.getX()-1];
+    }
+
+    public List<IChessPiece> getAllPieces() {
+        throw new NotImplementedException();
     }
 }
