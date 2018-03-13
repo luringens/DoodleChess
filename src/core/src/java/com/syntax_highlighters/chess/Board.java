@@ -1,7 +1,6 @@
 package com.syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.entities.IChessPiece;
-import com.syntax_highlighters.chess.entities.IPlayer;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;

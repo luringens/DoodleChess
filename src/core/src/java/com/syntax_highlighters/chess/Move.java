@@ -1,6 +1,5 @@
 package com.syntax_highlighters.chess;
 
-import com.syntax_highlighters.chess.entities.IPlayer;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 
 /**

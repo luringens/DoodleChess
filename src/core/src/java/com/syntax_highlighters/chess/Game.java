@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.syntax_highlighters.chess.entities.IChessPiece;
-import com.syntax_highlighters.chess.entities.IPlayer;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
