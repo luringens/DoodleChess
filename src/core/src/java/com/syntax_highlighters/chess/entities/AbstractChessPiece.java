@@ -1,6 +1,6 @@
 package com.syntax_highlighters.chess.entities;
 
-public abstract class AbstractChessPiece implements IChessPiece {allPossibleMoves(Board board);
+public abstract class AbstractChessPiece implements IChessPiece {
     private boolean isWhite;
     private Position position;
     
