@@ -47,4 +47,25 @@ public interface IChessPiece {
      * @return A List of all the possible moves the piece can make
      */
     List<Move> allPossibleMoves(Board board);
+
+    /**
+     * Create a new instance of the chess piece with the same color, same
+     * position and same type.
+     *
+     * This is required because chess pieces are mutable, and as such, in order
+     * to perform theoretical moves, we need to copy the chess to not affect the
+     * board state.
+     *
+     * @return A new copy of the piece
+     */
+    IChessPiece copy();
+
+    /**
+     * Get the numerical value (score/weight) of a piece.
+     *
+     * Used to determine what moves are good in chess AI.
+     *
+     * @return The numerical value of the piece
+     */
+    int getScore();
 }
