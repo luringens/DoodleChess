@@ -21,29 +21,37 @@ public abstract class AbstractChessPiece implements IChessPiece {
         this.position = pos;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isWhite() {
         return isWhite;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Position getPosition() {
         return this.position;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean canMoveTo(Position pos, Board board) {
         return allPossibleMoves(board).contains(pos);
     }
-    
-    @Override
-    abstract public List<Move> allPossibleMoves(Board board);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    abstract public IChessPiece copy();
-
-    @Override
-    abstract public int getScore();
+    public void setPosition(Position pos) {
+        this.position = pos;
+    }
     
     /**
      * Convenicence method for creation of IChessPiece.
