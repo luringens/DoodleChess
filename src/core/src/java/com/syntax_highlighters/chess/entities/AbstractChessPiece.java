@@ -1,5 +1,11 @@
 package com.syntax_highlighters.chess.entities;
 
+import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.Move;
+import com.syntax_highlighters.chess.Position;
+
+import java.util.List;
+
 public abstract class AbstractChessPiece implements IChessPiece {
     private boolean isWhite;
     private Position position;
@@ -16,7 +22,7 @@ public abstract class AbstractChessPiece implements IChessPiece {
     }
 
     @Override
-    public void isWhite() {
+    public boolean isWhite() {
         return isWhite;
     }
 
@@ -59,12 +65,12 @@ public abstract class AbstractChessPiece implements IChessPiece {
      * @return The correct type of piece at the correct position
      */
     public static IChessPiece fromChessNotation(String piece, boolean isWhite) {
-        assert piece.length == 3; // of the form [KQNBRP][A-Ha-h][1-8]
+        assert piece.length() == 3; // of the form [KQNBRP][A-Ha-h][1-8]
 
         // assure that the first part is referencing a valid type of piece
-        assert "KQNBRP".contains(piece.substr(0,1));
+        assert "KQNBRP".contains(piece.substring(0,1));
 
-        Position pos = piece.substr(1, piece.length());
+        Position pos = Position.fromChessNotation(piece.substring(1, piece.length()));
         switch(piece.charAt(0)) {
             case 'K':
                 return new ChessPieceKing(pos, isWhite);

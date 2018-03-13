@@ -1,5 +1,6 @@
 package com.syntax_highlighters.chess;
 
+import com.syntax_highlighters.chess.entities.AbstractChessPiece;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -29,8 +30,8 @@ public class Board {
         IChessPiece[][] pieces = new IChessPiece[BOARD_HEIGHT][BOARD_WIDTH];
 
         String[] blackPieces = new String[]{
-            "RA8", "NB8", "BC8", "QD8", "KE8", "BF8", "NG8", "RH8"
-            "PA7", "PB7", "PC7", "PD7", "PE7", "PF7", "PG7", "PH7",
+            "RA8", "NB8", "BC8", "QD8", "KE8", "BF8", "NG8", "RH8",
+            "PA7", "PB7", "PC7", "PD7", "PE7", "PF7", "PG7", "PH7"
         };
         
         String[] whitePieces = new String[]{

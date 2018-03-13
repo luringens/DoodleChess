@@ -1,5 +1,12 @@
 package com.syntax_highlighters.chess.entities;
 
+import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.Move;
+import com.syntax_highlighters.chess.Position;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.util.List;
+
 public class ChessPieceKing extends AbstractChessPiece {
     public ChessPieceKing(Position pos, boolean isWhite) {
         super(pos, isWhite);
