@@ -1,12 +1,14 @@
-package com.syntax_highlighters.test;
+package com.syntax_highlighters.chess;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static com.badlogic.gdx.graphics.VertexAttributes.Usage.Position;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class coordPieceTest {
-/*
-    IChessPiece[][] pieces;
+/*    IChessPiece[][] pieces;
     ChessPieceKing whiteKing = new ChessPieceKing(0,4);
     ChessPieceKing blackKing = new ChessPieceKing();
     ChessPieceQueen whiteQueen = new ChessPieceQueen();
@@ -23,7 +25,7 @@ public class coordPieceTest {
 
     @Test
     public void bKing(){ // checking black king pos
-        Assertions.assertEquals(blackKing.getX(),4);
+        assertEquals(blackKing.getX(),4);
         assertEquals(blackKing.getY(),7);
     }
 
@@ -36,6 +38,5 @@ public class coordPieceTest {
     public void bQueen(){ //checking black queen pos
         assertEquals(blackQueen.getX(),3);
         assertEquals(blackQueen.getY(),7);
-    }
-*/
+    }*/
 }
