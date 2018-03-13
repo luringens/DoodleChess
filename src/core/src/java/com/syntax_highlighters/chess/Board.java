@@ -2,9 +2,9 @@ package com.syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.entities.AbstractChessPiece;
 import com.syntax_highlighters.chess.entities.IChessPiece;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Holds the current state of the board.
@@ -20,30 +20,45 @@ public class Board {
     public static final int BOARD_WIDTH = 8;
     public static final int BOARD_HEIGHT = 8;
 
-    IChessPiece[][] pieces;
+    List<IChessPiece> pieces = new ArrayList<>();
+
+    /**
+     * Create an empty board.
+     */
+    public Board() { }
+
+    /**
+     * Create a board from a list of pieces.
+     */
+    public Board(List<IChessPiece> pieces) {
+        this.pieces.addAll(pieces);
+    }
     
     /**
      * Sets up a new board with the white and black players in their starting
      * positions.
      */
     public void setupNewGame() {
-        IChessPiece[][] pieces = new IChessPiece[BOARD_HEIGHT][BOARD_WIDTH];
-
-        String[] blackPieces = new String[]{
+        final String[] blackPieces = new String[]{
             "RA8", "NB8", "BC8", "QD8", "KE8", "BF8", "NG8", "RH8",
             "PA7", "PB7", "PC7", "PD7", "PE7", "PF7", "PG7", "PH7"
         };
         
-        String[] whitePieces = new String[]{
+        final String[] whitePieces = new String[]{
             "PA2", "PB2", "PC2", "PD2", "PE2", "PF2", "PG2", "PH2",
             "RA1", "NB1", "BC1", "QD1", "KE1", "BF1", "NG1", "RH1"
         };
+        
+        // reset board
+        this.pieces = new ArrayList<>();
 
+        // add all white pieces
         for (String p : whitePieces) {
             IChessPiece piece = AbstractChessPiece.fromChessNotation(p, true);
             putAtPosition(piece.getPosition(), piece);
         }
-        
+
+        // add all black pieces
         for (String p : blackPieces) {
             IChessPiece piece = AbstractChessPiece.fromChessNotation(p, false);
             putAtPosition(piece.getPosition(), piece);
@@ -57,14 +72,39 @@ public class Board {
      * @param piece The piece to place
      */
     public void putAtPosition(Position pos, IChessPiece piece) {
-        assert pos.getX() >= 1;
-        assert pos.getY() >= 1;
-        assert pos.getX() <= BOARD_WIDTH;
-        assert pos.getY() <= BOARD_HEIGHT;
+        assert isOnBoard(pos);
         
-        // NOTE: There is redundancy in the position, this might cause bugs.
-        pieces[pos.getY()-1][pos.getX()-1] = piece;
+        piece.setPosition(pos); // ensure position is correct for this piece
+        
+        if (!this.pieces.contains(piece)) {
+            this.pieces.add(piece);
+        }
     }
+
+    /**
+     * Put a piece at a position after checking that it's empty.
+     *
+     * @param pos The position where the piece should be put
+     * @param piece The piece to place
+     *
+     * @throws IllegalArgumentException if the position is already occupied
+     */
+    public void putAtEmptyPosition(Position pos, IChessPiece piece) {
+        if (isOccupied(pos))
+            throw new IllegalArgumentException("Position " + pos + " is already occupied");
+        putAtPosition(pos, piece);
+    }
+
+    /**
+     * Check if a given position is occupied.
+     *
+     * @param pos The position to check
+     * @return true if the position is occupied, false otherwise
+     */
+    public boolean isOccupied(Position pos) {
+        return getAtPosition(pos) != null;
+    }
+
 
     /**
      * Get the piece at a given position.
@@ -74,21 +114,79 @@ public class Board {
      */
 
     public IChessPiece getAtPosition(Position pos) {
-        assert pos.getX() >= 1;
-        assert pos.getY() >= 1;
-        assert pos.getX() <= BOARD_WIDTH;
-        assert pos.getY() <= BOARD_HEIGHT;
+        assert isOnBoard(pos);
         
-        return pieces[pos.getY()-1][pos.getX()-1];
+        for (IChessPiece p : this.pieces) {
+            if (p.getPosition().equals(pos)) return p;
+        }
+        return null;
     }
 
-    // TODO JavaDoc
+    /**
+     * Return a list of all the pieces on the board.
+     *
+     * @return A list of all the pieces currently on the board.
+     */
     public List<IChessPiece> getAllPieces() {
-        throw new NotImplementedException();
+        // Ensure that manipulating the returned list cannot modify the internal
+        // list of the board
+        // This does not fully encapsulate the board, but it does hopefully help
+        // against accidentally adding/removing pieces without intending to
+        List<IChessPiece> copied = new ArrayList<>();
+        copied.addAll(this.pieces);
+        return copied;
     }
 
-    // TODO JavaDoc
+    /**
+     * Move a piece to a position, if it can move there.
+     *
+     * @param piece The piece to move
+     * @param toPosition The position to move to
+     *
+     * @return true if the piece moved, false otherwise
+     */
+    public boolean movePiece(IChessPiece piece, Position toPosition) {
+        assert isOnBoard(toPosition);
+        
+        if (piece.canMoveTo(toPosition, this)) {
+            putAtPosition(toPosition, piece);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Copy the board so that modifications can safely be made without changing
+     * the original.
+     *
+     * @return A new board which does not contain references to any part of the
+     * old one
+     */
     public Board copy() {
-        throw new NotImplementedException();
+        // copying of pieces happens in Board constructor
+        return new Board(copyPieces());
+    }
+
+    /**
+     * Test if a Position is on this board.
+     *
+     * @return true if the Position is on the board, false otherwise
+     */
+    public boolean isOnBoard(Position pos) {
+        return pos.getX() >= 1 && pos.getX() <= BOARD_WIDTH
+            && pos.getY() >= 1 && pos.getY() <= BOARD_HEIGHT;
+    }
+
+    /**
+     * Helper method: return a List of pieces with every piece copied.
+     *
+     * @return A copied list
+     */
+    private List<IChessPiece> copyPieces() {
+        List<IChessPiece> ret = new ArrayList<>();
+        for (IChessPiece p : pieces) {
+            ret.add(p.copy());
+        }
+        return ret;
     }
 }
