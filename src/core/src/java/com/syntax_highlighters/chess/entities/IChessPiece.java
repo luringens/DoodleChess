@@ -15,11 +15,11 @@ import java.util.ArrayList;
  */
 public interface IChessPiece {
     /**
-     * Get the player the piece belongs to.
+     * Get the color of the piece.
      *
-     * @return The owning player
+     * @return true if the piece is white, false otherwise
      */
-    IPlayer getPlayer();
+    boolean isWhite();
     
     /**
      * Get the position the piece is currently at.
@@ -29,21 +29,34 @@ public interface IChessPiece {
     Position getPosition();
 
     /**
-     * Get all the moves the piece can possibly make given the current state of
-     * the board and the history of the board.
+     * Check whether the piece can move to the given position given the current
+     * board state.
      *
-     * NOTE: The history of the board is required knowledge because some moves
-     * are dependent on it. For instance, en passant can only be performed if
-     * the pawn it is performed on has only just moved to the appropriate rank,
-     * and castling cannot be performed if the king or the rook it's trying to
-     * castle with have moved previously. This could be handled in special
-     * cases, but at any rate, this is a more general and IMO a more elegant way
-     * to do it.
+     * @param pos The position to move to
+     * @param board The current board state
      *
-     * @param b The current state of the board
-     * @param history The moves which were performed in the game up until this
-     * point, in chronological order
-     * @return The moves currently available to the piece
+     * @return true if the piece can move to the given position, false otherwise
      */
-    ArrayList<Move> getPossibleMoves(Board b, ArrayList<Move> history);
+    boolean canMove(Position pos, Board board);
+
+    // This has been commented out due to changes in the IChessPiece API during
+    // early development
+//    /**
+//     * Get all the moves the piece can possibly make given the current state of
+//     * the board and the history of the board.
+//     *
+//     * NOTE: The history of the board is required knowledge because some moves
+//     * are dependent on it. For instance, en passant can only be performed if
+//     * the pawn it is performed on has only just moved to the appropriate rank,
+//     * and castling cannot be performed if the king or the rook it's trying to
+//     * castle with have moved previously. This could be handled in special
+//     * cases, but at any rate, this is a more general and IMO a more elegant way
+//     * to do it.
+//     *
+//     * @param b The current state of the board
+//     * @param history The moves which were performed in the game up until this
+//     * point, in chronological order
+//     * @return The moves currently available to the piece
+//     */
+//    ArrayList<Move> getPossibleMoves(Board b, ArrayList<Move> history);
 }

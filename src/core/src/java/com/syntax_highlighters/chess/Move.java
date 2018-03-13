@@ -7,7 +7,8 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
  * Stores info about a move in the game.
  *
  * Records which player moved, where the old position was, where the new
- * position is, and which piece was moved.
+ * position is, and which piece was moved. Can be used to represent both past
+ * moves and future potential moves.
  *
  * This class should be immutable.
  */
@@ -18,9 +19,6 @@ public class Move {
     
     /**
      * Constructor.
-     *
-     * NOTE: Information about which player the move belonged to is stored in
-     * the IChessPiece class (?)
      *
      * @param oldPos The old position of the piece
      * @param newPos The new position of the piece
@@ -60,11 +58,11 @@ public class Move {
     }
 
     /**
-     * Get the player who made the move.
+     * Get the color of the moved piece.
      *
-     * @return The player
+     * @return Whether the moved piece was white
      */
-    public IPlayer getPlayer() {
-        return this.piece.getPlayer();
+    public boolean isWhite() {
+        return this.piece.isWhite();
     }
 }
