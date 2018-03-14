@@ -30,11 +30,6 @@ public class coordPieceTest {
         assertEquals(note.getY(),4);
     }
 
-    @Test
-    public void putAtPositionTest(){
-
-    }
-
     /*
     @Test
     public void wking(){ //checking white king pos
