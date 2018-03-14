@@ -75,7 +75,7 @@ public class ChessPieceRook extends AbstractChessPiece {
 
     @Override
     public IChessPiece copy() {
-        throw new NotImplementedException();
+        return new ChessPieceRook(this.getPosition(), this.isWhite());
     }
     
     @Override

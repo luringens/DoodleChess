@@ -65,7 +65,7 @@ public class ChessPieceBishop extends AbstractChessPiece {
 
     @Override
     public IChessPiece copy() {
-        throw new NotImplementedException();
+        return new ChessPieceBishop(this.getPosition(), this.isWhite());
     }
 
     @Override

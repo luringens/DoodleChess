@@ -44,7 +44,7 @@ public class ChessPieceKnight extends AbstractChessPiece {
 
     @Override
     public IChessPiece copy() {
-        throw new NotImplementedException();
+        return new ChessPieceKnight(this.getPosition(), this.isWhite());
     }
 
     @Override

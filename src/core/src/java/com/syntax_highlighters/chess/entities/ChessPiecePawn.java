@@ -19,7 +19,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
 
     @Override
     public IChessPiece copy() {
-        throw new NotImplementedException();
+        return new ChessPiecePawn(this.getPosition(), this.isWhite());
     }
     
     @Override
