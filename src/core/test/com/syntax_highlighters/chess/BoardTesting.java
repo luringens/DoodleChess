@@ -2,11 +2,12 @@ package syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Position;
-import com.syntax_highlighters.chess.entities.AbstractChessPiece;
 import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 import org.junit.jupiter.api.Test;
 
+
+import java.lang.reflect.Executable;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -103,22 +104,16 @@ public class BoardTesting {
     }
     /* Tests if the putAtEmptyPosition function
      * throws IllegalArgumentException if the
-     * Position isn't empty.
+     * Position isn't empty.. More elegantly.
      */
+
     @Test
-    public void putAtEmptyPositionExceptionTest() throws Exception{
-       Board k = new Board();
-        k.putAtPosition(p,piece);
-
-       try{
-           k.putAtEmptyPosition(p, piece);
-       } catch(Exception e){
-            assertTrue(e instanceof IllegalArgumentException);
-        }
-
-
-
+    public void putAtEmptyPositionExceptionTest(){
+        Board k = new Board();
+        k.putAtPosition(p, piece);
+       assertThrows(IllegalArgumentException.class, ()->{k.putAtEmptyPosition(p, piece);});
     }
+
 
 
 }
