@@ -87,4 +87,9 @@ public class ChessPiecePawn extends AbstractChessPiece {
     public int getScore() {
         throw new NotImplementedException();
     }
+    
+    @Override
+    public String getAssetName() {
+        throw new NotImplementedException();
+    }
 }

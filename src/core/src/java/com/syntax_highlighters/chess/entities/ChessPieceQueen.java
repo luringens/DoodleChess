@@ -112,4 +112,9 @@ public class ChessPieceQueen extends AbstractChessPiece {
     public int getScore() {
         throw new NotImplementedException();
     }
+    
+    @Override
+    public String getAssetName() {
+        throw new NotImplementedException();
+    }
 }
