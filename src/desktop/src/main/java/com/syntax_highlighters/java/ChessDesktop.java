@@ -9,5 +9,7 @@ public class ChessDesktop {
 	public static void main (String[] args) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		new LwjglApplication(new Chess(), config);
+
+
 	}
 }
