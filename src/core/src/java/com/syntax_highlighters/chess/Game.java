@@ -61,11 +61,14 @@ public class Game {
         // Performs move if valid, returns whether move was performed
 
         if (piece instanceof ChessPieceKing){
-            //((ChessPieceKing) piece).setPieceToMoved();
+            ((ChessPieceKing) piece).setPieceToMoved();
         }
-        if (piece instanceof ChessPieceRook){
-            //((ChessPieceRook) piece).setPieceToMoved();
+        if (piece instanceof ChessPieceRook) {
+            ((ChessPieceRook) piece).setPieceToMoved();
         }
+
+        //TODO: move rook if castling.
+        //TODO: update all "movedLast" pawns such that the specialty move an-passant is only possible for 1 move.
         return board.movePiece(piece, to);
     }
 

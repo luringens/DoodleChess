@@ -28,18 +28,54 @@ public class ChessPieceRook extends AbstractChessPiece {
         List<Move> possibleMoves = new ArrayList<>();
         int xpos = this.getPosition().getX();
         int ypos = this.getPosition().getY();
-        for(int i=1; i<8; i++){
-            Position boardPos = new Position(xpos, ypos+i);
-            if(board.isFriendly(this, boardPos)){
-                possibleMoves.add(new Move(this.getPosition(), boardPos, this));
-            }
+        Position lastPos;
+        Position nextPos;
+        int i=1;
+        while (i+ypos<9) {
+            lastPos = new Position(xpos,ypos+i-1);
+            nextPos = new Position(xpos, ypos + i);
+            if (board.isEnemy(this,lastPos) || (ypos+i > 8) || board.isFriendly(this, nextPos))
+                break;
+            else
+                possibleMoves.add(new Move(lastPos, nextPos, this));
+            i++;
         }
-        throw new NotImplementedException();
+        i=1;
+        while (i+xpos<9) {
+            lastPos = new Position(xpos+i-1,ypos);
+            nextPos = new Position(xpos+i, ypos);
+            if (board.isEnemy(this,lastPos) || (xpos+i > 8) || board.isFriendly(this, nextPos))
+                break;
+            else
+                possibleMoves.add(new Move(lastPos, nextPos, this));
+            i++;
+        }
+        i=1;
+        while (ypos-i>0) {
+            lastPos = new Position(xpos,ypos-i+1);
+            nextPos = new Position(xpos, ypos - i);
+            if (board.isEnemy(this,lastPos) || (ypos-i < 1) || (!board.isFriendly(this, nextPos)))
+                break;
+            else
+                possibleMoves.add(new Move(lastPos, nextPos, this));
+            i++;
+        }
+        i=1;
+        while (xpos-i>0) {
+            lastPos = new Position(xpos-i+1,ypos);
+            nextPos = new Position(xpos-i, ypos);
+            if (board.isEnemy(this,lastPos) || (xpos-1 < 1) || (!board.isFriendly(this, nextPos)))
+                break;
+            else
+                possibleMoves.add(new Move(lastPos, nextPos, this));
+            i++;
+        }
+        return possibleMoves;
     }
 
     @Override
     public IChessPiece copy() {
-        throw new NotImplementedException();
+        return new ChessPieceRook(this.getPosition(), this.isWhite());
     }
     
     @Override

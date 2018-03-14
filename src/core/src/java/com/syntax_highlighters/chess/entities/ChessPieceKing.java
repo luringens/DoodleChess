@@ -56,7 +56,7 @@ public class ChessPieceKing extends AbstractChessPiece {
                     continue;
                 }
                 possibleMoves.add(new Move(this.getPosition(), boardPos,this));
-            } 
+            }
         }
         //rokade
         if(this.isWhite()) {
@@ -88,7 +88,7 @@ public class ChessPieceKing extends AbstractChessPiece {
 
     @Override
     public IChessPiece copy() {
-        throw new NotImplementedException();
+        return new ChessPieceKing(this.getPosition(), this.isWhite());
     }
     
     @Override
