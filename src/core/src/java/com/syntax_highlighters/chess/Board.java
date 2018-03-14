@@ -105,6 +105,25 @@ public class Board {
         return getAtPosition(pos) != null;
     }
 
+    /**
+     * Check if a given position is Enemy.
+     *
+     * @param pos The position to check
+     * @return true if the position is Enemy piece, false otherwise
+     */
+    public boolean isEnemy(IChessPiece piece, Position pos) {
+        return getAtPosition(pos).isWhite() == piece.isWhite();
+    }
+
+    /**
+     * Check if a given position is friendly.
+     *
+     * @param pos The position to check
+     * @return true if the position is friendly piece, false otherwise
+     */
+    public boolean isFriendly(IChessPiece piece, Position pos) {
+        return getAtPosition(pos).isWhite() != piece.isWhite();
+    }
 
     /**
      * Get the piece at a given position.
