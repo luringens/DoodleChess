@@ -67,6 +67,8 @@ public class Game {
             ((ChessPieceRook) piece).setPieceToMoved();
         }
 
+        //TODO: move rook if castling.
+        //TODO: update all "movedLast" pawns such that the specialty move an-passant is only possible for 1 move.
         return board.movePiece(piece, to);
     }
 
