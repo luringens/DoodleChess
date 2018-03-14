@@ -21,7 +21,7 @@ public class ChessPieceKing extends AbstractChessPiece {
 
     public boolean hasMoved(){
         return moved;
-    } 
+    }
 
     private List<Position> allEnemyMoves(Board board){
         List<Position> possibleMoves = new ArrayList<>();
