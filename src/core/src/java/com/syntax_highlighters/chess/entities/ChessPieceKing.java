@@ -56,7 +56,7 @@ public class ChessPieceKing extends AbstractChessPiece {
                     continue;
                 }
                 possibleMoves.add(new Move(this.getPosition(), boardPos,this));
-            }
+            } 
         }
         //rokade
         if(this.isWhite()) {
