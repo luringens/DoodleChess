@@ -35,7 +35,7 @@ public class ChessPieceKnight extends AbstractChessPiece {
     //Checks the move
     public void checkMove(Board board, ArrayList<Move> possibleMoves, Position pos){
         if(board.isOnBoard(pos)){
-                if(board.getAtPosition(pos).isWhite() != this.isWhite()){
+                if(board.getAtPosition(pos).isWhite() != this.isWhite()){ //kan også bruke isFriendly-metoden
                     possibleMoves.add(new Move(this.getPosition(), pos, this));
                 }
 
