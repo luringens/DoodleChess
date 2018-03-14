@@ -3,6 +3,9 @@ package com.syntax_highlighters.chess;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.syntax_highlighters.chess.entities.ChessPieceKing;
+import com.syntax_highlighters.chess.entities.ChessPiecePawn;
+import com.syntax_highlighters.chess.entities.ChessPieceRook;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -56,6 +59,13 @@ public class Game {
         if (piece.isWhite() != nextPlayerWhite) return false; // wrong color of piece
         
         // Performs move if valid, returns whether move was performed
+
+        if (piece instanceof ChessPieceKing){
+            ((ChessPieceKing) piece).setPieceToMoved();
+        }
+        if (piece instanceof ChessPieceRook){
+            ((ChessPieceRook) piece).setPieceToMoved();
+        }
         return board.movePiece(piece, to);
     }
 
