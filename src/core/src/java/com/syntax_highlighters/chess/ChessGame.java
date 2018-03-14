@@ -1,7 +1,7 @@
 package com.syntax_highlighters.chess;
 
 import com.badlogic.gdx.Game;
-import com.syntax_highlighters.chess.screens.MainScreen;
+import com.syntax_highlighters.chess.gui.screens.MainScreen;
 
 /**
  * Wrapper for LibGdx Game class
