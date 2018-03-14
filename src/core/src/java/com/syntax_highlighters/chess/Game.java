@@ -60,12 +60,13 @@ public class Game {
         
         // Performs move if valid, returns whether move was performed
 
-     /*   if (piece instanceof ChessPieceKing){
+        if (piece instanceof ChessPieceKing){
             ((ChessPieceKing) piece).setPieceToMoved();
         }
-        if (piece instanceof ChessPieceRook){
+        if (piece instanceof ChessPieceRook) {
             ((ChessPieceRook) piece).setPieceToMoved();
-        */
+        }
+
         return board.movePiece(piece, to);
     }
 
