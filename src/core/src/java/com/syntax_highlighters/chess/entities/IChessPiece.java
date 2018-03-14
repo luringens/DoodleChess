@@ -75,4 +75,11 @@ public interface IChessPiece {
      * @param pos The new position
      */
     void setPosition(Position pos);
+
+    /**
+     * Get the filename of the image asset representing this piece.
+     *
+     * @return The filename of an image resource
+     */
+    String getAssetName();
 }
