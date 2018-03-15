@@ -57,17 +57,12 @@ public class ChessPieceKing extends AbstractChessPiece {
         for(int i = xpos-1; i<xpos+2; i++){
             for(int j = ypos-1; j<ypos+2; j++){
                 Position boardPos = new Position(i,j);
-                if(board.isOccupied(boardPos)){
+                if(!board.isOnBoard(boardPos))
                     continue;
-                }
-                if(board.getAtPosition(boardPos) != null) {
-                    if (board.getAtPosition(boardPos).isWhite() == this.isWhite()) {
-                        continue;
-                    }
-                }
-                if(allEnemyMoves(board).contains(boardPos)){
+                if(board.isFriendly(this,boardPos))
                     continue;
-                }
+                if(allEnemyMoves(board).contains(boardPos))
+                    continue;
                 possibleMoves.add(new Move(this.getPosition(), boardPos,this));
             }
         }

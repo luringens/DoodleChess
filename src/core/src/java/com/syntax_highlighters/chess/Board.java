@@ -113,7 +113,7 @@ public class Board {
      */
     public boolean isEnemy(IChessPiece piece, Position pos) {
         if(getAtPosition(pos) != null)
-            return getAtPosition(pos).isWhite() == piece.isWhite();
+            return getAtPosition(pos).isWhite() != piece.isWhite();
         else
             return false;
     }
@@ -126,7 +126,7 @@ public class Board {
      */
     public boolean isFriendly(IChessPiece piece, Position pos) {
         if(getAtPosition(pos) != null)
-            return getAtPosition(pos).isWhite() != piece.isWhite();
+            return getAtPosition(pos).isWhite() == piece.isWhite();
         else
             return false;
     }
