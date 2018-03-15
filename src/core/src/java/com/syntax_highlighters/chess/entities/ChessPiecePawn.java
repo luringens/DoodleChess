@@ -9,6 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChessPiecePawn extends AbstractChessPiece {
+    private static final int PIECE_SCORE = 50; 
+    private static final int[] POS_SCORE = new int[]{
+         0,  0,  0,  0,  0,  0,  0,  0,
+        50, 50, 50, 50, 50, 50, 50, 50,
+        10, 10, 20, 30, 30, 20, 10, 10,
+         5,  5, 10, 25, 25, 10,  5,  5,
+         0,  0,  0, 20, 20,  0,  0,  0,
+         5, -5,-10,  0,  0,-10, -5,  5,
+         5, 10, 10,-20,-20, 10, 10,  5,
+         0,  0,  0,  0,  0,  0,  0,  0
+    };
+
     public ChessPiecePawn(Position pos, boolean isWhite) {
         super(pos, isWhite);
     }
@@ -85,7 +97,18 @@ public class ChessPiecePawn extends AbstractChessPiece {
     
     @Override
     public int getScore() {
-        throw new NotImplementedException();
+        Position p = getPosition();
+        int x = p.getX();
+        int y = p.getY();
+
+        // Score board is based on starting on the bottom.
+        // Reverse for black
+        if (!isWhite()) {
+            x = Board.BOARD_WIDTH - x;
+            y = Board.BOARD_HEIGHT - y;
+        }
+
+        return PIECE_SCORE + POS_SCORE[p.getX() + p.getY() * Board.BOARD_WIDTH];
     }
     
     @Override
