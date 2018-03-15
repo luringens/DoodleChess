@@ -39,3 +39,7 @@ Team members:
 - To build the project, run the `mvn -Pdesktop package`
 - The jar file for desktop should now be located in `src/desktop/target/chess-desktop-1.0-jar-with-dependencies.jar`
 - Alternatively, run the command `java -jar "src/desktop/target/chess-desktop-1.0-jar-with-dependencies.jar"`
+
+## Contributing
+
+Please read our [contribution guidelines](CONTRIBUTING.md)!
