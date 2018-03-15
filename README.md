@@ -10,7 +10,7 @@ Team members:
 
 - Eirik Jørgensen	(cum003)
 - Benjamin Dyhre Bjønnes	(bbj018)
-- Loc Tri Le	(lle016)
+- Loc Tri Le (lle016)
 - Stian Soltvedt	(zuk005)
 - Robin Grundvåg	(rgr015)
 - Vegard Itland	(vit005)
