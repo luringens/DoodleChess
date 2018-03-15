@@ -63,20 +63,20 @@ public class ChessPieceRook extends AbstractChessPiece {
             i++;
         }
         i=1;
-        while (ypos-i>=0) {
+        while (ypos-i>0) {
             lastPos = new Position(xpos,ypos-i+1);
             nextPos = new Position(xpos, ypos - i);
-            if (board.isEnemy(this,lastPos) || (ypos-i < 1) || (!board.isFriendly(this, nextPos)))
+            if (board.isEnemy(this,lastPos) || (ypos-i < 1) || (board.isFriendly(this, nextPos)))
                 break;
             else
                 possibleMoves.add(new Move(lastPos, nextPos, this));
             i++;
         }
         i=1;
-        while (xpos-i>=0) {
+        while (xpos-i>0) {
             lastPos = new Position(xpos-i+1,ypos);
             nextPos = new Position(xpos-i, ypos);
-            if (board.isEnemy(this,lastPos) || (xpos-1 < 1) || (!board.isFriendly(this, nextPos)))
+            if (board.isEnemy(this,lastPos) || (xpos-1 < 1) || (board.isFriendly(this, nextPos)))
                 break;
             else
                 possibleMoves.add(new Move(lastPos, nextPos, this));
