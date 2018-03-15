@@ -46,9 +46,9 @@ public class ChessPiecePawn extends AbstractChessPiece {
         int pieceColor;
         if(this.isWhite()){pieceColor =1;}
         else{pieceColor=-1;}
-       checkMove(board, possibleMoves, new Position(x,y*(pieceColor)));
-        takeEnemiesMove(board, possibleMoves, new Position(x+1,y*(pieceColor)));
-        takeEnemiesMove(board, possibleMoves, new Position(x-1,y*(pieceColor)));
+       checkMove(board, possibleMoves, new Position(x,y+(pieceColor)));
+        takeEnemiesMove(board, possibleMoves, new Position(x+1,y+(pieceColor)));
+        takeEnemiesMove(board, possibleMoves, new Position(x-1,y+(pieceColor)));
         if(!this.hasMoved()) { checkMove(board, possibleMoves, new Position(x, y + (2*pieceColor))); }
         enPassantCheck(board, possibleMoves, new Position(x+1,y),pieceColor);
         enPassantCheck(board, possibleMoves, new Position(x-1,y),pieceColor);
@@ -72,7 +72,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
            //  pawns have to be marked as false after every round (hasMoved)
             //Checks if the position to your left and right is occupied by an enemy
             if(board.getAtPosition(pos) !=null && board.isEnemy(this,pos) && ((ChessPiecePawn) board.getAtPosition(pos)).hasMoved() ){
-                possibleMoves.add(new Move(this.getPosition(), new Position(pos.getX(),pos.getY()*(pieceColor)), this));
+                possibleMoves.add(new Move(this.getPosition(), new Position(pos.getX(),pos.getY()+(pieceColor)), this));
             }
 
         }
