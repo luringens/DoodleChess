@@ -71,7 +71,7 @@ public class Game {
         //TODO: update all "movedLast" pawns such that the specialty move an-passant is only possible for 1 move.
         return board.movePiece(piece, to);
     }
-
+    
     public Move PerformAIMoves() {
         if (nextPlayerIsAI()) {
             // Get AI move
@@ -84,18 +84,51 @@ public class Game {
         throw new NotImplementedException();
     }
 
+    /**
+     * Check whether the next player is AI player or human player.
+     *
+     * @return true if the next player is an AI, false if the next player is a
+     * human
+     */
     private boolean nextPlayerIsAI() {
         return (nextPlayerWhite && whiteAI) || (!nextPlayerWhite && blackAI);
     }
 
+    /**
+     * Get the board.
+     *
+     * NOTE: Returns a reference to the internal Board in this class. Changes
+     * made to the return value affects the original.
+     */
     public Board getBoard() {
         return this.board;
     }
 
+    /**
+     * Check whether a Position is on the board.
+     *
+     * @param p The position to check
+     * @return true if the position is on the board, false otherwise
+     */
+    public boolean isOnBoard(Position p) {
+        return board.isOnBoard(p);
+    }
+
+    /**
+     * Get the piece currently occupying position p
+     *
+     * @param p The position to retrieve piece at
+     * @return null if position was occupied, the piece occupying it otherwise
+     */
     public IChessPiece getPieceAtPosition(Position p) {
         return this.board.getAtPosition(p);
     }
 
+    /**
+     * Get all pieces on board.
+     *
+     * @return A list of all the pieces currently on the board
+     */
     public List<IChessPiece> getPieces() {
         return this.board.getAllPieces();
     }
