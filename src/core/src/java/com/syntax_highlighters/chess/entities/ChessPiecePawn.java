@@ -49,7 +49,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
        checkMove(board, possibleMoves, new Position(x,y*(pieceColor)));
         takeEnemiesMove(board, possibleMoves, new Position(x+1,y*(pieceColor)));
         takeEnemiesMove(board, possibleMoves, new Position(x-1,y*(pieceColor)));
-        if(!hasMoved()) { checkMove(board, possibleMoves, new Position(x, y + (2*pieceColor))); }
+        if(!this.hasMoved()) { checkMove(board, possibleMoves, new Position(x, y + (2*pieceColor))); }
         enPassantCheck(board, possibleMoves, new Position(x+1,y),pieceColor);
         enPassantCheck(board, possibleMoves, new Position(x-1,y),pieceColor);
 
