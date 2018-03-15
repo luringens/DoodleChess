@@ -42,7 +42,7 @@ public abstract class AbstractChessPiece implements IChessPiece {
      */
     @Override
     public boolean canMoveTo(Position pos, Board board) {
-        return allPossibleMoves(board).contains(pos);
+        return allPossibleMoves(board).stream().anyMatch(m -> m.getPosition().equals(pos));
     }
 
     /**

@@ -174,10 +174,30 @@ public class Board {
         assert isOnBoard(toPosition);
         
         if (piece.canMoveTo(toPosition, this)) {
+            IChessPiece target = getAtPosition(toPosition);
+            if (target != null) {
+                pieces.remove(target);
+            }
             putAtPosition(toPosition, piece);
             return true;
         }
         return false;
+    }
+
+    /**
+     * Move a piece to a position without doing checks.
+     *
+     * @param piece The piece to move
+     * @param toPosition The position to move to
+     */
+    public void forceMovePiece(IChessPiece piece, Position toPosition) {
+        assert isOnBoard(toPosition);
+        
+        IChessPiece target = getAtPosition(toPosition);
+        if (target != null) {
+            pieces.remove(target);
+        }
+        putAtPosition(toPosition, piece);
     }
 
     /**
