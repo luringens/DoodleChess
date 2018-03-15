@@ -60,7 +60,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
     //Checks the move
     private void checkMove(Board board, ArrayList<Move> possibleMoves, Position pos){
         if(board !=null && board.isOnBoard(pos)){
-            if(board.getAtPosition(pos) !=null && board.getAtPosition(pos).isWhite() != this.isWhite()){
+            if(board.getAtPosition(pos) !=null && board.isEnemy(this,pos)){
                 possibleMoves.add(new Move(this.getPosition(), pos, this));
             }
 
