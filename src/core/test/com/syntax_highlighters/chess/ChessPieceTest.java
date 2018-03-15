@@ -26,4 +26,67 @@ class ChessPieceTest {
         List<Move> moves2 = king.allPossibleMoves(board);
         List<Move> moves3 = pawn.allPossibleMoves(board);
     }
+    @Test
+    void TestKingMoves() {
+        ArrayList<IChessPiece> pieces = new ArrayList<>();
+        IChessPiece king = new ChessPieceKing(new Position(4,4), false);
+        pieces.add(king);
+        Board board = new Board(pieces);
+
+        List<Move> moves = king.allPossibleMoves(board);
+        assertEquals(8, moves.size());
+    }
+
+    @Test
+    void TestBishopMoves() {
+        ArrayList<IChessPiece> pieces = new ArrayList<>();
+        IChessPiece piece = new ChessPieceQueen(new Position(4,4), false);
+        pieces.add(piece);
+        Board board = new Board(pieces);
+
+        List<Move> moves = piece.allPossibleMoves(board);
+        assertEquals(27, moves.size());
+    }
+    @Test
+    void TestQueenMoves() {
+        ArrayList<IChessPiece> pieces = new ArrayList<>();
+        IChessPiece piece = new ChessPieceBishop(new Position(4,4), false);
+        pieces.add(piece);
+        Board board = new Board(pieces);
+
+        List<Move> moves = piece.allPossibleMoves(board);
+        assertEquals(13, moves.size());
+    }
+    @Test
+    void TestRookMoves2() {
+        ArrayList<IChessPiece> pieces = new ArrayList<>();
+        IChessPiece piece = new ChessPieceRook(new Position(4,4), false);
+        pieces.add(piece);
+        Board board = new Board(pieces);
+
+        List<Move> moves = piece.allPossibleMoves(board);
+        assertEquals(14, moves.size());
+    }
+
+    @Test
+    void TestRookPawn() {
+        ArrayList<IChessPiece> pieces = new ArrayList<>();
+        IChessPiece piece = new ChessPiecePawn(new Position(7,7), false);
+        pieces.add(piece);
+        Board board = new Board(pieces);
+
+        List<Move> moves = piece.allPossibleMoves(board);
+        assertEquals(2, moves.size());
+    }
+
+    @Test
+    void TestRookKnight() {
+        ArrayList<IChessPiece> pieces = new ArrayList<>();
+        IChessPiece piece = new ChessPieceKnight(new Position(4,4), false);
+        pieces.add(piece);
+        Board board = new Board(pieces);
+
+        List<Move> moves = piece.allPossibleMoves(board);
+        assertEquals(8, moves.size());
+    }
 }

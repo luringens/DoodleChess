@@ -138,7 +138,7 @@ public class Board {
      */
 
     public IChessPiece getAtPosition(Position pos) {
-        assert isOnBoard(pos);
+        //assert isOnBoard(pos);
 
         for (IChessPiece p : this.pieces) {
             if (p.getPosition().equals(pos)) return p;

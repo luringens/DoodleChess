@@ -36,7 +36,7 @@ public class ChessPieceQueen extends AbstractChessPiece {
         while (i+ypos<9 || i+xpos<9) {
             lastPos = new Position(xpos+i-1,ypos+i-1);
             nextPos = new Position(xpos+ i, ypos + i);
-            if (board.isEnemy(this,lastPos) || (ypos+i > 8 || xpos+i > 8) || board.isFriendly(this, nextPos))
+            if (board.isEnemy(this,lastPos) || !board.isOnBoard(nextPos) || board.isFriendly(this, nextPos))
                 break;
             else
                 possibleMoves.add(new Move(lastPos, nextPos, this));
@@ -46,7 +46,7 @@ public class ChessPieceQueen extends AbstractChessPiece {
         while (i+ypos<9 || i+xpos<9) {
             lastPos = new Position(xpos+i-1,ypos-i+1);
             nextPos = new Position(xpos+i, ypos-i);
-            if (board.isEnemy(this,lastPos) || (ypos+i > 8 || xpos+i > 8) || board.isFriendly(this, nextPos))
+            if (board.isEnemy(this,lastPos) || !board.isOnBoard(nextPos) || board.isFriendly(this, nextPos))
                 break;
             else
                 possibleMoves.add(new Move(lastPos, nextPos, this));
@@ -56,7 +56,7 @@ public class ChessPieceQueen extends AbstractChessPiece {
         while (ypos-i>0 || xpos-i>0) {
             lastPos = new Position(xpos-i+1,ypos+i+1);
             nextPos = new Position(xpos-i, ypos + i);
-            if (board.isEnemy(this,lastPos) || (ypos-i < 1 || xpos-i < 1) || (!board.isFriendly(this, nextPos)))
+            if (board.isEnemy(this,lastPos) || !board.isOnBoard(nextPos) || (board.isFriendly(this, nextPos)))
                 break;
             else
                 possibleMoves.add(new Move(lastPos, nextPos, this));
@@ -66,7 +66,7 @@ public class ChessPieceQueen extends AbstractChessPiece {
         while (ypos-i>0 || xpos-i>0) {
             lastPos = new Position(xpos-i+1,ypos-i+1);
             nextPos = new Position(xpos-i, ypos-i);
-            if (board.isEnemy(this,lastPos) || (ypos-i < 1 || xpos-i < 1) || (!board.isFriendly(this, nextPos)))
+            if (board.isEnemy(this,lastPos) || !board.isOnBoard(nextPos) || (board.isFriendly(this, nextPos)))
                 break;
             else
                 possibleMoves.add(new Move(lastPos, nextPos, this));
@@ -96,7 +96,7 @@ public class ChessPieceQueen extends AbstractChessPiece {
         while (ypos-i>0) {
             lastPos = new Position(xpos,ypos-i+1);
             nextPos = new Position(xpos, ypos - i);
-            if (board.isEnemy(this,lastPos) || (ypos-i < 1) || (!board.isFriendly(this, nextPos)))
+            if (board.isEnemy(this,lastPos) || (ypos-i < 1) || (board.isFriendly(this, nextPos)))
                 break;
             else
                 possibleMoves.add(new Move(lastPos, nextPos, this));
@@ -106,7 +106,7 @@ public class ChessPieceQueen extends AbstractChessPiece {
         while (xpos-i>0) {
             lastPos = new Position(xpos-i+1,ypos);
             nextPos = new Position(xpos-i, ypos);
-            if (board.isEnemy(this,lastPos) || (xpos-1 < 1) || (!board.isFriendly(this, nextPos)))
+            if (board.isEnemy(this,lastPos) || (xpos-1 < 1) || (board.isFriendly(this, nextPos)))
                 break;
             else
                 possibleMoves.add(new Move(lastPos, nextPos, this));
