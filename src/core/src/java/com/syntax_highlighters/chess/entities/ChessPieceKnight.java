@@ -28,7 +28,8 @@ public class ChessPieceKnight extends AbstractChessPiece {
         checkMove(board, possibleMoves, new Position(x+2,y-1));
         checkMove(board, possibleMoves, new Position(x-2,y+1));
         checkMove(board, possibleMoves, new Position(x-2,y-1));
-        return possibleMoves; 
+        return possibleMoves;
+
 
         //throw new NotImplementedException();
     }
