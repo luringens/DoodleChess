@@ -48,7 +48,7 @@ public class ChessPieceKing extends AbstractChessPiece {
         return possibleMoves;
     }
 
-    @Override
+    @Override 
     public List<Move> allPossibleMoves(Board board) {
         List<Move> possibleMoves = new ArrayList<>();
         int xpos = this.getPosition().getX();
@@ -60,7 +60,7 @@ public class ChessPieceKing extends AbstractChessPiece {
                 if(board.isOccupied(boardPos)){
                     continue;
                 }
-                if(board.getAtPosition(new Position(1, 8)) != null) {
+                if(board.getAtPosition(boardPos) != null) {
                     if (board.getAtPosition(boardPos).isWhite() == this.isWhite()) {
                         continue;
                     }
@@ -72,6 +72,7 @@ public class ChessPieceKing extends AbstractChessPiece {
             }
         }
         //rokade
+        /*
         if(this.isWhite()) {
             if(board.getAtPosition(new Position(1, 8)) != null) {
                 if (board.getAtPosition(new Position(1, 8)) instanceof ChessPieceRook) {
@@ -86,7 +87,7 @@ public class ChessPieceKing extends AbstractChessPiece {
                 }
             }
         }else {
-            if (board.getAtPosition(new Position(1, 8)) != null) {
+            if (board.getAtPosition(new Position(8, 8)) != null) {
                 if (board.getAtPosition(new Position(8, 8)) instanceof ChessPieceRook) {
                     if (!this.hasMoved() && !((ChessPieceRook) board.getAtPosition(new Position(8, 8))).hasMoved()) {
                         possibleMoves.add(new Move(this.getPosition(), new Position(8, 7), this));
@@ -99,7 +100,7 @@ public class ChessPieceKing extends AbstractChessPiece {
                 }
             }
         }
-
+        */
         return possibleMoves;
     }
 
