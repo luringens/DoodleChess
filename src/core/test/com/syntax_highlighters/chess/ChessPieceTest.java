@@ -15,10 +15,15 @@ class ChessPieceTest {
     void TestRookMoves() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
         IChessPiece rook = new ChessPieceRook(new Position(7,7), false);
+        IChessPiece king = new ChessPieceKing(new Position(4,4), false);
+        IChessPiece pawn = new ChessPiecePawn(new Position(3,3), true);
         pieces.add(rook);
+        pieces.add(king);
+        pieces.add(pawn);
         Board board = new Board(pieces);
 
         List<Move> moves = rook.allPossibleMoves(board);
-        assertEquals(14, moves.size());
+        List<Move> moves2 = king.allPossibleMoves(board);
+        List<Move> moves3 = pawn.allPossibleMoves(board);
     }
 }

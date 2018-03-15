@@ -30,10 +30,15 @@ public class ChessPiecePawn extends AbstractChessPiece {
     public void setPieceToMoved () {
         this.moved = true;
     }
+    public void setPieceNotMoved () {
+        this.moved = false;
+    }
 
     public boolean hasMoved () {
         return moved;
     }
+
+
 
 
     @Override

@@ -63,6 +63,7 @@ public class Game {
         if (piece instanceof ChessPieceKing){
             ((ChessPieceKing) piece).setPieceToMoved();
         }
+
         if (piece instanceof ChessPieceRook) {
             ((ChessPieceRook) piece).setPieceToMoved();
         }
