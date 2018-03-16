@@ -48,6 +48,17 @@ public class ChessPieceKing extends AbstractChessPiece {
         return possibleMoves;
     }
 
+    private List<ChessPieceRook> myRooks(Board board){
+        List<IChessPiece> pieces = board.getAllPieces();
+        List<ChessPieceRook> rooks = null;
+        for(IChessPiece p : pieces){
+            if(p instanceof ChessPieceRook){
+                rooks.add((ChessPieceRook) p);
+            }
+        }
+        return rooks;
+    }
+
     @Override 
     public List<Move> allPossibleMoves(Board board) {
         List<Move> possibleMoves = new ArrayList<>();
@@ -66,37 +77,25 @@ public class ChessPieceKing extends AbstractChessPiece {
                 possibleMoves.add(new Move(this.getPosition(), boardPos,this));
             }
         }
-        //rokade
-        /*
-        if(this.isWhite()) {
-            if(board.getAtPosition(new Position(1, 8)) != null) {
-                if (board.getAtPosition(new Position(1, 8)) instanceof ChessPieceRook) {
-                    if (!this.hasMoved() && !((ChessPieceRook) board.getAtPosition(new Position(1, 8))).hasMoved()) {
-                        possibleMoves.add(new Move(this.getPosition(), new Position(1, 7), this));
-                    }
-                }
-                if (board.getAtPosition(new Position(1, 1)) instanceof ChessPieceRook) {
-                    if (!this.hasMoved() && !((ChessPieceRook) board.getAtPosition(new Position(1, 1))).hasMoved()) {
-                        possibleMoves.add(new Move(this.getPosition(), new Position(1, 3), this));
-                    }
+
+        if(!this.hasMoved()){
+            Position rookrpos = new Position(this.getPosition().getX()+3,this.getPosition().getY());
+            Position rooklpos = new Position(this.getPosition().getX()-4,this.getPosition().getY());
+            if(board.getAtPosition(rookrpos) != null){
+                if(board.getAtPosition(rookrpos) instanceof ChessPieceRook && !((ChessPieceRook) board.getAtPosition(rookrpos)).hasMoved()){
+                    possibleMoves.add(new Move(this.getPosition(), new Position(this.getPosition().getX()+2, this.getPosition().getY()), this));
                 }
             }
-        }else {
-            if (board.getAtPosition(new Position(8, 8)) != null) {
-                if (board.getAtPosition(new Position(8, 8)) instanceof ChessPieceRook) {
-                    if (!this.hasMoved() && !((ChessPieceRook) board.getAtPosition(new Position(8, 8))).hasMoved()) {
-                        possibleMoves.add(new Move(this.getPosition(), new Position(8, 7), this));
-                    }
-                }
-                if (board.getAtPosition(new Position(8, 1)) instanceof ChessPieceRook) {
-                    if (!this.hasMoved() && !((ChessPieceRook) board.getAtPosition(new Position(8, 1))).hasMoved()) {
-                        possibleMoves.add(new Move(this.getPosition(), new Position(8, 3), this));
-                    }
+            if(board.getAtPosition(rooklpos) != null){
+                if(board.getAtPosition(rooklpos) instanceof ChessPieceRook && !((ChessPieceRook) board.getAtPosition(rooklpos)).hasMoved()){
+                    possibleMoves.add(new Move(this.getPosition(), new Position(this.getPosition().getX()-2, this.getPosition().getY()), this));
                 }
             }
+
         }
-        */
+
         return possibleMoves;
+
     }
 
     @Override

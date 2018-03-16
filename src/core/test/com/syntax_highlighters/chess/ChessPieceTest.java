@@ -79,7 +79,7 @@ class ChessPieceTest {
         assertEquals(2, moves.size());
     }
 
-    @Test
+    /*@Test
     void TestRookKnight() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
         IChessPiece piece = new ChessPieceKnight(new Position(4,4), false);
@@ -88,5 +88,20 @@ class ChessPieceTest {
 
         List<Move> moves = piece.allPossibleMoves(board);
         assertEquals(8, moves.size());
+    }*/
+
+    @Test
+    void TestCastling() {
+        ArrayList<IChessPiece> pieces = new ArrayList<>();
+        IChessPiece piece = new ChessPieceKing(new Position(5,1), true);
+        IChessPiece piece2 = new ChessPieceRook(new Position(8,1), true);
+        IChessPiece piece3 = new ChessPieceRook(new Position(1,1), true);
+        pieces.add(piece);
+        pieces.add(piece2);
+        pieces.add(piece3);
+        Board board = new Board(pieces);
+
+        List<Move> moves = piece.allPossibleMoves(board);
+        assertEquals(7, moves.size());
     }
 }
