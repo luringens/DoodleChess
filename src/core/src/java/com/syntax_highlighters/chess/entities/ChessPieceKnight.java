@@ -48,7 +48,7 @@ public class ChessPieceKnight extends AbstractChessPiece {
     //Checks the move
     public void checkMove(Board board, ArrayList<Move> possibleMoves, Position pos){
         if(board !=null && board.isOnBoard(pos)){
-                if(board.getAtPosition(pos) !=null && board.isEnemy(this,pos)){ //kan også bruke isFriendly-metoden
+                if(board.getAtPosition(pos) ==null || board.isEnemy(this,pos)){ //kan også bruke isFriendly-metoden
                     possibleMoves.add(new Move(this.getPosition(), pos, this));
                 }
 

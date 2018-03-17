@@ -54,14 +54,13 @@ public class ChessPiecePawn extends AbstractChessPiece {
         } else {
             pieceColor = -1;
         }
+
         checkMove(board, possibleMoves, new Position(x, y + (pieceColor)));
-        if (pieceColor == 1) {
-            takeEnemiesMove(board, possibleMoves, new Position(x + 1, y + (pieceColor)));
-        } else {
-            takeEnemiesMove(board, possibleMoves, new Position(x - 1, y + (pieceColor)));
-        }
+
+        takeEnemiesMove(board, possibleMoves, new Position(x + 1, y + (pieceColor)));
+        takeEnemiesMove(board, possibleMoves, new Position(x - 1, y + (pieceColor)));
         if (!this.hasMoved()) {
-            checkMove(board, possibleMoves, new Position(x, y + (2 * pieceColor)));
+            checkMove2(board, possibleMoves, new Position(x, y + (2 * pieceColor)),pieceColor);
         }
         enPassantCheck(board, possibleMoves, new Position(x + 1, y), pieceColor);
         enPassantCheck(board, possibleMoves, new Position(x - 1, y), pieceColor);
@@ -80,8 +79,15 @@ public class ChessPiecePawn extends AbstractChessPiece {
 
         }
     }
+    private void checkMove2 (Board board, ArrayList<Move> possibleMoves, Position pos, int piececolor) {
+        if (board != null && board.isOnBoard(pos)) {
+            if (board.getAtPosition(pos) == null && board.getAtPosition(new Position(pos.getX(), pos.getY() + (-1 * piececolor))) == null) {
+                possibleMoves.add(new Move(this.getPosition(), pos, this));
+            }
+        }}
 
-    //check enPassant
+
+        //check enPassant
     private void enPassantCheck (Board board, ArrayList<Move> possibleMoves, Position pos, int pieceColor) {
         if (board.isOnBoard(pos)) {
             //  pawns have to be marked as false after every round (hasMoved)
