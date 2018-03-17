@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChessPieceBishop extends AbstractChessPiece {
-    private static final int PIECE_SCORE = 50; 
+    private static final int PIECE_SCORE = 30;
     private static final int[] POS_SCORE = new int[]{
         -20,-10,-10,-10,-10,-10,-10,-20,
         -10,  0,  0,  0,  0,  0,  0,-10,

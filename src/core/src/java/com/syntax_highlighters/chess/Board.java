@@ -152,19 +152,6 @@ public class Board {
     }
 
     /**
-     * Move a piece to a position without doing checks.
-     *
-     * @param piece The piece to move
-     * @param toPosition The position to move to
-     */
-    public void forceMovePiece(IChessPiece piece, Position toPosition) {
-        assert isOnBoard(toPosition);
-
-        putAtPosition(toPosition, piece);
-    }
-
-
-    /**
      * Return a list of all the pieces on the board.
      *
      * @return A list of all the pieces currently on the board.

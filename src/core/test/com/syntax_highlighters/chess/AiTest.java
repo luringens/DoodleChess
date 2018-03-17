@@ -10,23 +10,11 @@ import java.util.ArrayList;
 
 class AiTest {
     @Test
+    /// Tests if a pawn will take a king instead of moving forwards.
     void takesKing() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
-        pieces.add(new ChessPieceKing(new Position(2, 2), false));
-        pieces.add(new ChessPiecePawn(new Position(1, 1), true));
-        // Diagram:
-        //  A B C D E F G H
-        // _________________
-        // |               | 8
-        // |               | 7
-        // |               | 6
-        // |               | 5
-        // |               | 4
-        // |               | 3
-        // | K             | 2
-        // |P______________| 1
-        //
-        // Pawn will move up to (2, 2) aka B4 to capture the king
+        pieces.add(new ChessPieceKing(new Position(3, 3), false));
+        pieces.add(new ChessPiecePawn(new Position(2, 2), true));
         Board board = new Board(pieces);
         
         IAiPlayer ai = new MiniMaxAIPlayer(true, MiniMaxAIPlayer.Difficulty.Easy);

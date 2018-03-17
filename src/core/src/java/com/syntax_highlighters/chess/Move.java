@@ -71,13 +71,13 @@ public class Move {
         if (hasDoneMove) throw new RuntimeException("Move has already been done.");
         hasDoneMove = true;
         tookPiece = b.getAtPosition(newPos);
-        b.forceMovePiece(piece, newPos);
+        b.putAtPosition(newPos, piece);
     }
 
     public void UndoMove(Board b) {
         if (!hasDoneMove) throw new RuntimeException("Can not undo a move that has not been done");
         hasDoneMove = false;
-        b.forceMovePiece(piece, oldPos);
+        b.putAtPosition(oldPos, piece);
         if (tookPiece != null) {
             b.putAtPosition(newPos, tookPiece);
         }

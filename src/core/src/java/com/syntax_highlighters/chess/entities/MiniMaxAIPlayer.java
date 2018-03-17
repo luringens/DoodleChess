@@ -46,7 +46,7 @@ class MiniMax {
         Move bestMove = null;
         for (Move move : moves) {
             move.DoMove(board);
-            int score = MiniMaxScore(depth - 1, board, isWhite, false);
+            int score = MiniMaxScore(depth - 1, board, !isWhite, false);
             move.UndoMove(board);
             if (score > bestScore) {
                 bestScore = score;
@@ -62,6 +62,8 @@ class MiniMax {
                 .filter(p -> p.isWhite() == isWhite)
                 .flatMap(p -> p.allPossibleMoves(board).stream())
                 .collect(Collectors.toList());
+
+        if (moves.size() == 0) return evaluateScore(board, isWhite);
 
         if (isMaximizing) {
             int bestScore = Integer.MIN_VALUE;
