@@ -108,6 +108,6 @@ public class ChessPieceRook extends AbstractChessPiece {
     
     @Override
     public String getAssetName() {
-        throw new NotImplementedException();
+        return "kingfinal.png";
     }
 }

@@ -126,6 +126,6 @@ public class ChessPiecePawn extends AbstractChessPiece {
 
     @Override
     public String getAssetName () {
-        throw new NotImplementedException();
+        return "bondefinal.png";
     }
 }

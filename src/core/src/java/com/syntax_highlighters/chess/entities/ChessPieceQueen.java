@@ -138,6 +138,6 @@ public class ChessPieceQueen extends AbstractChessPiece {
     
     @Override
     public String getAssetName() {
-        throw new NotImplementedException();
+        return "queenfinal.png";
     }
 }
