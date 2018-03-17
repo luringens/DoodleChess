@@ -40,6 +40,78 @@ public class Position {
     }
 
     /**
+     * The position n steps up on the board.
+     *
+     * @return A new position n steps above this position
+     */
+    public Position north(int nSteps) {
+        return new Position(this.x, this.y + nSteps);
+    }
+
+    /**
+     * The position n steps down on the board.
+     *
+     * @return A new position n steps below this position
+     */
+    public Position south(int nSteps) {
+        return new Position(this.x, this.y - nSteps);
+    }
+
+    /**
+     * The position n steps left on the board.
+     *
+     * @return A new position n steps to the left of this position
+     */
+    public Position west(int nSteps) {
+        return new Position(this.x - nSteps, this.y);
+    }
+    
+    /**
+     * The position n steps right on the board.
+     *
+     * @return A new position n steps to the right of this position
+     */
+    public Position east(int nSteps) {
+        return new Position(this.x + nSteps, this.y);
+    }
+
+    /**
+     * The position n steps diagonally up and left on the board.
+     *
+     * @return A new position n steps above and to the left of this position
+     */
+    public Position northwest(int nSteps) {
+        return new Position(this.x - nSteps, this.y + nSteps);
+    }
+    
+    /**
+     * The position n steps diagonally up and right on the board.
+     *
+     * @return A new position n steps above and to the right of this position
+     */
+    public Position northeast(int nSteps) {
+        return new Position(this.x + nSteps, this.y + nSteps);
+    }
+    
+    /**
+     * The position n steps down and left on the board.
+     *
+     * @return A new position n steps below and to the left of this position
+     */
+    public Position southwest(int nSteps) {
+        return new Position(this.x - nSteps, this.y - nSteps);
+    }
+    
+    /**
+     * The position n steps down and right on the board.
+     *
+     * @return A new position n steps below and to the right of this position
+     */
+    public Position southeast(int nSteps) {
+        return new Position(this.x + nSteps, this.y - nSteps);
+    }
+
+    /**
      * Return the position in chess notation.
      *
      * @return A string on the form [a-h][1-8]
@@ -50,28 +122,6 @@ public class Position {
         char file = (char) ('a' + (this.x-1));
         char rank = (char) ('0' + this.y);
         return "" + file + rank;
-    }
-
-    /**
-     * Return the position mirrored vertically onto the other side of the board.
-     *
-     * @param boardHeight The number of rows on the board
-     * @return The mirrored position
-     */
-    public Position mirrorVertical(int boardHeight) {
-        // novalidity
-        return new Position(this.getX(), boardHeight - this.getY());
-    }
-
-    /**
-     * Return the position mirrored horizontally onto the other side of the board.
-     *
-     * @param boardWidth The number of columns on the board
-     * @return The mirrored position
-     */
-    public Position mirrorHorizontal(int boardWidth) {
-        // novalidity
-        return new Position(boardWidth - this.getX(), this.getY());
     }
 
     /**
