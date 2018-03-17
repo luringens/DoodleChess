@@ -8,12 +8,12 @@ public class AssetLoader {
     public static void LoadAssets(AssetManager manager)
     {
         String[] textures = {
-                "pawn_white.png",
-                "bishop_white.png",
-                "king_white.png",
-                "knight_white.png",
-                "queen_white.png",
-                "rook_white.png"
+                "bondefinal.png",
+                "bishopfinal.png",
+                "kingfinal.png",
+                "hestfinal.png",
+                "queenfinal.png",
+                "tårnetfinal.png"
         };
 
         for(String path : textures)
