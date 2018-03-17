@@ -115,13 +115,13 @@ public class UiBoard extends Actor {
             Position pos = piece.getPosition();
             int rx = pos.getX() - 1;
             int ry = pos.getY() - 1;
-            if (piece.isWhite()) {
-                batch.setColor(1, 1, 1, 1);
-            } else {
-                batch.setColor(0, 0, 0, 1);
-            }
+
             if (piece == selectedPiece) {
                 batch.setColor(1, 0.84f, 0, 1);
+            }
+            else
+            {
+                batch.setColor(1, 1, 1, 1);
             }
 
             String assetName = piece.getAssetName();

@@ -108,6 +108,6 @@ public class ChessPieceRook extends AbstractChessPiece {
     
     @Override
     public String getAssetName() {
-        return "kingfinal.png";
+        return isWhite() ? "rook_white.png" : "rook_black.png";
     }
 }

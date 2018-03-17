@@ -98,6 +98,6 @@ public class ChessPieceBishop extends AbstractChessPiece {
 
     @Override
     public String getAssetName() {
-        return "bishopfinal.png";
+        return isWhite() ? "bishop_white.png" : "bishop_black.png";
     }
 }

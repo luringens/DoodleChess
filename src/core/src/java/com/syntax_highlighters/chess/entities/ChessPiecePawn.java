@@ -135,6 +135,6 @@ public class ChessPiecePawn extends AbstractChessPiece {
 
     @Override
     public String getAssetName () {
-        return "bondefinal.png";
+        return isWhite() ? "pawn_white.png" : "pawn_black.png";
     }
 }
