@@ -103,7 +103,7 @@ public class UiBoard extends Actor {
     private void renderMoves(Batch batch)
     {
         // TODO: Waiting for bug in allPossibleMoves to be resolved
-        if(selectedPiece == null || true) return;
+        if(selectedPiece == null) return;
 
         for(Move move : selectedPiece.allPossibleMoves(game.getBoard()))
         {
