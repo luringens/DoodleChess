@@ -46,7 +46,7 @@ class MiniMax {
         Move bestMove = null;
         for (Move move : moves) {
             move.DoMove(board);
-            int score = MiniMaxScore(depth - 1, board, !isWhite, false);
+            int score = MiniMaxScore(depth - 1, board, !isWhite, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
             move.UndoMove(board);
             if (score > bestScore) {
                 bestScore = score;
@@ -56,7 +56,7 @@ class MiniMax {
         if (bestMove != null) bestMove.DoMove(board);
     }
 
-    private static int MiniMaxScore(int depth, Board board, boolean isWhite, boolean isMaximizing) {
+    private static int MiniMaxScore(int depth, Board board, boolean isWhite, boolean isMaximizing, int alpha, int beta) {
         if (depth <= 0) return evaluateScore(board, isWhite);
         List<Move> moves = board.getAllPieces().stream()
                 .filter(p -> p.isWhite() == isWhite)
@@ -69,9 +69,14 @@ class MiniMax {
             int bestScore = Integer.MIN_VALUE;
             for (Move move : moves) {
                 move.DoMove(board);
-                int score = MiniMaxScore(depth - 1, board, isWhite, !isMaximizing);
+                bestScore = MiniMaxScore(depth - 1, board, isWhite, !isMaximizing, alpha, beta);
                 move.UndoMove(board);
-                if (score > bestScore) bestScore = score;
+
+                // Alpha-beta pruning - early return for optimization
+                alpha = Math.max(alpha, bestScore);
+                if (beta <= alpha) {
+                    return bestScore;
+                }
             }
             return bestScore;
         }
@@ -79,9 +84,14 @@ class MiniMax {
             int bestScore = Integer.MAX_VALUE;
             for (Move move : moves) {
                 move.DoMove(board);
-                int score = MiniMaxScore(depth - 1, board, isWhite, !isMaximizing);
+                bestScore = MiniMaxScore(depth - 1, board, isWhite, !isMaximizing, alpha, beta);
                 move.UndoMove(board);
-                if (score < bestScore) bestScore = score;
+
+                // Alpha-beta pruning - early return for optimization
+                beta = Math.min(beta, bestScore);
+                if (beta <= alpha) {
+                    return bestScore;
+                }
             }
             return bestScore;
         }
