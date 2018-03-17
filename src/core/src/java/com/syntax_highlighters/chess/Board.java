@@ -72,6 +72,11 @@ public class Board {
      */
     public void putAtPosition(Position pos, IChessPiece piece) {
         assert isOnBoard(pos);
+        
+        IChessPiece target = getAtPosition(pos);
+        if (target != null) {
+            pieces.remove(target);
+        }
 
         piece.setPosition(pos); // ensure position is correct for this piece
 
@@ -155,10 +160,6 @@ public class Board {
     public void forceMovePiece(IChessPiece piece, Position toPosition) {
         assert isOnBoard(toPosition);
 
-        IChessPiece target = getAtPosition(toPosition);
-        if (target != null) {
-            pieces.remove(target);
-        }
         putAtPosition(toPosition, piece);
     }
 
