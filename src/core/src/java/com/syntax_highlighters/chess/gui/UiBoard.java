@@ -1,11 +1,10 @@
 package com.syntax_highlighters.chess.gui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -17,20 +16,24 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
 
 public class UiBoard extends Actor {
 
-    public static final int SPACE_SIZE = 40;
+    public static final int SPACE_SIZE = 64;
     private Texture placeholder;
     private BitmapFont segoeUi;
     private Game game;
+    private Sprite object;
+
+    private AssetManager assetManager;
 
     private float LEGEND_OFFSET = 40;
 
     private IChessPiece selectedPiece = null;
 
-    public UiBoard(Game game)
+    public UiBoard(AssetManager assetManager, Game game)
     {
+        this.assetManager = assetManager;
         this.game = game;
-        this.setWidth(40 * Board.BOARD_WIDTH + LEGEND_OFFSET);
-        this.setHeight(40 * Board.BOARD_HEIGHT + LEGEND_OFFSET);
+        this.setWidth(SPACE_SIZE * Board.BOARD_WIDTH + LEGEND_OFFSET);
+        this.setHeight(SPACE_SIZE * Board.BOARD_HEIGHT + LEGEND_OFFSET);
         Texture texture = new Texture(Gdx.files.internal("segoeui.png"));
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         placeholder = new Texture(Gdx.files.internal("placeholder.png"));
@@ -38,28 +41,57 @@ public class UiBoard extends Actor {
 
         this.addListener(new InputListener() {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                int px = (int) ((x-LEGEND_OFFSET) / SPACE_SIZE);
-                int py = (int) ((y-LEGEND_OFFSET) / SPACE_SIZE);
-                IChessPiece clicked = game.getPieceAtPosition(new Position(px+1, py+1));
+                int px = (int) ((x-LEGEND_OFFSET) / SPACE_SIZE) + 1;
+                int py = (int) ((y-LEGEND_OFFSET) / SPACE_SIZE) + 1;
+
+                if(((UiBoard)event.getTarget()).moveSelected(px, py))
+                {
+                    selectedPiece = null;
+                    return false;
+                }
+
+                IChessPiece clicked = game.getPieceAtPosition(new Position(px, py));
                 selectedPiece = clicked;
                 return true;
             }
 
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                int px = (int) ((x-LEGEND_OFFSET) / SPACE_SIZE);
-                int py = (int) ((y-LEGEND_OFFSET) / SPACE_SIZE);
-                IChessPiece clicked = game.getPieceAtPosition(new Position(px+1, py+1));
+                int px = (int) ((x-LEGEND_OFFSET) / SPACE_SIZE) + 1;
+                int py = (int) ((y-LEGEND_OFFSET) / SPACE_SIZE) + 1;
+
+                if(((UiBoard)event.getTarget()).moveSelected(px, py))
+                {
+                    selectedPiece = null;
+                    return;
+                }
+
+                IChessPiece clicked = game.getPieceAtPosition(new Position(px, py));
                 selectedPiece = clicked;
             }
         });
     }
 
+    private boolean moveSelected(int px, int py) {
+        if(selectedPiece != null)
+        {
+            for(Move move : selectedPiece.allPossibleMoves(game.getBoard()))
+            {
+                Position pos = move.getPosition();
+                if(pos.getX() == px && pos.getY() == py)
+                {
+                    game.performMove(selectedPiece.getPosition(), pos);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 
     private void renderBoard(Batch batch)
     {
 
-        batch.setColor(0, 0, 0, 1);
+        batch.setColor(0.2f, 0.2f, 0.2f, 1);
         for(int x = 0; x < Board.BOARD_WIDTH; ++x)
             for(int y = 0; y < Board.BOARD_HEIGHT; ++y)
             {
@@ -79,24 +111,30 @@ public class UiBoard extends Actor {
     private void renderPieces(Batch batch)
     {
 
-        for(IChessPiece piece : game.getPieces())
-        {
+        for(IChessPiece piece : game.getPieces()) {
             Position pos = piece.getPosition();
-            int rx = pos.getX()-1;
-            int ry = pos.getY()-1;
-            if(piece.isWhite())
-            {
-                batch.setColor(0, 1, 0, 1);
+            int rx = pos.getX() - 1;
+            int ry = pos.getY() - 1;
+            if (piece.isWhite()) {
+                batch.setColor(1, 1, 1, 1);
+            } else {
+                batch.setColor(0, 0, 0, 1);
             }
-            else
-            {
-                batch.setColor(1, 0, 0, 1);
-            }
-            if(piece == selectedPiece)
-            {
+            if (piece == selectedPiece) {
                 batch.setColor(1, 0.84f, 0, 1);
             }
-            batch.draw(placeholder, rx * SPACE_SIZE + 5 + getX() + LEGEND_OFFSET, ry * SPACE_SIZE + 5 + getY() + LEGEND_OFFSET, 30, 30);
+
+            String assetName = piece.getAssetName();
+            Texture tex = assetManager.get(assetName, Texture.class);
+            tex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+            float x = rx * SPACE_SIZE + 5 + getX() + LEGEND_OFFSET;
+            float y = ry * SPACE_SIZE + 5 + getY() + LEGEND_OFFSET;
+            float aspect = tex.getWidth() / (float) tex.getHeight();
+            float height = SPACE_SIZE;
+            float width = SPACE_SIZE * aspect;
+
+            batch.draw(tex, x, y, width, height);
         }
     }
 

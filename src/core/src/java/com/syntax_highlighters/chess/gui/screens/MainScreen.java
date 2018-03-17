@@ -2,6 +2,7 @@ package com.syntax_highlighters.chess.gui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -16,13 +17,16 @@ public class MainScreen implements Screen {
     private Stage stage;
     UiBoard board;
 
-    public MainScreen() {
+    private AssetManager assetManager;
+
+    public MainScreen(AssetManager manager) {
+        assetManager = manager;
         game = new Game(false, false, 0);
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        board = new UiBoard(game);
+        board = new UiBoard(assetManager, game);
         stage.addActor(board);
     }
 
@@ -61,5 +65,7 @@ public class MainScreen implements Screen {
 
     @Override
     public void dispose() {
+        stage.dispose();
+        assetManager.dispose();
     }
 }
