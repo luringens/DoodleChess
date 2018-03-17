@@ -105,7 +105,7 @@ class MiniMax {
     }
 
     private static int getPieceWeight(IChessPiece piece, boolean forWhite) {
-        int value = piece.getScore();
+        int value = piece.getPieceScore();
         
         // If the piece is not the same colour as the current player,
         // it's weight is negative as we want to get rid of them

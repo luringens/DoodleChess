@@ -7,9 +7,9 @@ import com.syntax_highlighters.chess.Position;
 import java.util.List;
 
 public abstract class AbstractChessPiece implements IChessPiece {
-    private boolean isWhite;
-    private Position position;
-    
+    protected boolean isWhite;
+    protected Position position;
+
     /**
      * Constructor.
      *
@@ -96,4 +96,25 @@ public abstract class AbstractChessPiece implements IChessPiece {
                 throw new IllegalArgumentException("Invalid piece notation: " + piece);
         }
     }
+
+    public int getPositionalScore() {
+        Position p = getPosition();
+        int x = p.getX();
+        int y = p.getY();
+
+        // Score board is based on starting on the bottom.
+        // Reverse for black.
+        if (!isWhite()) {
+            x = Board.BOARD_WIDTH - x;
+            y = Board.BOARD_HEIGHT - y;
+        }
+
+        // Adjust for 0-based indexing.
+        x -= 1;
+        y -= 1;
+
+        return getPieceScore() + getPositionScoreTable()[x + y * Board.BOARD_WIDTH];
+    }
+
+    protected abstract int[] getPositionScoreTable();
 }

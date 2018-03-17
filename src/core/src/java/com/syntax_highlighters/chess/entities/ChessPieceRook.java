@@ -9,20 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChessPieceRook extends AbstractChessPiece {
-    private static final int PIECE_SCORE = 50; 
-    private static final int[] POS_SCORE = new int[]{
-         0,  0,  0,  0,  0,  0,  0,  0,
-         5, 10, 10, 10, 10, 10, 10,  5,
-        -5,  0,  0,  0,  0,  0,  0, -5,
-        -5,  0,  0,  0,  0,  0,  0, -5,
-        -5,  0,  0,  0,  0,  0,  0, -5,
-        -5,  0,  0,  0,  0,  0,  0, -5,
-        -5,  0,  0,  0,  0,  0,  0, -5,
-         0,  0,  0,  5,  5,  0,  0,  0
-    };
-
     public ChessPieceRook(Position pos, boolean isWhite) {
         super(pos, isWhite);
+    }
+
+    @Override
+    protected int[] getPositionScoreTable() {
+        return new int[]{
+             0,  0,  0,  0,  0,  0,  0,  0,
+             5, 10, 10, 10, 10, 10, 10,  5,
+            -5,  0,  0,  0,  0,  0,  0, -5,
+            -5,  0,  0,  0,  0,  0,  0, -5,
+            -5,  0,  0,  0,  0,  0,  0, -5,
+            -5,  0,  0,  0,  0,  0,  0, -5,
+            -5,  0,  0,  0,  0,  0,  0, -5,
+             0,  0,  0,  5,  5,  0,  0,  0
+        };
     }
 
     private boolean moved = false;
@@ -89,23 +91,12 @@ public class ChessPieceRook extends AbstractChessPiece {
     public IChessPiece copy() {
         return new ChessPieceRook(this.getPosition(), this.isWhite());
     }
-    
+
     @Override
-    public int getScore() {
-        Position p = getPosition();
-        int x = p.getX();
-        int y = p.getY();
-
-        // Score board is based on starting on the bottom.
-        // Reverse for black
-        if (!isWhite()) {
-            x = Board.BOARD_WIDTH - x;
-            y = Board.BOARD_HEIGHT - y;
-        }
-
-        return PIECE_SCORE + POS_SCORE[p.getX() + p.getY() * Board.BOARD_WIDTH];
+    public int getPieceScore() {
+        return 50;
     }
-    
+
     @Override
     public String getAssetName() {
         return isWhite() ? "rook_white.png" : "rook_black.png";

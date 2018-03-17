@@ -67,7 +67,9 @@ public interface IChessPiece {
      *
      * @return The numerical value of the piece
      */
-    int getScore();
+    int getPieceScore();
+
+    int getPositionalScore();
 
     /**
      * Set position of the piece.

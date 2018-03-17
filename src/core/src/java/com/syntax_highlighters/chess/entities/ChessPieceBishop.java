@@ -9,22 +9,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChessPieceBishop extends AbstractChessPiece {
-    private static final int PIECE_SCORE = 30;
-    private static final int[] POS_SCORE = new int[]{
-        -20,-10,-10,-10,-10,-10,-10,-20,
-        -10,  0,  0,  0,  0,  0,  0,-10,
-        -10,  0,  5, 10, 10,  5,  0,-10,
-        -10,  5,  5, 10, 10,  5,  5,-10,
-        -10,  0, 10, 10, 10, 10,  0,-10,
-        -10, 10, 10, 10, 10, 10, 10,-10,
-        -10,  5,  0,  0,  0,  0,  5,-10,
-        -20,-10,-10,-10,-10,-10,-10,-20,
-    };
-
     public ChessPieceBishop(Position pos, boolean isWhite) {
         super(pos, isWhite);
     }
-    
+
+    @Override
+    protected int[] getPositionScoreTable() {
+        return new int[]{
+            -20, -10, -10, -10, -10, -10, -10, -20,
+            -10,   0,   0,   0,   0,   0,   0, -10,
+            -10,   0,   5,  10,  10,   5,   0, -10,
+            -10,   5,   5,  10,  10,   5,   5, -10,
+            -10,   0,  10,  10,  10,  10,   0, -10,
+            -10,  10,  10,  10,  10,  10,  10, -10,
+            -10,   5,   0,   0,   0,   0,   5, -10,
+            -20, -10, -10, -10, -10, -10, -10, -20,
+        };
+    }
+
     @Override
     public List<Move> allPossibleMoves(Board board) {
         List<Move> possibleMoves = new ArrayList<>();
@@ -81,19 +83,8 @@ public class ChessPieceBishop extends AbstractChessPiece {
     }
 
     @Override
-    public int getScore() {
-        Position p = getPosition();
-        int x = p.getX();
-        int y = p.getY();
-
-        // Score board is based on starting on the bottom.
-        // Reverse for black
-        if (!isWhite()) {
-            x = Board.BOARD_WIDTH - x;
-            y = Board.BOARD_HEIGHT - y;
-        }
-
-        return PIECE_SCORE + POS_SCORE[p.getX() + p.getY() * Board.BOARD_WIDTH];
+    public int getPieceScore() {
+        return 30;
     }
 
     @Override
