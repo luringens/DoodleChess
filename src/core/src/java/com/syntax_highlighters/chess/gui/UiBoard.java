@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -28,8 +29,8 @@ public class UiBoard extends Actor {
     public UiBoard(Game game)
     {
         this.game = game;
-        this.setWidth(40 * Board.BOARD_WIDTH);
-        this.setHeight(40 * Board.BOARD_HEIGHT);
+        this.setWidth(40 * Board.BOARD_WIDTH + LEGEND_OFFSET);
+        this.setHeight(40 * Board.BOARD_HEIGHT + LEGEND_OFFSET);
         Texture texture = new Texture(Gdx.files.internal("segoeui.png"));
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         placeholder = new Texture(Gdx.files.internal("placeholder.png"));
@@ -41,7 +42,6 @@ public class UiBoard extends Actor {
                 int py = (int) ((y-LEGEND_OFFSET) / SPACE_SIZE);
                 IChessPiece clicked = game.getPieceAtPosition(new Position(px+1, py+1));
                 selectedPiece = clicked;
-                System.out.println("down" + x + " : " + y);
                 return true;
             }
 
@@ -50,7 +50,6 @@ public class UiBoard extends Actor {
                 int py = (int) ((y-LEGEND_OFFSET) / SPACE_SIZE);
                 IChessPiece clicked = game.getPieceAtPosition(new Position(px+1, py+1));
                 selectedPiece = clicked;
-                System.out.println("up" + x + " : " + y + " : ");
             }
         });
     }
@@ -118,21 +117,22 @@ public class UiBoard extends Actor {
 
     private void renderLegend(Batch batch)
     {
+        GlyphLayout layout = new GlyphLayout();
         for(int i = 0; i < Board.BOARD_WIDTH; ++i)
         {
             char pos = (char)('A' + i);
-            BitmapFont.TextBounds bounds = segoeUi.getBounds("" + pos);
-            float x = LEGEND_OFFSET + SPACE_SIZE/2.f + i * SPACE_SIZE + getX()  - bounds.width / 2.0f;
-            float y = getY() + LEGEND_OFFSET/2.f  + bounds.height / 2.0f;
+            layout.setText(segoeUi, "" + pos);
+            float x = LEGEND_OFFSET + SPACE_SIZE/2.f + i * SPACE_SIZE + getX()  - layout.width / 2.0f;
+            float y = getY() + LEGEND_OFFSET/2.f  + layout.height / 2.0f;
             segoeUi.draw(batch, "" + pos, x, y);
         }
 
         for(int i = 0; i < Board.BOARD_HEIGHT; ++i)
         {
             char pos = (char)('1' + i);
-            BitmapFont.TextBounds bounds = segoeUi.getBounds("" + pos);
-            float x = getX() + LEGEND_OFFSET/2.f - bounds.width/2.f;
-            float y = LEGEND_OFFSET + SPACE_SIZE/2.f + i * SPACE_SIZE + getY() + bounds.height / 2.0f;
+            layout.setText(segoeUi, "" + pos);
+            float x = getX() + LEGEND_OFFSET/2.f - layout.width/2.f;
+            float y = LEGEND_OFFSET + SPACE_SIZE/2.f + i * SPACE_SIZE + getY() + layout.height / 2.0f;
             segoeUi.draw(batch, "" + pos, x, y);
         }
     }

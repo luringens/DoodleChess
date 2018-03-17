@@ -11,17 +11,27 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="chess-core" />
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx:1.9.8" level="project" />
-    <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.8" level="project" />
-    <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl:2.9.2" level="project" />
-    <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl-platform:natives-windows:2.9.2" level="project" />
-    <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl-platform:natives-linux:2.9.2" level="project" />
-    <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl-platform:natives-osx:2.9.2" level="project" />
-    <orderEntry type="library" name="Maven: net.java.jinput:jinput:2.0.5" level="project" />
-    <orderEntry type="library" name="Maven: net.java.jutils:jutils:1.0.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: net.java.jinput:jinput-platform:natives-linux:2.0.5" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: net.java.jinput:jinput-platform:natives-windows:2.0.5" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: net.java.jinput:jinput-platform:natives-osx:2.0.5" level="project" />
-    <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl_util:2.9.2" level="project" />
+    <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-backend-lwjgl3:1.9.8" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl:natives-windows:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl:natives-linux:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl:natives-macos:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-glfw:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-glfw:natives-windows:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-glfw:natives-linux:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-glfw:natives-macos:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-jemalloc:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-jemalloc:natives-windows:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-jemalloc:natives-linux:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-jemalloc:natives-macos:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-opengl:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-opengl:natives-windows:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-opengl:natives-linux:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-opengl:natives-macos:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-openal:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-openal:natives-windows:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-openal:natives-linux:3.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-openal:natives-macos:3.1.3" level="project" />
     <orderEntry type="library" name="Maven: com.badlogicgames.jlayer:jlayer:1.0.1-gdx" level="project" />
     <orderEntry type="library" name="Maven: org.jcraft:jorbis:0.0.17" level="project" />
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-platform:natives-desktop:1.9.8" level="project" />

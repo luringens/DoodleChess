@@ -39,7 +39,6 @@ public class MainScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         board = new UiBoard(game);
-        board.setCenterPosition(200, 200);
         stage.addActor(board);
 
     }
