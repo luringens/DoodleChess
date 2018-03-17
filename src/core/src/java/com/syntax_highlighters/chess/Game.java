@@ -3,10 +3,7 @@ package com.syntax_highlighters.chess;
 import java.util.List;
 import java.util.ArrayList;
 
-import com.syntax_highlighters.chess.entities.ChessPieceKing;
-import com.syntax_highlighters.chess.entities.ChessPiecePawn;
-import com.syntax_highlighters.chess.entities.ChessPieceRook;
-import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.entities.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -18,8 +15,8 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public class Game {
     private Board board;
-    private boolean whiteAI;
-    private boolean blackAI;
+    private IAiPlayer whiteAI = null;
+    private IAiPlayer blackAI = null;
     private boolean nextPlayerWhite = true;
     private List<Move> history;
 
@@ -33,9 +30,15 @@ public class Game {
      * @param AILevel AI difficulty level from 1 to 3
      */
     public Game(boolean whiteAI, boolean blackAI, int AILevel) {
-        assert (AILevel >= 1 && AILevel <= 3);
-        this.whiteAI = whiteAI;
-        this.blackAI = blackAI;
+        MiniMaxAIPlayer.Difficulty d;
+        switch (AILevel) {
+            case 1: d = MiniMaxAIPlayer.Difficulty.Easy; break;
+            case 2: d = MiniMaxAIPlayer.Difficulty.Medium; break;
+            case 3: d = MiniMaxAIPlayer.Difficulty.Hard; break;
+            default: throw new RuntimeException("Difficulty must be between 1 and 3.");
+        }
+        if (whiteAI) this.whiteAI = new MiniMaxAIPlayer(true, d);
+        if (blackAI) this.blackAI = new MiniMaxAIPlayer(false, d);
         
         this.board = new Board();
         this.history = new ArrayList<>();
@@ -77,17 +80,17 @@ public class Game {
         }
         return result;
     }
-    
-    public Move PerformAIMoves() {
+
+    public void PerformAIMove() {
         if (nextPlayerIsAI()) {
-            // Get AI move
-
-            // Perform AI move
-
-            // Return AI move
+            if (nextPlayerWhite) {
+                whiteAI.PerformMove(board);
+            }
+            else {
+                blackAI.PerformMove(board);
+            }
+            nextPlayerWhite = !nextPlayerWhite;
         }
-
-        throw new NotImplementedException();
     }
 
     /**
@@ -97,7 +100,7 @@ public class Game {
      * human
      */
     private boolean nextPlayerIsAI() {
-        return (nextPlayerWhite && whiteAI) || (!nextPlayerWhite && blackAI);
+        return (nextPlayerWhite && whiteAI != null) || (!nextPlayerWhite && blackAI != null);
     }
 
     /**
