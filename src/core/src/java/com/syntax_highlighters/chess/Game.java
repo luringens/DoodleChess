@@ -67,10 +67,15 @@ public class Game {
         if (piece instanceof ChessPieceRook) {
             ((ChessPieceRook) piece).setPieceToMoved();
         }
-
+        
         //TODO: move rook if castling.
         //TODO: update all "movedLast" pawns such that the specialty move an-passant is only possible for 1 move.
-        return board.movePiece(piece, to);
+
+        boolean result = board.movePiece(piece, to);
+        if (result) {
+            nextPlayerWhite = !nextPlayerWhite;
+        }
+        return result;
     }
     
     public Move PerformAIMoves() {
@@ -132,5 +137,14 @@ public class Game {
      */
     public List<IChessPiece> getPieces() {
         return this.board.getAllPieces();
+    }
+
+    /**
+     * Check whose turn it is next.
+     *
+     * @return true if it's white's turn to move, false otherwise
+     */
+    public boolean nextPlayerIsWhite() {
+        return nextPlayerWhite;
     }
 }
