@@ -11,14 +11,14 @@ import java.util.List;
 public class ChessPieceRook extends AbstractChessPiece {
     private static final int PIECE_SCORE = 50; 
     private static final int[] POS_SCORE = new int[]{
-        0,  0,  0,  0,  0,  0,  0,  0,
-        5, 10, 10, 10, 10, 10, 10,  5,
-       -5,  0,  0,  0,  0,  0,  0, -5,
-       -5,  0,  0,  0,  0,  0,  0, -5,
-       -5,  0,  0,  0,  0,  0,  0, -5,
-       -5,  0,  0,  0,  0,  0,  0, -5,
-       -5,  0,  0,  0,  0,  0,  0, -5,
-        0,  0,  0,  5,  5,  0,  0,  0
+         0,  0,  0,  0,  0,  0,  0,  0,
+         5, 10, 10, 10, 10, 10, 10,  5,
+        -5,  0,  0,  0,  0,  0,  0, -5,
+        -5,  0,  0,  0,  0,  0,  0, -5,
+        -5,  0,  0,  0,  0,  0,  0, -5,
+        -5,  0,  0,  0,  0,  0,  0, -5,
+        -5,  0,  0,  0,  0,  0,  0, -5,
+         0,  0,  0,  5,  5,  0,  0,  0
     };
 
     public ChessPieceRook(Position pos, boolean isWhite) {

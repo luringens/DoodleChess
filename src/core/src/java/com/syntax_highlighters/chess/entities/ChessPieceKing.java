@@ -8,7 +8,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.util.List;
 import java.util.ArrayList;
 public class ChessPieceKing extends AbstractChessPiece {
-    private static final int PIECE_SCORE = 50; 
+    private static final int PIECE_SCORE = 1000;
     private static final int[] POS_SCORE = new int[]{
         -30,-40,-40,-50,-50,-40,-40,-30,
         -30,-40,-40,-50,-50,-40,-40,-30,
