@@ -92,7 +92,10 @@ public class ChessPiecePawn extends AbstractChessPiece {
         if (board.isOnBoard(pos)) {
             //  pawns have to be marked as false after every round (hasMoved)
             //Checks if the position to your left and right is occupied by an enemy
-            if (board.getAtPosition(pos) != null && board.isEnemy(this, pos) && ((ChessPiecePawn) board.getAtPosition(pos)).hasMoved()) {
+            IChessPiece pieceAtPos = board.getAtPosition(pos);
+            if (pieceAtPos != null && board.isEnemy(this, pos) &&
+                    pieceAtPos instanceof ChessPiecePawn &&
+                    ((ChessPiecePawn) pieceAtPos).hasMoved()) {
                 possibleMoves.add(new Move(this.getPosition(), new Position(pos.getX(), pos.getY() + (pieceColor)), this));
             }
 
