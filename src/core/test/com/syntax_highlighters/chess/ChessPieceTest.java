@@ -79,7 +79,7 @@ class ChessPieceTest {
         assertEquals(2, moves.size());
     }
 
-    /*@Test
+    @Test
     void TestRookKnight() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
         IChessPiece piece = new ChessPieceKnight(new Position(4,4), false);
@@ -88,7 +88,7 @@ class ChessPieceTest {
 
         List<Move> moves = piece.allPossibleMoves(board);
         assertEquals(8, moves.size());
-    }*/
+    }
 
     @Test
     void TestCastling() {
