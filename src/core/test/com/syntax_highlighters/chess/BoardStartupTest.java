@@ -11,15 +11,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class BoardStartupTest {
     Board board = new Board();
 
-    board.setupNewGame();
+    // could use @Before, if I could get it to work...
+    public void setUp() {
+        board.setupNewGame();
+    }
 
     @Test
     public void EmptySquaresAreEmpty(){
+        setUp();
         boolean isEmpty = true;
 
         for (int y = 3; y <= 6; y++) {
             for (int x = 1; x <= 8; x++) {
-                if (board.getAtPosition(x,y) != null){
+                if (board.getAtPosition(new Position(x, y)) != null){
                     isEmpty = false;
                 }
             }
@@ -29,13 +33,16 @@ public class BoardStartupTest {
     }
     @Test
     public void KingsPos(){
+        setUp();
         Position wPos = new Position(4,1);
         Position bPos = new Position(4,8);
-        boolean IsKing;
+        boolean IsKing = true;
 
+        // these can be null
         IChessPiece TestW = board.getAtPosition(wPos);
         IChessPiece TestB = board.getAtPosition(bPos);
 
+        // use "equals" for string comparison
         if (TestW.getAssetName() != "King" || TestB.getAssetName() != "King"){
             IsKing = false;
         }
