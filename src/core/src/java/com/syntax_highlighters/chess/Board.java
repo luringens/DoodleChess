@@ -204,14 +204,26 @@ public class Board {
 
         if (piece.canMoveTo(toPosition, this)) {
             this.lastMove = new Move(piece.getPosition(), toPosition, piece);
+            
             if (piece instanceof ChessPieceKing) {
                 ((ChessPieceKing) piece).setPieceToMoved();
                 if (Math.abs(piece.getPosition().getX() - toPosition.getX()) > 1)
                     performCastling(piece, toPosition);
-            } else if(piece instanceof ChessPiecePawn){
+            }
+            else if(piece instanceof ChessPiecePawn){
                 ((ChessPiecePawn) piece).setPieceToMoved();
-            } else if(piece instanceof ChessPieceRook)
+                Position oldPos = piece.getPosition();
+                if (!isOccupied(toPosition) && toPosition.getY() != oldPos.getY()) {
+                    // pawn performed en passant
+                    // assume it was legal because of canMoveTo check above
+                    Position behind = new Position(toPosition.getX(), oldPos.getY());
+                    IChessPiece pieceCaptured = getAtPosition(behind);
+                    pieces.remove(pieceCaptured);
+                }
+            }
+            else if(piece instanceof ChessPieceRook)
                 ((ChessPieceRook) piece).setPieceToMoved();
+            
             putAtPosition(toPosition, piece);
             return true;
         }
