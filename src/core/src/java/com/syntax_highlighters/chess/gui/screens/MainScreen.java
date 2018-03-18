@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.Game;
+import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.gui.UiBoard;
 
 /**
@@ -21,7 +22,7 @@ public class MainScreen implements Screen {
 
     public MainScreen(AssetManager manager) {
         assetManager = manager;
-        game = new Game(false, false, 0);
+        game = new Game(null, AiDifficulty.Easy);
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
