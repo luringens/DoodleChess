@@ -17,7 +17,10 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
 public class UiBoard extends Actor {
 
     public static final int SPACE_SIZE = 64;
-    private Texture placeholder;
+
+    private Texture tile;
+    private Texture tile_black;
+
     private BitmapFont segoeUi;
     private Game game;
     private Sprite object;
@@ -36,7 +39,8 @@ public class UiBoard extends Actor {
         this.setHeight(SPACE_SIZE * Board.BOARD_HEIGHT + LEGEND_OFFSET);
         Texture texture = new Texture(Gdx.files.internal("segoeui.png"));
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        placeholder = new Texture(Gdx.files.internal("placeholder.png"));
+        tile = new Texture(Gdx.files.internal("tile.png"));
+        tile_black = new Texture(Gdx.files.internal("tile_black.png"));
         segoeUi = new BitmapFont(Gdx.files.internal("segoeui.fnt"), new TextureRegion(texture), false);
 
         this.addListener(new InputListener() {
@@ -91,13 +95,13 @@ public class UiBoard extends Actor {
 
     private void renderBoard(Batch batch)
     {
+        batch.setColor(1, 1, 1, 1);
 
-        batch.setColor(0.2f, 0.2f, 0.2f, 1);
         for(int x = 0; x < Board.BOARD_WIDTH; ++x)
             for(int y = 0; y < Board.BOARD_HEIGHT; ++y)
             {
                 if((x + y) % 2 == 1) continue;
-                batch.draw(placeholder, x * SPACE_SIZE + getX() + LEGEND_OFFSET, y * SPACE_SIZE + getY() + LEGEND_OFFSET, SPACE_SIZE, SPACE_SIZE);
+                batch.draw(tile, x * SPACE_SIZE + getX() + LEGEND_OFFSET, y * SPACE_SIZE + getY() + LEGEND_OFFSET, SPACE_SIZE, SPACE_SIZE);
             }
 
         batch.setColor(1, 1, 1, 1);
@@ -105,7 +109,7 @@ public class UiBoard extends Actor {
             for(int y = 0; y < Board.BOARD_HEIGHT; ++y)
             {
                 if((x + y) % 2 == 0) continue;
-                batch.draw(placeholder, x * SPACE_SIZE + getX() + LEGEND_OFFSET, y * SPACE_SIZE + getY() + LEGEND_OFFSET, SPACE_SIZE, SPACE_SIZE);
+                batch.draw(tile_black, x * SPACE_SIZE + getX() + LEGEND_OFFSET, y * SPACE_SIZE + getY() + LEGEND_OFFSET, SPACE_SIZE, SPACE_SIZE);
             }
     }
 
@@ -150,13 +154,14 @@ public class UiBoard extends Actor {
             int rx = pos.getX()-1;
             int ry = pos.getY()-1;
             batch.setColor(1, 0.84f, 0, 1);
-            batch.draw(placeholder, rx * SPACE_SIZE + getX() + LEGEND_OFFSET, ry * SPACE_SIZE + getY() + LEGEND_OFFSET, SPACE_SIZE, SPACE_SIZE);
+            batch.draw(tile, rx * SPACE_SIZE + getX() + LEGEND_OFFSET, ry * SPACE_SIZE + getY() + LEGEND_OFFSET, SPACE_SIZE, SPACE_SIZE);
         }
     }
 
     private void renderLegend(Batch batch)
     {
         GlyphLayout layout = new GlyphLayout();
+        segoeUi.setColor(0,0,0,1);
         for(int i = 0; i < Board.BOARD_WIDTH; ++i)
         {
             char pos = (char)('A' + i);
@@ -179,10 +184,10 @@ public class UiBoard extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha)
     {
-        renderLegend(batch);
         renderBoard(batch);
         renderMoves(batch);
         renderPieces(batch);
+        renderLegend(batch);
     }
 
 }

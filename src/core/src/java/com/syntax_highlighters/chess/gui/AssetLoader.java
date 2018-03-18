@@ -19,7 +19,10 @@ public class AssetLoader {
                 "king_black.png",
                 "knight_black.png",
                 "queen_black.png",
-                "rook_black.png"
+                "rook_black.png",
+                "paper.png",
+                "tile.png",
+                "tile_black.png"
         };
 
         for(String path : textures)
