@@ -1,5 +1,6 @@
-package com.syntax_highlighters.chess;
+package syntax_highlighters.chess;
 
+import com.syntax_highlighters.chess.Position;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
