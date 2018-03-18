@@ -1,5 +1,8 @@
 package com.syntax_highlighters.chess;
+
 import java.util.Objects; // Objects.hash
+import java.util.Arrays; // asList
+import java.util.List;
 
 /**
  * Position on a grid (x, y).
@@ -109,6 +112,23 @@ public class Position {
      */
     public Position southeast(int nSteps) {
         return new Position(this.x + nSteps, this.y - nSteps);
+    }
+
+    /**
+     * Return all the neighbors of a Position.
+     *
+     * A neighbor is any adjacent or diagonally adjacent Position to this
+     * position. No bounds checks.
+     *
+     * @return A list of this postion's neighbors
+     */
+    public List<Position> neighbors() {
+        return Arrays.asList(new Position[]{
+                north    (1), south    (1),
+                east     (1), west     (1),
+                northeast(1), northwest(1),
+                southeast(1), southwest(1)
+        });
     }
 
     /**
