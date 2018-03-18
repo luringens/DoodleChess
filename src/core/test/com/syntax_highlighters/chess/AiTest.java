@@ -17,7 +17,7 @@ class AiTest {
         pieces.add(new ChessPiecePawn(new Position(2, 2), true));
         Board board = new Board(pieces);
         
-        IAiPlayer ai = new MiniMaxAIPlayer(true, MiniMaxAIPlayer.Difficulty.Easy);
+        IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Easy);
         ai.PerformMove(board);
 
         assertEquals(1, board.getAllPieces().size());
@@ -26,7 +26,7 @@ class AiTest {
     @Test
     void speedTestEasy() {
         final long allowedTime = 1000;
-        IAiPlayer ai = new MiniMaxAIPlayer(true, MiniMaxAIPlayer.Difficulty.Easy);
+        IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Easy);
         long time = speedTest(ai);
         System.out.print("Expected less than: " + allowedTime + ", actual: " + time);
         assertTrue("The easy AI is too slow.", time < allowedTime);
@@ -35,7 +35,7 @@ class AiTest {
     @Test
     void speedTestMedium() {
         final long allowedTime = 3000;
-        IAiPlayer ai = new MiniMaxAIPlayer(true, MiniMaxAIPlayer.Difficulty.Medium);
+        IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Medium);
         long time = speedTest(ai);
         System.out.print("Expected less than: " + allowedTime + ", actual: " + time);
         assertTrue("The easy AI is too slow.", time < allowedTime);
@@ -44,7 +44,7 @@ class AiTest {
     @Test
     void speedTestHard() {
         final long allowedTime = 5000;
-        IAiPlayer ai = new MiniMaxAIPlayer(true, MiniMaxAIPlayer.Difficulty.Hard);
+        IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Hard);
         long time = speedTest(ai);
         System.out.print("Expected less than: " + allowedTime + ", actual: " + time);
         assertTrue("The easy AI is too slow.", time < allowedTime);

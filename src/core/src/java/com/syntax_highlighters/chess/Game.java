@@ -25,21 +25,17 @@ public class Game {
      *
      * Creates a new, blank game and sets up the board.
      *
-     * @param whiteAI True if white should be an AI
-     * @param blackAI True if black should be an AI
-     * @param AILevel AI difficulty level from 1 to 3
+     * @param whiteAi The difficulty for the white AI, or `null` for no AI
+     * @param blackAi The difficulty for the black AI, or `null` for no AI
      */
-    public Game(boolean whiteAI, boolean blackAI, int AILevel) {
-        MiniMaxAIPlayer.Difficulty d;
-        switch (AILevel) {
-            case 1: d = MiniMaxAIPlayer.Difficulty.Easy; break;
-            case 2: d = MiniMaxAIPlayer.Difficulty.Medium; break;
-            case 3: d = MiniMaxAIPlayer.Difficulty.Hard; break;
-            default: throw new RuntimeException("Difficulty must be between 1 and 3.");
+    public Game(AiDifficulty whiteAi, AiDifficulty blackAi) {
+        if (whiteAi != null) {
+            this.whiteAI = new MiniMaxAIPlayer(true, whiteAi);
         }
-        if (whiteAI) this.whiteAI = new MiniMaxAIPlayer(true, d);
-        if (blackAI) this.blackAI = new MiniMaxAIPlayer(false, d);
-        
+        if (blackAi != null) {
+            this.blackAI = new MiniMaxAIPlayer(false, blackAi);
+        }
+
         this.board = new Board();
         this.history = new ArrayList<>();
         

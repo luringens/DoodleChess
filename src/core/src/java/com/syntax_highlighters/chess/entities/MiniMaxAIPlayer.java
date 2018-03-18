@@ -9,28 +9,26 @@ public class MiniMaxAIPlayer implements IAiPlayer {
     private static final int MED_DEPTH = 4;
     private static final int HARD_DEPTH = 6;
     private final boolean isWhite;
-    private final int diff;
+    private int diff;
 
-    public enum Difficulty {
-        Easy,
-        Medium,
-        Hard
+    public MiniMaxAIPlayer(boolean isWhite, AiDifficulty diff) {
+        this.isWhite = isWhite;
+        this.SetDifficulty(diff);
     }
 
-    public MiniMaxAIPlayer(boolean isWhite, Difficulty diff) {
-        this.isWhite = isWhite;
+    @Override
+    public void PerformMove(Board board) {
+        MiniMax.MiniMaxMove(diff, board, isWhite);
+    }
 
+    @Override
+    public void SetDifficulty(AiDifficulty diff) {
         switch (diff) {
             case Easy: this.diff = EASY_DEPTH; break;
             case Medium: this.diff = MED_DEPTH; break;
             case Hard: this.diff = HARD_DEPTH; break;
             default: throw new IllegalArgumentException("Invalid enum.");
         }
-    }
-
-    @Override
-    public void PerformMove(Board board) {
-        MiniMax.MiniMaxMove(diff, board, isWhite);
     }
 }
 
