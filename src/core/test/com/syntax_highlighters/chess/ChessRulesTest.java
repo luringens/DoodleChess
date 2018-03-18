@@ -52,7 +52,7 @@ public class ChessRulesTest {
     @Test
     public void whitePawnCanMoveTwoStepsOnce() {
         setUp();
-        Position twoForward = whitePawn.getPosition().north(2);
+        Position twoForward = forward(whitePawn, 2);
 
         List<Move> possibleMoves = whitePawn.allPossibleMoves(board);
         assertEquals(1, possibleMoves.stream()
@@ -65,7 +65,7 @@ public class ChessRulesTest {
     @Test
     public void blackPawnCanMoveTwoStepsOnce() {
         setUp();
-        Position twoForward = blackPawn.getPosition().south(2);
+        Position twoForward = forward(blackPawn, 2);
 
         List<Move> possibleMoves = blackPawn.allPossibleMoves(board);
         assertEquals(1, possibleMoves.stream()
@@ -80,11 +80,11 @@ public class ChessRulesTest {
         setUp();
         
         // move forward two steps
-        Position twoForward = whitePawn.getPosition().north(2);
+        Position twoForward = forward(whitePawn, 2);
         board.movePiece(whitePawn, twoForward);
         
         // get new "two forward" position
-        twoForward = whitePawn.getPosition().north(2);
+        twoForward = forward(whitePawn, 2);
         
         List<Move> moves = whitePawn.allPossibleMoves(board);
         for (Move move : moves) {
@@ -97,11 +97,11 @@ public class ChessRulesTest {
         setUp();
 
         // move forward two steps
-        Position twoForward = blackPawn.getPosition().south(2);
+        Position twoForward = forward(blackPawn, 2);
         board.movePiece(blackPawn, twoForward);
         
         // get new "two forward" position
-        twoForward = blackPawn.getPosition().south(2);
+        twoForward = forward(blackPawn, 2);
         
         List<Move> moves = blackPawn.allPossibleMoves(board);
         for (Move move : moves) {
@@ -125,10 +125,10 @@ public class ChessRulesTest {
         // |               | 2
         // |_______________| 1
         
-        board.movePiece(whitePawn, whitePawn.getPosition().north(2)); // move to rank 4
-        board.movePiece(whitePawn, whitePawn.getPosition().north(1)); // move to rank 5
+        board.movePiece(whitePawn, forward(whitePawn, 2)); // move to rank 4
+        board.movePiece(whitePawn, forward(whitePawn, 1)); // move to rank 5
         
-        board.movePiece(blackPawn, blackPawn.getPosition().south(2)); // move to rank 5
+        board.movePiece(blackPawn, forward(blackPawn, 2)); // move to rank 5
         
         // last performed move should be the move of blackPawn, so whitePawn
         // should be able to perform en passant in this situation
@@ -157,10 +157,10 @@ public class ChessRulesTest {
         // |      .        | 2 . = old position of black pawn
         // |_______________| 1
 
-        board.movePiece(blackPawn, blackPawn.getPosition().south(2)); // move to rank 5
-        board.movePiece(blackPawn, blackPawn.getPosition().south(1)); // move to rank 4
+        board.movePiece(blackPawn, forward(blackPawn, 2)); // move to rank 5
+        board.movePiece(blackPawn, forward(blackPawn, 1)); // move to rank 4
 
-        board.movePiece(whitePawn, whitePawn.getPosition().north(2)); // move to rank 4
+        board.movePiece(whitePawn, forward(whitePawn, 2)); // move to rank 4
 
         Position blackTarget = blackPawn.getPosition().southwest(1);
         List<Move> possibleMoves = blackPawn.allPossibleMoves(board);
@@ -169,6 +169,47 @@ public class ChessRulesTest {
                                      .filter(p -> p.equals(blackTarget))
                                      .collect(Collectors.toList())
                                      .size());
+    }
+
+    @Test
+    public void pawnCannotPerformEnPassantIfOtherPawnNotJustMoved() {
+        // tests just one kind of pawn, since presumably this works the same
+        // for either color
+        setUp();
+        
+        board.movePiece(whitePawn, forward(whitePawn, 2));
+        board.movePiece(blackPawn, forward(blackPawn, 2));
+        board.movePiece(whitePawn, forward(whitePawn, 1));
+
+        // white pawn is now in position to perform en passant, but black pawn
+        // didn't recently move
+        Position targetPosition = whitePawn.getPosition().northeast(1);
+        List<Move> possibleMoves = whitePawn.allPossibleMoves(board);
+        
+        for (Move m : possibleMoves) {
+            assertNotEquals(targetPosition, m.getPosition());
+        }
+    }
+
+    @Test
+    public void pawnCannotPerformEnPassantIfLastMoveWasSingleStep() {
+        // tests just one kind of pawn, since presumably this works the same
+        // for either color
+        setUp();
+        
+        board.movePiece(whitePawn, forward(whitePawn, 2));
+        board.movePiece(blackPawn, forward(blackPawn, 1));
+        board.movePiece(whitePawn, forward(whitePawn, 1));
+        board.movePiece(blackPawn, forward(blackPawn, 1));
+
+        // white pawn is now in position to perform en passant, but black pawn
+        // moved last with a single step, not a double step
+        Position targetPosition = whitePawn.getPosition().northeast(1);
+        List<Move> possibleMoves = whitePawn.allPossibleMoves(board);
+        
+        for (Move m : possibleMoves) {
+            assertNotEquals(targetPosition, m.getPosition());
+        }
     }
 
     @Test
@@ -214,11 +255,25 @@ public class ChessRulesTest {
 
         // check that both pieces actually move
         board.movePiece(king, kingTarget);
+        
+        // check that the king moves
         assertEquals(kingTarget, king.getPosition());
+        assertEquals(king, board.getAtPosition(kingTarget));
+        
+        // check that the rook moves
         assertEquals(kingTarget.east(1), rook.getPosition());
+        assertEquals(rook, board.getAtPosition(kingTarget.east(1)));
     }
 
-    List<Position> getNeighbors(Position pos) {
+    /**
+     * Helper method: get neighbors of position.
+     *
+     * Limited to the neighbors which are on the board.
+     *
+     * @param pos The position to get the neighboring positions of
+     * @return A list of the neighbors to the given position
+     */
+    private List<Position> getNeighbors(Position pos) {
         return Arrays.asList(new Position[] {
                 pos.north(1), pos.south(1),
                 pos.east(1), pos.west(1),
@@ -228,9 +283,12 @@ public class ChessRulesTest {
             .collect(Collectors.toList());
     }
 
+    private Position forward(ChessPiecePawn pawn, int nSteps) {
+        if (pawn.isWhite())
+            return pawn.getPosition().north(nSteps);
+        return pawn.getPosition().south(nSteps);
+    }
 
-
-    // TODO add test kingCanPerformCastleWithUnmovedTower
     // TODO add test kingCannotPerformCastleWithMovedTower
     // TODO add test kingCannotPerformCastleAfterMoved
     // TODO add test kingCannotPerformCastleWhenPathThreatened
