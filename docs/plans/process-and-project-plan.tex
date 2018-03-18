@@ -22,7 +22,9 @@ To help with this, we will be following an agile method. This means we create a 
     # If anyone finds a type of work unsuitable for them, we can quickly reassign them to a task they can work more efficiently with.
 \end{easylist}\mbox{}\\
 
-The scrum metod will require some modifications --- we won't have a product owner involved in the loop, and we won't have daily scrum meetings as a convential scrum team would have as we don't work full-time on the project. Instead, we will twice a week.
+For the project, we will be using a modified version of scrum, which is a framework for organizing agile projects. Roughly, scrum is an organization method based around a development team and a "ScrumMaster" who is responsible for leading the team according to the scrum process and interface with the rest of the world. The development cycle is organized in "sprints", a short burst of development where the team picks some things to focus on, and works towards completing those things by the end of the sprint. Sprints often starts with selecting the items to work on, and end with a sprint review. Throughout the sprint, the development team will normally hold short daily meetings ("scrums") where they review the progress and potentially re-prioritize work. The output of a sprint is, ideally, a "potentially shippable product".\\
+
+Setting us apart from the "typical" version of scrum, we don't have a "product owner" involved in the loop, and we won't have daily scrum meetings like a conventional scrum team would have, since we don't work full-time on the project. Instead we will meet twice a week, and our meetings will be longer than what's normal for scrum meetings (two hours as opposed to a meager 15 minutes).
 
 \section*{Software development activities}
 
@@ -34,13 +36,13 @@ Project management will be relatively hands-off. The main task will be to schedu
 
 \section*{Communcation}
 
-Communication inbetween meetings will mainly be done through Discord, but Facebook Messenger remains an option if you need an immediate respond as everyone has it installed with notifications enabled. 
+Communication inbetween meetings will mainly be done through Discord, but Facebook Messenger remains an option if you need an immediate response, as everyone has it installed with notifications enabled. 
 
 \section*{Tools}
 
 \subsection*{Version management}
 
-Git has been chosen as our version control system. Any questions regarding the use of this tool can be sent to Stian, who is happy to help with anything from branching guides to merge conflicts.
+Git has been chosen as our version control system. Any questions regarding the use of this tool can be sent to Stian, who is happy to help with anything from branching guides to merge conflicts.\\
 
 Our repo structure will be a master branch for versions that are in a good state (v0.1, v0.2, v1.0, etc.), while all other development happens on the develop branch. We should strive to keep each commit on develop compilable --- feature branches can be created for work that will leave the project uncompilable for some time.
 
@@ -50,13 +52,13 @@ Our build tool will be Maven, as it is a standard tool we were all to some degre
 
 \subsection*{Testing}
 
-Testing will be done with JUnit tests as that is what we are most comfortable with, ran with Maven.
+Testing will be done with JUnit tests as that is what we are most comfortable with, run with Maven.
 
 \subsection*{Issue and task tracking}
 
 We will keep track of issues and tasks, their priority, scope and assignees using GitLab issues for simplicity.
 
-\subsection*{Issue and task tracking}
+\subsection*{GUI}
 
 GUI will be handled by Robin using LibGDX for versatility.
 
