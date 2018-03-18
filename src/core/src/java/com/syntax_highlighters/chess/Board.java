@@ -18,6 +18,8 @@ public class Board {
     // constants, just in case
     public static final int BOARD_WIDTH = 8;
     public static final int BOARD_HEIGHT = 8;
+    
+    private Move lastMove;
 
     List<IChessPiece> pieces = new ArrayList<>();
 
@@ -167,22 +169,6 @@ public class Board {
     }
 
     /**
-     * An-passant only valid for 1 move after pawn moved 2 steps forward.
-     * Before making a new move, the ability for the enemy to make an an-passant move on your pieces is taken away.
-     * That way, pawns hasMoved() is only true for 1 round, and only if it moves 2 steps forward.
-     *
-     * @return void
-     */
-    private void resetPawnMoves(IChessPiece piece){
-        List<IChessPiece> allPieces = getAllPieces();
-        for(IChessPiece p : allPieces){
-            if(p instanceof ChessPiecePawn)
-                if(isFriendly(piece, p.getPosition()))
-                    ((ChessPiecePawn) p).setPieceNotMoved();
-        }
-    }
-
-    /**
      * If the king is moving 2 steps in any direction it can only be castling.
      * If king is castling, the ability to caste has already been checked, so the rook can move to it's new position
      * before the king is moved, without taking an extra turn.
@@ -217,18 +203,13 @@ public class Board {
         assert isOnBoard(toPosition);
 
         if (piece.canMoveTo(toPosition, this)) {
-            IChessPiece target = getAtPosition(toPosition);
-            if (target != null) {
-                pieces.remove(target);
-            }
-            resetPawnMoves(piece);
+            this.lastMove = new Move(piece.getPosition(), toPosition, piece);
             if (piece instanceof ChessPieceKing) {
                 ((ChessPieceKing) piece).setPieceToMoved();
                 if (Math.abs(piece.getPosition().getX() - toPosition.getX()) > 1)
                     performCastling(piece, toPosition);
             } else if(piece instanceof ChessPiecePawn){
-                if(Math.abs(piece.getPosition().getX() - toPosition.getX()) > 1)
-                    ((ChessPiecePawn) piece).setPieceToMoved();
+                ((ChessPiecePawn) piece).setPieceToMoved();
             } else if(piece instanceof ChessPieceRook)
                 ((ChessPieceRook) piece).setPieceToMoved();
             putAtPosition(toPosition, piece);
@@ -245,7 +226,6 @@ public class Board {
      * old one
      */
     public Board copy() {
-        // copying of pieces happens in Board constructor
         return new Board(copyPieces());
     }
 
@@ -270,5 +250,14 @@ public class Board {
             ret.add(p.copy());
         }
         return ret;
+    }
+
+    /**
+     * Get the last move performed in the game.
+     *
+     * @return The last Move that was performed
+     */
+    public Move getLastMove() {
+        return this.lastMove;
     }
 }

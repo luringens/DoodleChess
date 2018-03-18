@@ -32,44 +32,42 @@ public class ChessPiecePawn extends AbstractChessPiece {
     public void setPieceToMoved () {
         this.moved = true;
     }
-    public void setPieceNotMoved () {
-        this.moved = false;
-    }
 
     public boolean hasMoved () {
         return moved;
     }
 
-
-
-
     @Override
     public List<Move> allPossibleMoves (Board board) {
         ArrayList<Move> possibleMoves = new ArrayList<>();
-        int x = getPosition().getX();
-        int y = getPosition().getY();
-
-        //Black pieaces move "down", white up on the x axis
-        int pieceColor;
-        if (this.isWhite()) {
-            pieceColor = 1;
-        } else {
-            pieceColor = -1;
+        Position pos = getPosition();
+        
+        // one step forward
+        Position f1 = this.forward(1);
+        
+        // check if one step forward can be performed
+        if (board.isOnBoard(f1) && !board.isOccupied(f1)) {
+            possibleMoves.add(new Move(pos, f1, this));
+            
+            // two steps forward
+            Position f2 = this.forward(2);
+            
+            // if one step forward can be performed, check if two steps forward
+            // can be performed
+            if (!this.hasMoved() && board.isOnBoard(f2) && !board.isOccupied(f2)) {
+                possibleMoves.add(new Move(pos, f2, this));
+            }
         }
 
-        checkMove(board, possibleMoves, new Position(x, y + (pieceColor)));
-
-        takeEnemiesMove(board, possibleMoves, new Position(x + 1, y + (pieceColor)));
-        takeEnemiesMove(board, possibleMoves, new Position(x - 1, y + (pieceColor)));
-        if (!this.hasMoved()) {
-            checkMove2(board, possibleMoves, new Position(x, y + (2 * pieceColor)),pieceColor);
-        }
-        enPassantCheck(board, possibleMoves, new Position(x + 1, y), pieceColor);
-        enPassantCheck(board, possibleMoves, new Position(x - 1, y), pieceColor);
+        // add move to take enemies, if possible
+        takeEnemiesMove(board, possibleMoves, this.forward(1).east(1));
+        takeEnemiesMove(board, possibleMoves, this.forward(1).west(1));
+        
+        // add move to perform en passant, if possible
+        enPassantCheck(board, possibleMoves, pos.east(1));
+        enPassantCheck(board, possibleMoves, pos.west(1));
 
         return possibleMoves;
-        //En passant
-        //throw new NotImplementedException();
     }
 
     //Checks the move
@@ -78,9 +76,10 @@ public class ChessPiecePawn extends AbstractChessPiece {
             if (board.getAtPosition(pos) == null) {
                 possibleMoves.add(new Move(this.getPosition(), pos, this));
             }
-
         }
     }
+    
+    // WHAT DOES THIS EVEN DO? - Vegard
     private void checkMove2 (Board board, ArrayList<Move> possibleMoves, Position pos, int piececolor) {
         if (board != null && board.isOnBoard(pos)) {
             if (board.getAtPosition(pos) == null && board.getAtPosition(new Position(pos.getX(), pos.getY() + (-1 * piececolor))) == null) {
@@ -90,17 +89,27 @@ public class ChessPiecePawn extends AbstractChessPiece {
 
 
         //check enPassant
-    private void enPassantCheck (Board board, ArrayList<Move> possibleMoves, Position pos, int pieceColor) {
+    private void enPassantCheck (Board board, ArrayList<Move> possibleMoves, Position pos) {
         if (board.isOnBoard(pos)) {
-            //  pawns have to be marked as false after every round (hasMoved)
-            //Checks if the position to your left and right is occupied by an enemy
+            // en passant can only be performed at a pawn's fifth rank
+            if (isWhite() && pos.getY() != 5) return;
+            if (!isWhite() && pos.getY() != 4) return; // this is black's "fifth rank"
+            
             IChessPiece pieceAtPos = board.getAtPosition(pos);
-            if (pieceAtPos != null && board.isEnemy(this, pos) &&
-                    pieceAtPos instanceof ChessPiecePawn &&
-                    ((ChessPiecePawn) pieceAtPos).hasMoved()) {
-                possibleMoves.add(new Move(this.getPosition(), new Position(pos.getX(), pos.getY() + (pieceColor)), this));
+            Move lastMove = board.getLastMove();
+            
+            if (lastMove == null) return; // pawn can't possibly have just moved there
+            if (pieceAtPos == null) return; // there is no piece at that position, enemy or friend
+            if (lastMove.getPiece() != pieceAtPos) return; // the piece wasn't the last moved piece
+            if (!(pieceAtPos instanceof ChessPiecePawn)) return; // piece isn't pawn
+            
+            // en passant can be performed
+            if (isWhite()) {
+                possibleMoves.add(new Move(this.getPosition(), pos.north(1), this));
             }
-
+            else {
+                possibleMoves.add(new Move(this.getPosition(), pos.south(1), this));
+            }
         }
     }
 
@@ -127,5 +136,18 @@ public class ChessPiecePawn extends AbstractChessPiece {
     @Override
     public String getAssetName () {
         return isWhite() ? "pawn_white.png" : "pawn_black.png";
+    }
+
+    /**
+     * Helper method: return the position n steps forward.
+     *
+     * No bounds checks. Works correctly depending on whether your are black or
+     * white.
+     *
+     * @return The position n steps forward
+     */
+    private Position forward(int nSteps) {
+        if (isWhite) return this.getPosition().north(nSteps);
+        return this.getPosition().south(nSteps);
     }
 }
