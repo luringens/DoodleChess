@@ -100,6 +100,16 @@ public class ChessPieceKing extends AbstractChessPiece {
 
     }
 
+    /**
+     * Check whether the king is threatened by an enemy piece.
+     *
+     * @param board The board
+     * @return true if a piece threatens the king, false otherwise
+     */
+    public boolean isThreatened(Board board) {
+        return allEnemyMoves(board).contains(this.getPosition());
+    }
+
     @Override
     public IChessPiece copy() {
         return new ChessPieceKing(this.getPosition(), this.isWhite());

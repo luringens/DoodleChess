@@ -2,6 +2,7 @@ package com.syntax_highlighters.chess;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import com.syntax_highlighters.chess.entities.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -149,5 +150,75 @@ public class Game {
      */
     public boolean nextPlayerIsWhite() {
         return nextPlayerWhite;
+    }
+
+    /**
+     * Checks if game is over.
+     *
+     * Deliberately ignores fifty-move rule and threefold repetition (at least
+     * for the time being).
+     *
+     * @return true if the game is over, false otherwise
+     */
+    public boolean isGameOver() {
+        return checkMate(true) || checkMate(false) || insufficientMaterial();
+    }
+
+    public boolean checkMate(boolean whitePlayer) {
+        List<IChessPiece> allPieces = board.getAllPieces();
+        if (allPieces.size() == 0) return false; // not possible
+        ChessPieceKing king = allPieces.stream()
+            .filter(p -> p instanceof ChessPieceKing && p.isWhite() == whitePlayer)
+            .map(p -> (ChessPieceKing)p)
+            .collect(Collectors.toList())
+            .get(0);
+        return king.isThreatened(board) && king.allPossibleMoves(board).size() == 0;
+    }
+
+    /**
+     * Check whether the board contains insufficient material (automatic draw).
+     *
+     * Insufficient material is true if any of these conditions hold:
+     *  - king vs king
+     *  - king vs king and bishop
+     *  - king vs king and knight
+     *  - king and bishop vs king and bishop, bishops are on same colored square
+     *
+     * For the purpose of this method, we'll also say that a game with less than
+     * two kings contains insufficient material, for obvious reasons.
+     *
+     * NOTE: Could be more efficient with early return, but I did it like this
+     * to increase readability.
+     *
+     * @return true if the game should be drawn due to insufficient material,
+     * false otherwise
+     */
+    public boolean insufficientMaterial() {
+        List<IChessPiece> pieces = board.getAllPieces();
+        
+        List<IChessPiece> kings = pieces.stream()
+            .filter(p -> p instanceof ChessPieceKing)
+            .collect(Collectors.toList());
+        
+        List<IChessPiece> knights = pieces.stream()
+            .filter(p -> p instanceof ChessPieceKnight)
+            .collect(Collectors.toList());
+
+        List<IChessPiece> bishops = pieces.stream()
+            .filter(p -> p instanceof ChessPieceBishop)
+            .collect(Collectors.toList());
+
+        if (kings.size() < 2) return true; // obviously
+        
+        return pieces.size() == kings.size() ||
+               pieces.size() == 3 && bishops.size() == 1 ||
+               pieces.size() == 3 && knights.size() == 1 ||
+               pieces.size() == 4 && bishops.size() == 2 &&
+               sameColoredSquare(bishops.get(0).getPosition(),
+                       bishops.get(1).getPosition());
+    }
+
+    public boolean sameColoredSquare(Position p1, Position p2) {
+        return (p1.getX() + p1.getY()) % 2 == (p2.getX() + p2.getY()) % 2;
     }
 }
