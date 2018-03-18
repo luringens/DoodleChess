@@ -4,6 +4,8 @@ import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 
+
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.ArrayList;
 public class ChessPieceKing extends AbstractChessPiece {
@@ -39,10 +41,21 @@ public class ChessPieceKing extends AbstractChessPiece {
         List<Position> possibleMoves = new ArrayList<>();
         for(IChessPiece a : board.getAllPieces()) {
             if (a.isWhite() != this.isWhite()) {
-                Position piecePos = a.getPosition();
-                if(!possibleMoves.contains(piecePos)){
-                    possibleMoves.add(piecePos);
+                List<Position> possiblePieceMoves = null;
+                // I dislike doing this, but I can see no other way
+                if (a instanceof ChessPieceKing) {
+                    // enemy king's legal moves to a first approximation
+                    possiblePieceMoves = a.getPosition().neighbors().stream()
+                        .filter(p -> board.isOnBoard(p) && !board.isOccupied(p))
+                        .collect(Collectors.toList());
                 }
+                else {
+                    possiblePieceMoves = a.allPossibleMoves(board).stream()
+                        .map(p -> p.getPosition())
+                        .filter(p -> !possibleMoves.contains(p))
+                        .collect(Collectors.toList());
+                }
+                possibleMoves.addAll(possiblePieceMoves);
             }
         }
 
@@ -51,10 +64,11 @@ public class ChessPieceKing extends AbstractChessPiece {
 
     private List<ChessPieceRook> myRooks(Board board){
         List<IChessPiece> pieces = board.getAllPieces();
-        List<ChessPieceRook> rooks = null;
-        for(IChessPiece p : pieces){
-            if(p instanceof ChessPieceRook){
-                rooks.add((ChessPieceRook) p);
+        List<ChessPieceRook> rooks = null;     // <--- WHAT?
+        for(IChessPiece p : pieces){           //        ^
+            if(p instanceof ChessPieceRook){   //        |
+                rooks.add((ChessPieceRook) p); // <--- WHAT???
+                // #perpetualnullpointerexceptiontrap
             }
         }
         return rooks;
@@ -62,23 +76,15 @@ public class ChessPieceKing extends AbstractChessPiece {
 
     @Override 
     public List<Move> allPossibleMoves(Board board) {
-        List<Move> possibleMoves = new ArrayList<>();
-        int xpos = this.getPosition().getX();
-        int ypos = this.getPosition().getY();
-        //all fields surrounding king.
-        for(int i = xpos-1; i<xpos+2; i++){
-            for(int j = ypos-1; j<ypos+2; j++){
-                Position boardPos = new Position(i,j);
-                if(!board.isOnBoard(boardPos))
-                    continue;
-                if(board.isFriendly(this,boardPos))
-                    continue;
-                if(allEnemyMoves(board).contains(boardPos))
-                    continue;
-                possibleMoves.add(new Move(this.getPosition(), boardPos,this));
-            }
-        }
+        List<Position> enemyMoves = allEnemyMoves(board);
+        List<Move> possibleMoves = getPosition().neighbors().stream()
+            .filter(p -> board.isOnBoard(p) &&
+                    !board.isFriendly(this, p) &&
+                    !enemyMoves.contains(p))
+            .map(p -> new Move(p, this.getPosition(), this))
+            .collect(Collectors.toList());
 
+        // I'm not touching this, yet... - Vegard
         if(!this.hasMoved()){
             Position rookrpos = new Position(this.getPosition().getX()+3,this.getPosition().getY());
             Position rooklpos = new Position(this.getPosition().getX()-4,this.getPosition().getY());
