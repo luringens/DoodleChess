@@ -54,12 +54,7 @@ public class ChessRulesTest {
         setUp();
         Position twoForward = forward(whitePawn, 2);
 
-        List<Move> possibleMoves = whitePawn.allPossibleMoves(board);
-        assertEquals(1, possibleMoves.stream()
-                                     .map(p -> p.getPosition())
-                                     .filter(p -> p.equals(twoForward))
-                                     .collect(Collectors.toList())
-                                     .size());
+        existsMoveToPosition(twoForward, whitePawn);
     }
     
     @Test
@@ -67,12 +62,7 @@ public class ChessRulesTest {
         setUp();
         Position twoForward = forward(blackPawn, 2);
 
-        List<Move> possibleMoves = blackPawn.allPossibleMoves(board);
-        assertEquals(1, possibleMoves.stream()
-                                     .map(p -> p.getPosition())
-                                     .filter(p -> p.equals(twoForward))
-                                     .collect(Collectors.toList())
-                                     .size());
+        existsMoveToPosition(twoForward, blackPawn);
     }
     
     @Test
@@ -85,11 +75,7 @@ public class ChessRulesTest {
         
         // get new "two forward" position
         twoForward = forward(whitePawn, 2);
-        
-        List<Move> moves = whitePawn.allPossibleMoves(board);
-        for (Move move : moves) {
-            assertFalse(move.getPosition().equals(twoForward));
-        }
+        noAvailableMoveLeadsTo(twoForward, whitePawn);
     }
     
     @Test
@@ -102,11 +88,7 @@ public class ChessRulesTest {
         
         // get new "two forward" position
         twoForward = forward(blackPawn, 2);
-        
-        List<Move> moves = blackPawn.allPossibleMoves(board);
-        for (Move move : moves) {
-            assertFalse(move.getPosition().equals(twoForward));
-        }
+        noAvailableMoveLeadsTo(twoForward, blackPawn);
     }
 
     @Test
@@ -133,12 +115,7 @@ public class ChessRulesTest {
         // last performed move should be the move of blackPawn, so whitePawn
         // should be able to perform en passant in this situation
         Position whiteTarget = whitePawn.getPosition().northeast(1);
-        List<Move> possibleMoves = whitePawn.allPossibleMoves(board);
-        assertEquals(1, possibleMoves.stream()
-                                     .map(p -> p.getPosition())
-                                     .filter(p -> p.equals(whiteTarget))
-                                     .collect(Collectors.toList())
-                                     .size());
+        existsMoveToPosition(whiteTarget, whitePawn);
     }
     
     @Test
@@ -162,13 +139,9 @@ public class ChessRulesTest {
 
         board.movePiece(whitePawn, forward(whitePawn, 2)); // move to rank 4
 
+        // check that blackPawn has a possible move to blackTarget
         Position blackTarget = blackPawn.getPosition().southwest(1);
-        List<Move> possibleMoves = blackPawn.allPossibleMoves(board);
-        assertEquals(1, possibleMoves.stream()
-                                     .map(p -> p.getPosition())
-                                     .filter(p -> p.equals(blackTarget))
-                                     .collect(Collectors.toList())
-                                     .size());
+        existsMoveToPosition(blackTarget, blackPawn);
     }
 
     @Test
@@ -183,12 +156,7 @@ public class ChessRulesTest {
 
         // white pawn is now in position to perform en passant, but black pawn
         // didn't recently move
-        Position targetPosition = whitePawn.getPosition().northeast(1);
-        List<Move> possibleMoves = whitePawn.allPossibleMoves(board);
-        
-        for (Move m : possibleMoves) {
-            assertNotEquals(targetPosition, m.getPosition());
-        }
+        noAvailableMoveLeadsTo(whitePawn.getPosition().northeast(1), whitePawn);
     }
 
     @Test
@@ -204,12 +172,7 @@ public class ChessRulesTest {
 
         // white pawn is now in position to perform en passant, but black pawn
         // moved last with a single step, not a double step
-        Position targetPosition = whitePawn.getPosition().northeast(1);
-        List<Move> possibleMoves = whitePawn.allPossibleMoves(board);
-        
-        for (Move m : possibleMoves) {
-            assertNotEquals(targetPosition, m.getPosition());
-        }
+        noAvailableMoveLeadsTo(whitePawn.getPosition().northeast(1), whitePawn);
     }
 
     @Test
@@ -247,12 +210,9 @@ public class ChessRulesTest {
         Position kingTarget = oldKingPos.west(2);
         
         List<Move> possibleMoves = king.allPossibleMoves(board);
-        assertEquals(1, possibleMoves.stream()
-                .map(p -> p.getPosition())
-                .filter(p -> p.equals(kingTarget))
-                .collect(Collectors.toList())
-                .size());
 
+        existsMoveToPosition(kingTarget, king);
+        
         // check that both pieces actually move
         board.movePiece(king, kingTarget);
         
@@ -265,6 +225,107 @@ public class ChessRulesTest {
         assertEquals(rook, board.getAtPosition(kingTarget.east(1)));
     }
 
+    @Test
+    public void kingCannotPerformCastleWithMovedTower() {
+        setUpCastle();
+
+        board.movePiece(rook, rook.getPosition().north(1));
+        board.movePiece(rook, rook.getPosition().south(1));
+        
+        noAvailableMoveLeadsTo(king.getPosition().west(2), king);
+    }
+    
+    @Test
+    public void kingCannotPerformCastleAfterMoved() {
+        setUpCastle();
+
+        board.movePiece(king, king.getPosition().north(1));
+        board.movePiece(king, king.getPosition().south(1));
+        
+        noAvailableMoveLeadsTo(king.getPosition().west(2), king);
+    }
+
+    @Test
+    public void kingCannotPerformCastleWhenPathThreatened() {
+        setUpCastle();
+        Position rookpos = new Position(4, 8);
+        board.putAtPosition(rookpos, new ChessPieceRook(rookpos, false));
+        
+        noAvailableMoveLeadsTo(king.getPosition().west(2), king);
+        
+    }
+
+    @Test
+    public void kingCannotPerformCastleWhenPathBlocked() {
+        setUpStandard(); // standard chess game - there are pieces to either side of the kings
+        List<IChessPiece> kings = pieces.stream()
+            .filter(p -> p instanceof ChessPieceKing)
+            .collect(Collectors.toList());
+
+        for (IChessPiece piece : kings) {
+            noAvailableMoveLeadsTo(piece.getPosition().west(2), piece);
+            noAvailableMoveLeadsTo(piece.getPosition().east(2), piece);
+        }
+    }
+
+    @Test
+    public void kingCannotPerformCastleWithEnemyPiece() {
+        setUpCastle();
+        // replace the white rook with a black rook
+        Position rookpos = new Position(1, 1);
+        rook = new ChessPieceRook(rookpos, false);
+        board.putAtPosition(rookpos, rook);
+
+        noAvailableMoveLeadsTo(king.getPosition().west(2), king);
+    }
+
+    @Test
+    public void kingCannotMoveToThreatenedPosition() {
+        setUpCastle(); // so we have a convenient way of referring to the king
+        Position rookpos = new Position(4, 8); // threaten position 4,1
+        board.putAtPosition(rookpos, new ChessPieceRook(rookpos, false));
+
+        Position threatenedPos1 = king.getPosition().west(1);
+        Position threatenedPos2 = king.getPosition().northwest(1);
+
+        noAvailableMoveLeadsTo(threatenedPos1, king);
+        noAvailableMoveLeadsTo(threatenedPos2, king);
+    }
+
+    /**
+     * Helper method: check that no available move of the given piece leads to
+     * the given position.
+     *
+     * Uses assert
+     *
+     * @param target The position to check for
+     * @param piece The piece to be moved
+     */
+    public void noAvailableMoveLeadsTo(Position target, IChessPiece piece) {
+        List<Move> possibleMoves = piece.allPossibleMoves(board);
+
+        for (Move m : possibleMoves) {
+            assertNotEquals(target, m.getPosition());
+        }
+    }
+
+    /**
+     * Helper method: check that there is exactly one move available to the
+     * piecepiece leading to the given position.
+     *
+     * Uses assert
+     *
+     * @param target The position to check for
+     * @param piece The piece to be moved
+     */
+    public void existsMoveToPosition(Position target, IChessPiece piece) {
+        assertEquals(1, piece.allPossibleMoves(board).stream()
+                .map(p -> p.getPosition())
+                .filter(p -> p.equals(target))
+                .collect(Collectors.toList())
+                .size());
+    }
+    
     /**
      * Helper method: get neighbors of position.
      *
@@ -274,23 +335,19 @@ public class ChessRulesTest {
      * @return A list of the neighbors to the given position
      */
     private List<Position> getNeighbors(Position pos) {
-        return Arrays.asList(new Position[] {
-                pos.north(1), pos.south(1),
-                pos.east(1), pos.west(1),
-                pos.northeast(1), pos.southeast(1),
-                pos.northwest(1), pos.southwest(1)}).stream()
+        return pos.neighbors().stream()
             .filter(p -> board.isOnBoard(p))
             .collect(Collectors.toList());
     }
 
+    /**
+     * Helper method: make pawn go forward n steps, regardless of color.
+     *
+     * @return The position n steps forward, as per color of the pawn
+     */
     private Position forward(ChessPiecePawn pawn, int nSteps) {
         if (pawn.isWhite())
             return pawn.getPosition().north(nSteps);
         return pawn.getPosition().south(nSteps);
     }
-
-    // TODO add test kingCannotPerformCastleWithMovedTower
-    // TODO add test kingCannotPerformCastleAfterMoved
-    // TODO add test kingCannotPerformCastleWhenPathThreatened
-    // TODO add test kingCannotPerformCastleWhenPathBlocked
 }
