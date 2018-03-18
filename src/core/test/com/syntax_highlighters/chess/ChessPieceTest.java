@@ -50,12 +50,12 @@ class ChessPieceTest {
     @Test
     void TestQueenMoves() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
-        IChessPiece piece = new ChessPieceBishop(new Position(4,4), false);
+        IChessPiece piece = new ChessPieceQueen(new Position(4,4), false);
         pieces.add(piece);
         Board board = new Board(pieces);
 
         List<Move> moves = piece.allPossibleMoves(board);
-        assertEquals(13, moves.size());
+        assertEquals(27, moves.size());
     }
     @Test
     void TestRookMoves2() {

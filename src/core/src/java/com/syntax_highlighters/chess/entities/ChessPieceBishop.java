@@ -30,27 +30,50 @@ public class ChessPieceBishop extends AbstractChessPiece {
     @Override
     public List<Move> allPossibleMoves(Board board) {
         List<Move> possibleMoves = new ArrayList<>();
-        int x = this.getPosition().getX();
-        int y = this.getPosition().getY();
-        Position lastPos = this.getPosition();
-
-        Position[] possiblePositions = new Position[]{
-            new Position(x + 2, y + 1),
-            new Position(x + 2, y - 1),
-            new Position(x - 2, y + 1),
-            new Position(x - 2, y - 1),
-            new Position(x + 1, y + 2),
-            new Position(x + 1, y - 2),
-            new Position(x - 1, y + 2),
-            new Position(x - 1, y - 2)
-        };
-
-        for (Position pos : possiblePositions) {
-            if (board.isOnBoard(pos) && !board.isFriendly(this, pos))
-            possibleMoves.add(new Move(lastPos, pos, this));
+        int xpos = this.getPosition().getX();
+        int ypos = this.getPosition().getY();
+        Position lastPos;
+        Position nextPos;
+        int i=1;
+        while (i+ypos<9 || i+xpos<9) {
+            lastPos = new Position(xpos+i-1,ypos+i-1);
+            nextPos = new Position(xpos+ i, ypos + i);
+            if (board.isEnemy(this,lastPos) || !board.isOnBoard(nextPos) || board.isFriendly(this, nextPos))
+                break;
+            else
+                possibleMoves.add(new Move(lastPos, nextPos, this));
+            i++;
+        }
+        i=1;
+        while (i+ypos<9 || i+xpos<9) {
+            lastPos = new Position(xpos+i-1,ypos-i+1);
+            nextPos = new Position(xpos+i, ypos-i);
+            if (board.isEnemy(this,lastPos) || !board.isOnBoard(nextPos) || board.isFriendly(this, nextPos))
+                break;
+            else
+                possibleMoves.add(new Move(lastPos, nextPos, this));
+            i++;
+        }
+        i=1;
+        while (ypos-i>0 || xpos-i>0) {
+            lastPos = new Position(xpos-i+1,ypos+i+1);
+            nextPos = new Position(xpos-i, ypos + i);
+            if (board.isEnemy(this,lastPos) || !board.isOnBoard(nextPos) || (board.isFriendly(this, nextPos)))
+                break;
+            else
+                possibleMoves.add(new Move(lastPos, nextPos, this));
+            i++;
+        }
+        i=1;
+        while (ypos-i>0 || xpos-i>0) {
+            lastPos = new Position(xpos - i + 1, ypos - i + 1);
+            nextPos = new Position(xpos - i, ypos - i);
+            if (board.isEnemy(this, lastPos) || !board.isOnBoard(nextPos) || (board.isFriendly(this, nextPos))) break;
+            else possibleMoves.add(new Move(lastPos, nextPos, this));
+            i++;
         }
 
-        return possibleMoves;
+            return possibleMoves;
     }
 
     @Override

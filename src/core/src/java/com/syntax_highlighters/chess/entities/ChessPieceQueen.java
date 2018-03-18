@@ -34,6 +34,7 @@ public class ChessPieceQueen extends AbstractChessPiece {
         int ypos = this.getPosition().getY();
         Position lastPos;
         Position nextPos;
+
         int i=1;
         while (i+ypos<9 || i+xpos<9) {
             lastPos = new Position(xpos+i-1,ypos+i-1);
@@ -66,15 +67,14 @@ public class ChessPieceQueen extends AbstractChessPiece {
         }
         i=1;
         while (ypos-i>0 || xpos-i>0) {
-            lastPos = new Position(xpos-i+1,ypos-i+1);
-            nextPos = new Position(xpos-i, ypos-i);
-            if (board.isEnemy(this,lastPos) || !board.isOnBoard(nextPos) || (board.isFriendly(this, nextPos)))
-                break;
-            else
-                possibleMoves.add(new Move(lastPos, nextPos, this));
+            lastPos = new Position(xpos - i + 1, ypos - i + 1);
+            nextPos = new Position(xpos - i, ypos - i);
+            if (board.isEnemy(this, lastPos) || !board.isOnBoard(nextPos) || (board.isFriendly(this, nextPos))) break;
+            else possibleMoves.add(new Move(lastPos, nextPos, this));
             i++;
         }
-        i=1;
+
+            i=1;
         while (i+ypos<9) {
             lastPos = new Position(xpos,ypos+i-1);
             nextPos = new Position(xpos, ypos + i);
