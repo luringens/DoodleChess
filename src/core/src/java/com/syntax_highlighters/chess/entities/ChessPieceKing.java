@@ -81,28 +81,44 @@ public class ChessPieceKing extends AbstractChessPiece {
             .filter(p -> board.isOnBoard(p) &&
                     !board.isFriendly(this, p) &&
                     !enemyMoves.contains(p))
-            .map(p -> new Move(p, this.getPosition(), this))
+            .map(p -> new Move(this.getPosition(), p, this))
             .collect(Collectors.toList());
 
-        // I'm not touching this, yet... - Vegard
         if(!this.hasMoved()){
-            Position rookrpos = new Position(this.getPosition().getX()+3,this.getPosition().getY());
-            Position rooklpos = new Position(this.getPosition().getX()-4,this.getPosition().getY());
-            if(board.getAtPosition(rookrpos) != null){
-                if(board.getAtPosition(rookrpos) instanceof ChessPieceRook && !((ChessPieceRook) board.getAtPosition(rookrpos)).hasMoved()){
-                    possibleMoves.add(new Move(this.getPosition(), new Position(this.getPosition().getX()+2, this.getPosition().getY()), this));
-                }
+            Position pos = this.getPosition();
+            if (pos.getX() != 5) {
+                // something strange has happened, but let's handle it gracefully
+                return possibleMoves; // just return the moves we have thus far
             }
-            if(board.getAtPosition(rooklpos) != null){
-                if(board.getAtPosition(rooklpos) instanceof ChessPieceRook && !((ChessPieceRook) board.getAtPosition(rooklpos)).hasMoved()){
-                    possibleMoves.add(new Move(this.getPosition(), new Position(this.getPosition().getX()-2, this.getPosition().getY()), this));
-                }
+            
+            if (canCastle(board, enemyMoves, pos, pos.west(4), p -> p.west(1))){
+                possibleMoves.add(new Move(pos, pos.west(2), this));
             }
-
+            if (canCastle(board, enemyMoves, pos, pos.east(3), p -> p.east(1))) {
+                possibleMoves.add(new Move(pos, pos.east(2), this));
+            }
         }
 
         return possibleMoves;
 
+    }
+
+    private interface PositionManipulator {
+        Position transform(Position pos);
+    }
+    
+    private boolean canCastle(Board board, List<Position> threatenedPositions,
+            Position pos, Position target, PositionManipulator direction) {
+        do {
+            pos = direction.transform(pos);
+            if (!board.isOnBoard(pos) || threatenedPositions.contains(pos)
+                    || board.isOccupied(pos))
+                return false;
+        } while (!direction.transform(pos).equals(target));
+        
+        IChessPiece piece = board.getAtPosition(direction.transform(pos));
+        return piece != null && piece.isWhite() == isWhite() &&
+               piece instanceof ChessPieceRook && !((ChessPieceRook)piece).hasMoved();
     }
 
     /**
