@@ -51,10 +51,7 @@ public class MoveLegalityTest {
         boolean IsMoveLegal = testPawn.allPossibleMoves(Board).contains(newPos);
     }
 
-    public void PieceAttackAlly(){
-
-        IChessPiece testQueen = new ChessPieceQueen(newPos,true)
-        Position newPos = new Position(6,6)
+    public void PieceAttackAlly() {
 
     }
 
