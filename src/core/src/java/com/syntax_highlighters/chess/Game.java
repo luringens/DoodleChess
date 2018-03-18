@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import com.syntax_highlighters.chess.entities.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Game class keeping track of the game state.

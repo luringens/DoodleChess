@@ -1,10 +1,7 @@
 package com.syntax_highlighters.chess.entities;
 
 import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
-
-import java.util.List;
 
 public abstract class AbstractChessPiece implements IChessPiece {
     protected boolean isWhite;
