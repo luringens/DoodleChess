@@ -40,6 +40,7 @@ class BoardStartupTest {
 
     @Test
     void KingsPos(){
+        setUp();
         Position wPos = new Position(5, 1);
         Position bPos = new Position(5, 8);
 
@@ -53,18 +54,20 @@ class BoardStartupTest {
 
     @Test
     void QueensPos() {
-        Position wPos = new Position(5, 1);
-        Position bPos = new Position(5, 8);
+        setUp();
+        Position wPos = new Position(4, 1);
+        Position bPos = new Position(4, 8);
 
         IChessPiece TestW = board.getAtPosition(wPos);
         IChessPiece TestB = board.getAtPosition(bPos);
-
+        System.out.println(TestW.getAssetName());
         assertTrue(TestW instanceof ChessPieceQueen);
         assertTrue(TestB instanceof ChessPieceQueen);
     }
 
     @Test
     void PawnsPos() {
+        setUp();
         Position Wpos;
         Position Bpos;
 
@@ -82,8 +85,9 @@ class BoardStartupTest {
         }
     }
 
-
+    @Test
     void BishopsPos() {
+        setUp();
         Position BleftPos = new Position(3, 8);
         Position BrightPos = new Position(6, 8);
         Position WrightPos = new Position(3, 1);
@@ -102,6 +106,8 @@ class BoardStartupTest {
 
     @Test
     void KnightsPos() {
+        setUp();
+
         Position BleftPos = new Position(2, 8);
         Position BrightPos = new Position(7, 8);
         Position WrightPos = new Position(2, 1);
@@ -120,6 +126,7 @@ class BoardStartupTest {
 
     @Test
     void RooksPos() {
+        setUp();
         Position BleftPos = new Position(1, 8);
         Position BrightPos = new Position(8, 8);
         Position WrightPos = new Position(1, 1);
@@ -132,7 +139,7 @@ class BoardStartupTest {
 
         assertTrue(BrightBish instanceof ChessPieceRook);
         assertTrue(BleftBish instanceof ChessPieceRook);
-        assertTrue(WrightBish instanceof ChessPieceRook;
+        assertTrue(WrightBish instanceof ChessPieceRook);
         assertTrue(WleftBish instanceof ChessPieceRook);
 
     }
