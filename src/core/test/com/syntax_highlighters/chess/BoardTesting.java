@@ -5,6 +5,7 @@ import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 import org.junit.jupiter.api.Test;
+import java.util.List;
 
 
 import java.lang.reflect.Executable;
@@ -16,6 +17,9 @@ public class BoardTesting {
     Board board = new Board ();
     Position p = new Position(3,2);
     IChessPiece piece = new ChessPieceKing(p,true);
+    List<IChessPiece> pieceList;
+
+
 
    /*@Test
     public void setupTest(){
@@ -111,9 +115,34 @@ public class BoardTesting {
     public void putAtEmptyPositionExceptionTest(){
         Board k = new Board();
         k.putAtPosition(p, piece);
-       assertThrows(IllegalArgumentException.class, ()->{k.putAtEmptyPosition(p, piece);});
+       assertThrows(IllegalArgumentException.class, ()-> {k.putAtEmptyPosition(p, piece);});
     }
+    /*
+     *Tests if altering the list in anyway will change the state of the board.
+     */
 
+    @Test
+    public void alteringListTest(){
+        Board k = new Board();
+        k.setupNewGame();
+        k.getAllPieces().remove(5);
+        assertEquals(k.getAllPieces().size(),32);
 
+        k.getAllPieces().removeAll(k.getAllPieces());
+        assertEquals(k.getAllPieces().size(),32);
+    }
+    /* Test is failing,
+       not sure if there is a problem
+       with the test or a problem with the method implementation.
+
+    @Test
+    public void newBoardwithIchessPiece(){
+
+        Board k = new Board(pieceList);
+        Board h = new Board();
+        h.setupNewGame();
+        assertNotEquals(k.getAllPieces().size(),32);
+    }
+    */
 
 }
