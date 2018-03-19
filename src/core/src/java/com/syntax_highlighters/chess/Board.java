@@ -176,19 +176,17 @@ public class Board {
      * @return void
      */
     private void performCastling(IChessPiece piece, Position toPosition){
-        int rookOldx;
-        int rookNewx;
-        int rooky = piece.getPosition().getY();
-        if(piece.getPosition().getX() - toPosition.getX() < 0){
-            rookOldx = 8;
-            rookNewx = 5;
-        } else{
-            rookOldx = 1;
-            rookNewx = 3;
+        Position rookpos = null, oldRookpos = null;
+        if (toPosition.getX() < 5) {
+            oldRookpos = piece.getPosition().west(4);
+            rookpos = toPosition.east(1);
         }
-        ChessPieceRook rook = (ChessPieceRook) getAtPosition(new Position(rookOldx,rooky));
-        Position rookPos = new Position(rookNewx, rooky);
-        movePiece(rook,rookPos);
+        else {
+            oldRookpos = piece.getPosition().east(3);
+            rookpos = toPosition.west(1);
+        }
+        ChessPieceRook rook = (ChessPieceRook) getAtPosition(oldRookpos);
+        putAtPosition(rookpos, rook);
     }
 
     /**
