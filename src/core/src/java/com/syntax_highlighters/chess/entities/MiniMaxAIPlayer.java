@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MiniMaxAIPlayer implements IAiPlayer {
-    private static final int EASY_DEPTH = 2;
-    private static final int MED_DEPTH = 4;
+    private static final int EASY_DEPTH = 4;
+    private static final int MED_DEPTH = 5;
     private static final int HARD_DEPTH = 6;
     private final boolean isWhite;
     private int diff;
@@ -67,7 +67,7 @@ class MiniMax {
             int bestScore = Integer.MIN_VALUE;
             for (Move move : moves) {
                 move.DoMove(board);
-                bestScore = MiniMaxScore(depth - 1, board, isWhite, !isMaximizing, alpha, beta);
+                bestScore = Math.max(bestScore, MiniMaxScore(depth - 1, board, isWhite, !isMaximizing, alpha, beta));
                 move.UndoMove(board);
 
                 // Alpha-beta pruning - early return for optimization
@@ -82,7 +82,7 @@ class MiniMax {
             int bestScore = Integer.MAX_VALUE;
             for (Move move : moves) {
                 move.DoMove(board);
-                bestScore = MiniMaxScore(depth - 1, board, isWhite, !isMaximizing, alpha, beta);
+                bestScore = Math.min(bestScore, MiniMaxScore(depth - 1, board, isWhite, !isMaximizing, alpha, beta));
                 move.UndoMove(board);
 
                 // Alpha-beta pruning - early return for optimization
