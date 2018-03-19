@@ -29,10 +29,20 @@ public class ChessPieceKing extends AbstractChessPiece {
 
     private boolean moved = false;
 
+    /**
+     * Set state to "moved".
+     */
     public void setPieceToMoved(){
         this.moved = true;
     }
 
+    /**
+     * Check whether piece has previously moved.
+     * 
+     * This is used to determine whether or not the king is able to castle.
+     *
+     * @return true if the piece has moved before, false otherwise
+     */
     public boolean hasMoved(){
         return moved;
     }
@@ -44,7 +54,12 @@ public class ChessPieceKing extends AbstractChessPiece {
                 List<Position> possiblePieceMoves = null;
                 // I dislike doing this, but I can see no other way
                 if (a instanceof ChessPieceKing) {
-                    // enemy king's legal moves to a first approximation
+                    // Enemy king's legal moves to a first approximation
+                    // We have to treat the king specially because if we call
+                    // allPossibleMoves on him, he will recurse back into this
+                    // function, which will call it on this king, etc. That
+                    // leads to infinite recursion with no bottom and
+                    // SO-exception.
                     possiblePieceMoves = a.getPosition().neighbors().stream()
                         .filter(p -> board.isOnBoard(p) && !board.isOccupied(p))
                         .collect(Collectors.toList());
@@ -62,20 +77,25 @@ public class ChessPieceKing extends AbstractChessPiece {
         return possibleMoves;
     }
 
-    private List<ChessPieceRook> myRooks(Board board){
-        List<IChessPiece> pieces = board.getAllPieces();
-        List<ChessPieceRook> rooks = null;     // <--- WHAT?
-        for(IChessPiece p : pieces){           //        ^
-            if(p instanceof ChessPieceRook){   //        |
-                rooks.add((ChessPieceRook) p); // <--- WHAT???
-                // #perpetualnullpointerexceptiontrap
-            }
-        }
-        return rooks;
-    }
-
+    /**
+     * Return all possible moves the king can make.
+     *
+     * A king can move one step in any direction, but only if it's free or
+     * occupied by an enemy piece, and it doesn't put the king in a threatened
+     * state.
+     *
+     * A king which has not previously moved can also perform castling with
+     * one of the rooks, as long as the rook also hasn't moved, the path between
+     * them is clear, the king is not in check, and does not pass through or end
+     * up on a piece which is not in check.
+     *
+     * @param board The current state of the board
+     *
+     * @return A List of all the possible momves the piece can make
+     */
     @Override 
     public List<Move> allPossibleMoves(Board board) {
+        // get legal regular moves
         List<Position> enemyMoves = allEnemyMoves(board);
         List<Move> possibleMoves = getPosition().neighbors().stream()
             .filter(p -> board.isOnBoard(p) &&
@@ -84,11 +104,17 @@ public class ChessPieceKing extends AbstractChessPiece {
             .map(p -> new Move(this.getPosition(), p, this))
             .collect(Collectors.toList());
 
+        // handle castling
         if(!this.hasMoved()){
             Position pos = this.getPosition();
             if (pos.getX() != 5) {
-                // something strange has happened, but let's handle it gracefully
+                // The King was not placed on the board in its usual position
+                // Handle this exceptional circumstance gracefully
                 return possibleMoves; // just return the moves we have thus far
+            }
+            if (enemyMoves.contains(pos)) {
+                // The King is in check, and thus cannot perform castling
+                // (see https://en.wikipedia.org/wiki/Castling)
             }
             
             if (canCastle(board, enemyMoves, pos, pos.west(4), p -> p.west(1))){
@@ -103,12 +129,34 @@ public class ChessPieceKing extends AbstractChessPiece {
 
     }
 
+    // I might want to make this either an interface in
+    // com.syntax_highlighters.chess or a static interface in Position.
     private interface PositionManipulator {
         Position transform(Position pos);
     }
     
+    // checks that given the board state, the list of threatened positions, the
+    // starting position, the target position, and the direction, the king can
+    // castle
+    /**
+     * Check if the king can castle in the specified direction.
+     *
+     * @param board The current board state
+     * @param threatenedPositions Passed as argument for efficiency
+     * @param pos The starting position
+     * @param target The ending position (rook should be there)
+     * @param direction The direction to check in (ends at target)
+     *
+     * @return true if castling is possible in the given direction, false
+     * otherwise
+     */
     private boolean canCastle(Board board, List<Position> threatenedPositions,
             Position pos, Position target, PositionManipulator direction) {
+
+        // Check the squares between the king and rook (assuming the rook is in
+        // the direction specified by direction) for whether they're occupied,
+        // threatened, or off the board (actually an error in programming,
+        // should maybe throw exception instead)
         do {
             pos = direction.transform(pos);
             if (!board.isOnBoard(pos) || threatenedPositions.contains(pos)
@@ -116,6 +164,12 @@ public class ChessPieceKing extends AbstractChessPiece {
                 return false;
         } while (!direction.transform(pos).equals(target));
         
+        // Check that it's possible to castle with this piece
+        // Conditions:
+        // - There is a piece at the position
+        // - The piece is the same color as the king
+        // - The piece is a rook
+        // - The rook hasn't moved
         IChessPiece piece = board.getAtPosition(direction.transform(pos));
         return piece != null && piece.isWhite() == isWhite() &&
                piece instanceof ChessPieceRook && !((ChessPieceRook)piece).hasMoved();
