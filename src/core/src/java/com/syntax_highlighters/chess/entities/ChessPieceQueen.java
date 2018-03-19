@@ -15,6 +15,9 @@ public class ChessPieceQueen extends AbstractChessPiece {
         super(pos, isWhite);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected int[] getPositionScoreTable() {
         return new int[]{
@@ -29,6 +32,17 @@ public class ChessPieceQueen extends AbstractChessPiece {
         };
     }
 
+    /**
+     * Return all possible moves the queen can make.
+     *
+     * The queen can move any number of steps in any direction, but only as far
+     * as the path is not blocked by another piece. If the path is blocked by an
+     * enemy piece, the queen may capture that piece and go no further.
+     *
+     * @param board The current state of the board
+     *
+     * @return A List of all the possible moves the piece can make
+     */
     @Override
     public List<Move> allPossibleMoves(Board board) {
         List<Move> ne = movesInDirection(1, 1, board);
@@ -44,16 +58,25 @@ public class ChessPieceQueen extends AbstractChessPiece {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IChessPiece copy() {
         return new ChessPieceQueen(this.getPosition(), this.isWhite());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getPieceScore() {
         return 90;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAssetName() {
         return isWhite() ? "queen_white.png" : "queen_black.png";

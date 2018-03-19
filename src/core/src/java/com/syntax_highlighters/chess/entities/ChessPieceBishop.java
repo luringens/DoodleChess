@@ -15,6 +15,9 @@ public class ChessPieceBishop extends AbstractChessPiece {
         super(pos, isWhite);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected int[] getPositionScoreTable() {
         return new int[]{
@@ -29,6 +32,16 @@ public class ChessPieceBishop extends AbstractChessPiece {
         };
     }
 
+    /**
+     * Return all possible moves the bishop can make.
+     *
+     * A bishop can move any number of steps in any diagonal direction, but only
+     * as long as the path is not blocked by a piece. If it is blocked by an
+     * enemy piece, the bishop may capture that piece but go no further.
+     *
+     * @param board The current state of the board
+     * @return A List of all the possible moves the piece can make
+     */
     @Override
     public List<Move> allPossibleMoves(Board board) {
         List<Move> ne = movesInDirection(1, 1, board);
@@ -40,16 +53,25 @@ public class ChessPieceBishop extends AbstractChessPiece {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IChessPiece copy() {
         return new ChessPieceBishop(this.getPosition(), this.isWhite());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getPieceScore() {
         return 30;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAssetName() {
         return isWhite() ? "bishop_white.png" : "bishop_black.png";

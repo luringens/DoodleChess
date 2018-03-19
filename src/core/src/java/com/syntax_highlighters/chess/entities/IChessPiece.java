@@ -69,6 +69,13 @@ public interface IChessPiece {
      */
     int getPieceScore();
 
+    /**
+     * Get the numerical value of a piece at a given position.
+     *
+     * Used to determine what moves are good in chess AI.
+     *
+     * @return The numerical value of the piece at a given position
+     */
     int getPositionalScore();
 
     /**

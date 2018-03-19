@@ -98,6 +98,9 @@ public abstract class AbstractChessPiece implements IChessPiece {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getPositionalScore() {
         Position p = getPosition();
         int x = p.getX();
@@ -117,6 +120,13 @@ public abstract class AbstractChessPiece implements IChessPiece {
         return getPieceScore() + getPositionScoreTable()[x + y * Board.BOARD_WIDTH];
     }
 
+    /**
+     * Get the table for positional scores.
+     *
+     * Used in getPositionalScore. Subclasses will implement.
+     *
+     * @return The table used for computing positional scores
+     */
     protected abstract int[] getPositionScoreTable();
 
     /** Creates a list of possible moves in a direction.

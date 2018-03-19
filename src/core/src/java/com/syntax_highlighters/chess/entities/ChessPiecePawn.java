@@ -12,6 +12,9 @@ public class ChessPiecePawn extends AbstractChessPiece {
         super(pos, isWhite);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected int[] getPositionScoreTable() {
         return new int[]{
@@ -36,6 +39,26 @@ public class ChessPiecePawn extends AbstractChessPiece {
         return moved;
     }
 
+    /**
+     * Return all possible moves the pawn can make.
+     *
+     * A pawn may move two steps forward if it hasn't moved before, otherwise
+     * one step forward unless its path is blocked by another piece. It may also
+     * capture an enemy piece diagonally forward.
+     *
+     * On the occasion that the pawn is on the fifth rank (if it's white - the
+     * fourth rank if it's black) and an enemy pawn uses a double step to the
+     * square beside it, the pawn may move as if the pawn had only taken a
+     * single step and capture the piece. This is only possible the first turn
+     * after the enemy pawn has moved.
+     *
+     * On the occasion that a pawn reaches the far side of the board (on the
+     * side of the enemy), the pawn shall be replaced with a queen.
+     *
+     * @param board The current state of the board
+     *
+     * @return A List of all the possible moves the piece can make
+     */
     @Override
     public List<Move> allPossibleMoves (Board board) {
         ArrayList<Move> possibleMoves = new ArrayList<>();
@@ -69,7 +92,10 @@ public class ChessPiecePawn extends AbstractChessPiece {
         return possibleMoves;
     }
 
-    //Checks the move
+    /**
+     * Deprecated. Check is performed in allPossibleMoves instead.
+     */
+    @Deprecated
     private void checkMove (Board board, ArrayList<Move> possibleMoves, Position pos) {
         if (board != null && board.isOnBoard(pos)) {
             if (board.getAtPosition(pos) == null) {
@@ -78,7 +104,10 @@ public class ChessPiecePawn extends AbstractChessPiece {
         }
     }
     
-    // WHAT DOES THIS EVEN DO? - Vegard
+    /**
+     * Deprecated. Check is performed in allPossibleMoves instead.
+     */
+    @Deprecated
     private void checkMove2 (Board board, ArrayList<Move> possibleMoves, Position pos, int piececolor) {
         if (board != null && board.isOnBoard(pos)) {
             if (board.getAtPosition(pos) == null && board.getAtPosition(new Position(pos.getX(), pos.getY() + (-1 * piececolor))) == null) {
@@ -87,7 +116,14 @@ public class ChessPiecePawn extends AbstractChessPiece {
         }}
 
 
-        //check enPassant
+    /**
+     * If en passant can be performed onto the given position, add the move to
+     * possible moves.
+     *
+     * @param board The current state of the board
+     * @param possibleMoves Reference to the list of possible moves
+     * @param pos The position to perform en passant onto
+     */
     private void enPassantCheck (Board board, ArrayList<Move> possibleMoves, Position pos) {
         if (board.isOnBoard(pos)) {
             // en passant can only be performed at a pawn's fifth rank
@@ -117,6 +153,14 @@ public class ChessPiecePawn extends AbstractChessPiece {
         }
     }
 
+    /**
+     * If it's possible to capture an enemy normally by moving onto the given
+     * position, add that move to possible moves.
+     *
+     * @param board The current state of the board
+     * @param possibleMoves Reference to the list of possible moves
+     * @param pos The position to perform capture onto
+     */
     private void takeEnemiesMove (Board board, ArrayList<Move> possibleMoves, Position pos) {
         if (board.isOnBoard(pos)) {
             if (board.isEnemy(this, pos)) {
@@ -127,16 +171,25 @@ public class ChessPiecePawn extends AbstractChessPiece {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IChessPiece copy () {
         return new ChessPiecePawn(this.getPosition(), this.isWhite());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getPieceScore() {
         return 10;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAssetName () {
         return isWhite() ? "pawn_white.png" : "pawn_black.png";

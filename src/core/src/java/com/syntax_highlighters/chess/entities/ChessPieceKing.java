@@ -14,6 +14,9 @@ public class ChessPieceKing extends AbstractChessPiece {
         super(pos, isWhite);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected int[] getPositionScoreTable() {
         return new int[]{
@@ -48,6 +51,12 @@ public class ChessPieceKing extends AbstractChessPiece {
         return moved;
     }
 
+    /**
+     * Get all positions threatened by the enemy.
+     *
+     * @return A List of the Positions which the enemy could reach if it was
+     * their turn now
+     */
     private List<Position> allEnemyMoves(Board board){
         List<Position> possibleMoves = new ArrayList<>();
         for(IChessPiece a : board.getAllPieces()) {
@@ -92,7 +101,7 @@ public class ChessPieceKing extends AbstractChessPiece {
      *
      * @param board The current state of the board
      *
-     * @return A List of all the possible momves the piece can make
+     * @return A List of all the possible moves the piece can make
      */
     @Override 
     public List<Move> allPossibleMoves(Board board) {
@@ -186,16 +195,25 @@ public class ChessPieceKing extends AbstractChessPiece {
         return allEnemyMoves(board).contains(this.getPosition());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IChessPiece copy() {
         return new ChessPieceKing(this.getPosition(), this.isWhite());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getPieceScore() {
         return 1000;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAssetName() {
         return isWhite() ? "king_white.png" : "king_black.png";

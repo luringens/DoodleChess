@@ -15,6 +15,9 @@ public class ChessPieceRook extends AbstractChessPiece {
         super(pos, isWhite);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected int[] getPositionScoreTable() {
         return new int[]{
@@ -39,6 +42,20 @@ public class ChessPieceRook extends AbstractChessPiece {
         return moved;
     }
     
+    /**
+     * Return all possible moves the rook can make.
+     *
+     * A rook may move any number of steps horizontally or vertically, as long
+     * as the path is not blocked by another piece. If the path is blocked by an
+     * enemy piece, the rook may capture that piece and go no further.
+     *
+     * An unmoved rook may castle with an unmoved king.
+     *
+     * @see ChessPieceKing
+     * @param board The current state of the board
+     *
+     * @return A List of all the possible moves the piece can make
+     */
     @Override
     public List<Move> allPossibleMoves(Board board) {
         List<Move> n = movesInDirection(0, 1, board);
@@ -50,16 +67,25 @@ public class ChessPieceRook extends AbstractChessPiece {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IChessPiece copy() {
         return new ChessPieceRook(this.getPosition(), this.isWhite());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getPieceScore() {
         return 50;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAssetName() {
         return isWhite() ? "rook_white.png" : "rook_black.png";
