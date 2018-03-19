@@ -12,11 +12,16 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
  * This class should be immutable.
  */
 public class Move {
-    private IChessPiece piece;
-    private Position oldPos;
-    private Position newPos;
-    private boolean hasDoneMove = false;
+    protected boolean hasDoneMove = false;
+    protected IChessPiece piece;
+    protected Position oldPos;
+    protected Position newPos;
     private IChessPiece tookPiece = null;
+
+    /**
+     * For inheritance only!
+     */
+    protected Move() {}
     
     /**
      * Constructor.

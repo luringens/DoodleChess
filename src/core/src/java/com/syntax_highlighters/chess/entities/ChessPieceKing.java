@@ -1,6 +1,7 @@
 package com.syntax_highlighters.chess.entities;
 
 import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.CastlingMove;
 import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 
@@ -118,10 +119,10 @@ public class ChessPieceKing extends AbstractChessPiece {
             }
             
             if (canCastle(board, enemyMoves, pos, pos.west(4), p -> p.west(1))){
-                possibleMoves.add(new Move(pos, pos.west(2), this));
+                possibleMoves.add(new CastlingMove(this, (ChessPieceRook)board.getAtPosition(pos.west(4))));
             }
             if (canCastle(board, enemyMoves, pos, pos.east(3), p -> p.east(1))) {
-                possibleMoves.add(new Move(pos, pos.east(2), this));
+                possibleMoves.add(new CastlingMove(this, (ChessPieceRook)board.getAtPosition(pos.east(3))));
             }
         }
 
