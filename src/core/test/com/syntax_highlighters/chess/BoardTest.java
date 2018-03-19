@@ -13,7 +13,7 @@ import java.lang.reflect.Executable;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class BoardTesting {
+public class BoardTest {
     Board board = new Board ();
     Position p = new Position(3,2);
     IChessPiece piece = new ChessPieceKing(p,true);
