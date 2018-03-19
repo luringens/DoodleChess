@@ -208,7 +208,7 @@ public class ChessPieceKing extends AbstractChessPiece {
      */
     @Override
     public int getPieceScore() {
-        return 1000;
+        return 20000;
     }
 
     /**

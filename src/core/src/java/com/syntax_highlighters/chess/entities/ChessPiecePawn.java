@@ -184,7 +184,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
      */
     @Override
     public int getPieceScore() {
-        return 10;
+        return 100;
     }
 
     /**

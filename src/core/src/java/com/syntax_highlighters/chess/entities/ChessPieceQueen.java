@@ -71,7 +71,7 @@ public class ChessPieceQueen extends AbstractChessPiece {
      */
     @Override
     public int getPieceScore() {
-        return 90;
+        return 900;
     }
 
     /**

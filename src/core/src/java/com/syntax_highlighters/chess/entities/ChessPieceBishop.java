@@ -66,7 +66,7 @@ public class ChessPieceBishop extends AbstractChessPiece {
      */
     @Override
     public int getPieceScore() {
-        return 30;
+        return 330;
     }
 
     /**

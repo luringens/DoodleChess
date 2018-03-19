@@ -80,7 +80,7 @@ public class ChessPieceRook extends AbstractChessPiece {
      */
     @Override
     public int getPieceScore() {
-        return 50;
+        return 500;
     }
 
     /**
