@@ -28,8 +28,8 @@ class AiTest {
         final long allowedTime = 1000;
         IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Easy);
         long time = speedTest(ai);
-        System.out.print("Expected less than: " + allowedTime + ", actual: " + time);
-        assertTrue("The easy AI is too slow.", time < allowedTime);
+        assertTrue("The easy AI is too slow (" + time + " >= " + allowedTime + ")",
+                time < allowedTime);
     }
 
     @Test
@@ -37,8 +37,8 @@ class AiTest {
         final long allowedTime = 3000;
         IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Medium);
         long time = speedTest(ai);
-        System.out.print("Expected less than: " + allowedTime + ", actual: " + time);
-        assertTrue("The easy AI is too slow.", time < allowedTime);
+        assertTrue("The medium AI is too slow (" + time + " >= " + allowedTime + ")",
+                time < allowedTime);
     }
 
     @Test
@@ -46,8 +46,8 @@ class AiTest {
         final long allowedTime = 5000;
         IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Hard);
         long time = speedTest(ai);
-        System.out.print("Expected less than: " + allowedTime + ", actual: " + time);
-        assertTrue("The easy AI is too slow.", time < allowedTime);
+        assertTrue("The hard AI is too slow (" + time + " >= " + allowedTime + ")",
+                time < allowedTime);
     }
 
     /** Measures how long an AI spends deciding a move on a fresh chess board.
