@@ -5,7 +5,10 @@ import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ChessPieceBishop extends AbstractChessPiece {
     public ChessPieceBishop(Position pos, boolean isWhite) {
@@ -28,51 +31,13 @@ public class ChessPieceBishop extends AbstractChessPiece {
 
     @Override
     public List<Move> allPossibleMoves(Board board) {
-        List<Move> possibleMoves = new ArrayList<>();
-        int xpos = this.getPosition().getX();
-        int ypos = this.getPosition().getY();
-        Position lastPos;
-        Position nextPos;
-        int i=1;
-        while (i+ypos<9 || i+xpos<9) {
-            lastPos = new Position(xpos+i-1,ypos+i-1);
-            nextPos = new Position(xpos+ i, ypos + i);
-            if (board.isEnemy(this,lastPos) || !board.isOnBoard(nextPos) || board.isFriendly(this, nextPos))
-                break;
-            else
-                possibleMoves.add(new Move(lastPos, nextPos, this));
-            i++;
-        }
-        i=1;
-        while (i+ypos<9 || i+xpos<9) {
-            lastPos = new Position(xpos+i-1,ypos-i+1);
-            nextPos = new Position(xpos+i, ypos-i);
-            if (board.isEnemy(this,lastPos) || !board.isOnBoard(nextPos) || board.isFriendly(this, nextPos))
-                break;
-            else
-                possibleMoves.add(new Move(lastPos, nextPos, this));
-            i++;
-        }
-        i=1;
-        while (ypos-i>0 || xpos-i>0) {
-            lastPos = new Position(xpos-i+1,ypos+i+1);
-            nextPos = new Position(xpos-i, ypos + i);
-            if (board.isEnemy(this,lastPos) || !board.isOnBoard(nextPos) || (board.isFriendly(this, nextPos)))
-                break;
-            else
-                possibleMoves.add(new Move(lastPos, nextPos, this));
-            i++;
-        }
-        i=1;
-        while (ypos-i>0 || xpos-i>0) {
-            lastPos = new Position(xpos - i + 1, ypos - i + 1);
-            nextPos = new Position(xpos - i, ypos - i);
-            if (board.isEnemy(this, lastPos) || !board.isOnBoard(nextPos) || (board.isFriendly(this, nextPos))) break;
-            else possibleMoves.add(new Move(lastPos, nextPos, this));
-            i++;
-        }
-
-            return possibleMoves;
+        List<Move> ne = movesInDirection(1, 1, board);
+        List<Move> nw = movesInDirection(-1, 1, board);
+        List<Move> se = movesInDirection(-1, -1, board);
+        List<Move> sw = movesInDirection(1, -1, board);
+        return Stream.of(ne, nw, se, sw)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -1,7 +1,11 @@
 package com.syntax_highlighters.chess.entities;
 
 import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractChessPiece implements IChessPiece {
     protected boolean isWhite;
@@ -114,4 +118,28 @@ public abstract class AbstractChessPiece implements IChessPiece {
     }
 
     protected abstract int[] getPositionScoreTable();
+
+    /** Creates a list of possible moves in a direction.
+     *
+     * @param dx 0 for no horizontal movement, -1 or 1 for movement.
+     * @param dy 0 for no vertical movement, -1 or 1 for movement.
+     * @param board The board to look at.
+     * @return
+     */
+    protected List<Move> movesInDirection(int dx, int dy, Board board) {
+        ArrayList<Move> moves = new ArrayList<>();
+        Position nextPos = new Position(position.getX() + dx, position.getY() + dy);
+
+        while (board.isOnBoard(nextPos)) {
+            if (board.isFriendly(this, nextPos)) break;
+            if (board.isEnemy(this, nextPos)) {
+                moves.add(new Move(this.position, nextPos, this));
+                break;
+            }
+            moves.add(new Move(this.position, nextPos, this));
+            nextPos = new Position(nextPos.getX() + dx, nextPos.getY() + dy);
+        }
+
+        return moves;
+    }
 }
