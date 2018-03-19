@@ -21,7 +21,7 @@ public class MoveLegalityTest {
         boolean IsMoveLegal = testKnight.allPossibleMoves(Board).contains(newPos);
         System.out.println(testKnight.allPossibleMoves(Board));
 
-        assertEquals(IsMoveLegal,true);
+        assertEquals(IsMoveLegal,false);
     }
     @Test
     public void WhitePawnBackwards(){
