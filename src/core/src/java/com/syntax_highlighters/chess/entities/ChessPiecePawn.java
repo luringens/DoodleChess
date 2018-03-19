@@ -102,6 +102,11 @@ public class ChessPiecePawn extends AbstractChessPiece {
             if (lastMove.getPiece() != pieceAtPos) return; // the piece wasn't the last moved piece
             if (!(pieceAtPos instanceof ChessPiecePawn)) return; // piece isn't pawn
             
+            // check that the last move was a double step
+            Position newPos = lastMove.getPosition();
+            Position oldPos = lastMove.getOldPosition();
+            if (Math.abs(newPos.getY() - oldPos.getY()) != 2) return; // last move was a single step
+            
             // en passant can be performed
             if (isWhite()) {
                 possibleMoves.add(new Move(this.getPosition(), pos.north(1), this));
