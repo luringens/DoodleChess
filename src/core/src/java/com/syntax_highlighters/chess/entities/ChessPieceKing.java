@@ -67,6 +67,7 @@ public class ChessPieceKing extends AbstractChessPiece {
         return possibleMoves;
     }
 
+
     /**
      * Return all possible moves the king can make.
      *
@@ -86,13 +87,15 @@ public class ChessPieceKing extends AbstractChessPiece {
     @Override 
     public List<Move> allPossibleMoves(Board board) {
         // get legal regular moves
+       // Move m=new Move();
         List<Position> enemyMoves = allEnemyMoves(board);
         List<Move> possibleMoves = getPosition().neighbors().stream()
             .filter(p -> board.isOnBoard(p) &&
                     !board.isFriendly(this, p) &&
                     !enemyMoves.contains(p))
-            .map(p -> new Move(this.getPosition(), p, this))
-            .collect(Collectors.toList());
+                .map(p -> new Move(this.getPosition(), p, this))
+                    //legg in move i metoden !board.movePutsKingInCheck(board,,isWhite()))
+                    .collect(Collectors.toList());
 
         // handle castling
         if(!this.hasMoved()){

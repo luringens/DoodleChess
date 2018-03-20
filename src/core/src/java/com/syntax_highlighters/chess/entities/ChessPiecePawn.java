@@ -6,6 +6,7 @@ import com.syntax_highlighters.chess.Position;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ChessPiecePawn extends AbstractChessPiece {
     public ChessPiecePawn (Position pos, boolean isWhite) {
@@ -79,7 +80,10 @@ public class ChessPiecePawn extends AbstractChessPiece {
         enPassantCheck(board, possibleMoves, pos.east(1));
         enPassantCheck(board, possibleMoves, pos.west(1));
 
-        return possibleMoves;
+        return possibleMoves.stream()
+                .filter(m -> board.movePutsKingInCheck(board, m, isWhite))
+                .collect(Collectors.toList());
+
     }
 
     /**

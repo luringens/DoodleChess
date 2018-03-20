@@ -6,6 +6,7 @@ import com.syntax_highlighters.chess.Position;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ChessPieceKnight extends AbstractChessPiece {
     public ChessPieceKnight(Position pos, boolean isWhite) {
@@ -55,7 +56,9 @@ public class ChessPieceKnight extends AbstractChessPiece {
         checkMove(board, possibleMoves, new Position(x+2,y-1));
         checkMove(board, possibleMoves, new Position(x-2,y+1));
         checkMove(board, possibleMoves, new Position(x-2,y-1));
-        return possibleMoves;
+        return possibleMoves.stream()
+                .filter(m -> board.movePutsKingInCheck(board, m, isWhite))
+                .collect(Collectors.toList());
 
 
         //throw new NotImplementedException();

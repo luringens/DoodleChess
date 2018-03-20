@@ -55,7 +55,9 @@ public class ChessPieceQueen extends AbstractChessPiece {
         List<Move> w = movesInDirection(-1, 0, board);
         return Stream.of(ne, nw, se, sw, n, e, s, w)
                 .flatMap(Collection::stream)
+                .filter(m -> board.movePutsKingInCheck(board, m, isWhite))
                 .collect(Collectors.toList());
+
     }
 
     /**

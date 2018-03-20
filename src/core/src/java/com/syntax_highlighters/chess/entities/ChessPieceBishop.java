@@ -50,6 +50,7 @@ public class ChessPieceBishop extends AbstractChessPiece {
         List<Move> sw = movesInDirection(1, -1, board);
         return Stream.of(ne, nw, se, sw)
                 .flatMap(Collection::stream)
+                .filter(m -> board.movePutsKingInCheck(board, m, isWhite))
                 .collect(Collectors.toList());
     }
 

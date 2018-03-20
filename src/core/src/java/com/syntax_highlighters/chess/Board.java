@@ -261,7 +261,22 @@ public class Board {
         }
         return ret;
     }
+    public boolean movePutsKingInCheck(Board b,Move m, Boolean kingWhite) {
+        IChessPiece king = b.getAllPieces().stream()
+                .filter(p -> p.isWhite() == kingWhite && p instanceof ChessPieceKing)
+                .findFirst().get();
+        m.DoMove(b);
+        for(IChessPiece p : b.getAllPieces())
+            if (p.isWhite() != kingWhite)
+                for(Move mo : p.allPossibleMoves((b)))
+                    if (mo.getPosition() == king.getPosition()) {
+                        m.UndoMove(b);
+                        return true;
+                    }
 
+        m.UndoMove(b);
+        return false;
+    }
     /**
      * Get the last move performed in the game.
      *
