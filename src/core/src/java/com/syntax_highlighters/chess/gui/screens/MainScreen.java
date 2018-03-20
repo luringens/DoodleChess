@@ -6,10 +6,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -32,6 +34,10 @@ public class MainScreen implements Screen {
     private AssetManager assetManager;
 
     private Text turnText;
+    private boolean waitingForAi = false;
+    private boolean resizeFBO = false;
+
+    FrameBuffer fbo;
 
     public MainScreen(AiDifficulty player1Difficulty, AiDifficulty player2Difficulty, AssetManager manager) {
         assetManager = manager;
@@ -59,16 +65,41 @@ public class MainScreen implements Screen {
         stage.addActor(turnText);
         stage.setDebugAll(true);
         turnText.setText(game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
+        fbo = new FrameBuffer(Pixmap.Format.RGB888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override
     public void render(float delta) {
-        game.PerformAIMove();
-        turnText.setText(game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act(delta);
-        stage.draw();
+        // TODO: Check if going to wait for ai
+        if(!waitingForAi) {
+            waitingForAi = true;
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    game.PerformAIMove();
+                    waitingForAi = false;
+                }
+            };
+            if(resizeFBO)
+            {
+                resizeFBO = false;
+                fbo.dispose();
+                fbo = new FrameBuffer(Pixmap.Format.RGB888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+            }
+            thread.start();
+            fbo.begin();
+            turnText.setText(game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
+            stage.act(delta);
+            stage.draw();
+            fbo.end();
+        }
+        SpriteBatch batch = (SpriteBatch) stage.getBatch();
+        batch.begin();
+        batch.draw(fbo.getColorBufferTexture(), 0, 0,0, 0, fbo.getWidth(), fbo.getHeight(), 1, 1, 0, 0, 0, fbo.getWidth(), fbo.getHeight(), false, true);
+        batch.end();
+
     }
 
     @Override
@@ -79,7 +110,16 @@ public class MainScreen implements Screen {
         board.setSize(size, size);
         board.setPosition(width / 2.f - size / 2.f, height / 2.f - size / 2.f + 50);
         turnText.setCenter(width / 2.f, height / 2.f - size / 2.f);
-    }
+
+        if(waitingForAi)
+        {
+            resizeFBO = true;
+            return;
+        }
+
+        fbo.dispose();
+        fbo = new FrameBuffer(Pixmap.Format.RGB888, width, height, false);
+}
 
     @Override
     public void show() {
