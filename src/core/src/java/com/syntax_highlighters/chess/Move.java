@@ -16,6 +16,7 @@ public class Move {
     protected IChessPiece piece;
     protected Position oldPos;
     protected Position newPos;
+    protected boolean hadMoved;
     private IChessPiece tookPiece = null;
 
     /**
@@ -34,6 +35,7 @@ public class Move {
         this.oldPos = oldPos;
         this.newPos = newPos;
         this.piece = piece;
+        this.hadMoved = piece.hasMoved();
     }
 
     /**
@@ -76,6 +78,7 @@ public class Move {
         if (hasDoneMove) throw new RuntimeException("Move has already been done.");
         hasDoneMove = true;
         tookPiece = b.getAtPosition(newPos);
+        piece.setHasMoved(true);
         b.putAtPosition(newPos, piece);
     }
 
@@ -83,6 +86,7 @@ public class Move {
         if (!hasDoneMove) throw new RuntimeException("Can not undo a move that has not been done");
         hasDoneMove = false;
         b.putAtPosition(oldPos, piece);
+        piece.setHasMoved(hadMoved);
         if (tookPiece != null) {
             b.putAtPosition(newPos, tookPiece);
         }

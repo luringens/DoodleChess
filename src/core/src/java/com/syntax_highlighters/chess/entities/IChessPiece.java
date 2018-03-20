@@ -91,4 +91,8 @@ public interface IChessPiece {
      * @return The filename of an image resource
      */
     String getAssetName();
+
+    boolean hasMoved();
+
+    void setHasMoved(boolean bool);
 }

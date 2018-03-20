@@ -31,26 +31,6 @@ public class ChessPieceKing extends AbstractChessPiece {
         };
     }
 
-    private boolean moved = false;
-
-    /**
-     * Set state to "moved".
-     */
-    public void setPieceToMoved(){
-        this.moved = true;
-    }
-
-    /**
-     * Check whether piece has previously moved.
-     * 
-     * This is used to determine whether or not the king is able to castle.
-     *
-     * @return true if the piece has moved before, false otherwise
-     */
-    public boolean hasMoved(){
-        return moved;
-    }
-
     /**
      * Get all positions threatened by the enemy.
      *

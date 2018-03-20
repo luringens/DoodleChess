@@ -204,12 +204,12 @@ public class Board {
             this.lastMove = new Move(piece.getPosition(), toPosition, piece);
             
             if (piece instanceof ChessPieceKing) {
-                ((ChessPieceKing) piece).setPieceToMoved();
+                piece.setHasMoved(true);
                 if (Math.abs(piece.getPosition().getX() - toPosition.getX()) > 1)
                     performCastling(piece, toPosition);
             }
             else if(piece instanceof ChessPiecePawn){
-                ((ChessPiecePawn) piece).setPieceToMoved();
+                piece.setHasMoved(true);
                 Position oldPos = piece.getPosition();
                 if (!isOccupied(toPosition) && toPosition.getY() != oldPos.getY()) {
                     // pawn performed en passant
@@ -220,7 +220,7 @@ public class Board {
                 }
             }
             else if(piece instanceof ChessPieceRook)
-                ((ChessPieceRook) piece).setPieceToMoved();
+                piece.setHasMoved(true);
             
             putAtPosition(toPosition, piece);
             return true;

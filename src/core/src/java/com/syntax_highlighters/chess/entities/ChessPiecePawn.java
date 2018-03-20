@@ -29,16 +29,6 @@ public class ChessPiecePawn extends AbstractChessPiece {
         };
     }
 
-    private boolean moved = false;
-
-    public void setPieceToMoved () {
-        this.moved = true;
-    }
-
-    public boolean hasMoved () {
-        return moved;
-    }
-
     /**
      * Return all possible moves the pawn can make.
      *
@@ -93,30 +83,6 @@ public class ChessPiecePawn extends AbstractChessPiece {
     }
 
     /**
-     * Deprecated. Check is performed in allPossibleMoves instead.
-     */
-    @Deprecated
-    private void checkMove (Board board, ArrayList<Move> possibleMoves, Position pos) {
-        if (board != null && board.isOnBoard(pos)) {
-            if (board.getAtPosition(pos) == null) {
-                possibleMoves.add(new Move(this.getPosition(), pos, this));
-            }
-        }
-    }
-    
-    /**
-     * Deprecated. Check is performed in allPossibleMoves instead.
-     */
-    @Deprecated
-    private void checkMove2 (Board board, ArrayList<Move> possibleMoves, Position pos, int piececolor) {
-        if (board != null && board.isOnBoard(pos)) {
-            if (board.getAtPosition(pos) == null && board.getAtPosition(new Position(pos.getX(), pos.getY() + (-1 * piececolor))) == null) {
-                possibleMoves.add(new Move(this.getPosition(), pos, this));
-            }
-        }}
-
-
-    /**
      * If en passant can be performed onto the given position, add the move to
      * possible moves.
      *
@@ -166,7 +132,6 @@ public class ChessPiecePawn extends AbstractChessPiece {
             if (board.isEnemy(this, pos)) {
                 possibleMoves.add(new Move(this.getPosition(), pos, this));
             }
-
         }
     }
 

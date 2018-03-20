@@ -31,16 +31,6 @@ public class ChessPieceRook extends AbstractChessPiece {
              0,  0,  0,  5,  5,  0,  0,  0
         };
     }
-
-    private boolean moved = false;
-
-    public void setPieceToMoved(){
-        this.moved = true;
-    }
-
-    public boolean hasMoved(){
-        return moved;
-    }
     
     /**
      * Return all possible moves the rook can make.
