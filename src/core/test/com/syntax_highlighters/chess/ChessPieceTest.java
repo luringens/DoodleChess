@@ -104,4 +104,19 @@ class ChessPieceTest {
         List<Move> moves = piece.allPossibleMoves(board);
         assertEquals(7, moves.size());
     }
+
+    @Test
+    public void checkMateKingTest(){
+        Board b = new Board();
+        b.setupNewGame();
+
+        b.movePiece(b.getAtPosition(new Position(5,2)),new Position(5,4));
+        b.movePiece(b.getAtPosition(new Position(4,1)),new Position(6,3));
+        b.movePiece(b.getAtPosition(new Position(6,1)),new Position(3,4));
+        b.movePiece(b.getAtPosition(new Position(6,3)),new Position(6,7));
+
+        List<Move> moves = b.getAtPosition(new Position(5,8)).allPossibleMoves(b);
+        assertEquals(0, moves.size());
+
+    }
 }
