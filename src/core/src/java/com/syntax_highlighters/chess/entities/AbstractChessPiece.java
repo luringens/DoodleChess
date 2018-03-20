@@ -110,8 +110,7 @@ public abstract class AbstractChessPiece implements IChessPiece {
         // Score board is based on starting on the bottom.
         // Reverse for black.
         if (!isWhite()) {
-            x = Board.BOARD_WIDTH - x;
-            y = Board.BOARD_HEIGHT - y;
+            y = Board.BOARD_HEIGHT - y + 1;
         }
 
         // Adjust for 0-based indexing.

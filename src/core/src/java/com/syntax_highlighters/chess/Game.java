@@ -152,18 +152,7 @@ public class Game {
      * @return true if the game is over, false otherwise
      */
     public boolean isGameOver() {
-        return checkMate(true) || checkMate(false) || insufficientMaterial();
-    }
-
-    public boolean checkMate(boolean whitePlayer) {
-        List<IChessPiece> allPieces = board.getAllPieces();
-        if (allPieces.size() == 0) return false; // not possible
-        ChessPieceKing king = allPieces.stream()
-            .filter(p -> p instanceof ChessPieceKing && p.isWhite() == whitePlayer)
-            .map(p -> (ChessPieceKing)p)
-            .collect(Collectors.toList())
-            .get(0);
-        return king.isThreatened(board) && king.allPossibleMoves(board).size() == 0;
+        return board.checkMate(true) || board.checkMate(false) || insufficientMaterial();
     }
 
     /**

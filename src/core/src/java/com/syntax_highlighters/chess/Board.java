@@ -4,6 +4,7 @@ import com.syntax_highlighters.chess.entities.*;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Holds the current state of the board.
@@ -262,14 +263,16 @@ public class Board {
         return ret;
     }
     public boolean movePutsKingInCheck(Move m, Boolean kingWhite) {
-        IChessPiece king = getAllPieces().stream()
+        Position targetPosToCheck;
+        if (m.piece instanceof ChessPieceKing) targetPosToCheck = m.getPosition();
+        else targetPosToCheck = getAllPieces().stream()
                 .filter(p -> p.isWhite() == kingWhite && p instanceof ChessPieceKing)
-                .findFirst().get(); // Will crash if the King is dead (should never happen!)
+                .findFirst().get().getPosition();
+                // Will crash if the King is dead (should never happen!)
 
-        for(IChessPiece p : getAllPieces())
-            if (p.threatens(m.getPosition(), this))
-                return true;
-        return false;
+        return getAllPieces().stream()
+                .filter(p -> p.isWhite() != kingWhite)
+                .noneMatch(p -> !p.getPosition().equals(m.getPosition()) && p.threatens(targetPosToCheck, this));
     }
     /**
      * Get the last move performed in the game.
@@ -278,5 +281,37 @@ public class Board {
      */
     public Move getLastMove() {
         return this.lastMove;
+    }
+
+    public boolean checkMate(boolean whitePlayer) {
+        List<IChessPiece> allPieces = getAllPieces();
+        if (allPieces.size() == 0) return false; // not possible
+        ChessPieceKing king = allPieces.stream()
+                .filter(p -> p instanceof ChessPieceKing && p.isWhite() == whitePlayer)
+                .map(p -> (ChessPieceKing)p)
+                .collect(Collectors.toList())
+                .get(0);
+        return king.isThreatened(this) && king.allPossibleMoves(this).size() == 0;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        for (int y = 1; y <= 8; y++) {
+            for (int x = 1; x <= 8; x++) {
+                IChessPiece p = this.getAtPosition(new Position(x, y));
+                if (p != null) {
+                    if (p instanceof ChessPieceKing) b.append("K");
+                    if (p instanceof ChessPieceQueen) b.append("Q");
+                    if (p instanceof ChessPieceRook) b.append("R");
+                    if (p instanceof ChessPieceBishop) b.append("B");
+                    if (p instanceof ChessPieceKnight) b.append("N");
+                    if (p instanceof ChessPiecePawn) b.append("p");
+                }
+                else b.append('.');
+            }
+            b.append('\n');
+        }
+        return b.toString();
     }
 }
