@@ -111,11 +111,18 @@ public class ChessRulesTest {
         board.movePiece(whitePawn, forward(whitePawn, 1)); // move to rank 5
         
         board.movePiece(blackPawn, forward(blackPawn, 2)); // move to rank 5
+
+        Position blackPos = blackPawn.getPosition();
         
         // last performed move should be the move of blackPawn, so whitePawn
         // should be able to perform en passant in this situation
         Position whiteTarget = whitePawn.getPosition().northeast(1);
         existsMoveToPosition(whiteTarget, whitePawn);
+
+        // check that black pawn gets captured
+        board.movePiece(whitePawn, whiteTarget);
+        assertTrue("En passant does not capture enemy piece",
+                board.getAtPosition(blackPos) == null);
     }
     
     @Test
@@ -139,9 +146,15 @@ public class ChessRulesTest {
 
         board.movePiece(whitePawn, forward(whitePawn, 2)); // move to rank 4
 
+        Position whitePos = whitePawn.getPosition();
+
         // check that blackPawn has a possible move to blackTarget
         Position blackTarget = blackPawn.getPosition().southwest(1);
         existsMoveToPosition(blackTarget, blackPawn);
+
+        // check that white pawn gets captured
+        assertTrue("En passant does not capture enemy piece",
+                board.getAtPosition(whitePos) == null);
     }
 
     @Test
