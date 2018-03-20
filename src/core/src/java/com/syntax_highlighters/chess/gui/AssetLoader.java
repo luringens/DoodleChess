@@ -22,7 +22,9 @@ public class AssetLoader {
                 "rook_black.png",
                 "paper.png",
                 "tile.png",
-                "tile_black.png"
+                "tile_black.png",
+                "tile_highlight.png",
+                "segoeui.png"
         };
 
         for(String path : textures)
