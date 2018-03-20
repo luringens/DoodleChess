@@ -4,7 +4,6 @@ import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,7 +54,7 @@ public class ChessPieceQueen extends AbstractChessPiece {
         List<Move> w = movesInDirection(-1, 0, board);
         return Stream.of(ne, nw, se, sw, n, e, s, w)
                 .flatMap(Collection::stream)
-                .filter(m -> !board.movePutsKingInCheck(m, isWhite))
+                .filter(m -> board.moveDoesntPutKingInCheck(m, isWhite))
                 .collect(Collectors.toList());
 
     }

@@ -5,7 +5,6 @@ import com.syntax_highlighters.chess.entities.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Holds the current state of the board.
@@ -265,7 +264,7 @@ public class Board {
         }
         return ret;
     }
-    public boolean movePutsKingInCheck(Move m, Boolean kingWhite) {
+    public boolean moveDoesntPutKingInCheck(Move m, Boolean kingWhite) {
         Position targetPosToCheck;
         if (m.piece instanceof ChessPieceKing) targetPosToCheck = m.getPosition();
         else {
@@ -274,14 +273,14 @@ public class Board {
                     .findFirst();
 
             // Return false if there is no king.
-            if (!a.isPresent()) return false;
+            if (!a.isPresent()) return true;
 
             targetPosToCheck = a.get().getPosition();
         }
 
         return getAllPieces().stream()
                 .filter(p -> p.isWhite() != kingWhite)
-                .anyMatch(p -> !p.getPosition().equals(m.getPosition()) && p.threatens(targetPosToCheck, this));
+                .noneMatch(p -> !p.getPosition().equals(m.getPosition()) && p.threatens(targetPosToCheck, this));
     }
     /**
      * Get the last move performed in the game.

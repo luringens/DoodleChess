@@ -81,7 +81,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
         enPassantCheck(board, possibleMoves, pos.west(1));
 
         return possibleMoves.stream()
-                .filter(m -> !board.movePutsKingInCheck(m, isWhite))
+                .filter(m -> board.moveDoesntPutKingInCheck(m, isWhite))
                 .collect(Collectors.toList());
 
     }

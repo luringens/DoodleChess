@@ -57,11 +57,8 @@ public class ChessPieceKnight extends AbstractChessPiece {
         checkMove(board, possibleMoves, new Position(x-2,y+1));
         checkMove(board, possibleMoves, new Position(x-2,y-1));
         return possibleMoves.stream()
-                .filter(m -> !board.movePutsKingInCheck(m, isWhite))
+                .filter(m -> board.moveDoesntPutKingInCheck(m, isWhite))
                 .collect(Collectors.toList());
-
-
-        //throw new NotImplementedException();
     }
     //Checks the move
     public void checkMove(Board board, ArrayList<Move> possibleMoves, Position pos){

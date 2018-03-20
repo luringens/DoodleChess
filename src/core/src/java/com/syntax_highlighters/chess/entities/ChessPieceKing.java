@@ -113,7 +113,7 @@ public class ChessPieceKing extends AbstractChessPiece {
         }
 
         return possibleMoves.stream()
-                .filter(m -> !board.movePutsKingInCheck(m, isWhite))
+                .filter(m -> board.moveDoesntPutKingInCheck(m, isWhite))
                 .collect(Collectors.toList());
     }
 
