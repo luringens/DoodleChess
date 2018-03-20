@@ -12,21 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ChessPieceTest {
     @Test
-    void TestRookMoves() {
-        ArrayList<IChessPiece> pieces = new ArrayList<>();
-        IChessPiece rook = new ChessPieceRook(new Position(7,7), false);
-        IChessPiece king = new ChessPieceKing(new Position(4,4), false);
-        IChessPiece pawn = new ChessPiecePawn(new Position(3,3), true);
-        pieces.add(rook);
-        pieces.add(king);
-        pieces.add(pawn);
-        Board board = new Board(pieces);
-
-        List<Move> moves = rook.allPossibleMoves(board);
-        List<Move> moves2 = king.allPossibleMoves(board);
-        List<Move> moves3 = pawn.allPossibleMoves(board);
-    }
-    @Test
     void TestKingMoves() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
         IChessPiece king = new ChessPieceKing(new Position(4,4), false);
@@ -69,7 +54,7 @@ class ChessPieceTest {
     }
 
     @Test
-    void TestRookPawn() {
+    void TestPawn() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
         IChessPiece piece = new ChessPiecePawn(new Position(7,7), false);
         pieces.add(piece);
@@ -80,7 +65,7 @@ class ChessPieceTest {
     }
 
     @Test
-    void TestRookKnight() {
+    void TestKnight() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
         IChessPiece piece = new ChessPieceKnight(new Position(4,4), false);
         pieces.add(piece);
