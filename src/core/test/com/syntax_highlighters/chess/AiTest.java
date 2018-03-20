@@ -10,17 +10,23 @@ import java.util.ArrayList;
 
 class AiTest {
     @Test
-    /// Tests if a pawn will take a king instead of moving forwards.
-    void takesKing() {
+    void takesQueenOverPawn() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
-        pieces.add(new ChessPieceKing(new Position(3, 3), false));
+        IChessPiece queen = new ChessPieceQueen(new Position(3, 3), false);
+        pieces.add(queen);
+        pieces.add(new ChessPiecePawn(new Position(1, 3), false));
         pieces.add(new ChessPiecePawn(new Position(2, 2), true));
+
+        // Add kings so the AI doesn't think it's Game Over.
+        pieces.add(new ChessPieceKing(new Position(1, 8), false));
+        pieces.add(new ChessPieceKing(new Position(8, 8), true));
+
         Board board = new Board(pieces);
         
         IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Easy);
         ai.PerformMove(board);
 
-        assertEquals(1, board.getAllPieces().size());
+        assertFalse(board.getAllPieces().contains(queen));
     }
 
     @Test
