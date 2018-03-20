@@ -15,7 +15,7 @@ public class Button extends Actor {
     ShaderProgram shader;
     Texture texture;
     Text text;
-    float time = 0;
+    int time = 0;
 
     public Button(AssetManager manager)
     {
@@ -36,21 +36,20 @@ public class Button extends Actor {
         text.setText("Play");
         text.setColor(0,0,0,1);
 
-        time = (float)Math.random() * 10000.0f;
-        time = (float)Math.floor(time);
+        time = (int)(Math.random() * 10000.0f);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        time+=0.01f;
+        time+=1;
 
         batch.setShader(shader);
 
         Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
         shader.setUniformi("u_texture", 0);
         Vector2 size = new Vector2(texture.getWidth(), texture.getHeight());
-        shader.setUniformf("u_time", time);
+        shader.setUniformf("u_time", time / 100.f);
         shader.setUniformf("u_resolution", size);
         batch.draw(texture, getX(),getY(),getWidth(),getHeight());
 

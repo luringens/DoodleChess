@@ -1,6 +1,7 @@
 package com.syntax_highlighters.chess.gui.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
@@ -47,6 +48,9 @@ public class MainScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         board = new UiBoard(assetManager, game, stage);
+        float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 50;
+        board.setSize(size, size);
+        board.setPosition(Gdx.graphics.getWidth() / 2.f - size / 2.f, Gdx.graphics.getHeight() / 2.f - size / 2.f);
         stage.addActor(paperImage);
         stage.addActor(board);
 
@@ -60,6 +64,7 @@ public class MainScreen implements Screen {
         turnText.setPosition(200, 800);
         turnText.setZIndex(0);
         stage.addActor(turnText);
+        stage.setDebugAll(true);
     }
 
     @Override
@@ -73,6 +78,10 @@ public class MainScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
+        float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 50;
+        size = Math.min(size, 1000);
+        board.setSize(size, size);
+        board.setPosition(Gdx.graphics.getWidth() / 2.f - size / 2.f, Gdx.graphics.getHeight() / 2.f - size / 2.f);
     }
 
     @Override
