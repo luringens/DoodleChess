@@ -21,6 +21,8 @@ public class Board {
     public static final int BOARD_HEIGHT = 8;
     
     private Move lastMove;
+    private IChessPiece whiteKing = null; // For caching purposes.
+    private IChessPiece blackKing = null; // For caching purposes.
 
     List<IChessPiece> pieces = new ArrayList<>();
 
@@ -313,5 +315,30 @@ public class Board {
             b.append('\n');
         }
         return b.toString();
+    }
+
+    /**
+     * Find the king of the specified color and caches the result.
+     *
+     * @param white Whether to look for the white or black king.
+     * @return The king of the specified color.
+     */
+    public IChessPiece getKing(boolean white) {
+        if (white) {
+            if (whiteKing == null) {
+                whiteKing = getAllPieces().stream()
+                        .filter(p -> p.isWhite() && p instanceof ChessPieceKing)
+                        .findFirst().orElse(null);
+            }
+            return whiteKing;
+        }
+        else {
+            if (blackKing == null) {
+                blackKing = getAllPieces().stream()
+                        .filter(p -> !p.isWhite() && p instanceof ChessPieceKing)
+                        .findFirst().orElse(null);
+            }
+            return blackKing;
+        }
     }
 }
