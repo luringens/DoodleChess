@@ -40,7 +40,7 @@ class ChessPieceTest {
     @Test
     void TestBishopMoves() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
-        IChessPiece piece = new ChessPieceQueen(new Position(4,4), false);
+        IChessPiece piece = new ChessPieceBishop(new Position(4,4), false);
         pieces.add(piece);
         Board board = new Board(pieces);
 
