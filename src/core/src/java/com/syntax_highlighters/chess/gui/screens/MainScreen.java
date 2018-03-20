@@ -3,12 +3,20 @@ package com.syntax_highlighters.chess.gui.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.Game;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.gui.UiBoard;
+import com.syntax_highlighters.chess.gui.actors.Text;
 
 /**
  * Game main screen
@@ -18,24 +26,47 @@ public class MainScreen implements Screen {
     private Stage stage;
     UiBoard board;
 
+    private Texture paper;
+    private Image paperImage;
     private AssetManager assetManager;
+
+    private SpriteBatch batch;
+
+    private Text turnText;
 
     public MainScreen(AssetManager manager) {
         assetManager = manager;
-        game = new Game(null, AiDifficulty.Easy);
+        paper = manager.get("paper.png", Texture.class);
+        paperImage = new Image(paper);
 
-        stage = new Stage(new ScreenViewport());
+        game = new Game(null, null);
+
+        batch = new SpriteBatch();
+
+        stage = new Stage(new ScreenViewport(), batch);
         Gdx.input.setInputProcessor(stage);
 
-        board = new UiBoard(assetManager, game);
+        board = new UiBoard(assetManager, game, stage);
+        stage.addActor(paperImage);
         stage.addActor(board);
+
+        Texture texture = new Texture(Gdx.files.internal("segoeui.png"));
+        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        BitmapFont segoeUi = new BitmapFont(Gdx.files.internal("segoeui.fnt"), new TextureRegion(texture), false);
+
+
+        turnText = new Text(segoeUi);
+        turnText.setColor(0,0,0,1);
+        turnText.setPosition(200, 800);
+        turnText.setZIndex(0);
+        stage.addActor(turnText);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.25f, 0.3f, 0.35f, 1);
+        turnText.setText(game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stage.act(delta);
         stage.draw();
     }
 

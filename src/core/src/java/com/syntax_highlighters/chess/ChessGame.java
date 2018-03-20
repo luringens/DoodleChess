@@ -2,8 +2,7 @@ package com.syntax_highlighters.chess;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
-import com.syntax_highlighters.chess.gui.AssetLoader;
-import com.syntax_highlighters.chess.gui.screens.MainScreen;
+import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
 
 /**
  * Wrapper for LibGdx Game class
@@ -14,11 +13,7 @@ public class ChessGame extends Game {
 	@Override
 	public void create () {
 		assetManager = new AssetManager();
-		AssetLoader.LoadAssets(assetManager);
-
-		// TODO: splash screen
-		assetManager.finishLoading();
-		setScreen(new MainScreen(assetManager));
+		setScreen(new MainMenuScreen(this, assetManager));
 	}
 
 	@Override
