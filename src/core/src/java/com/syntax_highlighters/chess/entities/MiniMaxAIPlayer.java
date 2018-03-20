@@ -67,30 +67,40 @@ class MiniMax {
         if (isMaximizing) {
             int bestScore = -100000;
             for (Move move : moves) {
-                move.DoMove(board);
-                bestScore = Math.max(bestScore, MiniMaxScore(depth - 1, board, isWhite, false, alpha, beta));
-                move.UndoMove(board);
-
+                // Check if the move takes the king.
+                if (move.getPosition() == board.getKing(isWhite)) {
+                    bestScore = 10000;
+                }
+                else {
+                    move.DoMove(board);
+                    bestScore = Math.max(bestScore, MiniMaxScore(depth - 1, board, isWhite, false, alpha, beta));
+                    move.UndoMove(board);
+                }
                 // Alpha-beta pruning - early return for optimization
-                //alpha = Math.max(alpha, bestScore);
-                //if (beta <= alpha) {
-                //    return bestScore;
-                //}
+                alpha = Math.max(alpha, bestScore);
+                if (beta <= alpha) {
+                    return bestScore;
+                }
             }
             return bestScore;
         }
         else {
             int bestScore = 10000;
             for (Move move : moves) {
-                move.DoMove(board);
-                bestScore = Math.min(bestScore, MiniMaxScore(depth - 1, board, isWhite, true, alpha, beta));
-                move.UndoMove(board);
-
+                // Check if the move takes the king.
+                if (move.getPosition() == board.getKing(!isWhite)) {
+                    bestScore = -10000;
+                }
+                else {
+                    move.DoMove(board);
+                    bestScore = Math.min(bestScore, MiniMaxScore(depth - 1, board, isWhite, true, alpha, beta));
+                    move.UndoMove(board);
+                }
                 // Alpha-beta pruning - early return for optimization
-                //beta = Math.min(beta, bestScore);
-                //if (beta <= alpha) {
-                //    return bestScore;
-                //}
+                beta = Math.min(beta, bestScore);
+                if (beta <= alpha) {
+                    return bestScore;
+                }
             }
             return bestScore;
         }

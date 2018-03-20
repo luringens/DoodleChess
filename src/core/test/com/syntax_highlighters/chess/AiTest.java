@@ -41,15 +41,6 @@ class AiTest {
                 time < allowedTime);
     }
 
-    @Test
-    void speedTestHard() {
-        final long allowedTime = 5000;
-        IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Hard);
-        long time = speedTest(ai);
-        assertTrue("The hard AI is too slow (" + time + " >= " + allowedTime + ")",
-                time < allowedTime);
-    }
-
     /** Measures how long an AI spends deciding a move on a fresh chess board.
      * @param ai The AI to measure.
      * @return The number of millseconds spent.
