@@ -63,7 +63,6 @@ public class MainScreen implements Screen {
         turnText = new Text(segoeUi);
         turnText.setColor(0,0,0,1);
         stage.addActor(turnText);
-        stage.setDebugAll(true);
         turnText.setText(game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
         fbo = new FrameBuffer(Pixmap.Format.RGB888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
