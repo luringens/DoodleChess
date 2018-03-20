@@ -268,7 +268,7 @@ public class Board {
         m.DoMove(b);
         for(IChessPiece p : b.getAllPieces())
             if (p.isWhite() != kingWhite)
-                for(Move mo : p.allPossibleMoves((b)))
+                for(Move mo : p.allPossibleMovesUnfiltered(b))
                     if (mo.getPosition() == king.getPosition()) {
                         m.UndoMove(b);
                         return true;

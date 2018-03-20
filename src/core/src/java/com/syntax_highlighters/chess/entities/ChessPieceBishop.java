@@ -44,13 +44,29 @@ public class ChessPieceBishop extends AbstractChessPiece {
      */
     @Override
     public List<Move> allPossibleMoves(Board board) {
+        return allPossibleMovesUnfiltered(board).stream()
+                .filter(m -> !board.movePutsKingInCheck(board, m, isWhite))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Return all possible moves the bishop can make.
+     *
+     * A bishop can move any number of steps in any diagonal direction, but only
+     * as long as the path is not blocked by a piece. If it is blocked by an
+     * enemy piece, the bishop may capture that piece but go no further.
+     *
+     * @param board The current state of the board
+     * @return A List of all the possible moves the piece can make
+     */
+    @Override
+    public List<Move> allPossibleMovesUnfiltered(Board board) {
         List<Move> ne = movesInDirection(1, 1, board);
         List<Move> nw = movesInDirection(-1, 1, board);
         List<Move> se = movesInDirection(-1, -1, board);
         List<Move> sw = movesInDirection(1, -1, board);
         return Stream.of(ne, nw, se, sw)
                 .flatMap(Collection::stream)
-                .filter(m -> board.movePutsKingInCheck(board, m, isWhite))
                 .collect(Collectors.toList());
     }
 

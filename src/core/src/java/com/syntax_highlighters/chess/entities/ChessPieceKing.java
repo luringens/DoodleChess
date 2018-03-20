@@ -55,7 +55,7 @@ public class ChessPieceKing extends AbstractChessPiece {
                         .collect(Collectors.toList());
                 }
                 else {
-                    possiblePieceMoves = a.allPossibleMoves(board).stream()
+                    possiblePieceMoves = a.allPossibleMovesUnfiltered(board).stream()
                         .map(p -> p.getPosition())
                         .filter(p -> !possibleMoves.contains(p))
                         .collect(Collectors.toList());
@@ -84,18 +84,23 @@ public class ChessPieceKing extends AbstractChessPiece {
      *
      * @return A List of all the possible moves the piece can make
      */
-    @Override 
+    @Override
     public List<Move> allPossibleMoves(Board board) {
+        return allPossibleMovesUnfiltered(board).stream()
+                .filter(m -> !board.movePutsKingInCheck(board, m, isWhite))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Move> allPossibleMovesUnfiltered(Board board) {
         // get legal regular moves
-       // Move m=new Move();
+        // Move m=new Move();
         List<Position> enemyMoves = allEnemyMoves(board);
         List<Move> possibleMoves = getPosition().neighbors().stream()
-            .filter(p -> board.isOnBoard(p) &&
-                    !board.isFriendly(this, p) &&
-                    !enemyMoves.contains(p))
+                .filter(p -> board.isOnBoard(p) &&
+                        !board.isFriendly(this, p))
                 .map(p -> new Move(this.getPosition(), p, this))
-                    //legg in move i metoden !board.movePutsKingInCheck(board,,isWhite()))
-                    .collect(Collectors.toList());
+                .collect(Collectors.toList());
 
         // handle castling
         if(!this.hasMoved()){
@@ -109,7 +114,7 @@ public class ChessPieceKing extends AbstractChessPiece {
                 // The King is in check, and thus cannot perform castling
                 // (see https://en.wikipedia.org/wiki/Castling)
             }
-            
+
             if (canCastle(board, enemyMoves, pos, pos.west(4), p -> p.west(1))){
                 possibleMoves.add(new CastlingMove(this, (ChessPieceRook)board.getAtPosition(pos.west(4))));
             }
@@ -119,7 +124,6 @@ public class ChessPieceKing extends AbstractChessPiece {
         }
 
         return possibleMoves;
-
     }
 
     // I might want to make this either an interface in
