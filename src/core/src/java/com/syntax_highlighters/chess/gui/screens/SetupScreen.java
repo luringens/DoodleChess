@@ -84,9 +84,9 @@ public class SetupScreen implements Screen {
     private void setDifficulty(int player, int difficulty)
     {
         if(player == -1)
-            player1Difficulty = AiDifficulty.values()[difficulty];
+            player1Difficulty = difficulty == -1 ? null : AiDifficulty.values()[difficulty];
         else
-            player2Difficulty = AiDifficulty.values()[difficulty];
+            player2Difficulty = difficulty == -1 ? null : AiDifficulty.values()[difficulty];
     }
 
     private void addDifficultyList(int player)
@@ -125,7 +125,7 @@ public class SetupScreen implements Screen {
                     super.clicked(event, x, y);
                     resetbuttonList(player);
                     button.setSelected(true);
-                    if(difficulty >= 0 && difficulty < AiDifficulty.values().length)
+                    if(difficulty >= -1 && difficulty < AiDifficulty.values().length)
                         setDifficulty(player, difficulty);
                 }
             });
@@ -133,7 +133,7 @@ public class SetupScreen implements Screen {
             if(i == 0)
             {
                 button.setSelected(true);
-                setDifficulty(player, 0);
+                setDifficulty(player, -1);
             }
 
             if(player == -1)
