@@ -10,6 +10,7 @@ import java.util.List;
 public abstract class AbstractChessPiece implements IChessPiece {
     protected boolean isWhite;
     protected Position position;
+    protected boolean hasMoved = false;
 
     /**
      * Constructor.
@@ -151,5 +152,20 @@ public abstract class AbstractChessPiece implements IChessPiece {
         }
 
         return moves;
+    }
+
+    /**
+     * Check whether piece has previously moved.
+     *
+     * This is used to determine whether or not the king is able to castle.
+     *
+     * @return true if the piece has moved before, false otherwise
+     */
+    public boolean hasMoved() {
+        return this.hasMoved;
+    }
+
+    public void setHasMoved(boolean b) {
+        this.hasMoved = b;
     }
 }

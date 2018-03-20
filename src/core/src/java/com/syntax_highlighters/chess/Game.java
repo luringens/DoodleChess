@@ -59,12 +59,8 @@ public class Game {
         
         // Performs move if valid, returns whether move was performed
 
-        if (piece instanceof ChessPieceKing){
-            ((ChessPieceKing) piece).setPieceToMoved();
-        }
-
-        if (piece instanceof ChessPieceRook) {
-            ((ChessPieceRook) piece).setPieceToMoved();
+        if (piece instanceof ChessPieceKing || piece instanceof ChessPieceRook){
+            piece.setHasMoved(true);
         }
         
         //TODO: move rook if castling.
