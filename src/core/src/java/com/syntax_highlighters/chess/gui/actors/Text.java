@@ -2,7 +2,9 @@ package com.syntax_highlighters.chess.gui.actors;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.syntax_highlighters.chess.Board;
 
 public class Text extends Actor {
     private BitmapFont font;
@@ -15,6 +17,15 @@ public class Text extends Actor {
     public void setText(String text)
     {
         this.text = text;
+    }
+
+    public void setCenter(float x, float y) {
+
+        GlyphLayout layout = new GlyphLayout();
+        layout.setText(font, text);
+
+        setX(x - layout.width/2.f);
+        setY(y + layout.height/2.f);
     }
 
     @Override

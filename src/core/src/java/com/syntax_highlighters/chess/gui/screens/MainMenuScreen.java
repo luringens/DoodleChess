@@ -4,26 +4,15 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.gui.AssetLoader;
+import com.syntax_highlighters.chess.gui.actors.Button;
 
 public class MainMenuScreen implements Screen {
 
@@ -31,14 +20,14 @@ public class MainMenuScreen implements Screen {
     private Image background;
 
     private Button playButton;
+    private Button scoreButton;
 
     private AssetManager assetManager;
 
     public MainMenuScreen(Game game, AssetManager assetManager) {
         this.assetManager = assetManager;
         assetManager.load("background2.png", Texture.class);
-        assetManager.load("play.png", Texture.class);
-        assetManager.load("play_pressed.png", Texture.class);
+        assetManager.load("button_template.png", Texture.class);
         assetManager.finishLoading();
 
         stage = new Stage(new ScreenViewport());
@@ -47,13 +36,16 @@ public class MainMenuScreen implements Screen {
         background = new Image(tex);
         background.setSize(800, 800);
 
-        Drawable neutral = new SpriteDrawable(new Sprite(assetManager.get("play.png", Texture.class)));
-        //Drawable down = new SpriteDrawable(new Sprite(assetManager.get("play_pressed.png", Texture.class)));
-        playButton = new Button(neutral);
-        playButton.setSize(200, 50);
+        playButton = new Button(assetManager);
+        playButton.setSize(250, 75);
+
+        scoreButton = new Button(assetManager);
+        scoreButton.setSize(250, 75);
+
 
         stage.addActor(background);
         stage.addActor(playButton);
+        stage.addActor(scoreButton);
 
         Gdx.input.setInputProcessor(stage);
 
@@ -75,14 +67,14 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if(playButton.isOver())
+        /*if(playButton.isOver())
         {
             Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Hand);
         }
         else
         {
             Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-        }
+        }*/
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
@@ -130,6 +122,7 @@ public class MainMenuScreen implements Screen {
         }
 
         playButton.setPosition(x + 80, height/1.75f);
+        scoreButton.setPosition(x + 80, height/1.75f - 75);
 
 
 

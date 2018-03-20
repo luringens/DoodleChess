@@ -24,7 +24,8 @@ public class AssetLoader {
                 "tile.png",
                 "tile_black.png",
                 "tile_highlight.png",
-                "segoeui.png"
+                "segoeui.png",
+                "button_template.png"
         };
 
         for(String path : textures)
