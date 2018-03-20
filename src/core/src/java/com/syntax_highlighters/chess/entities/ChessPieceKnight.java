@@ -57,7 +57,7 @@ public class ChessPieceKnight extends AbstractChessPiece {
         checkMove(board, possibleMoves, new Position(x-2,y+1));
         checkMove(board, possibleMoves, new Position(x-2,y-1));
         return possibleMoves.stream()
-                .filter(m -> board.movePutsKingInCheck(m, isWhite))
+                .filter(m -> !board.movePutsKingInCheck(m, isWhite))
                 .collect(Collectors.toList());
 
 
