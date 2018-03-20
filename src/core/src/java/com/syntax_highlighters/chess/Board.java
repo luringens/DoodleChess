@@ -4,6 +4,7 @@ import com.syntax_highlighters.chess.entities.*;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -267,10 +268,16 @@ public class Board {
     public boolean movePutsKingInCheck(Move m, Boolean kingWhite) {
         Position targetPosToCheck;
         if (m.piece instanceof ChessPieceKing) targetPosToCheck = m.getPosition();
-        else targetPosToCheck = getAllPieces().stream()
-                .filter(p -> p.isWhite() == kingWhite && p instanceof ChessPieceKing)
-                .findFirst().get().getPosition();
-                // Will crash if the King is dead (should never happen!)
+        else {
+            Optional<IChessPiece> a = getAllPieces().stream()
+                    .filter(p -> p.isWhite() == kingWhite && p instanceof ChessPieceKing)
+                    .findFirst();
+
+            // Return false if there is no king.
+            if (!a.isPresent()) return false;
+
+            targetPosToCheck = a.get().getPosition();
+        }
 
         return getAllPieces().stream()
                 .filter(p -> p.isWhite() != kingWhite)
