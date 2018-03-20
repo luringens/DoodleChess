@@ -33,12 +33,12 @@ public class MainScreen implements Screen {
 
     private Text turnText;
 
-    public MainScreen(AssetManager manager) {
+    public MainScreen(AiDifficulty player1Difficulty, AiDifficulty player2Difficulty, AssetManager manager) {
         assetManager = manager;
         paper = manager.get("paper.png", Texture.class);
         paperImage = new Image(paper);
 
-        game = new Game(null, null);
+        game = new Game(player1Difficulty, player2Difficulty);
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -46,7 +46,6 @@ public class MainScreen implements Screen {
         board = new UiBoard(assetManager, game, stage);
         float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 50;
         board.setSize(size, size);
-        board.setPosition(Gdx.graphics.getWidth() / 2.f - size / 2.f, Gdx.graphics.getHeight() / 2.f - size / 2.f);
         stage.addActor(paperImage);
         stage.addActor(board);
 
@@ -57,14 +56,15 @@ public class MainScreen implements Screen {
 
         turnText = new Text(segoeUi);
         turnText.setColor(0,0,0,1);
-        turnText.setPosition(200, 800);
-        turnText.setZIndex(0);
         stage.addActor(turnText);
         stage.setDebugAll(true);
+        turnText.setText(game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override
     public void render(float delta) {
+        game.PerformAIMove();
         turnText.setText(game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
@@ -77,8 +77,8 @@ public class MainScreen implements Screen {
         float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 100;
         size = Math.min(size, 1000);
         board.setSize(size, size);
-        board.setPosition(Gdx.graphics.getWidth() / 2.f - size / 2.f, Gdx.graphics.getHeight() / 2.f - size / 2.f + 50);
-        turnText.setCenter(Gdx.graphics.getWidth() / 2.f, Gdx.graphics.getHeight() / 2.f - size / 2.f);
+        board.setPosition(width / 2.f - size / 2.f, height / 2.f - size / 2.f + 50);
+        turnText.setCenter(width / 2.f, height / 2.f - size / 2.f);
     }
 
     @Override
