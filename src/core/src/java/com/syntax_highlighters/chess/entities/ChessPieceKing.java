@@ -112,8 +112,9 @@ public class ChessPieceKing extends AbstractChessPiece {
             }
         }
 
-        return possibleMoves;
-
+        return possibleMoves.stream()
+                .filter(m -> board.movePutsKingInCheck(m, isWhite))
+                .collect(Collectors.toList());
     }
 
     // I might want to make this either an interface in
