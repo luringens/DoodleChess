@@ -5,6 +5,7 @@ import com.syntax_highlighters.chess.entities.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Holds the current state of the board.
@@ -203,29 +204,10 @@ public class Board {
     public boolean movePiece(IChessPiece piece, Position toPosition) {
         assert isOnBoard(toPosition);
 
-        if (piece.canMoveTo(toPosition, this)) {
-            this.lastMove = new Move(piece.getPosition(), toPosition, piece);
-            
-            if (piece instanceof ChessPieceKing) {
-                piece.setHasMoved(true);
-                if (Math.abs(piece.getPosition().getX() - toPosition.getX()) > 1)
-                    performCastling(piece, toPosition);
-            }
-            else if(piece instanceof ChessPiecePawn){
-                piece.setHasMoved(true);
-                Position oldPos = piece.getPosition();
-                if (!isOccupied(toPosition) && toPosition.getY() != oldPos.getY()) {
-                    // pawn performed en passant
-                    // assume it was legal because of canMoveTo check above
-                    Position behind = new Position(toPosition.getX(), oldPos.getY());
-                    IChessPiece pieceCaptured = getAtPosition(behind);
-                    pieces.remove(pieceCaptured);
-                }
-            }
-            else if(piece instanceof ChessPieceRook)
-                piece.setHasMoved(true);
-            
-            putAtPosition(toPosition, piece);
+        Move m = piece.getMoveTo(toPosition, this);
+        if (m != null) {
+            this.lastMove = m;
+            m.DoMove(this);
             return true;
         }
         return false;
@@ -264,6 +246,7 @@ public class Board {
         }
         return ret;
     }
+
     public boolean moveDoesntPutKingInCheck(Move m, Boolean kingWhite) {
         Position targetPosToCheck;
         if (m.piece instanceof ChessPieceKing) targetPosToCheck = m.getPosition();

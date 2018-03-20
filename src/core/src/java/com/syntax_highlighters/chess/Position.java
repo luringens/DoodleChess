@@ -134,14 +134,11 @@ public class Position {
     /**
      * Return the position in chess notation.
      *
-     * @return A string on the form [a-h][1-8]
+     * @return "(x,y)" where x is the x coordinate and y is the y coordinate
      */
     @Override
     public String toString() {
-        // novalidity
-        char file = (char) ('a' + (this.x-1));
-        char rank = (char) ('0' + this.y);
-        return "" + file + rank;
+        return String.format("(%d,%d)", this.x, this.y);
     }
 
     /**

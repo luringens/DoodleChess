@@ -4,6 +4,7 @@ import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,19 @@ public abstract class AbstractChessPiece implements IChessPiece {
      */
     @Override
     public boolean canMoveTo(Position pos, Board board) {
-        return allPossibleMoves(board).stream().anyMatch(m -> m.getPosition().equals(pos));
+        return getMoveTo(pos, board) != null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Move getMoveTo(Position pos, Board board) {
+        List<Move> moves = allPossibleMoves(board).stream()
+            .filter(p -> p.getPosition().equals(pos))
+            .collect(Collectors.toList());
+        if (moves.size() == 0) return null;
+        return moves.get(0);
     }
 
     /**
@@ -167,16 +180,15 @@ public abstract class AbstractChessPiece implements IChessPiece {
     }
 
     /**
-     * Check whether piece has previously moved.
-     *
-     * This is used to determine whether or not the king is able to castle.
-     *
-     * @return true if the piece has moved before, false otherwise
+     * {@inheritDoc}
      */
     public boolean hasMoved() {
         return this.hasMoved;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setHasMoved(boolean b) {
         this.hasMoved = b;
     }

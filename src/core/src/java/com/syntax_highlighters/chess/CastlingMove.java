@@ -16,17 +16,17 @@ public class CastlingMove extends Move {
      */
     public CastlingMove(ChessPieceKing king, ChessPieceRook rook) {
         this.oldPos = king.getPosition();
-        this.rookOldPos = king.getPosition();
+        this.rookOldPos = rook.getPosition();
         this.rook = rook;
         this.piece = king;
 
         if (rook.getPosition().getX() < king.getPosition().getX()) {
             this.newPos = king.getPosition().west(2);
-            this.rookNewPos = king.getPosition().east(1);
+            this.rookNewPos = newPos.east(1);
         }
         else {
-            this.newPos = king.getPosition().west(2);
-            this.rookNewPos = king.getPosition().east(1);
+            this.newPos = king.getPosition().east(2);
+            this.rookNewPos = newPos.west(1);
         }
     }
 

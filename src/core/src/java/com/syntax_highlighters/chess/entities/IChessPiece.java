@@ -40,6 +40,16 @@ public interface IChessPiece {
     boolean canMoveTo(Position pos, Board board);
 
     /**
+     * Get the move to a given position, if possible.
+     *
+     * @param pos The position to move to
+     * @param board The current board state
+     *
+     * @return The Move if the piece can move there, null otherwise
+     */
+    Move getMoveTo(Position pos, Board board);
+
+    /**
      * Return all possible moves the piece can make.
      *
      * @param board The current state of the board
@@ -92,9 +102,22 @@ public interface IChessPiece {
      */
     String getAssetName();
 
+    /**
+     * Check whether piece has moved previously.
+     *
+     * This is used in {@link ChessPieceKing} and {@link ChessPieceRook} to test
+     * if castling can be done, and in {@link ChessPiecePawn} to check if the
+     * pawn can move two steps forward.
+     *
+     * @return true if the piece has moved, false otherwise
+     */
     boolean hasMoved();
 
-    void setHasMoved(boolean bool);
-
     boolean threatens(Position position, Board board);
+    /**
+     * Set "moved" state of piece.
+     *
+     * @param state The new state of the piece
+     */
+    void setHasMoved(boolean state);
 }
