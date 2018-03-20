@@ -2,17 +2,24 @@ package com.syntax_highlighters.chess.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Game;
 import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.gui.actors.Text;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 public class UiBoard extends Actor {
 
@@ -20,6 +27,7 @@ public class UiBoard extends Actor {
 
     private Texture tile;
     private Texture tile_black;
+    private Texture tile_highlight;
 
     private BitmapFont segoeUi;
     private Game game;
@@ -31,7 +39,8 @@ public class UiBoard extends Actor {
 
     private IChessPiece selectedPiece = null;
 
-    public UiBoard(AssetManager assetManager, Game game)
+
+    public UiBoard(AssetManager assetManager, Game game, Stage stage)
     {
         this.assetManager = assetManager;
         this.game = game;
@@ -39,9 +48,10 @@ public class UiBoard extends Actor {
         this.setHeight(SPACE_SIZE * Board.BOARD_HEIGHT + LEGEND_OFFSET);
         Texture texture = new Texture(Gdx.files.internal("segoeui.png"));
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        segoeUi = new BitmapFont(Gdx.files.internal("segoeui.fnt"), new TextureRegion(texture), false);
         tile = new Texture(Gdx.files.internal("tile.png"));
         tile_black = new Texture(Gdx.files.internal("tile_black.png"));
-        segoeUi = new BitmapFont(Gdx.files.internal("segoeui.fnt"), new TextureRegion(texture), false);
+        tile_highlight = new Texture(Gdx.files.internal("tile_highlight.png"));
 
         this.addListener(new InputListener() {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -100,11 +110,10 @@ public class UiBoard extends Actor {
         for(int x = 0; x < Board.BOARD_WIDTH; ++x)
             for(int y = 0; y < Board.BOARD_HEIGHT; ++y)
             {
-                if((x + y) % 2 == 1) continue;
                 batch.draw(tile, x * SPACE_SIZE + getX() + LEGEND_OFFSET, y * SPACE_SIZE + getY() + LEGEND_OFFSET, SPACE_SIZE, SPACE_SIZE);
             }
 
-        batch.setColor(1, 1, 1, 1);
+        batch.setColor(0.4f, 0.4f, 0.4f, 1.f);
         for(int x = 0; x < Board.BOARD_WIDTH; ++x)
             for(int y = 0; y < Board.BOARD_HEIGHT; ++y)
             {
@@ -145,7 +154,6 @@ public class UiBoard extends Actor {
 
     private void renderMoves(Batch batch)
     {
-        // TODO: Waiting for bug in allPossibleMoves to be resolved
         if(selectedPiece == null) return;
 
         for(Move move : selectedPiece.allPossibleMoves(game.getBoard()))
@@ -154,7 +162,7 @@ public class UiBoard extends Actor {
             int rx = pos.getX()-1;
             int ry = pos.getY()-1;
             batch.setColor(1, 0.84f, 0, 1);
-            batch.draw(tile, rx * SPACE_SIZE + getX() + LEGEND_OFFSET, ry * SPACE_SIZE + getY() + LEGEND_OFFSET, SPACE_SIZE, SPACE_SIZE);
+            batch.draw(tile_black, rx * SPACE_SIZE + getX() + LEGEND_OFFSET, ry * SPACE_SIZE + getY() + LEGEND_OFFSET, SPACE_SIZE, SPACE_SIZE);
         }
     }
 
@@ -184,10 +192,10 @@ public class UiBoard extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha)
     {
+        renderLegend(batch);
         renderBoard(batch);
         renderMoves(batch);
         renderPieces(batch);
-        renderLegend(batch);
     }
 
 }
