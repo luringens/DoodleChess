@@ -31,8 +31,6 @@ public class MainScreen implements Screen {
     private Image paperImage;
     private AssetManager assetManager;
 
-    private SpriteBatch batch;
-
     private Text turnText;
 
     public MainScreen(AssetManager manager) {
@@ -42,9 +40,7 @@ public class MainScreen implements Screen {
 
         game = new Game(null, null);
 
-        batch = new SpriteBatch();
-
-        stage = new Stage(new ScreenViewport(), batch);
+        stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
         board = new UiBoard(assetManager, game, stage);
@@ -78,10 +74,11 @@ public class MainScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-        float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 50;
+        float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 100;
         size = Math.min(size, 1000);
         board.setSize(size, size);
-        board.setPosition(Gdx.graphics.getWidth() / 2.f - size / 2.f, Gdx.graphics.getHeight() / 2.f - size / 2.f);
+        board.setPosition(Gdx.graphics.getWidth() / 2.f - size / 2.f, Gdx.graphics.getHeight() / 2.f - size / 2.f + 50);
+        turnText.setCenter(Gdx.graphics.getWidth() / 2.f, Gdx.graphics.getHeight() / 2.f - size / 2.f);
     }
 
     @Override
