@@ -30,7 +30,7 @@ class ChessPieceTest {
         Board board = new Board(pieces);
 
         List<Move> moves = piece.allPossibleMoves(board);
-        assertEquals(27, moves.size());
+        assertEquals(13, moves.size());
     }
     @Test
     void TestQueenMoves() {
