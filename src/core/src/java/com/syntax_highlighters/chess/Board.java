@@ -281,7 +281,7 @@ public class Board {
 
         return getAllPieces().stream()
                 .filter(p -> p.isWhite() != kingWhite)
-                .noneMatch(p -> !p.getPosition().equals(m.getPosition()) && p.threatens(targetPosToCheck, this));
+                .anyMatch(p -> !p.getPosition().equals(m.getPosition()) && p.threatens(targetPosToCheck, this));
     }
     /**
      * Get the last move performed in the game.
