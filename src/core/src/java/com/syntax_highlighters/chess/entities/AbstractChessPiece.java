@@ -154,6 +154,19 @@ public abstract class AbstractChessPiece implements IChessPiece {
         return moves;
     }
 
+    protected boolean threatenDirection(int dx, int dy, Position target, Board board) {
+        Position nextPos = new Position(position.getX() + dx, position.getY() + dy);
+        while (board.isOnBoard(nextPos)) {
+            if (board.isFriendly(this, nextPos)) return false;
+            if (board.isEnemy(this, nextPos))
+                return nextPos.equals(target);
+            if (target == nextPos) return true;
+            nextPos = new Position(nextPos.getX() + dx, nextPos.getY() + dy);
+        }
+
+        return false;
+    }
+
     /**
      * Check whether piece has previously moved.
      *

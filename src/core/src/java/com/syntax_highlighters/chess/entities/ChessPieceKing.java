@@ -87,15 +87,11 @@ public class ChessPieceKing extends AbstractChessPiece {
     @Override 
     public List<Move> allPossibleMoves(Board board) {
         // get legal regular moves
-       // Move m=new Move();
-        List<Position> enemyMoves = allEnemyMoves(board);
         List<Move> possibleMoves = getPosition().neighbors().stream()
             .filter(p -> board.isOnBoard(p) &&
-                    !board.isFriendly(this, p) &&
-                    !enemyMoves.contains(p))
-                .map(p -> new Move(this.getPosition(), p, this))
-                    //legg in move i metoden !board.movePutsKingInCheck(board,,isWhite()))
-                    .collect(Collectors.toList());
+                    !board.isFriendly(this, p))
+            .map(p -> new Move(this.getPosition(), p, this))
+            .collect(Collectors.toList());
 
         // handle castling
         if(!this.hasMoved()){
@@ -105,16 +101,14 @@ public class ChessPieceKing extends AbstractChessPiece {
                 // Handle this exceptional circumstance gracefully
                 return possibleMoves; // just return the moves we have thus far
             }
-            if (enemyMoves.contains(pos)) {
-                // The King is in check, and thus cannot perform castling
-                // (see https://en.wikipedia.org/wiki/Castling)
-            }
-            
-            if (canCastle(board, enemyMoves, pos, pos.west(4), p -> p.west(1))){
-                possibleMoves.add(new CastlingMove(this, (ChessPieceRook)board.getAtPosition(pos.west(4))));
-            }
-            if (canCastle(board, enemyMoves, pos, pos.east(3), p -> p.east(1))) {
-                possibleMoves.add(new CastlingMove(this, (ChessPieceRook)board.getAtPosition(pos.east(3))));
+            // Don't castle if in check
+            if (board.getAllPieces().stream().noneMatch(p -> p.threatens(pos, board))) {
+                if (canCastle(board, pos, pos.west(4), p -> p.west(1))){
+                    possibleMoves.add(new CastlingMove(this, (ChessPieceRook)board.getAtPosition(pos.west(4))));
+                }
+                if (canCastle(board, pos, pos.east(3), p -> p.east(1))) {
+                    possibleMoves.add(new CastlingMove(this, (ChessPieceRook)board.getAtPosition(pos.east(3))));
+                }
             }
         }
 
@@ -135,7 +129,6 @@ public class ChessPieceKing extends AbstractChessPiece {
      * Check if the king can castle in the specified direction.
      *
      * @param board The current board state
-     * @param threatenedPositions Passed as argument for efficiency
      * @param pos The starting position
      * @param target The ending position (rook should be there)
      * @param direction The direction to check in (ends at target)
@@ -143,8 +136,7 @@ public class ChessPieceKing extends AbstractChessPiece {
      * @return true if castling is possible in the given direction, false
      * otherwise
      */
-    private boolean canCastle(Board board, List<Position> threatenedPositions,
-            Position pos, Position target, PositionManipulator direction) {
+    private boolean canCastle(Board board, Position pos, Position target, PositionManipulator direction) {
 
         // Check the squares between the king and rook (assuming the rook is in
         // the direction specified by direction) for whether they're occupied,
@@ -152,7 +144,9 @@ public class ChessPieceKing extends AbstractChessPiece {
         // should maybe throw exception instead)
         do {
             pos = direction.transform(pos);
-            if (!board.isOnBoard(pos) || threatenedPositions.contains(pos)
+            Position finalPos = pos; // hax to make the compiler shut up
+            if (!board.isOnBoard(pos)
+                    || board.getAllPieces().stream().noneMatch(p -> p.threatens(finalPos, board))
                     || board.isOccupied(pos))
                 return false;
         } while (!direction.transform(pos).equals(target));
@@ -165,7 +159,7 @@ public class ChessPieceKing extends AbstractChessPiece {
         // - The rook hasn't moved
         IChessPiece piece = board.getAtPosition(direction.transform(pos));
         return piece != null && piece.isWhite() == isWhite() &&
-               piece instanceof ChessPieceRook && !((ChessPieceRook)piece).hasMoved();
+               piece instanceof ChessPieceRook && !piece.hasMoved();
     }
 
     /**
@@ -200,5 +194,10 @@ public class ChessPieceKing extends AbstractChessPiece {
     @Override
     public String getAssetName() {
         return isWhite() ? "king_white.png" : "king_black.png";
+    }
+
+    @Override
+    public boolean threatens(Position p, Board b) {
+        return position.neighbors().stream().anyMatch(p::equals);
     }
 }

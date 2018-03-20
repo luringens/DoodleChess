@@ -50,7 +50,7 @@ public class ChessPieceBishop extends AbstractChessPiece {
         List<Move> sw = movesInDirection(1, -1, board);
         return Stream.of(ne, nw, se, sw)
                 .flatMap(Collection::stream)
-                .filter(m -> board.movePutsKingInCheck(board, m, isWhite))
+                .filter(m -> board.movePutsKingInCheck(m, isWhite))
                 .collect(Collectors.toList());
     }
 
@@ -76,5 +76,13 @@ public class ChessPieceBishop extends AbstractChessPiece {
     @Override
     public String getAssetName() {
         return isWhite() ? "bishop_white.png" : "bishop_black.png";
+    }
+
+    @Override
+    public boolean threatens(Position p, Board b) {
+        return threatenDirection(1, 1, p, b)
+                || threatenDirection(1, -1, p, b)
+                || threatenDirection(-1, -1, p, b)
+                || threatenDirection(-1, 1, p, b);
     }
 }

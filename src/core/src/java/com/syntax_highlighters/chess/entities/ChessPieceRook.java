@@ -31,7 +31,7 @@ public class ChessPieceRook extends AbstractChessPiece {
              0,  0,  0,  5,  5,  0,  0,  0
         };
     }
-    
+
     /**
      * Return all possible moves the rook can make.
      *
@@ -54,7 +54,7 @@ public class ChessPieceRook extends AbstractChessPiece {
         List<Move> w = movesInDirection(-1, 0, board);
         return Stream.of(n, e, s, w)
                 .flatMap(Collection::stream)
-                 .filter(m -> board.movePutsKingInCheck(board, m, isWhite))
+                 .filter(m -> board.movePutsKingInCheck(m, isWhite))
                 .collect(Collectors.toList());
 
     }
@@ -81,5 +81,13 @@ public class ChessPieceRook extends AbstractChessPiece {
     @Override
     public String getAssetName() {
         return isWhite() ? "rook_white.png" : "rook_black.png";
+    }
+
+    @Override
+    public boolean threatens(Position p, Board b) {
+        return threatenDirection(0, 1, p, b)
+                || threatenDirection(0, -1, p, b)
+                || threatenDirection(1, 0, p, b)
+                || threatenDirection(-1, 0, p, b);
     }
 }

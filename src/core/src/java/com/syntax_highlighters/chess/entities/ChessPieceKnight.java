@@ -57,7 +57,7 @@ public class ChessPieceKnight extends AbstractChessPiece {
         checkMove(board, possibleMoves, new Position(x-2,y+1));
         checkMove(board, possibleMoves, new Position(x-2,y-1));
         return possibleMoves.stream()
-                .filter(m -> board.movePutsKingInCheck(board, m, isWhite))
+                .filter(m -> board.movePutsKingInCheck(m, isWhite))
                 .collect(Collectors.toList());
 
 
@@ -95,5 +95,11 @@ public class ChessPieceKnight extends AbstractChessPiece {
     @Override
     public String getAssetName() {
         return isWhite() ? "knight_white.png" : "knight_black.png";
+    }
+
+    @Override
+    public boolean threatens(Position p, Board b) {
+        return Math.abs(p.getX() - position.getX()) == 1 && Math.abs(p.getY() - position.getY()) == 2
+                || Math.abs(p.getX() - position.getX()) == 2 && Math.abs(p.getY() - position.getY()) == 1;
     }
 }

@@ -95,4 +95,6 @@ public interface IChessPiece {
     boolean hasMoved();
 
     void setHasMoved(boolean bool);
+
+    boolean threatens(Position position, Board board);
 }

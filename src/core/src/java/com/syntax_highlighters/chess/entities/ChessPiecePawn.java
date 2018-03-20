@@ -81,7 +81,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
         enPassantCheck(board, possibleMoves, pos.west(1));
 
         return possibleMoves.stream()
-                .filter(m -> board.movePutsKingInCheck(board, m, isWhite))
+                .filter(m -> board.movePutsKingInCheck(m, isWhite))
                 .collect(Collectors.toList());
 
     }
@@ -175,5 +175,13 @@ public class ChessPiecePawn extends AbstractChessPiece {
     private Position forward(int nSteps) {
         if (isWhite) return this.getPosition().north(nSteps);
         return this.getPosition().south(nSteps);
+    }
+
+    @Override
+    public boolean threatens(Position p, Board b) {
+        return p.equals(position.east(1).north(1)) || p.equals(position.west(1).north(1))
+            // en passant
+            || p.equals(position.east(1)) && b.getAtPosition(position.east(1).north(1)) == null
+            || p.equals(position.west(1)) && b.getAtPosition(position.west(1).north(1)) == null;
     }
 }
