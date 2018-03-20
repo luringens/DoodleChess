@@ -43,6 +43,9 @@ public class UiBoard extends Actor {
 
         this.addListener(new InputListener() {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                // input not valid when ai
+                if(game.nextPlayerIsAI()) return false;
+
                 float tileWidth = getSpaceWidth();
                 float tileHeight = getSpaceHeight();
                 int px = (int) ((x-LEGEND_OFFSET) / tileWidth) + 1;
