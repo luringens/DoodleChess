@@ -32,43 +32,6 @@ public class ChessPieceKing extends AbstractChessPiece {
     }
 
     /**
-     * Get all positions threatened by the enemy.
-     *
-     * @return A List of the Positions which the enemy could reach if it was
-     * their turn now
-     */
-    private List<Position> allEnemyMoves(Board board){
-        List<Position> possibleMoves = new ArrayList<>();
-        for(IChessPiece a : board.getAllPieces()) {
-            if (a.isWhite() != this.isWhite()) {
-                List<Position> possiblePieceMoves = null;
-                // I dislike doing this, but I can see no other way
-                if (a instanceof ChessPieceKing) {
-                    // Enemy king's legal moves to a first approximation
-                    // We have to treat the king specially because if we call
-                    // allPossibleMoves on him, he will recurse back into this
-                    // function, which will call it on this king, etc. That
-                    // leads to infinite recursion with no bottom and
-                    // SO-exception.
-                    possiblePieceMoves = a.getPosition().neighbors().stream()
-                        .filter(p -> board.isOnBoard(p) && !board.isOccupied(p))
-                        .collect(Collectors.toList());
-                }
-                else {
-                    possiblePieceMoves = a.allPossibleMoves(board).stream()
-                        .map(p -> p.getPosition())
-                        .filter(p -> !possibleMoves.contains(p))
-                        .collect(Collectors.toList());
-                }
-                possibleMoves.addAll(possiblePieceMoves);
-            }
-        }
-
-        return possibleMoves;
-    }
-
-
-    /**
      * Return all possible moves the king can make.
      *
      * A king can move one step in any direction, but only if it's free or
@@ -94,20 +57,18 @@ public class ChessPieceKing extends AbstractChessPiece {
             .collect(Collectors.toList());
 
         // handle castling
-        if(!this.hasMoved()){
+        if(!this.hasMoved() && getPosition().getX() == 5){
             Position pos = this.getPosition();
-            if (pos.getX() != 5) {
-                // The King was not placed on the board in its usual position
-                // Handle this exceptional circumstance gracefully
-                return possibleMoves; // just return the moves we have thus far
-            }
+            
             // Don't castle if in check
-            if (board.getAllPieces().stream().noneMatch(p -> p.threatens(pos, board))) {
+            if (!isThreatened(board)) {
                 if (canCastle(board, pos, pos.west(4), p -> p.west(1))){
-                    possibleMoves.add(new CastlingMove(this, (ChessPieceRook)board.getAtPosition(pos.west(4))));
+                    ChessPieceRook r = (ChessPieceRook)board.getAtPosition(pos.west(4));
+                    possibleMoves.add(new CastlingMove(this, r));
                 }
                 if (canCastle(board, pos, pos.east(3), p -> p.east(1))) {
-                    possibleMoves.add(new CastlingMove(this, (ChessPieceRook)board.getAtPosition(pos.east(3))));
+                    ChessPieceRook r = (ChessPieceRook)board.getAtPosition(pos.east(3));
+                    possibleMoves.add(new CastlingMove(this, r));
                 }
             }
         }
@@ -172,7 +133,9 @@ public class ChessPieceKing extends AbstractChessPiece {
      * @return true if a piece threatens the king, false otherwise
      */
     public boolean isThreatened(Board board) {
-        return allEnemyMoves(board).contains(this.getPosition());
+        return board.getAllPieces().stream()
+            .filter(p -> p.isWhite() != isWhite())
+            .anyMatch(p -> p.threatens(getPosition(), board));
     }
 
     /**

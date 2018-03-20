@@ -248,23 +248,18 @@ public class Board {
     }
 
     public boolean moveDoesntPutKingInCheck(Move m, Boolean kingWhite) {
-        Position targetPosToCheck;
-        if (m.piece instanceof ChessPieceKing) targetPosToCheck = m.getPosition();
-        else {
-            Optional<IChessPiece> a = getAllPieces().stream()
-                    .filter(p -> p.isWhite() == kingWhite && p instanceof ChessPieceKing)
-                    .findFirst();
-
-            // Return false if there is no king.
-            if (!a.isPresent()) return true;
-
-            targetPosToCheck = a.get().getPosition();
-        }
-
-        return getAllPieces().stream()
-                .filter(p -> p.isWhite() != kingWhite)
-                .noneMatch(p -> !p.getPosition().equals(m.getPosition()) && p.threatens(targetPosToCheck, this));
+        Optional<IChessPiece> a = getAllPieces().stream()
+            .filter(p -> p.isWhite() == kingWhite && p instanceof ChessPieceKing)
+            .findFirst();
+        if (!a.isPresent()) return true; // no move can put king in check
+        
+        ChessPieceKing king = (ChessPieceKing)a.get();
+        m.DoMove(this);
+        boolean inCheck = king.isThreatened(this);
+        m.UndoMove(this);
+        return !inCheck;
     }
+    
     /**
      * Get the last move performed in the game.
      *
