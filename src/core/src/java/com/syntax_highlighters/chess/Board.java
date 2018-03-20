@@ -297,10 +297,8 @@ public class Board {
         if (allPieces.size() == 0) return false; // not possible
         ChessPieceKing king = allPieces.stream()
                 .filter(p -> p instanceof ChessPieceKing && p.isWhite() == whitePlayer)
-                .map(p -> (ChessPieceKing)p)
-                .collect(Collectors.toList())
-                .get(0);
-        return king.isThreatened(this) && king.allPossibleMoves(this).size() == 0;
+                .map(p -> (ChessPieceKing)p).findFirst().orElse(null);
+        return king == null || king.isThreatened(this) && king.allPossibleMoves(this).size() == 0;
     }
 
     @Override
