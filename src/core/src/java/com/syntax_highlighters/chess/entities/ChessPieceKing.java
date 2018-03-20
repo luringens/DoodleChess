@@ -147,11 +147,13 @@ public class ChessPieceKing extends AbstractChessPiece {
             pos = direction.transform(pos);
             Position finalPos = pos; // hax to make the compiler shut up
             if (!board.isOnBoard(pos)
-                    || board.getAllPieces().stream().noneMatch(p -> p.threatens(finalPos, board))
-                    || board.isOccupied(pos))
+                    || board.isOccupied(pos)
+                    || board.getAllPieces().stream()
+                            .filter(p -> p.isWhite() != isWhite)
+                            .anyMatch(p -> p.threatens(finalPos, board))                    )
                 return false;
         } while (!direction.transform(pos).equals(target));
-        
+
         // Check that it's possible to castle with this piece
         // Conditions:
         // - There is a piece at the position
