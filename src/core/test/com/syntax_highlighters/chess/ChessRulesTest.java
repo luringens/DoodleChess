@@ -319,11 +319,7 @@ public class ChessRulesTest {
      * @param piece The piece to be moved
      */
     public void existsMoveToPosition(Position target, IChessPiece piece) {
-        assertEquals(1, piece.allPossibleMoves(board).stream()
-                .map(p -> p.getPosition())
-                .filter(p -> p.equals(target))
-                .collect(Collectors.toList())
-                .size());
+        assertTrue("No move to " + target, piece.canMoveTo(target, board));
     }
     
     /**
