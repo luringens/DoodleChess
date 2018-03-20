@@ -85,13 +85,6 @@ public class ChessPieceKing extends AbstractChessPiece {
      * @return A List of all the possible moves the piece can make
      */
     @Override
-    public List<Move> allPossibleMoves(Board board) {
-        return allPossibleMovesUnfiltered(board).stream()
-                .filter(m -> !board.movePutsKingInCheck(board, m, isWhite))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public List<Move> allPossibleMovesUnfiltered(Board board) {
         // get legal regular moves
         // Move m=new Move();

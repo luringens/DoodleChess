@@ -4,6 +4,7 @@ import com.syntax_highlighters.chess.entities.*;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Holds the current state of the board.
@@ -200,29 +201,10 @@ public class Board {
     public boolean movePiece(IChessPiece piece, Position toPosition) {
         assert isOnBoard(toPosition);
 
-        if (piece.canMoveTo(toPosition, this)) {
-            this.lastMove = new Move(piece.getPosition(), toPosition, piece);
-            
-            if (piece instanceof ChessPieceKing) {
-                piece.setHasMoved(true);
-                if (Math.abs(piece.getPosition().getX() - toPosition.getX()) > 1)
-                    performCastling(piece, toPosition);
-            }
-            else if(piece instanceof ChessPiecePawn){
-                piece.setHasMoved(true);
-                Position oldPos = piece.getPosition();
-                if (!isOccupied(toPosition) && toPosition.getY() != oldPos.getY()) {
-                    // pawn performed en passant
-                    // assume it was legal because of canMoveTo check above
-                    Position behind = new Position(toPosition.getX(), oldPos.getY());
-                    IChessPiece pieceCaptured = getAtPosition(behind);
-                    pieces.remove(pieceCaptured);
-                }
-            }
-            else if(piece instanceof ChessPieceRook)
-                piece.setHasMoved(true);
-            
-            putAtPosition(toPosition, piece);
+        Move m = piece.getMoveTo(toPosition, this);
+        if (m != null) {
+            this.lastMove = m;
+            m.DoMove(this);
             return true;
         }
         return false;
@@ -261,21 +243,22 @@ public class Board {
         }
         return ret;
     }
-    public boolean movePutsKingInCheck(Board b,Move m, Boolean kingWhite) {
-        IChessPiece king = b.getAllPieces().stream()
-                .filter(p -> p.isWhite() == kingWhite && p instanceof ChessPieceKing)
-                .findFirst().get();
-        m.DoMove(b);
-        for(IChessPiece p : b.getAllPieces())
-            if (p.isWhite() != kingWhite)
-                for(Move mo : p.allPossibleMovesUnfiltered(b))
-                    if (mo.getPosition() == king.getPosition()) {
-                        m.UndoMove(b);
-                        return true;
-                    }
+    public boolean movePutsKingInCheck(Move m, boolean kingWhite) {
+        // get king(s)
+        List<ChessPieceKing> myKings = getAllPieces().stream()
+            .filter(p -> p.isWhite() == kingWhite && p instanceof ChessPieceKing)
+            .map(p -> (ChessPieceKing)p)
+            .collect(Collectors.toList());
+        if (myKings.size() == 0) return false; // no move can put the king in check
 
-        m.UndoMove(b);
-        return false;
+        ChessPieceKing king = myKings.get(0); // assume this is the only king we care about
+        m.DoMove(this);
+        
+        // check if king threatened
+        boolean putsInCheck = king.isThreatened(this);
+        
+        m.UndoMove(this);
+        return putsInCheck;
     }
     /**
      * Get the last move performed in the game.
