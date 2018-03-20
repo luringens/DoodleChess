@@ -48,20 +48,15 @@ public class ChessPieceRook extends AbstractChessPiece {
      */
     @Override
     public List<Move> allPossibleMoves(Board board) {
-        return allPossibleMovesUnfiltered(board).stream()
-                .filter(m -> !board.movePutsKingInCheck(board, m, isWhite))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Move> allPossibleMovesUnfiltered(Board board) {
         List<Move> n = movesInDirection(0, 1, board);
         List<Move> e = movesInDirection(1, 0, board);
         List<Move> s = movesInDirection(0, -1, board);
         List<Move> w = movesInDirection(-1, 0, board);
         return Stream.of(n, e, s, w)
                 .flatMap(Collection::stream)
+                 .filter(m -> board.movePutsKingInCheck(board, m, isWhite))
                 .collect(Collectors.toList());
+
     }
 
     /**

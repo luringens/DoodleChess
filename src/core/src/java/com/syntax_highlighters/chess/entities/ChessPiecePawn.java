@@ -52,26 +52,19 @@ public class ChessPiecePawn extends AbstractChessPiece {
      */
     @Override
     public List<Move> allPossibleMoves (Board board) {
-        return allPossibleMovesUnfiltered(board).stream()
-                .filter(m -> !board.movePutsKingInCheck(board, m, isWhite))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Move> allPossibleMovesUnfiltered(Board board) {
         ArrayList<Move> possibleMoves = new ArrayList<>();
         Position pos = getPosition();
-
+        
         // one step forward
         Position f1 = this.forward(1);
-
+        
         // check if one step forward can be performed
         if (board.isOnBoard(f1) && !board.isOccupied(f1)) {
             possibleMoves.add(new Move(pos, f1, this));
-
+            
             // two steps forward
             Position f2 = this.forward(2);
-
+            
             // if one step forward can be performed, check if two steps forward
             // can be performed
             if (!this.hasMoved() && board.isOnBoard(f2) && !board.isOccupied(f2)) {
@@ -82,12 +75,15 @@ public class ChessPiecePawn extends AbstractChessPiece {
         // add move to take enemies, if possible
         takeEnemiesMove(board, possibleMoves, this.forward(1).east(1));
         takeEnemiesMove(board, possibleMoves, this.forward(1).west(1));
-
+        
         // add move to perform en passant, if possible
         enPassantCheck(board, possibleMoves, pos.east(1));
         enPassantCheck(board, possibleMoves, pos.west(1));
 
-        return possibleMoves;
+        return possibleMoves.stream()
+                .filter(m -> board.movePutsKingInCheck(board, m, isWhite))
+                .collect(Collectors.toList());
+
     }
 
     /**

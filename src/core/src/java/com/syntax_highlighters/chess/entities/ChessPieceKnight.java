@@ -44,13 +44,6 @@ public class ChessPieceKnight extends AbstractChessPiece {
      */
     @Override
     public List<Move> allPossibleMoves(Board board) {
-        return allPossibleMovesUnfiltered(board).stream()
-                .filter(m -> !board.movePutsKingInCheck(board, m, isWhite))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Move> allPossibleMovesUnfiltered(Board board) {
         ArrayList<Move> possibleMoves = new ArrayList<>();
         int x = getPosition().getX();
         int y = getPosition().getY();
@@ -63,10 +56,15 @@ public class ChessPieceKnight extends AbstractChessPiece {
         checkMove(board, possibleMoves, new Position(x+2,y-1));
         checkMove(board, possibleMoves, new Position(x-2,y+1));
         checkMove(board, possibleMoves, new Position(x-2,y-1));
-        return possibleMoves;
-    }
+        return possibleMoves.stream()
+                .filter(m -> board.movePutsKingInCheck(board, m, isWhite))
+                .collect(Collectors.toList());
 
-    private void checkMove(Board board, ArrayList<Move> possibleMoves, Position pos){
+
+        //throw new NotImplementedException();
+    }
+    //Checks the move
+    public void checkMove(Board board, ArrayList<Move> possibleMoves, Position pos){
         if(board !=null && board.isOnBoard(pos)){
                 if(board.getAtPosition(pos) ==null || board.isEnemy(this,pos)){ //kan også bruke isFriendly-metoden
                     possibleMoves.add(new Move(this.getPosition(), pos, this));

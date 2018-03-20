@@ -43,20 +43,10 @@ public interface IChessPiece {
      * Return all possible moves the piece can make.
      *
      * @param board The current state of the board
-     *
+     * 
      * @return A List of all the possible moves the piece can make
      */
     List<Move> allPossibleMoves(Board board);
-
-    /**
-     * Return all possible moves the piece can make, unfiltered by
-     * whether or not it will put the King in check.
-     *
-     * @param board The current state of the board
-     *
-     * @return A List of all the possible moves the piece can make
-     */
-    List<Move> allPossibleMovesUnfiltered(Board board);
 
     /**
      * Create a new instance of the chess piece with the same color, same
