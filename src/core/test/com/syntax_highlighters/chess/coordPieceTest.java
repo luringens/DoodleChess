@@ -1,17 +1,13 @@
 package syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.Position;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 
 public class coordPieceTest {
-   /*
-    ChessPieceKing whiteKing = new ChessPieceKing(0,4);
-    ChessPieceKing blackKing = new ChessPieceKing();
-    ChessPieceQueen whiteQueen = new ChessPieceQueen();
-    ChessPieceQueen blackQueen = new ChessPieceQueen();*/
+
     Position p = new Position(3,2);
     String notation = "a4";
     Position note = Position.fromChessNotation(notation);
@@ -31,28 +27,59 @@ public class coordPieceTest {
         assertEquals(note.getY(),4);
     }
 
-    /*
+
     @Test
-    public void wking(){ //checking white king pos
-        assertEquals(whiteKing.getX(),5);
-        assertEquals(whiteKing.getY(),1);
+    public void northNstepTest(){
+        assertEquals(p.north(3),new Position(3,5));
     }
 
     @Test
-    public void bKing(){ // checking black king pos
-        assertEquals(blackKing.getX(),4);
-        assertEquals(blackKing.getY(),7);
+    public void southNstepTest(){
+        assertEquals(p.south(3),new Position(3,-1));
     }
 
     @Test
-    public void wQueen(){ // checking white queen pos
-        assertEquals(whiteQueen.getX(),3);
-        assertEquals(whiteQueen.getY(),0);
+    public void westNstepTest(){
+        assertEquals(p.west(3),new Position(0,2));
+    }
+
+    @Test
+    public void eastNstepTest(){
+        assertEquals(p.east(3),new Position(6,2));
     }
     @Test
-    public void bQueen(){ //checking black queen pos
-        assertEquals(blackQueen.getX(),3);
-        assertEquals(blackQueen.getY(),7);
+    public void northWestNstepTest(){
+        assertEquals(p.northwest(3),new Position(0,5));
     }
-    */
+
+    @Test
+    public void northEastNstepTest(){
+        assertEquals(p.northeast(3),new Position(6,5));
+    }
+
+    @Test
+    public void southEastNstepTest(){
+        assertEquals(p.southeast(3),new Position(6,-1));
+    }
+
+    @Test
+    public void southWestNstepTest(){
+        assertEquals(p.southwest(3),new Position(0,-1));
+    }
+
+    @Test
+    public void toStringtest(){
+        assertEquals(p.toString(),"(3,2)");
+    }
+
+    @Test
+    public void equalsTest(){
+    assertTrue(p.equals(new Position (3,2)));
+    }
+
+    @Test
+    public void hashTest(){
+        assertEquals(p.hashCode(), new Position (3,2).hashCode());
+    }
+
 }

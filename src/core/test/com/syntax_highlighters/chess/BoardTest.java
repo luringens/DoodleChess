@@ -6,6 +6,7 @@ import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 import org.junit.jupiter.api.Test;
 import java.util.List;
+import java.util.ArrayList;
 
 
 import java.lang.reflect.Executable;
@@ -17,23 +18,8 @@ public class BoardTest {
     Board board = new Board ();
     Position p = new Position(3,2);
     IChessPiece piece = new ChessPieceKing(p,true);
-    List<IChessPiece> pieceList;
+    List<IChessPiece> pieceList = new ArrayList<>();
 
-
-
-   /*@Test
-    public void setupTest(){
-
-        board.setupNewGame();
-        for(IChessPiece k : board.getAllPieces() ){
-
-        }
-
-    }
-    */
-
-
-        //Tests the the putAtPosition function
 
    @Test
    public void putAtPositionTest(){
@@ -131,9 +117,6 @@ public class BoardTest {
         k.getAllPieces().removeAll(k.getAllPieces());
         assertEquals(k.getAllPieces().size(),32);
     }
-    /* Test is failing,
-       not sure if there is a problem
-       with the test or a problem with the method implementation.
 
     @Test
     public void newBoardwithIchessPiece(){
@@ -143,6 +126,6 @@ public class BoardTest {
         h.setupNewGame();
         assertNotEquals(k.getAllPieces().size(),32);
     }
-    */
+
 
 }
