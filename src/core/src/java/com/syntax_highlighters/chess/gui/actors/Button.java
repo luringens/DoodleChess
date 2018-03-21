@@ -2,17 +2,18 @@ package com.syntax_highlighters.chess.gui.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class Button extends Actor {
@@ -44,7 +45,6 @@ public class Button extends Actor {
         this.text.setColor(0,0,0,1);
 
         textureId = (int)(Math.random() * TEXTURE_COUNT);
-
     }
 
     private void renderTextures(int textureCount, Texture template, ShaderProgram shader) {

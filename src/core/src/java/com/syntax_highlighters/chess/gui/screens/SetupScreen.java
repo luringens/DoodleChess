@@ -11,7 +11,9 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.gui.AssetLoader;
+import com.syntax_highlighters.chess.gui.actors.AccountOverlay;
 import com.syntax_highlighters.chess.gui.actors.Button;
+import com.syntax_highlighters.chess.gui.actors.Overlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
 
 import java.util.ArrayList;
@@ -33,6 +35,8 @@ public class SetupScreen implements Screen {
     private ArrayList<Button> player2Buttons = new ArrayList<>();
 
     private Button playButton;
+    private Button mainMenu;
+    private Button createAccount;
 
     float buttonWidth = 200;
     float buttonHeight = 75;
@@ -62,9 +66,38 @@ public class SetupScreen implements Screen {
             }
         });
 
+        mainMenu = new Button("Main menu", assetManager);
+        mainMenu.setSize(buttonWidth, buttonHeight);
+        stage.addActor(mainMenu);
+        mainMenu.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                game.setScreen(new MainMenuScreen(game, assetManager));
+            }
+        });
+
+        AccountOverlay accountOverlay = new AccountOverlay(assetManager);
+        accountOverlay.setVisible(false);
+
+
+        createAccount = new Button("Create account", assetManager);
+        createAccount.setSize(buttonWidth, buttonHeight);
+        stage.addActor(createAccount);
+        createAccount.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                accountOverlay.setVisible(true);
+            }
+        });
+
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         Gdx.input.setInputProcessor(stage);
+
+        // add this last
+        stage.addActor(accountOverlay);
     }
 
     private void resetbuttonList(int player)
@@ -178,7 +211,12 @@ public class SetupScreen implements Screen {
             button.setPosition(centerW + buttonWidth, centerH - buttonHeight * (i-2));
         }
 
-        playButton.setPosition(centerW, centerH - buttonHeight * 3);
+        float bottomBarY = centerH - buttonHeight * 3;
+
+        playButton.setPosition(centerW + buttonWidth + 10, bottomBarY);
+
+        mainMenu.setPosition(centerW - buttonWidth - 10, bottomBarY);
+        createAccount.setPosition(centerW, bottomBarY);
     }
 
     @Override
