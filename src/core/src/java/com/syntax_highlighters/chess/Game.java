@@ -19,6 +19,7 @@ public class Game {
     private IAiPlayer blackAI = null;
     private boolean nextPlayerWhite = true;
     private List<Move> history;
+    private AccountManager accountManager = null;
 
     /**
      * Constructor.
@@ -40,6 +41,8 @@ public class Game {
         this.history = new ArrayList<>();
         
         this.board.setupNewGame();
+
+        accountManager = new AccountManager();
     }
 
     /**
@@ -200,5 +203,14 @@ public class Game {
 
     public boolean sameColoredSquare(Position p1, Position p2) {
         return (p1.getX() + p1.getY()) % 2 == (p2.getX() + p2.getY()) % 2;
+    }
+
+    /***
+     * Fetches the games account manager
+     * 
+     * @return the account manager
+     */
+    public AccountManager getAccountManager() {
+        return accountManager;
     }
 }
