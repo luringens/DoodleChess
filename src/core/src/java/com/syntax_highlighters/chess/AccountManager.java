@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class AccountManager {
@@ -22,6 +23,11 @@ public class AccountManager {
         return null;
     }
 
+    private List<Account> sort(List<Account> accounts){
+        accounts.sort(Comparator.comparing(Account::getWinCount));
+        return accounts;
+    }
+
     public boolean addAccount(Account acc){
         boolean canAdd = true;
         for(Account a: myAccounts)
@@ -33,6 +39,7 @@ public class AccountManager {
     }
 
     public List<Account> getTop(int n){
+        myAccounts = sort(myAccounts);
         if(myAccounts.size() <= n)
             return(myAccounts);
         List<Account> returnAccounts = new ArrayList<Account>();
@@ -42,6 +49,7 @@ public class AccountManager {
     }
 
     public List<Account> getAll(){
+        myAccounts = sort(myAccounts);
         return myAccounts;
     }
 
