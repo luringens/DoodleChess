@@ -4,15 +4,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.syntax_highlighters.chess.gui.AssetLoader;
 
 public class Overlay extends Actor {
     private Texture pixel;
     private Texture overlay;
+    private Text title;
 
-    public Overlay(AssetManager assetManager) {
+    public Overlay(String titleText, AssetManager assetManager) {
         pixel = assetManager.get("pixel.png", Texture.class);
         overlay = assetManager.get("overlay.png", Texture.class);
+
+        BitmapFont font = AssetLoader.GetDefaultFont(assetManager);
+        title = new Text(font);
+        title.setText(titleText);
+        title.setColor(0,0,0,1);
     }
 
     @Override
@@ -27,5 +35,8 @@ public class Overlay extends Actor {
         setBounds(cw - tw / 2.f, ch - th/2.f, tw, th);
         batch.setColor(1,1,1,1);
         batch.draw(overlay, getX(), getY(), getWidth(), getHeight());
+
+        title.setCenter(getX() + getWidth()/2.f, getY() + getHeight() - 60);
+        title.draw(batch, parentAlpha);
     }
 }

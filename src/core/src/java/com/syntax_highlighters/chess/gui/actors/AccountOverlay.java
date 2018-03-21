@@ -19,7 +19,6 @@ import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
 
 public class AccountOverlay extends Overlay {
-    private Text title;
     private Text usernameLabel;
     private Text notice;
 
@@ -29,13 +28,9 @@ public class AccountOverlay extends Overlay {
     private TextField username;
 
     public AccountOverlay(AssetManager assetManager) {
-        super(assetManager);
+        super("Create new account:", assetManager);
 
         BitmapFont font = AssetLoader.GetDefaultFont(assetManager);
-
-        title = new Text(font);
-        title.setText("Create new account:");
-        title.setColor(0,0,0,1);
 
         usernameLabel = new Text(font);
         usernameLabel.setText("Username:");
@@ -108,8 +103,6 @@ public class AccountOverlay extends Overlay {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        title.setCenter(getX() + getWidth()/2.f, getY() + getHeight() - 60);
-        title.draw(batch, parentAlpha);
         usernameLabel.setCenter(0, getY() + getHeight() /2.f+ 50.f);
         usernameLabel.setX(getX() + getWidth()/2.f - 150.f);
         usernameLabel.draw(batch, parentAlpha);
@@ -121,8 +114,5 @@ public class AccountOverlay extends Overlay {
         mainMenu.setPosition(getX() + getWidth() / 2.f - mainMenu.getWidth() - 50.f, getY() + 50);
         createAccount.setPosition(getX() + getWidth() / 2.f + 50.f, getY() + 50);
         username.setPosition(getX() + getWidth()/2.f, getY() + getHeight() /2.f+ username.getHeight()/2.f);
-
-        /*stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();*/
     }
 }

@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.Game;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.gui.UiBoard;
+import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
 
 /**
@@ -36,10 +37,13 @@ public class MainScreen implements Screen {
     private Text turnText;
     private boolean waitingForAi = false;
     private boolean resizeFBO = false;
+    private boolean isGameOver = false;
+
+    private GameOverOverlay gameOverOverlay;
 
     FrameBuffer fbo;
 
-    public MainScreen(AiDifficulty player1Difficulty, AiDifficulty player2Difficulty, AssetManager manager) {
+    public MainScreen(com.badlogic.gdx.Game libgdxGame, AiDifficulty player1Difficulty, AiDifficulty player2Difficulty, AssetManager manager) {
         assetManager = manager;
 
         game = new Game(player1Difficulty, player2Difficulty);
@@ -56,7 +60,6 @@ public class MainScreen implements Screen {
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         BitmapFont segoeUi = new BitmapFont(Gdx.files.internal("segoeui.fnt"), new TextureRegion(texture), false);
 
-
         turnText = new Text(segoeUi);
         turnText.setColor(0,0,0,1);
         stage.addActor(turnText);
@@ -65,13 +68,29 @@ public class MainScreen implements Screen {
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        gameOverOverlay = new GameOverOverlay(libgdxGame, assetManager);
+        gameOverOverlay.setVisible(false);
+        stage.addActor(gameOverOverlay);
+
     }
 
     @Override
     public void render(float delta) {
-        // TODO: Check if going to wait for ai
 
         SpriteBatch batch = (SpriteBatch) stage.getBatch();
+        if(game.isGameOver())
+        {
+            if(!isGameOver)
+            {
+                isGameOver = true;
+                gameOverOverlay.setVisible(true);
+            }
+            stage.act(delta);
+            stage.draw();
+            return;
+        }
+        // TODO: Check if going to wait for ai
+
         if(!waitingForAi) {
             waitingForAi = true;
             Thread thread = new Thread(() -> {

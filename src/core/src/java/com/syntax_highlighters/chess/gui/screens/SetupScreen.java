@@ -62,7 +62,7 @@ public class SetupScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                game.setScreen(new MainScreen(player1Difficulty, player2Difficulty, assetManager));
+                game.setScreen(new MainScreen(game, player1Difficulty, player2Difficulty, assetManager));
             }
         });
 
