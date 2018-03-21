@@ -60,8 +60,15 @@ public class ChessPieceKnight extends AbstractChessPiece {
                 .filter(m -> board.moveDoesntPutKingInCheck(m, isWhite))
                 .collect(Collectors.toList());
     }
-    //Checks the move
-    public void checkMove(Board board, ArrayList<Move> possibleMoves, Position pos){
+
+    /**
+     * Add the move to possible moves if the knight can perform the move.
+     * 
+     * @param board The current board state
+     * @param possibleMoves Reference to the list of possible moves
+     * @param pos The position to check
+     */
+    private void checkMove(Board board, ArrayList<Move> possibleMoves, Position pos){
         if(board !=null && board.isOnBoard(pos)){
                 if(board.getAtPosition(pos) ==null || board.isEnemy(this,pos)){ //kan også bruke isFriendly-metoden
                     possibleMoves.add(new Move(this.getPosition(), pos, this));
