@@ -27,7 +27,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Game main screen
  */
-public class MainScreen extends AbstractScreen {
+public class GameScreen extends AbstractScreen {
     private AssetManager assetManager;
 
     private Game game;
@@ -54,7 +54,7 @@ public class MainScreen extends AbstractScreen {
      * @param player1Difficulty Difficulty of player 1 (null if no ai)
      * @param player2Difficulty Difficulty of player 2 (null if no ai)
      */
-    public MainScreen(ChessGame game, AiDifficulty player1Difficulty, AiDifficulty player2Difficulty) {
+    public GameScreen(ChessGame game, AiDifficulty player1Difficulty, AiDifficulty player2Difficulty) {
         super(game);
         assetManager = game.getAssetManager();
 

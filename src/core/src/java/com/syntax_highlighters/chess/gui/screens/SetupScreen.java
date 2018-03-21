@@ -1,8 +1,6 @@
 package com.syntax_highlighters.chess.gui.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,7 +12,6 @@ import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.actors.AccountOverlay;
 import com.syntax_highlighters.chess.gui.actors.Button;
-import com.syntax_highlighters.chess.gui.actors.Overlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
 
 import java.util.ArrayList;
@@ -64,7 +61,7 @@ public class SetupScreen extends AbstractScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                game.setScreen(new MainScreen(game, player1Difficulty, player2Difficulty));
+                game.setScreen(new GameScreen(game, player1Difficulty, player2Difficulty));
             }
         });
 
