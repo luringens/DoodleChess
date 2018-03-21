@@ -1,3 +1,4 @@
+/*
 package syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.Board;
@@ -72,3 +73,4 @@ public class MoveLegalityTest {
 
 
 }
+*/
