@@ -1,5 +1,5 @@
 package syntax_highlighters.chess;
-
+/*
 import com.syntax_highlighters.chess.*;
 import com.syntax_highlighters.chess.entities.*;
 
@@ -308,7 +308,7 @@ public class ChessRulesTest {
         noAvailableMoveLeadsTo(threatenedPos1, king);
         noAvailableMoveLeadsTo(threatenedPos2, king);
     }
-
+*/
     /**
      * Helper method: check that no available move of the given piece leads to
      * the given position.
@@ -318,6 +318,7 @@ public class ChessRulesTest {
      * @param target The position to check for
      * @param piece The piece to be moved
      */
+/*
     public void noAvailableMoveLeadsTo(Position target, IChessPiece piece) {
         List<Move> possibleMoves = piece.allPossibleMoves(board);
 
@@ -325,6 +326,7 @@ public class ChessRulesTest {
             assertNotEquals(target, m.getPosition());
         }
     }
+    */
 
     /**
      * Helper method: check that there is exactly one move available to the
@@ -335,10 +337,11 @@ public class ChessRulesTest {
      * @param target The position to check for
      * @param piece The piece to be moved
      */
+    /*
     public void existsMoveToPosition(Position target, IChessPiece piece) {
         assertTrue("No move to " + target, piece.canMoveTo(target, board));
     }
-    
+    */
     /**
      * Helper method: get neighbors of position.
      *
@@ -347,20 +350,24 @@ public class ChessRulesTest {
      * @param pos The position to get the neighboring positions of
      * @return A list of the neighbors to the given position
      */
+    /*
     private List<Position> getNeighbors(Position pos) {
         return pos.neighbors().stream()
             .filter(p -> board.isOnBoard(p))
             .collect(Collectors.toList());
     }
+    */
 
     /**
      * Helper method: make pawn go forward n steps, regardless of color.
      *
      * @return The position n steps forward, as per color of the pawn
      */
+    /*
     private Position forward(ChessPiecePawn pawn, int nSteps) {
         if (pawn.isWhite())
             return pawn.getPosition().north(nSteps);
         return pawn.getPosition().south(nSteps);
     }
 }
+*/
