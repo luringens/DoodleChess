@@ -4,9 +4,7 @@ precision mediump float;
 #endif
 
 uniform sampler2D u_texture;
-uniform vec2 u_resolution;
 uniform float u_time;
-uniform vec4 u_color;
 
 varying vec2 v_texCoords;
 
@@ -57,18 +55,7 @@ void main()
     float noise = snoise(noisePos);
 	
     vec2 uvp = uv  + noise / 25.f * square;
-    
-		vec4 col = texture2D(u_texture, uvp);
-
-    if(col.a != 0)
-    {
-      gl_FragColor = u_color;
-      gl_FragColor.a = col.a;
-    }
-    else
-    {
-      gl_FragColor = col;
-    }
+    gl_FragColor = texture2D(u_texture, uvp);
 
     //gl_FragColor = vec4(noise, noise, noise, 1.0f);
 }

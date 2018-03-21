@@ -20,7 +20,12 @@ public class Text extends Actor {
     }
 
     public void setCenter(float x, float y) {
-        if(text == null) return;
+        if(text == null || font == null)
+        {
+            setX(x);
+            setY(y);
+            return;
+        }
 
         GlyphLayout layout = new GlyphLayout();
         layout.setText(font, text);

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
+import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
 
 /**
@@ -27,6 +28,8 @@ public class ChessGame extends Game {
 	public void create () {
 		paper = new Texture(Gdx.files.internal("paper.png"));
 		assetManager = new AssetManager();
+		AssetLoader.LoadAssets(assetManager);
+		assetManager.finishLoading();
 
 		batch = new SpriteBatch();
 		program = new ShaderProgram(Gdx.files.internal("shaders/id.vert"), Gdx.files.internal("shaders/paper.frag"));

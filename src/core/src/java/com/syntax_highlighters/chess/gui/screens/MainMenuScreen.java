@@ -49,9 +49,6 @@ public class MainMenuScreen implements Screen {
 
         Gdx.input.setInputProcessor(stage);
 
-        AssetLoader.LoadAssets(assetManager);
-        assetManager.finishLoading();
-
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

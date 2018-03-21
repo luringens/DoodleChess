@@ -2,41 +2,76 @@ package com.syntax_highlighters.chess.gui.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.syntax_highlighters.chess.gui.AssetLoader;
+
+import java.util.ArrayList;
 
 public class Button extends Actor {
-    ShaderProgram shader;
-    Texture texture;
-    Text text;
-    int timeOffset = 0;
-    boolean selected = false;
+    private int textureId;
+    private Text text;
+    private boolean selected = false;
+
+    private static final int TEXTURE_COUNT = 20;
+    private static boolean hasRendered = false;
+    private static ArrayList<FrameBuffer> preRenderedButtons = new ArrayList<>();
 
     public Button(String buttonText, AssetManager manager)
     {
-        shader = new ShaderProgram(Gdx.files.internal("shaders/id.vert"), Gdx.files.internal("shaders/offset.frag"));
+        ShaderProgram shader = new ShaderProgram(Gdx.files.internal("shaders/id.vert"), Gdx.files.internal("shaders/offset.frag"));
 
-        texture = manager.get("button_template.png");
+        Texture texture = manager.get("button_template.png");
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
         // WTF OpenGl...
         ShaderProgram.pedantic = false;
         boolean built = shader.isCompiled();
 
-        Texture texture = new Texture(Gdx.files.internal("segoeui.png"));
-        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        BitmapFont font = new BitmapFont(Gdx.files.internal("segoeui.fnt"), new TextureRegion(texture), false);
-        this.text = new Text(font);
+
+        if(!hasRendered)
+            renderTextures(TEXTURE_COUNT, texture, shader);
+
+        this.text = new Text(AssetLoader.GetDefaultFont(manager));
         this.text.setText(buttonText);
         this.text.setColor(0,0,0,1);
 
-        timeOffset = (int)(Math.random() * 100.f);
+        textureId = (int)(Math.random() * TEXTURE_COUNT);
+
+    }
+
+    private void renderTextures(int textureCount, Texture template, ShaderProgram shader) {
+
+        // TODO: pass spritebatch
+        SpriteBatch batch = new SpriteBatch();
+        batch.setShader(shader);
+        for(int i = 0; i < textureCount; ++i)
+        {
+            FrameBuffer buffer = new FrameBuffer(Pixmap.Format.RGBA8888, template.getWidth(), template.getHeight(), false);
+            buffer.begin();
+            Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            Gdx.gl.glClearColor(0,0,0,0);
+            batch.begin();
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            Gdx.gl.glClearColor(0,0,0,0);
+            shader.setUniformf("u_time", (float)Math.random() * 10000.f);
+
+            batch.draw(template, 0, 0, 800, 800);
+
+            batch.end();
+            buffer.end();
+
+            // Might not work
+            preRenderedButtons.add(buffer);
+        }
+        batch.setShader(null);
     }
 
     @Override
@@ -48,27 +83,24 @@ public class Button extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        batch.setShader(shader);
+        if(Gdx.graphics.getFrameId() % 60 == 0)
+        {
+            textureId = (int)(Math.random() * (TEXTURE_COUNT-1));
+        }
 
-        Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
-        shader.setUniformi("u_texture", 0);
-        Vector2 size = new Vector2(texture.getWidth(), texture.getHeight());
-        shader.setUniformf("u_time", Gdx.graphics.getFrameId() / 100.f + timeOffset);
-        shader.setUniformf("u_resolution", size);
-
-        if(this.selected)
+        /*if(this.selected)
         {
             shader.setUniformf("u_color", new Color(0.443f, 0.7372f, 0.470f, 1));
         }
         else
         {
             shader.setUniformf("u_color", Color.BLACK);
-        }
-        batch.draw(texture, getX(),getY(),getWidth(),getHeight());
+        }*/
+        batch.draw(preRenderedButtons.get(textureId).getColorBufferTexture(), getX(),getY(),getWidth(),getHeight());
+        //batch.draw(preRenderedButtons.get(textureId).getColorBufferTexture(), getX(),getY());
 
         text.setCenter(getX() + getWidth()/2.f, getY() + getHeight()/2.f);
 
-        batch.setShader(null);
         text.draw(batch, 1.f);
 
     }
