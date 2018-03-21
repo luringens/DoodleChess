@@ -1,6 +1,5 @@
 package com.syntax_highlighters.chess.gui.actors;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -67,6 +66,7 @@ public class GameOverOverlay extends Overlay {
     @Override
     protected void setStage(Stage stage) {
         super.setStage(stage);
+        if(stage == null) return;
         stage.addActor(mainMenuButton);
     }
 

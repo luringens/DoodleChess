@@ -99,7 +99,6 @@ public class UiBoard extends Actor {
                 if(pos.getX() == px && pos.getY() == py)
                 {
                     game.performMove(selectedPiece.getPosition(), pos);
-                    game.PerformAIMove();
                     return true;
                 }
             }

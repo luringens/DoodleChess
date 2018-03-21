@@ -20,8 +20,8 @@ import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
 public class ChessGame extends Game {
 	private AssetManager assetManager;
 	private SpriteBatch batch;
-	ShaderProgram program;
-	FrameBuffer paperBuffer;
+    private ShaderProgram program;
+    private FrameBuffer paperBuffer;
 	private Texture paper;
 
     /***
@@ -55,7 +55,8 @@ public class ChessGame extends Game {
          * to make sure that everything is initialized correctly when switching screens.
          * This renders the "show" and "hide" methids in the screens useless here.
          */
-	    this.getScreen().dispose();
+	    if(this.getScreen() != null)
+	        this.getScreen().dispose();
 		super.setScreen(screen);
         recomputeBackground();
 	}

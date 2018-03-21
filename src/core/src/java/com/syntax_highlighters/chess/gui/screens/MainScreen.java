@@ -1,22 +1,15 @@
 package com.syntax_highlighters.chess.gui.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.Game;
@@ -25,26 +18,42 @@ import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.UiBoard;
 import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
+import sun.awt.Mutex;
+
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Game main screen
  */
 public class MainScreen extends AbstractScreen {
-    private Game game;
-    private Stage stage;
-    UiBoard board;
-
     private AssetManager assetManager;
 
+    private Game game;
+    private Stage stage;
+    private UiBoard board;
     private Text turnText;
+
     private boolean waitingForAi = false;
     private boolean resizeFBO = false;
-    private boolean isGameOver = false;
+    private FrameBuffer gameBuffer;
 
+    private boolean isGameOver = false;
     private GameOverOverlay gameOverOverlay;
 
-    FrameBuffer fbo;
+    private Thread aiThread;
+    private Semaphore aiLock = new Semaphore(1, true);
 
+    /***
+     * Constructor.
+     *
+     * We have put the AI on a separate thread to stop the window from becoming unresponsive while the AI is thinking.
+     *
+     * @param game LibGdx game
+     * @param player1Difficulty Difficulty of player 1 (null if no ai)
+     * @param player2Difficulty Difficulty of player 2 (null if no ai)
+     */
     public MainScreen(ChessGame game, AiDifficulty player1Difficulty, AiDifficulty player2Difficulty) {
         super(game);
         assetManager = game.getAssetManager();
@@ -67,7 +76,7 @@ public class MainScreen extends AbstractScreen {
         turnText.setColor(0,0,0,1);
         stage.addActor(turnText);
         turnText.setText(this.game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
-        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        gameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -75,55 +84,104 @@ public class MainScreen extends AbstractScreen {
         gameOverOverlay.setVisible(false);
         stage.addActor(gameOverOverlay);
 
+        aiThread = new Thread(() -> {
+            while(true) {
+                try {
+                    try {
+                        aiLock.acquire(1);
+                        if (this.game.isGameOver()) {
+                            break;
+                        }
+                        if (waitingForAi && this.game.nextPlayerIsAI()) {
+                            this.game.PerformAIMove();
+                            waitingForAi = false;
+                        }
+                    }
+                    // Ignore exception
+                    catch(Exception e){}
+                    finally{
+                        aiLock.release(1);
+                    }
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        aiThread.start();
     }
 
+    /***
+     * Render the screen
+     *
+     * Due to how the AI works do we have to draw it to an offscreen buffer before we let it think.
+     * This is so that we can safely draw the game while the ai is thinking.
+     * We also wait til the next draw call to resize the buffer the ai is thinking.
+     * @param delta time passed since last frame, in seconds
+     */
     @Override
     public void render(float delta) {
 
         SpriteBatch batch = (SpriteBatch) stage.getBatch();
-        if(game.isGameOver())
-        {
-            if(!isGameOver)
-            {
-                isGameOver = true;
-                gameOverOverlay.setVisible(true);
-            }
-            stage.act(delta);
-            stage.draw();
-            return;
-        }
-        // TODO: Check if going to wait for ai
-
         if(!waitingForAi) {
-            waitingForAi = true;
-            Thread thread = new Thread(() -> {
-                game.PerformAIMove();
-                waitingForAi = false;
-            });
-            if(resizeFBO)
-            {
-                resizeFBO = false;
-                fbo.dispose();
-                fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+            try {
+                aiLock.acquire(1);
+                // Game over check
+                if(game.isGameOver())
+                {
+                    if(!isGameOver)
+                    {
+                        isGameOver = true;
+                        gameOverOverlay.setVisible(true);
+                    }
+                    stage.act(delta);
+                    stage.draw();
+                    aiLock.release(1);
+                    return;
+                }
+
+                // Tell ai thread to update
+                waitingForAi = game.nextPlayerIsAI();
+
+                // Resize buffer if necessary
+                if (resizeFBO) {
+                    resizeFBO = false;
+                    gameBuffer.dispose();
+                    gameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+                }
+
+                // Render to buffer
+                gameBuffer.begin();
+                Gdx.gl.glClearColor(0, 0, 0, 0);
+                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+                Gdx.gl.glEnable(GL20.GL_BLEND);
+                Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+                turnText.setText(game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
+                stage.act(delta);
+                stage.draw();
+                gameBuffer.end();
+                Gdx.gl.glDisable(GL20.GL_BLEND);
             }
-            fbo.begin();
-            Gdx.gl.glClearColor(0, 0, 0, 0);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            turnText.setText(game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
-            stage.act(delta);
-            stage.draw();
-            fbo.end();
-            Gdx.gl.glDisable(GL20.GL_BLEND);
-            
-            thread.start();
+            catch(Exception e){}
+            finally{
+                aiLock.release(1);
+            }
         }
+        // Draw offscreen buffer
         batch.begin();
-        batch.draw(fbo.getColorBufferTexture(), 0, 0,0, 0, fbo.getWidth(), fbo.getHeight(), 1, 1, 0, 0, 0, fbo.getWidth(), fbo.getHeight(), false, true);
+        batch.draw(gameBuffer.getColorBufferTexture(), 0, 0,0, 0, gameBuffer.getWidth(),
+                gameBuffer.getHeight(), 1, 1, 0, 0, 0,
+                gameBuffer.getWidth(), gameBuffer.getHeight(), false, true);
         batch.end();
     }
 
+    /***
+     * Resize event.
+     *
+     * Used to correctly position the elements on screen and update the viewport size to support the new window size.
+     * @param width new window width
+     * @param height new window height
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
@@ -139,33 +197,41 @@ public class MainScreen extends AbstractScreen {
             return;
         }
 
-        fbo.dispose();
-        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, false);
-}
-
-    @Override
-    public void show() {
-
+        // Resizing the buffer
+        gameBuffer.dispose();
+        gameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, false);
     }
 
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
+    /***
+     * Disposes classes that needs disposing.
+     */
     @Override
     public void dispose() {
         stage.dispose();
-        assetManager.dispose();
+
     }
+
+    /***
+     * unused
+     */
+    @Override
+    public void show() {}
+
+    /***
+     * unused
+     */
+    @Override
+    public void hide() {}
+
+    /***
+     * unused
+     */
+    @Override
+    public void pause() {}
+
+    /***
+     * unused
+     */
+    @Override
+    public void resume() {}
 }

@@ -197,7 +197,7 @@ public class SetupScreen extends AbstractScreen {
         float centerW = width / 2.f - buttonWidth / 2.f;
         float centerH = height / 2.f - buttonHeight / 2.f;
 
-        title.setCenter(width / 2.f, centerH + buttonHeight * 5);
+        title.setCenter(width / 2.f, centerH + buttonHeight * 4);
 
         player1Title.setCenter(width / 2.f - buttonWidth, height / 2.f + buttonHeight * 2.75f);
         player2Title.setCenter(width / 2.f + buttonWidth, height / 2.f + buttonHeight * 2.75f);
