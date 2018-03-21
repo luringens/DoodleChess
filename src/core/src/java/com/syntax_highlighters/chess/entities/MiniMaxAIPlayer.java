@@ -31,10 +31,8 @@ public class MiniMaxAIPlayer implements IAiPlayer {
             default: throw new IllegalArgumentException("Invalid enum.");
         }
     }
-}
-
-class MiniMax {
-    public static void MiniMaxMove(int depth, Board board, boolean isWhite) {
+    
+    private static void MiniMaxMove(int depth, Board board, boolean isWhite) {
         assert(depth >= 1);
         List<Move> moves = board.getAllPieces().stream()
                 .filter(p -> p.isWhite() == isWhite)
@@ -45,7 +43,8 @@ class MiniMax {
         Move bestMove = null;
         for (Move move : moves) {
             move.DoMove(board);
-            int score = MiniMaxScore(depth - 1, board, isWhite, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            int score = MiniMaxScore(depth - 1, board,
+                    isWhite, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
             move.UndoMove(board);
             if (score > bestScore) {
                 bestScore = score;
@@ -115,4 +114,3 @@ class MiniMax {
         return score;
     }
 }
-
