@@ -1,3 +1,4 @@
+/*
 package com.syntax_highlighters.chess.gui.screens;
 
 import com.badlogic.gdx.Game;
@@ -201,3 +202,4 @@ class SetupScoreScreen implements Screen {
 
     }
 }
+*/
