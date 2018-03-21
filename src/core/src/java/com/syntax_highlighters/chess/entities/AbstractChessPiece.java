@@ -14,7 +14,7 @@ public abstract class AbstractChessPiece implements IChessPiece {
     protected boolean hasMoved = false;
 
     /**
-     * Constructor.
+     * Chess piece at given position with given color.
      *
      * @param isWhite Whether or not the piece is white
      * @param pos The position the piece is created at
