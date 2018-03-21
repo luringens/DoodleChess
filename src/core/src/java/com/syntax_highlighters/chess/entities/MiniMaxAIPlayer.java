@@ -19,7 +19,7 @@ public class MiniMaxAIPlayer implements IAiPlayer {
     @Override
     public void PerformMove(Board board) {
         if (board.checkMate(isWhite)) return;
-        MiniMax.MiniMaxMove(diff, board, isWhite);
+        MiniMaxMove(diff, board, isWhite);
     }
 
     @Override
