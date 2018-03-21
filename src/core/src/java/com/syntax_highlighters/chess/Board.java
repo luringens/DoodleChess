@@ -25,18 +25,61 @@ public class Board {
     private IChessPiece whiteKing = null; // For caching purposes.
     private IChessPiece blackKing = null; // For caching purposes.
 
+    // for performance
+    private int[][] positionsLookupTable = new int[BOARD_HEIGHT][BOARD_WIDTH];
+
     List<IChessPiece> pieces = new ArrayList<>();
 
     /**
      * Create an empty board.
      */
-    public Board() { }
+    public Board() {
+        initBoard();
+    }
 
     /**
      * Create a board from a list of pieces.
      */
     public Board(List<IChessPiece> pieces) {
         this.pieces.addAll(pieces);
+        initBoard();
+    }
+
+    /**
+     * Helper method: reinitialize all positions on the board.
+     *
+     * Modifies positionsLookupTable.
+     */
+    private void initBoard() {
+        // expensive if we must do it a lot, but hopefully we won't have to
+        for (int i = 0; i < BOARD_HEIGHT; i++) {
+            for (int j = 0; j < BOARD_WIDTH; j++) {
+                positionsLookupTable[i][j] = -1;
+            }
+        }
+        // fill in all the positions of the pieces currently on the board
+        for (int i = 0; i < this.pieces.size(); i++) {
+            updatePositionIndex(this.pieces.get(i).getPosition(), i);
+        }
+    }
+
+    /**
+     * Helper method: update the lookup table's index based on the position.
+     *
+     * Modifies positionsLookupTable. No bounds checks.
+     */
+    private void updatePositionIndex(Position pos, int index) {
+        positionsLookupTable[pos.getY()-1][pos.getX()-1] = index;
+    }
+
+    /**
+     * Helper method: return the index of the piece with the given position in
+     * the list of pieces, or -1 if the position is empty.
+     *
+     * No bounds checks.
+     */
+    private int lookupPositionIndex(Position pos) {
+        return positionsLookupTable[pos.getY()-1][pos.getX()-1];
     }
 
     /**
@@ -82,12 +125,19 @@ public class Board {
         IChessPiece target = getAtPosition(pos);
         if (target != null) {
             pieces.remove(target);
+            initBoard();
         }
 
+        Position oldPos = piece.getPosition();
         piece.setPosition(pos); // ensure position is correct for this piece
+        updatePositionIndex(oldPos, -1);
 
         if (!this.pieces.contains(piece)) {
             this.pieces.add(piece);
+            updatePositionIndex(pos, this.pieces.size()-1); // the index of the newly added piece
+        }
+        else {
+            updatePositionIndex(pos, this.pieces.indexOf(piece));
         }
     }
 
@@ -150,9 +200,10 @@ public class Board {
 
     public IChessPiece getAtPosition(Position pos) {
         //assert isOnBoard(pos);
-
-        for (IChessPiece p : this.pieces) {
-            if (p.getPosition().equals(pos)) return p;
+        if (!isOnBoard(pos)) return null;
+        int index = lookupPositionIndex(pos);
+        if (index != -1) {
+            return this.pieces.get(index);
         }
         return null;
     }
