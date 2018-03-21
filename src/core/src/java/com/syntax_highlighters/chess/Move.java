@@ -12,11 +12,11 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
  * This class should be immutable.
  */
 public class Move {
-    protected boolean hasDoneMove = false;
+    boolean hasDoneMove = false;
     protected IChessPiece piece;
-    protected Position oldPos;
-    protected Position newPos;
-    protected boolean hadMoved;
+    Position oldPos;
+    Position newPos;
+    private boolean hadMoved;
     private IChessPiece tookPiece = null;
 
     /**
@@ -88,7 +88,7 @@ public class Move {
         b.putAtPosition(oldPos, piece);
         piece.setHasMoved(hadMoved);
         if (tookPiece != null) {
-            b.putAtPosition(newPos, tookPiece);
+            b.putAtPosition(tookPiece.getPosition(), tookPiece);
         }
     }
 }

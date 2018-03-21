@@ -1,6 +1,7 @@
 package com.syntax_highlighters.chess.entities;
 
 import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.EnPassantMove;
 import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 
@@ -115,10 +116,10 @@ public class ChessPiecePawn extends AbstractChessPiece {
             
             // en passant can be performed
             if (isWhite()) {
-                possibleMoves.add(new Move(this.getPosition(), pos.north(1), this));
+                possibleMoves.add(new EnPassantMove(this.getPosition(), pos.north(1), this, pieceAtPos));
             }
             else {
-                possibleMoves.add(new Move(this.getPosition(), pos.south(1), this));
+                possibleMoves.add(new EnPassantMove(this.getPosition(), pos.south(1), this, pieceAtPos));
             }
         }
     }

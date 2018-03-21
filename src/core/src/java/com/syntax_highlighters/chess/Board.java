@@ -353,6 +353,15 @@ public class Board {
     }
 
     /**
+     * Removes a piece from the board.
+     * @param p The piece to remove from the board.
+     */
+    public void removePiece(IChessPiece p) {
+        pieces.remove(p);
+        updatePositionIndex(p.getPosition(), -1);
+    }
+
+    /**
      * Find the king of the specified color and caches the result.
      *
      * @param white Whether to look for the white or black king.

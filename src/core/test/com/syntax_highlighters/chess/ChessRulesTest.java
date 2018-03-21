@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ChessRulesTest {
@@ -148,9 +149,12 @@ public class ChessRulesTest {
 
         Position whitePos = whitePawn.getPosition();
 
-        // check that blackPawn has a possible move to blackTarget
-        Position blackTarget = blackPawn.getPosition().southwest(1);
-        existsMoveToPosition(blackTarget, blackPawn);
+        // Execute en passant
+        Optional<Move> enpassant = blackPawn.allPossibleMoves(board).stream()
+                .filter(m -> m instanceof  EnPassantMove)
+                .findFirst();
+        assertTrue("No en passant move available", enpassant.isPresent());
+        enpassant.get().DoMove(board);
 
         // check that white pawn gets captured
         assertTrue("En passant does not capture enemy piece",
