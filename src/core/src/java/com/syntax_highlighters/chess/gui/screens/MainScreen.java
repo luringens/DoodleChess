@@ -84,7 +84,6 @@ public class MainScreen implements Screen {
                 fbo.dispose();
                 fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
             }
-            thread.start();
             fbo.begin();
             Gdx.gl.glClearColor(0, 0, 0, 0);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -95,6 +94,8 @@ public class MainScreen implements Screen {
             stage.draw();
             fbo.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
+            
+            thread.start();
         }
         batch.begin();
         batch.draw(fbo.getColorBufferTexture(), 0, 0,0, 0, fbo.getWidth(), fbo.getHeight(), 1, 1, 0, 0, 0, fbo.getWidth(), fbo.getHeight(), false, true);
