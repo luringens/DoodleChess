@@ -11,10 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.syntax_highlighters.chess.ChessGame;
+import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.actors.Button;
 
-public class MainMenuScreen implements Screen {
+public class MainMenuScreen extends AbstractScreen {
 
     private Stage stage;
     private Image background;
@@ -22,10 +24,10 @@ public class MainMenuScreen implements Screen {
     private Button playButton;
     private Button scoreButton;
 
-    private AssetManager assetManager;
+    public MainMenuScreen(ChessGame game) {
+        super(game);
 
-    public MainMenuScreen(Game game, AssetManager assetManager) {
-        this.assetManager = assetManager;
+        AssetManager assetManager = game.getAssetManager();
         assetManager.load("background2.png", Texture.class);
         assetManager.load("button_template.png", Texture.class);
         assetManager.finishLoading();
@@ -52,7 +54,7 @@ public class MainMenuScreen implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new SetupScreen(game, assetManager));
+                game.setScreen(new SetupScreen(game));
             }
         });
     }

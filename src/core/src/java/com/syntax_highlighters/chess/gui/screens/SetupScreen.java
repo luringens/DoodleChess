@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
+import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.actors.AccountOverlay;
 import com.syntax_highlighters.chess.gui.actors.Button;
@@ -18,7 +19,7 @@ import com.syntax_highlighters.chess.gui.actors.Text;
 
 import java.util.ArrayList;
 
-public class SetupScreen implements Screen {
+public class SetupScreen extends AbstractScreen {
 
     private Stage stage;
 
@@ -41,9 +42,10 @@ public class SetupScreen implements Screen {
     float buttonWidth = 200;
     float buttonHeight = 75;
 
-    public SetupScreen(Game game, AssetManager assetManager)
+    public SetupScreen(ChessGame game)
     {
-        this.assetManager = assetManager;
+        super(game);
+        this.assetManager = game.getAssetManager();
         stage = new Stage(new ScreenViewport());
 
         title = new Text(AssetLoader.GetDefaultFont(assetManager));
@@ -62,7 +64,7 @@ public class SetupScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                game.setScreen(new MainScreen(game, player1Difficulty, player2Difficulty, assetManager));
+                game.setScreen(new MainScreen(game, player1Difficulty, player2Difficulty));
             }
         });
 
@@ -73,7 +75,7 @@ public class SetupScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                game.setScreen(new MainMenuScreen(game, assetManager));
+                game.setScreen(new MainMenuScreen(game));
             }
         });
 

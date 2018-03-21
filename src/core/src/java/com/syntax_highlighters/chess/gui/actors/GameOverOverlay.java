@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
 
@@ -21,8 +22,9 @@ public class GameOverOverlay extends Overlay {
 
     private Button mainMenuButton;
 
-    public GameOverOverlay(Game game, AssetManager assetManager) {
-        super("Game over", assetManager);
+    public GameOverOverlay(ChessGame game) {
+        super("Game over", game.getAssetManager());
+        AssetManager assetManager = game.getAssetManager();
 
         BitmapFont font = AssetLoader.GetDefaultFont(assetManager);
         // TODO: fetch from account
@@ -57,7 +59,7 @@ public class GameOverOverlay extends Overlay {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                game.setScreen(new MainMenuScreen(game, assetManager));
+                game.setScreen(new MainMenuScreen(game));
             }
         });
     }

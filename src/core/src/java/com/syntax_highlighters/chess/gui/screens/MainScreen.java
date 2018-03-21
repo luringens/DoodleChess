@@ -18,8 +18,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.Game;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
+import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.UiBoard;
 import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
@@ -27,7 +29,7 @@ import com.syntax_highlighters.chess.gui.actors.Text;
 /**
  * Game main screen
  */
-public class MainScreen implements Screen {
+public class MainScreen extends AbstractScreen {
     private Game game;
     private Stage stage;
     UiBoard board;
@@ -43,15 +45,16 @@ public class MainScreen implements Screen {
 
     FrameBuffer fbo;
 
-    public MainScreen(com.badlogic.gdx.Game libgdxGame, AiDifficulty player1Difficulty, AiDifficulty player2Difficulty, AssetManager manager) {
-        assetManager = manager;
+    public MainScreen(ChessGame game, AiDifficulty player1Difficulty, AiDifficulty player2Difficulty) {
+        super(game);
+        assetManager = game.getAssetManager();
 
-        game = new Game(player1Difficulty, player2Difficulty);
+        this.game = new Game(player1Difficulty, player2Difficulty);
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        board = new UiBoard(assetManager, game, stage);
+        board = new UiBoard(assetManager, this.game, stage);
         float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 50;
         board.setSize(size, size);
         stage.addActor(board);
@@ -63,12 +66,12 @@ public class MainScreen implements Screen {
         turnText = new Text(segoeUi);
         turnText.setColor(0,0,0,1);
         stage.addActor(turnText);
-        turnText.setText(game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
+        turnText.setText(this.game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
         fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        gameOverOverlay = new GameOverOverlay(libgdxGame, assetManager);
+        gameOverOverlay = new GameOverOverlay(game);
         gameOverOverlay.setVisible(false);
         stage.addActor(gameOverOverlay);
 

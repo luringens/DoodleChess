@@ -35,7 +35,7 @@ public class ChessGame extends Game {
 		program = new ShaderProgram(Gdx.files.internal("shaders/id.vert"), Gdx.files.internal("shaders/paper.frag"));
 		paperBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, paper.getWidth(), paper.getHeight(), false);
 
-		setScreen(new MainMenuScreen(this, assetManager));
+		setScreen(new MainMenuScreen(this));
 	}
 
 	@Override
@@ -77,4 +77,8 @@ public class ChessGame extends Game {
 	@Override
 	public void dispose () {
 	}
+
+    public AssetManager getAssetManager() {
+        return assetManager;
+    }
 }
