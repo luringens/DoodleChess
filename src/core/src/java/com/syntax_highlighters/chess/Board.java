@@ -172,8 +172,9 @@ public class Board {
      * @return true if the position is Enemy piece, false otherwise
      */
     public boolean isEnemy(IChessPiece piece, Position pos) {
-        if(getAtPosition(pos) != null)
-            return getAtPosition(pos).isWhite() != piece.isWhite();
+        IChessPiece pieceAtPos = getAtPosition(pos);
+        if(pieceAtPos != null)
+            return pieceAtPos.isWhite() != piece.isWhite();
         else
             return false;
     }
@@ -185,8 +186,9 @@ public class Board {
      * @return true if the position is friendly piece, false otherwise
      */
     public boolean isFriendly(IChessPiece piece, Position pos) {
-        if(getAtPosition(pos) != null)
-            return getAtPosition(pos).isWhite() == piece.isWhite();
+        IChessPiece pieceAtPos = getAtPosition(pos);
+        if(pieceAtPos != null)
+            return pieceAtPos.isWhite() == piece.isWhite();
         else
             return false;
     }
