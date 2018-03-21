@@ -113,7 +113,16 @@ public interface IChessPiece {
      */
     boolean hasMoved();
 
+    /**
+     * Determine whether this piece threatens a given position.
+     *
+     * @param position The position to consider
+     * @param board The current board state
+     *
+     * @return true if the piece threatens the position, false otherwise
+     */
     boolean threatens(Position position, Board board);
+    
     /**
      * Set "moved" state of piece.
      *
