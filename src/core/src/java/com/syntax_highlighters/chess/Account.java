@@ -6,14 +6,21 @@ public class Account {
     private int losses;
 
     /**
-     * Constructor.
+     * Construct a new account with the given name.
      *
-     * Account, YEY :)
+     * @param name The account username
      */
     public Account(String name) {
         this.name = name;
     }
 
+    /**
+     * Construct a new account with a given name and the given win/loss numbers.
+     *
+     * @param name The account username
+     * @param wins The number of wins
+     * @param losses The number of losses
+     */
     public Account(String name, int wins, int losses){
         this.name = name;
         this.wins = wins;
@@ -41,6 +48,6 @@ public class Account {
     }
 
     public double getScore(){
-        return (wins / (wins+losses));
+        return (wins / (double)(wins+losses));
     }
 }
