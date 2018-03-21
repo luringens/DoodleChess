@@ -24,12 +24,16 @@ public class ChessGame extends Game {
 	FrameBuffer paperBuffer;
 	private Texture paper;
 
+    /***
+     * Game creation event, used to initialize resources
+     */
 	@Override
 	public void create () {
-		paper = new Texture(Gdx.files.internal("paper.png"));
 		assetManager = new AssetManager();
 		AssetLoader.LoadAssets(assetManager);
 		assetManager.finishLoading();
+
+        paper = assetManager.get("paper.png", Texture.class);
 
 		batch = new SpriteBatch();
 		program = new ShaderProgram(Gdx.files.internal("shaders/id.vert"), Gdx.files.internal("shaders/paper.frag"));
@@ -38,24 +42,30 @@ public class ChessGame extends Game {
 		setScreen(new MainMenuScreen(this));
 	}
 
+    /***
+     * Overloaded setScreen method to recompute the background
+     * @param screen the new screen
+     */
 	@Override
 	public void setScreen(Screen screen) {
 		super.setScreen(screen);
-		batch.setShader(program);
-		paperBuffer.begin();
-		batch.begin();
-		program.setUniformf("u_offset", new Vector2((float)Math.random() * 100.f, (float)Math.random() * 100.f));
-		batch.draw(paper, 0, 0, paper.getWidth(), paper.getHeight());
-		batch.end();
-		paperBuffer.end();
-		batch.setShader(null);
+        recomputeBackground();
 	}
 
+    /***
+     * Resize event
+     * @param width new window width
+     * @param height new window height
+     */
 	@Override
 	public void resize (int width, int height) {
 		super.resize(width, height);
 	}
 
+    /***
+     * Game's main rendering function
+     * This will render the paper background first and then the current screen.
+     */
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
@@ -66,19 +76,40 @@ public class ChessGame extends Game {
 		super.render();
 	}
 
-	@Override
-	public void pause () {
-	}
-
-	@Override
-	public void resume () {
-	}
-
+    /***
+     * Disposes classes that needs disposing.
+     */
 	@Override
 	public void dispose () {
+	    assetManager.dispose();
+	    batch.dispose();
+	    program.dispose();
+	    paperBuffer.dispose();
 	}
 
+    /***
+     * Libgdx manager for storing misc assets.
+     * @return the AssetManager
+     */
     public AssetManager getAssetManager() {
         return assetManager;
+    }
+
+    /***
+     * Will regenerate the wrinkles for the background using a custom built shader.
+     * We generate it in an offscreen buffer to prevent lag from computing the image every single draw call.
+     *
+     * For more information on how the shader works, check out "assets/shaders/paper.frag"
+     */
+    private void recomputeBackground()
+    {
+        batch.setShader(program);
+        paperBuffer.begin();
+        batch.begin();
+        program.setUniformf("u_offset", new Vector2((float)Math.random() * 100.f, (float)Math.random() * 100.f));
+        batch.draw(paper, 0, 0, paper.getWidth(), paper.getHeight());
+        batch.end();
+        paperBuffer.end();
+        batch.setShader(null);
     }
 }
