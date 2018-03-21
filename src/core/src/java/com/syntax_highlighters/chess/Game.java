@@ -91,7 +91,7 @@ public class Game {
      * @return true if the next player is an AI, false if the next player is a
      * human
      */
-    private boolean nextPlayerIsAI() {
+    public boolean nextPlayerIsAI() {
         return (nextPlayerWhite && whiteAI != null) || (!nextPlayerWhite && blackAI != null);
     }
 

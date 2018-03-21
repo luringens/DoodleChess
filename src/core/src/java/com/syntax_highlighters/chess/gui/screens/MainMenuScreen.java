@@ -36,10 +36,10 @@ public class MainMenuScreen implements Screen {
         background = new Image(tex);
         background.setSize(800, 800);
 
-        playButton = new Button(assetManager);
+        playButton = new Button("Play", assetManager);
         playButton.setSize(250, 75);
 
-        scoreButton = new Button(assetManager);
+        scoreButton = new Button("Leaderboards", assetManager);
         scoreButton.setSize(250, 75);
 
 
@@ -55,7 +55,7 @@ public class MainMenuScreen implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MainScreen(assetManager));
+                game.setScreen(new SetupScreen(game, assetManager));
             }
         });
     }
@@ -67,40 +67,8 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        /*if(playButton.isOver())
-        {
-            Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Hand);
-        }
-        else
-        {
-            Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-        }*/
-        Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();
-        /*
-
-        assetManager.finishLoading();
-        //if(assetManager.update(1))
-        {
-            // TODO: Done, move to next screen
-        }
-
-        cam.update();
-        Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.setProjectionMatrix(cam.combined);
-        batch.begin();
-        logo.draw(batch);
-        batch.end();
-
-        shapeRenderer.setProjectionMatrix(cam.combined);
-        shapeRenderer.setColor(0.5f,0.7f,0.55f,1.f);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        float percentage = assetManager.getProgress();
-        shapeRenderer.rect(-300, -20, 600.f * percentage, 10);
-        shapeRenderer.end();*/
     }
 
     @Override

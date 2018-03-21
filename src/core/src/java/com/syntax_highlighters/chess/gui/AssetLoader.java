@@ -2,9 +2,19 @@ package com.syntax_highlighters.chess.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.BitmapFontLoader;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
+    public static BitmapFont font;
+
+    public static BitmapFont GetDefaultFont(AssetManager assetManager)
+    {
+        return font;
+    }
+
     public static void LoadAssets(AssetManager manager)
     {
         String[] textures = {
@@ -32,5 +42,9 @@ public class AssetLoader {
         {
             manager.load(path, Texture.class);
         }
+
+        Texture texture = new Texture(Gdx.files.internal("segoeui.png"));
+        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        font = new BitmapFont(Gdx.files.internal("segoeui.fnt"), new TextureRegion(texture), false);
     }
 }

@@ -8,22 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Game;
 import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.IChessPiece;
-import com.syntax_highlighters.chess.gui.actors.Text;
-
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 public class UiBoard extends Actor {
-
-    public static final int SPACE_SIZE = 64;
 
     private Texture tile;
     private Texture tile_black;
@@ -31,11 +22,10 @@ public class UiBoard extends Actor {
 
     private BitmapFont segoeUi;
     private Game game;
-    private Sprite object;
 
     private AssetManager assetManager;
 
-    private float LEGEND_OFFSET = 40;
+    private float LEGEND_OFFSET = 50;
 
     private IChessPiece selectedPiece = null;
 
@@ -44,8 +34,6 @@ public class UiBoard extends Actor {
     {
         this.assetManager = assetManager;
         this.game = game;
-        this.setWidth(SPACE_SIZE * Board.BOARD_WIDTH + LEGEND_OFFSET);
-        this.setHeight(SPACE_SIZE * Board.BOARD_HEIGHT + LEGEND_OFFSET);
         Texture texture = new Texture(Gdx.files.internal("segoeui.png"));
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         segoeUi = new BitmapFont(Gdx.files.internal("segoeui.fnt"), new TextureRegion(texture), false);
@@ -55,8 +43,13 @@ public class UiBoard extends Actor {
 
         this.addListener(new InputListener() {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                int px = (int) ((x-LEGEND_OFFSET) / SPACE_SIZE) + 1;
-                int py = (int) ((y-LEGEND_OFFSET) / SPACE_SIZE) + 1;
+                // input not valid when ai
+                if(game.nextPlayerIsAI()) return false;
+
+                float tileWidth = getSpaceWidth();
+                float tileHeight = getSpaceHeight();
+                int px = (int) ((x-LEGEND_OFFSET) / tileWidth) + 1;
+                int py = (int) ((y-LEGEND_OFFSET) / tileHeight) + 1;
 
                 if(((UiBoard)event.getTarget()).moveSelected(px, py))
                 {
@@ -70,8 +63,10 @@ public class UiBoard extends Actor {
             }
 
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                int px = (int) ((x-LEGEND_OFFSET) / SPACE_SIZE) + 1;
-                int py = (int) ((y-LEGEND_OFFSET) / SPACE_SIZE) + 1;
+                float tileWidth = getSpaceWidth();
+                float tileHeight = getSpaceHeight();
+                int px = (int) ((x-LEGEND_OFFSET) / tileWidth) + 1;
+                int py = (int) ((y-LEGEND_OFFSET) / tileHeight) + 1;
 
                 if(((UiBoard)event.getTarget()).moveSelected(px, py))
                 {
@@ -83,6 +78,16 @@ public class UiBoard extends Actor {
                 selectedPiece = clicked;
             }
         });
+    }
+
+    public float getSpaceWidth()
+    {
+        return (getWidth() - LEGEND_OFFSET) / Board.BOARD_WIDTH;
+    }
+
+    public float getSpaceHeight()
+    {
+        return (getHeight() - LEGEND_OFFSET) / Board.BOARD_HEIGHT;
     }
 
     private boolean moveSelected(int px, int py) {
@@ -107,10 +112,13 @@ public class UiBoard extends Actor {
     {
         batch.setColor(1, 1, 1, 1);
 
+        float tileWidth = getSpaceWidth();
+        float tileHeight = getSpaceHeight();
+
         for(int x = 0; x < Board.BOARD_WIDTH; ++x)
             for(int y = 0; y < Board.BOARD_HEIGHT; ++y)
             {
-                batch.draw(tile, x * SPACE_SIZE + getX() + LEGEND_OFFSET, y * SPACE_SIZE + getY() + LEGEND_OFFSET, SPACE_SIZE, SPACE_SIZE);
+                batch.draw(tile, x * tileWidth + getX() + LEGEND_OFFSET, y * tileHeight + getY() + LEGEND_OFFSET, tileWidth, tileHeight);
             }
 
         batch.setColor(0.4f, 0.4f, 0.4f, 1.f);
@@ -118,13 +126,15 @@ public class UiBoard extends Actor {
             for(int y = 0; y < Board.BOARD_HEIGHT; ++y)
             {
                 if((x + y) % 2 == 0) continue;
-                batch.draw(tile_black, x * SPACE_SIZE + getX() + LEGEND_OFFSET, y * SPACE_SIZE + getY() + LEGEND_OFFSET, SPACE_SIZE, SPACE_SIZE);
+                batch.draw(tile_black, x * tileWidth + getX() + LEGEND_OFFSET, y * tileHeight + getY() + LEGEND_OFFSET, tileWidth, tileHeight);
             }
     }
 
     private void renderPieces(Batch batch)
     {
 
+        float tileWidth = getSpaceWidth();
+        float tileHeight = getSpaceHeight();
         for(IChessPiece piece : game.getPieces()) {
             Position pos = piece.getPosition();
             int rx = pos.getX() - 1;
@@ -142,11 +152,12 @@ public class UiBoard extends Actor {
             Texture tex = assetManager.get(assetName, Texture.class);
             tex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
-            float x = rx * SPACE_SIZE + 5 + getX() + LEGEND_OFFSET;
-            float y = ry * SPACE_SIZE + 5 + getY() + LEGEND_OFFSET;
+            float x = rx * tileWidth + 5 + getX() + LEGEND_OFFSET;
+            float y = ry * tileHeight + 5 + getY() + LEGEND_OFFSET;
             float aspect = tex.getWidth() / (float) tex.getHeight();
-            float height = SPACE_SIZE;
-            float width = SPACE_SIZE * aspect;
+
+            float height = tileHeight;
+            float width = tileWidth * aspect;
 
             batch.draw(tex, x, y, width, height);
         }
@@ -156,25 +167,29 @@ public class UiBoard extends Actor {
     {
         if(selectedPiece == null) return;
 
+        float tileWidth = getSpaceWidth();
+        float tileHeight = getSpaceHeight();
         for(Move move : selectedPiece.allPossibleMoves(game.getBoard()))
         {
             Position pos = move.getPosition();
             int rx = pos.getX()-1;
             int ry = pos.getY()-1;
             batch.setColor(1, 0.84f, 0, 1);
-            batch.draw(tile_black, rx * SPACE_SIZE + getX() + LEGEND_OFFSET, ry * SPACE_SIZE + getY() + LEGEND_OFFSET, SPACE_SIZE, SPACE_SIZE);
+            batch.draw(tile_black, rx * tileWidth + getX() + LEGEND_OFFSET, ry * tileHeight + getY() + LEGEND_OFFSET, tileWidth, tileHeight);
         }
     }
 
     private void renderLegend(Batch batch)
     {
+        float tileWidth = getSpaceWidth();
+        float tileHeight = getSpaceHeight();
         GlyphLayout layout = new GlyphLayout();
         segoeUi.setColor(0,0,0,1);
         for(int i = 0; i < Board.BOARD_WIDTH; ++i)
         {
             char pos = (char)('A' + i);
             layout.setText(segoeUi, "" + pos);
-            float x = LEGEND_OFFSET + SPACE_SIZE/2.f + i * SPACE_SIZE + getX()  - layout.width / 2.0f;
+            float x = LEGEND_OFFSET + tileWidth/2.f + i * tileWidth + getX()  - layout.width / 2.0f;
             float y = getY() + LEGEND_OFFSET/2.f  + layout.height / 2.0f;
             segoeUi.draw(batch, "" + pos, x, y);
         }
@@ -184,7 +199,7 @@ public class UiBoard extends Actor {
             char pos = (char)('1' + i);
             layout.setText(segoeUi, "" + pos);
             float x = getX() + LEGEND_OFFSET/2.f - layout.width/2.f;
-            float y = LEGEND_OFFSET + SPACE_SIZE/2.f + i * SPACE_SIZE + getY() + layout.height / 2.0f;
+            float y = LEGEND_OFFSET + tileHeight/2.f + i * tileHeight + getY() + layout.height / 2.0f;
             segoeUi.draw(batch, "" + pos, x, y);
         }
     }
