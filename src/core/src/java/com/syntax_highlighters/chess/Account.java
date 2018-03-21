@@ -12,6 +12,8 @@ public class Account {
      */
     public Account(String name) {
         this.name = name;
+        this.wins = 0;
+        this.losses = 0;
     }
 
     /**
