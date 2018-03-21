@@ -57,10 +57,6 @@ public class ChessGame extends Game {
 	public void render () {
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		/*int w = Math.min(Gdx.graphics.getWidth(), paper.getWidth());
-		int h = Math.min(Gdx.graphics.getHeight(), paper.getHeight());*/
-		float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
 		batch.begin();
 		batch.draw(paperBuffer.getColorBufferTexture(), 0, 0);
 		batch.end();
