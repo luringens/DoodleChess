@@ -2,6 +2,7 @@ package com.syntax_highlighters.chess.gui.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -88,14 +89,14 @@ public class Button extends Actor {
             textureId = (int)(Math.random() * (TEXTURE_COUNT-1));
         }
 
-        /*if(this.selected)
+        if(this.selected)
         {
-            shader.setUniformf("u_color", new Color(0.443f, 0.7372f, 0.470f, 1));
+            batch.setColor( new Color(0.443f, 0.7372f, 0.470f, 1));
         }
         else
         {
-            shader.setUniformf("u_color", Color.BLACK);
-        }*/
+            batch.setColor(Color.BLACK);
+        }
         batch.draw(preRenderedButtons.get(textureId).getColorBufferTexture(), getX(),getY(),getWidth(),getHeight());
         //batch.draw(preRenderedButtons.get(textureId).getColorBufferTexture(), getX(),getY());
 

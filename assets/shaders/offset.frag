@@ -55,7 +55,11 @@ void main()
     float noise = snoise(noisePos);
 	
     vec2 uvp = uv  + noise / 25.f * square;
-    gl_FragColor = texture2D(u_texture, uvp);
+    
+    vec4 color = texture2D(u_texture, uvp);
+    
+    gl_FragColor = vec4(1,1,1,0);
+    gl_FragColor.a = color.a;
 
     //gl_FragColor = vec4(noise, noise, noise, 1.0f);
 }
