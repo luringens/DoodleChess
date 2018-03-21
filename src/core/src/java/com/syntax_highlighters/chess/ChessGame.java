@@ -48,6 +48,14 @@ public class ChessGame extends Game {
      */
 	@Override
 	public void setScreen(Screen screen) {
+	    /*
+	     * Dispose current screen
+         * In LibGdx do you usually keep the screens and just switch between them,
+         * we decided to recreate them when you have to switch since it would be easier
+         * to make sure that everything is initialized correctly when switching screens.
+         * This renders the "show" and "hide" methids in the screens useless here.
+         */
+	    this.getScreen().dispose();
 		super.setScreen(screen);
         recomputeBackground();
 	}

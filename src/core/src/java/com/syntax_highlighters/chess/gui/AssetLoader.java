@@ -37,7 +37,8 @@ public class AssetLoader {
                 "segoeui.png",
                 "button_template.png",
                 "pixel.png",
-                "overlay.png"
+                "overlay.png",
+                "background2.png"
         };
 
         for(String path : textures)
