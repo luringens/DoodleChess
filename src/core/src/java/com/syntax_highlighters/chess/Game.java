@@ -203,8 +203,27 @@ public class Game {
                        bishops.get(1).getPosition());
     }
 
+    /**
+     * Determine whether two squares are the same color.
+     *
+     * @return true if the squares are the same color, false otherwise
+     */
     public boolean sameColoredSquare(Position p1, Position p2) {
         return (p1.getX() + p1.getY()) % 2 == (p2.getX() + p2.getY()) % 2;
+    }
+
+    /**
+     * Determine the winner of the game, if any.
+     *
+     * Only determines winner by checkmate (not by resignation).
+     *
+     * @return 1 if white wins, -1 if black wins, or 0 if the game is not over
+     * or a draw
+     */
+    public int getWinner() {
+        if (board.checkMate(true)) return 1;
+        if (board.checkMate(false)) return 1;
+        return 0;
     }
 
 }
