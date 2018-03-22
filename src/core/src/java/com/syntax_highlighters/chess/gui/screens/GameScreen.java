@@ -91,7 +91,7 @@ public class GameScreen extends AbstractScreen {
         turnText.setText(this.game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
         gameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
-        if(player1 == null && ai1 == null && player2 == null && ai2 == null)
+        if(player1 == null && ai1 != null && player2 == null && ai2 != null)
             giveUp = new Button("Leave match", assetManager);
         else
             giveUp = new Button("Give up", assetManager);
@@ -101,7 +101,7 @@ public class GameScreen extends AbstractScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                if(player1 == null && ai1 == null && player2 == null && ai2 == null)
+                if(player1 == null && ai1 != null && player2 == null && ai2 != null)
                 {
                     try {
                         aiLock.acquire(1);
