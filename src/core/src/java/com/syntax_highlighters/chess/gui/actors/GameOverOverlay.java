@@ -13,13 +13,11 @@ import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
 
 public class GameOverOverlay extends AbstractOverlay {
-    private boolean hidePlayer1 = false;
     private Text white;
     private Text player1Name;
     private Text player1Wins;
     private Text player1Losses;
 
-    private boolean hidePlayer2 = false;
     private Text black;
     private Text player2Name;
     private Text player2Wins;
@@ -67,9 +65,6 @@ public class GameOverOverlay extends AbstractOverlay {
         player2Losses.setText("");
         player2Losses.setColor(0, 0, 0, 1);
 
-        hidePlayer1 = true;
-        hidePlayer2 = true;
-
         mainMenuButton = new Button("To main menu", assetManager);
         mainMenuButton.setSize(200, 75);
         mainMenuButton.addListener(new ClickListener(){
@@ -83,13 +78,12 @@ public class GameOverOverlay extends AbstractOverlay {
 
     public void updateText(int winner, Account player1, Account player2, AiDifficulty ai1, AiDifficulty ai2)
     {
-        hidePlayer1 = player1 == null && ai2 == null;
         if(ai1 != null)
         {
             if(winner == 1)
                 player1Name.setText(ai1.name() + " Ai wins");
             else
-                player1Name.setText(ai1.name() + " Ai looses");
+                player1Name.setText(ai1.name() + " Ai loses");
             player1Wins.setText("");
             player1Losses.setText("");
         }
@@ -98,7 +92,7 @@ public class GameOverOverlay extends AbstractOverlay {
             if(winner == 1)
                 player1Name.setText(player1.getName() + " wins");
             else
-                player1Name.setText(player1.getName() + " looses");
+                player1Name.setText(player1.getName() + " loses");
             player1Wins.setText("Wins: " + player1.getWinCount());
             player1Losses.setText("Losses: " + player1.getLossCount());
         }
@@ -107,18 +101,17 @@ public class GameOverOverlay extends AbstractOverlay {
             if(winner == 1)
                 player1Name.setText("Player 1 wins");
             else
-                player1Name.setText("Player 1 looses");
+                player1Name.setText("Player 1 loses");
             player1Wins.setText("");
             player1Losses.setText("");
         }
 
-        hidePlayer2 = player2 == null && ai2 == null;
         if(ai2 != null)
         {
             if(winner == -1)
                 player2Name.setText(ai2.name() + " Ai wins");
             else
-                player2Name.setText(ai2.name() + " Ai looses");
+                player2Name.setText(ai2.name() + " Ai loses");
             player2Wins.setText("");
             player2Losses.setText("");
         }
@@ -127,17 +120,17 @@ public class GameOverOverlay extends AbstractOverlay {
             if(winner == -1)
                 player2Name.setText(player2.getName() + " wins");
             else
-                player2Name.setText(player2.getName() + " looses");
+                player2Name.setText(player2.getName() + " loses");
 
             player2Wins.setText("Wins: " + player2.getWinCount());
             player2Losses.setText("Losses: " + player2.getLossCount());
         }
-        else if(ai2 != null)
+        else
         {
             if(winner == -1)
                 player2Name.setText("Player 2 wins");
             else
-                player2Name.setText("Player 2 looses");
+                player2Name.setText("Player 2 loses");
             player2Wins.setText("");
             player2Losses.setText("");
         }
@@ -161,27 +154,23 @@ public class GameOverOverlay extends AbstractOverlay {
         batch.setColor(1,1,1,1);
         super.draw(batch, parentAlpha);
 
-        if(!hidePlayer1) {
-            white.setCenter(getX() + getWidth() / 3.f, getY() + getHeight() / 2.f + 80.f);
-            white.draw(batch, parentAlpha);
-            player1Name.setCenter(getX() + getWidth() / 3.f, getY() + getHeight() / 2.f + 40.f);
-            player1Name.draw(batch, parentAlpha);
-            player1Wins.setCenter(getX() + getWidth() / 3.f, getY() + getHeight() / 2.f);
-            player1Wins.draw(batch, parentAlpha);
-            player1Losses.setCenter(getX() + getWidth() / 3.f, getY() + getHeight() / 2.f - 30.f);
-            player1Losses.draw(batch, parentAlpha);
-        }
+        white.setCenter(getX() + getWidth() / 3.f, getY() + getHeight() / 2.f + 80.f);
+        white.draw(batch, parentAlpha);
+        player1Name.setCenter(getX() + getWidth() / 3.f, getY() + getHeight() / 2.f + 40.f);
+        player1Name.draw(batch, parentAlpha);
+        player1Wins.setCenter(getX() + getWidth() / 3.f, getY() + getHeight() / 2.f);
+        player1Wins.draw(batch, parentAlpha);
+        player1Losses.setCenter(getX() + getWidth() / 3.f, getY() + getHeight() / 2.f - 30.f);
+        player1Losses.draw(batch, parentAlpha);
 
-        if(!hidePlayer2) {
-            black.setCenter(getX() + getWidth() / 3.f * 2.f, getY() + getHeight() / 2.f + 80.f);
-            black.draw(batch, parentAlpha);
-            player2Name.setCenter(getX() + getWidth() / 3.f * 2.f, getY() + getHeight() / 2.f + 40.f);
-            player2Name.draw(batch, parentAlpha);
-            player2Wins.setCenter(getX() + getWidth() / 3.f * 2.f, getY() + getHeight() / 2.f);
-            player2Wins.draw(batch, parentAlpha);
-            player2Losses.setCenter(getX() + getWidth() / 3.f * 2.f, getY() + getHeight() / 2.f - 30.f);
-            player2Losses.draw(batch, parentAlpha);
-        }
+        black.setCenter(getX() + getWidth() / 3.f * 2.f, getY() + getHeight() / 2.f + 80.f);
+        black.draw(batch, parentAlpha);
+        player2Name.setCenter(getX() + getWidth() / 3.f * 2.f, getY() + getHeight() / 2.f + 40.f);
+        player2Name.draw(batch, parentAlpha);
+        player2Wins.setCenter(getX() + getWidth() / 3.f * 2.f, getY() + getHeight() / 2.f);
+        player2Wins.draw(batch, parentAlpha);
+        player2Losses.setCenter(getX() + getWidth() / 3.f * 2.f, getY() + getHeight() / 2.f - 30.f);
+        player2Losses.draw(batch, parentAlpha);
 
         mainMenuButton.setPosition(getX() + getWidth()/2.f - mainMenuButton.getWidth()/2.f,
                 getY() + 50.f);
