@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.ChessGame;
@@ -17,6 +19,7 @@ import com.syntax_highlighters.chess.Game;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.UiBoard;
+import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
 
@@ -32,6 +35,7 @@ public class GameScreen extends AbstractScreen {
     private Stage stage;
     private UiBoard board;
     private Text turnText;
+    private Button giveUp;
 
     private boolean waitingForAi = false;
     private boolean resizeFBO = false;
@@ -53,13 +57,13 @@ public class GameScreen extends AbstractScreen {
      *
      * We have put the AI on a separate thread to stop the window from becoming unresponsive while the AI is thinking.
      *
-     * @param game LibGdx game
+     * @param chessgame current ChessGame
      * @param player1Difficulty Difficulty of player 1 (null if no ai)
      * @param player2Difficulty Difficulty of player 2 (null if no ai)
      */
-    public GameScreen(ChessGame game, Account player1, Account player2, AiDifficulty player1Difficulty, AiDifficulty player2Difficulty) {
-        super(game);
-        assetManager = game.getAssetManager();
+    public GameScreen(ChessGame chessgame, Account player1, Account player2, AiDifficulty player1Difficulty, AiDifficulty player2Difficulty) {
+        super(chessgame);
+        assetManager = chessgame.getAssetManager();
 
         this.game = new Game(player1Difficulty, player2Difficulty);
 
@@ -86,9 +90,29 @@ public class GameScreen extends AbstractScreen {
         turnText.setText(this.game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
         gameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
+        if(player1 == null && player2 == null)
+            giveUp = new Button("Leave match", assetManager);
+        else
+            giveUp = new Button("Give up", assetManager);
+        giveUp.setSize(200, 75);
+
+        giveUp.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if(player1 == null && player2 == null)
+                {
+                    chessgame.setScreen(new MainMenuScreen(chessgame));
+                    return;
+                }
+                gameOver(game.nextPlayerIsWhite() ? 1 : -1);
+            }
+        });
+        stage.addActor(giveUp);
+
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        gameOverOverlay = new GameOverOverlay(game);
+        gameOverOverlay = new GameOverOverlay(chessgame);
         gameOverOverlay.setVisible(false);
         stage.addActor(gameOverOverlay);
 
@@ -97,7 +121,8 @@ public class GameScreen extends AbstractScreen {
                 try {
                     try {
                         aiLock.acquire(1);
-                        if (this.game.isGameOver()) {
+                        if (isGameOver) {
+                            waitingForAi = false;
                             break;
                         }
                         if (waitingForAi && this.game.nextPlayerIsAI()) {
@@ -119,18 +144,18 @@ public class GameScreen extends AbstractScreen {
         aiThread.start();
     }
 
-    private void gameOver()
+    private void gameOver(int winner)
     {
         isGameOver = true;
 
-        if(game.getWinner() == -1 )
+        if(winner == -1 )
         {
             if(player1 != null)
                 player1.win();
             if(player2 != null)
                 player2.loss();
         }
-        else if(game.getWinner() == 1)
+        else if(winner == 1)
         {
             if(player1 != null)
                 player1.loss();
@@ -145,7 +170,7 @@ public class GameScreen extends AbstractScreen {
                 player2.win();
         }
 
-        gameOverOverlay.updateText(game.getWinner(), player1, player2, ai1, ai2);
+        gameOverOverlay.updateText(winner, player1, player2, ai1, ai2);
         gameOverOverlay.setVisible(true);
     }
 
@@ -163,13 +188,16 @@ public class GameScreen extends AbstractScreen {
         SpriteBatch batch = (SpriteBatch) stage.getBatch();
         try {
             aiLock.acquire(1);
+
+            giveUp.setVisible(!game.nextPlayerIsAI() || (player1 == null && player2 == null));
+
             if(!waitingForAi) {
                 // Game over check
                 if(game.isGameOver())
                 {
                     if(!isGameOver)
                     {
-                        gameOver();
+                        gameOver(game.getWinner());
                     }
                     stage.act(delta);
                     stage.draw();
@@ -227,7 +255,9 @@ public class GameScreen extends AbstractScreen {
         size = Math.min(size, 1000);
         board.setSize(size, size);
         board.setPosition(width / 2.f - size / 2.f, height / 2.f - size / 2.f + 25);
-        turnText.setCenter(width / 2.f, height / 2.f - size / 2.f);
+        turnText.setCenter(width / 2.f, height / 2.f - size / 2.f - 10.f);
+
+        giveUp.setPosition(width / 2.f + size/2.f + 20.f - giveUp.getWidth(), height / 2.f - size / 2.f - giveUp.getHeight() / 1.5f);
 
         if(waitingForAi)
         {

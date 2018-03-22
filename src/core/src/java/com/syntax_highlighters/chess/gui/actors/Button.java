@@ -24,6 +24,7 @@ public class Button extends Actor {
     private static final int TEXTURE_COUNT = 20;
     private static boolean hasRendered = false;
     public static ArrayList<FrameBuffer> preRenderedButtons = new ArrayList<>();
+    private long lastFrame = 0;
 
     public Button(String buttonText, AssetManager manager)
     {
@@ -84,9 +85,10 @@ public class Button extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        if(Gdx.graphics.getFrameId() % 60 == 0)
+        if(Gdx.graphics.getFrameId() - lastFrame >= 60)
         {
             textureId = (int)(Math.random() * (TEXTURE_COUNT-1));
+            lastFrame = Gdx.graphics.getFrameId();
         }
 
         if(this.selected)
