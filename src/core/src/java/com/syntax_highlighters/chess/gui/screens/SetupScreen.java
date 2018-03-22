@@ -4,8 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.syntax_highlighters.chess.Account;
+import com.syntax_highlighters.chess.AccountManager;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
@@ -26,8 +30,8 @@ public class SetupScreen extends AbstractScreen {
     private AiDifficulty player2Difficulty;
     private AssetManager assetManager;
 
-    private Text player1Title;
-    private Text player2Title;
+    private SelectBox player1Title;
+    private SelectBox player2Title;
 
     private ArrayList<Button> player1Buttons = new ArrayList<>();
     private ArrayList<Button> player2Buttons = new ArrayList<>();
@@ -50,8 +54,8 @@ public class SetupScreen extends AbstractScreen {
         title.setColor(0,0,0,1);
         stage.addActor(title);
 
-        addDifficultyList(-1);
-        addDifficultyList(1);
+        addDifficultyList(game, -1);
+        addDifficultyList(game, 1);
 
         playButton = new Button("Play", assetManager);
         playButton.setSize(buttonWidth, buttonHeight);
@@ -61,7 +65,28 @@ public class SetupScreen extends AbstractScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                game.setScreen(new GameScreen(game, player1Difficulty, player2Difficulty));
+
+                String selected1 = (String)player1Title.getSelected();
+                String selected2 = (String)player2Title.getSelected();
+
+                // TODO: Get account
+                if(selected1 == null || selected1.isEmpty() || selected2 == null || selected2.isEmpty()
+                        || selected1.equals(selected2))
+                {
+                    // Invalid account selection
+                    return;
+                }
+                AccountManager manager = game.getAccountManager();
+                Account player1 = manager.getAccount(selected1);
+                Account player2 = manager.getAccount(selected2);
+
+                if((player1 == null && player1Difficulty == null) || (player2 == null && player2Difficulty == null))
+                {
+                    // Acount does not exist
+                    return;
+                }
+
+                game.setScreen(new GameScreen(game, player1, player2, player1Difficulty, player2Difficulty));
             }
         });
 
@@ -76,7 +101,7 @@ public class SetupScreen extends AbstractScreen {
             }
         });
 
-        AccountOverlay accountOverlay = new AccountOverlay(game, assetManager);
+        AccountOverlay accountOverlay = new AccountOverlay(game, this, assetManager);
         accountOverlay.setVisible(false);
 
 
@@ -95,8 +120,27 @@ public class SetupScreen extends AbstractScreen {
 
         Gdx.input.setInputProcessor(stage);
 
+
+
         // add this last
         stage.addActor(accountOverlay);
+    }
+
+    public void updateAccountLists(ChessGame game)
+    {
+        ArrayList<String> accounts = new ArrayList<>();
+        for(Account acc : game.getAccountManager().getAll())
+        {
+            accounts.add(acc.getName());
+        }
+        accounts.add("Player 1");
+        player1Title.setItems(accounts.toArray());
+        player1Title.setSelected("Player1");
+        accounts.remove("Player 1");
+        accounts.add("Player 2");
+        player2Title.setItems(accounts.toArray());
+        player2Title.setSelected("Player2");
+
     }
 
     private void resetbuttonList(int player)
@@ -121,17 +165,30 @@ public class SetupScreen extends AbstractScreen {
             player2Difficulty = difficulty == -1 ? null : AiDifficulty.values()[difficulty];
     }
 
-    private void addDifficultyList(int player)
+    private void addDifficultyList(ChessGame game, int player)
     {
-        Text title = new Text(AssetLoader.GetDefaultFont(assetManager));
+        /*Text title = new Text(AssetLoader.GetDefaultFont(assetManager));
         title.setText("Player" + (player == -1 ? "1" : "2"));
         title.setColor(0,0,0,1);
-        stage.addActor(title);
+        stage.addActor(title);*/
 
+        SelectBox box = new SelectBox(game.skin);
+
+        ArrayList<String> accounts = new ArrayList<>();
+        accounts.add("Player" + (player == -1 ? "1" : "2"));
+        for(Account acc : game.getAccountManager().getAll())
+        {
+            accounts.add(acc.getName());
+        }
+
+        box.setItems(accounts.toArray());
+        box.setSelected("Player" + (player == -1 ? "1" : "2"));
+        box.setSize(200, 25);
+        stage.addActor(box);
         if(player == -1)
-            player1Title = title;
+            player1Title = box;
         else
-            player2Title = title;
+            player2Title = box;
 
         for(int i = 0; i < 4; ++i)
         {
@@ -196,8 +253,12 @@ public class SetupScreen extends AbstractScreen {
 
         title.setCenter(width / 2.f, centerH + buttonHeight * 4);
 
-        player1Title.setCenter(width / 2.f - buttonWidth, height / 2.f + buttonHeight * 2.75f);
-        player2Title.setCenter(width / 2.f + buttonWidth, height / 2.f + buttonHeight * 2.75f);
+        player1Title.setPosition(width / 2.f - buttonWidth - player1Title.getWidth() / 2.f,
+                height / 2.f + buttonHeight * 2.75f - player1Title.getHeight() / 2.f);
+        player2Title.setPosition(width / 2.f + buttonWidth - player2Title.getWidth() / 2.f,
+                height / 2.f + buttonHeight * 2.75f - player1Title.getHeight() / 2.f);
+        //player1Title.setCenter(width / 2.f - buttonWidth, height / 2.f + buttonHeight * 2.75f);
+        //player2Title.setCenter(width / 2.f + buttonWidth, height / 2.f + buttonHeight * 2.75f);
 
         for(int i = 0; i < player1Buttons.size(); ++i)
         {

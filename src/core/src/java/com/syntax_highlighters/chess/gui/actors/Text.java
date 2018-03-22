@@ -17,6 +17,9 @@ public class Text extends Actor {
     public void setText(String text)
     {
         this.text = text;
+        GlyphLayout layout = new GlyphLayout();
+        layout.setText(font, text);
+        setSize(layout.width, layout.height);
     }
 
     public void setCenter(float x, float y) {
@@ -37,6 +40,7 @@ public class Text extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         font.setColor(getColor());
+        font.getData().setScale(getScaleX(), getScaleY());
         font.draw(batch, text, getX(), getY());
     }
 }

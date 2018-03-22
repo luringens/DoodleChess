@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.Game;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
@@ -54,7 +55,7 @@ public class GameScreen extends AbstractScreen {
      * @param player1Difficulty Difficulty of player 1 (null if no ai)
      * @param player2Difficulty Difficulty of player 2 (null if no ai)
      */
-    public GameScreen(ChessGame game, AiDifficulty player1Difficulty, AiDifficulty player2Difficulty) {
+    public GameScreen(ChessGame game, Account player1, Account player2, AiDifficulty player1Difficulty, AiDifficulty player2Difficulty) {
         super(game);
         assetManager = game.getAssetManager();
 
@@ -80,7 +81,7 @@ public class GameScreen extends AbstractScreen {
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        gameOverOverlay = new GameOverOverlay(game);
+        gameOverOverlay = new GameOverOverlay(game, player1, player2);
         gameOverOverlay.setVisible(false);
         stage.addActor(gameOverOverlay);
 
@@ -169,6 +170,7 @@ public class GameScreen extends AbstractScreen {
         }
         // Draw offscreen buffer
         batch.begin();
+        batch.setColor(1,1,1,1);
         batch.draw(gameBuffer.getColorBufferTexture(), 0, 0,0, 0, gameBuffer.getWidth(),
                 gameBuffer.getHeight(), 1, 1, 0, 0, 0,
                 gameBuffer.getWidth(), gameBuffer.getHeight(), false, true);

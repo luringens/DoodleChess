@@ -14,12 +14,14 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
+import com.syntax_highlighters.chess.gui.screens.SetupScreen;
 
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class AccountOverlay extends Overlay {
 
     private TextField username;
 
-    public AccountOverlay(ChessGame game, AssetManager assetManager) {
+    public AccountOverlay(ChessGame game, SetupScreen screen, AssetManager assetManager) {
         super("Create new account:", assetManager);
 
         BitmapFont font = AssetLoader.GetDefaultFont(assetManager);
@@ -78,6 +80,7 @@ public class AccountOverlay extends Overlay {
                 // Account successfully created
                 username.setText("");
                 setVisible(false);
+                screen.updateAccountLists(game);
             }
         });
 

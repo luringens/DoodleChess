@@ -210,6 +210,7 @@ public class UiBoard extends Actor {
         renderBoard(batch);
         renderMoves(batch);
         renderPieces(batch);
+        batch.setColor(1,1,1,1);
     }
 
 }

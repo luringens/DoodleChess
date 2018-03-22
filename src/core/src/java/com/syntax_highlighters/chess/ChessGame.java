@@ -8,11 +8,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
+
+import java.util.UUID;
 
 /**
  * Wrapper for LibGdx Game class
@@ -24,6 +28,7 @@ public class ChessGame extends Game {
     private FrameBuffer paperBuffer;
 	private Texture paper;
 	private AccountManager accountManager;
+	public Skin skin;
 
 	/***
      * Game creation event, used to initialize resources
@@ -36,6 +41,9 @@ public class ChessGame extends Game {
 		assetManager.finishLoading();
 
 		accountManager = new AccountManager();
+
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("uiskin.atlas"));
+		skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
 
         paper = assetManager.get("paper.png", Texture.class);
 
