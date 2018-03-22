@@ -147,7 +147,11 @@ public class Game {
      * @return true if the game is over, false otherwise
      */
     public boolean isGameOver() {
-        return board.checkMate(true) || board.checkMate(false) || insufficientMaterial();
+        return board.checkMate(true)
+                || board.checkMate(false)
+                || insufficientMaterial()
+                || board.getAllPieces().stream()
+                .noneMatch(p -> p.allPossibleMoves(board).size() > 0);
     }
 
     /**
