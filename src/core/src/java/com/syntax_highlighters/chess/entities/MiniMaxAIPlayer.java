@@ -2,6 +2,7 @@ package com.syntax_highlighters.chess.entities;
 import com.syntax_highlighters.chess.*;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class MiniMaxAIPlayer implements IAiPlayer {
@@ -10,10 +11,12 @@ public class MiniMaxAIPlayer implements IAiPlayer {
     private static final int HARD_DEPTH = 5;
     private final boolean isWhite;
     private int diff;
+    private Random rand;
 
     public MiniMaxAIPlayer(boolean isWhite, AiDifficulty diff) {
         this.isWhite = isWhite;
         this.SetDifficulty(diff);
+        rand = new Random();
     }
 
     @Override
@@ -32,7 +35,7 @@ public class MiniMaxAIPlayer implements IAiPlayer {
         }
     }
     
-    private static void MiniMaxMove(int depth, Board board, boolean isWhite) {
+    private void MiniMaxMove(int depth, Board board, boolean isWhite) {
         assert(depth >= 1);
         List<Move> moves = board.getAllPieces().stream()
                 .filter(p -> p.isWhite() == isWhite)
@@ -54,7 +57,7 @@ public class MiniMaxAIPlayer implements IAiPlayer {
         if (bestMove != null) bestMove.DoMove(board);
     }
 
-    private static int MiniMaxScore(int depth, Board board, boolean isWhite, boolean isMaximizing, int alpha, int beta) {
+    private int MiniMaxScore(int depth, Board board, boolean isWhite, boolean isMaximizing, int alpha, int beta) {
         if (depth <= 0) return evaluateScore(board, isWhite);
         List<Move> moves = board.getAllPieces().stream()
                 .filter(p -> p.isWhite() == (isWhite == isMaximizing))
@@ -105,8 +108,8 @@ public class MiniMaxAIPlayer implements IAiPlayer {
         }
     }
 
-    private static int evaluateScore(Board board, boolean forWhite) {
-        int score = 0;
+    private int evaluateScore(Board board, boolean forWhite) {
+        int score = rand.nextInt(10) - 5;
         for (IChessPiece p : board.getAllPieces()) {
             if (p.isWhite() == forWhite) score += p.getPositionalScore();
             else score -= p.getPieceScore();
