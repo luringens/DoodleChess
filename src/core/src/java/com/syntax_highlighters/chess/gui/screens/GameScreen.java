@@ -105,6 +105,22 @@ public class GameScreen extends AbstractScreen {
                 super.clicked(event, x, y);
                 if(player1 == null && player2 == null)
                 {
+                    try {
+                        aiLock.acquire(1);
+                        isGameOver = true;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    finally
+                    {
+                        aiLock.release(1);
+                    }
+
+                    try {
+                        aiThread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     chessgame.setScreen(new MainMenuScreen(chessgame));
                     return;
                 }
@@ -176,6 +192,12 @@ public class GameScreen extends AbstractScreen {
 
         gameOverOverlay.updateText(winner, player1, player2, ai1, ai2);
         gameOverOverlay.setVisible(true);
+
+        try {
+            aiThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /***
