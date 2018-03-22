@@ -180,9 +180,18 @@ public class ChessPiecePawn extends AbstractChessPiece {
 
     @Override
     public boolean threatens(Position p, Board b) {
-        return p.equals(position.east(1).north(1)) || p.equals(position.west(1).north(1))
+        return p.equals(forward(1).east(1)) || p.equals(forward(1).west(1));
             // en passant
-            || p.equals(position.east(1)) && b.getAtPosition(position.east(1).north(1)) == null
-            || p.equals(position.west(1)) && b.getAtPosition(position.west(1).north(1)) == null;
+            // NOTE: This part is actually broken, for several reasons:
+            // 1. only applies to pawns having just moved two steps forward, but
+            //    there is no way to indicate this to the caller
+            // 2. this pawn must be on 5th rank if they're white, or 4th rank if
+            //    they're black
+            //
+            // For these reasons, the en passant check has been commented out,
+            // as it's *probably* not a huge problem. I've kept the code here for
+            // purpose of documentation of the approaches tried.
+            //|| p.equals(position.east(1)) && b.getAtPosition(forward(1).east(1)) == null
+            //|| p.equals(position.west(1)) && b.getAtPosition(forward(1).west(1)) == null;
     }
 }
