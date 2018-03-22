@@ -23,7 +23,7 @@ public class Button extends Actor {
 
     private static final int TEXTURE_COUNT = 20;
     private static boolean hasRendered = false;
-    private static ArrayList<FrameBuffer> preRenderedButtons = new ArrayList<>();
+    public static ArrayList<FrameBuffer> preRenderedButtons = new ArrayList<>();
 
     public Button(String buttonText, AssetManager manager)
     {

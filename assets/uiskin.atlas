@@ -118,9 +118,9 @@ default-scroll
 default-select
   rotate: false
   xy: 0,0
-  size: 27, 20
+  size: 27, 51
   split: 4, 14, 4, 4
-  orig: 27, 20
+  orig: 27, 51
   offset: 0, 0
   index: -1
 default-select-selection

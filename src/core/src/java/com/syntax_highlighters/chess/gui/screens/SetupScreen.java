@@ -2,11 +2,13 @@ package com.syntax_highlighters.chess.gui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
@@ -85,7 +87,6 @@ public class SetupScreen extends AbstractScreen {
                     // Acount does not exist
                     return;
                 }
-
                 game.setScreen(new GameScreen(game, player1, player2, player1Difficulty, player2Difficulty));
             }
         });
@@ -183,7 +184,7 @@ public class SetupScreen extends AbstractScreen {
 
         box.setItems(accounts.toArray());
         box.setSelected("Player" + (player == -1 ? "1" : "2"));
-        box.setSize(200, 25);
+        box.setSize(200,  45);
         stage.addActor(box);
         if(player == -1)
             player1Title = box;
