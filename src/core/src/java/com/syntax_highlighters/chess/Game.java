@@ -221,7 +221,7 @@ public class Game {
      * or a draw
      */
     public int getWinner() {
-        if (board.checkMate(true)) return 1;
+        if (board.checkMate(true)) return -1;
         if (board.checkMate(false)) return 1;
         return 0;
     }
