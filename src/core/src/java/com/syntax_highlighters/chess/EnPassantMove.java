@@ -35,7 +35,7 @@ public class EnPassantMove extends Move {
 
     @Override
     public void UndoMove(Board b) {
-        super.DoMove(b);
+        super.UndoMove(b);
         b.putAtPosition(passantTakesPiece.getPosition(), passantTakesPiece);
     }
 }

@@ -124,8 +124,8 @@ public class GameScreen extends AbstractScreen {
     public void render(float delta) {
 
         SpriteBatch batch = (SpriteBatch) stage.getBatch();
-        if(!waitingForAi) {
-            try {
+        try {
+            if(!waitingForAi) {
                 aiLock.acquire(1);
                 // Game over check
                 if(game.isGameOver())
@@ -133,7 +133,7 @@ public class GameScreen extends AbstractScreen {
                     if(!isGameOver)
                     {
                         isGameOver = true;
-                        gameOverOverlay.setVisible(true);
+                        //gameOverOverlay.setVisible(true);
                     }
                     stage.act(delta);
                     stage.draw();
@@ -163,12 +163,13 @@ public class GameScreen extends AbstractScreen {
                 gameBuffer.end();
                 Gdx.gl.glDisable(GL20.GL_BLEND);
             }
-            catch(Exception e){}
-            finally{
-                aiLock.release(1);
-            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally{
+            aiLock.release(1);
         }
         // Draw offscreen buffer
+        if(batch.isDrawing()) return;
         batch.begin();
         batch.setColor(1,1,1,1);
         batch.draw(gameBuffer.getColorBufferTexture(), 0, 0,0, 0, gameBuffer.getWidth(),
