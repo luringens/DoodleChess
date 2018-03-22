@@ -125,8 +125,8 @@ public class GameScreen extends AbstractScreen {
 
         SpriteBatch batch = (SpriteBatch) stage.getBatch();
         try {
+            aiLock.acquire(1);
             if(!waitingForAi) {
-                aiLock.acquire(1);
                 // Game over check
                 if(game.isGameOver())
                 {
@@ -169,7 +169,6 @@ public class GameScreen extends AbstractScreen {
             aiLock.release(1);
         }
         // Draw offscreen buffer
-        if(batch.isDrawing()) return;
         batch.begin();
         batch.setColor(1,1,1,1);
         batch.draw(gameBuffer.getColorBufferTexture(), 0, 0,0, 0, gameBuffer.getWidth(),
