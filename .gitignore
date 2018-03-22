@@ -5,6 +5,7 @@ docs/classdiagram.png
 docs/classdiagram.xml
 *.DS_Store
 .vscode
+accounts.data
 
 # Build output
 *target*
