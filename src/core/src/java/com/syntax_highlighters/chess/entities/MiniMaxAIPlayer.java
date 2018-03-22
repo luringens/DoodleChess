@@ -6,9 +6,9 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class MiniMaxAIPlayer implements IAiPlayer {
-    private static final int EASY_DEPTH = 2;
-    private static final int MED_DEPTH = 3;
-    private static final int HARD_DEPTH = 4;
+    private static final int EASY_DEPTH = 3;
+    private static final int MED_DEPTH = 4;
+    private static final int HARD_DEPTH = 5;
     private final boolean isWhite;
     private int diff;
     private Random rand;
@@ -67,44 +67,34 @@ public class MiniMaxAIPlayer implements IAiPlayer {
         if (moves.size() == 0) return evaluateScore(board, isWhite);
 
         if (isMaximizing) {
-            int bestScore = -100000;
             for (Move move : moves) {
                 // Check if the move takes the king.
-                if (move.getPosition() == board.getKing(isWhite)) {
-                    bestScore = 10000;
-                }
-                else {
-                    move.DoMove(board);
-                    bestScore = Math.max(bestScore, MiniMaxScore(depth - 1, board, isWhite, false, alpha, beta));
-                    move.UndoMove(board);
-                }
+                if (move.getPosition() == board.getKing(isWhite)) return 10000;
+
+                move.DoMove(board);
+                int score = MiniMaxScore(depth - 1, board, isWhite, false, alpha, beta);
+                move.UndoMove(board);
+
                 // Alpha-beta pruning - early return for optimization
-                alpha = Math.max(alpha, bestScore);
-                if (beta <= alpha) {
-                    return bestScore;
-                }
+                if (score >= beta) return beta;
+                alpha = Math.max(alpha, score);
             }
-            return bestScore;
+            return alpha;
         }
         else {
-            int bestScore = 10000;
             for (Move move : moves) {
                 // Check if the move takes the king.
-                if (move.getPosition() == board.getKing(!isWhite)) {
-                    bestScore = -10000;
-                }
-                else {
-                    move.DoMove(board);
-                    bestScore = Math.min(bestScore, MiniMaxScore(depth - 1, board, isWhite, true, alpha, beta));
-                    move.UndoMove(board);
-                }
+                if (move.getPosition() == board.getKing(!isWhite)) return -10000;
+
+                move.DoMove(board);
+                int score = MiniMaxScore(depth - 1, board, isWhite, true, alpha, beta);
+                move.UndoMove(board);
+
                 // Alpha-beta pruning - early return for optimization
-                beta = Math.min(beta, bestScore);
-                if (beta <= alpha) {
-                    return bestScore;
-                }
+                if (score <= alpha) return alpha;
+                beta = Math.min(beta, score);
             }
-            return bestScore;
+            return beta;
         }
     }
 
