@@ -60,13 +60,13 @@ public class GameScreen extends AbstractScreen {
      *
      * We have put the AI on a separate thread to stop the window from becoming unresponsive while the AI is thinking.
      *
-     * @param chessgame current ChessGame
+     * @param chessGame current ChessGame
      * @param player1Difficulty Difficulty of player 1 (null if no ai)
      * @param player2Difficulty Difficulty of player 2 (null if no ai)
      */
-    public GameScreen(ChessGame chessgame, Account player1, Account player2, AiDifficulty player1Difficulty, AiDifficulty player2Difficulty) {
-        super(chessgame);
-        assetManager = chessgame.getAssetManager();
+    public GameScreen(ChessGame chessGame, Account player1, Account player2, AiDifficulty player1Difficulty, AiDifficulty player2Difficulty) {
+        super(chessGame);
+        assetManager = chessGame.getAssetManager();
         this.chessGame = chessGame;
         this.game = new Game(player1Difficulty, player2Difficulty);
 
@@ -83,17 +83,15 @@ public class GameScreen extends AbstractScreen {
         board.setSize(size, size);
         stage.addActor(board);
 
-        Texture texture = new Texture(Gdx.files.internal("segoeui.png"));
-        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        BitmapFont segoeUi = new BitmapFont(Gdx.files.internal("segoeui.fnt"), new TextureRegion(texture), false);
+        BitmapFont font = AssetLoader.GetDefaultFont(assetManager);
 
-        turnText = new Text(segoeUi);
+        turnText = new Text(font);
         turnText.setColor(0,0,0,1);
         stage.addActor(turnText);
         turnText.setText(this.game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
         gameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
-        if(player1 == null && player2 == null)
+        if(player1 == null && ai1 == null && player2 == null && ai2 == null)
             giveUp = new Button("Leave match", assetManager);
         else
             giveUp = new Button("Give up", assetManager);
@@ -103,7 +101,7 @@ public class GameScreen extends AbstractScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                if(player1 == null && player2 == null)
+                if(player1 == null && ai1 == null && player2 == null && ai2 == null)
                 {
                     try {
                         aiLock.acquire(1);
@@ -121,7 +119,7 @@ public class GameScreen extends AbstractScreen {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    chessgame.setScreen(new MainMenuScreen(chessgame));
+                    chessGame.setScreen(new MainMenuScreen(chessGame));
                     return;
                 }
                 gameOver(game.nextPlayerIsWhite() ? 1 : -1);
@@ -131,7 +129,7 @@ public class GameScreen extends AbstractScreen {
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        gameOverOverlay = new GameOverOverlay(chessgame);
+        gameOverOverlay = new GameOverOverlay(chessGame);
         gameOverOverlay.setVisible(false);
         stage.addActor(gameOverOverlay);
 
@@ -167,14 +165,14 @@ public class GameScreen extends AbstractScreen {
     {
         isGameOver = true;
 
-        if(winner == -1 )
+        if(winner == 1 )
         {
             if(player1 != null)
                 player1.win();
             if(player2 != null)
                 player2.loss();
         }
-        else if(winner == 1)
+        else if(winner == -1)
         {
             if(player1 != null)
                 player1.loss();
@@ -193,11 +191,6 @@ public class GameScreen extends AbstractScreen {
         gameOverOverlay.updateText(winner, player1, player2, ai1, ai2);
         gameOverOverlay.setVisible(true);
 
-        try {
-            aiThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     /***
@@ -302,7 +295,6 @@ public class GameScreen extends AbstractScreen {
     @Override
     public void dispose() {
         stage.dispose();
-
     }
 
     /***

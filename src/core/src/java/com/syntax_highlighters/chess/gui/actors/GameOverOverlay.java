@@ -86,7 +86,7 @@ public class GameOverOverlay extends AbstractOverlay {
         hidePlayer1 = player1 == null && ai2 == null;
         if(ai1 != null)
         {
-            if(winner == -1)
+            if(winner == 1)
                 player1Name.setText(ai1.name() + " Ai wins");
             else
                 player1Name.setText(ai1.name() + " Ai looses");
@@ -95,7 +95,7 @@ public class GameOverOverlay extends AbstractOverlay {
         }
         else if(player1 != null)
         {
-            if(winner == -1)
+            if(winner == 1)
                 player1Name.setText(player1.getName() + " wins");
             else
                 player1Name.setText(player1.getName() + " looses");
@@ -104,7 +104,7 @@ public class GameOverOverlay extends AbstractOverlay {
         }
         else
         {
-            if(winner == -1)
+            if(winner == 1)
                 player1Name.setText("Player 1 wins");
             else
                 player1Name.setText("Player 1 looses");
@@ -115,7 +115,7 @@ public class GameOverOverlay extends AbstractOverlay {
         hidePlayer2 = player2 == null && ai2 == null;
         if(ai2 != null)
         {
-            if(winner == 1)
+            if(winner == -1)
                 player2Name.setText(ai2.name() + " Ai wins");
             else
                 player2Name.setText(ai2.name() + " Ai looses");
@@ -124,7 +124,7 @@ public class GameOverOverlay extends AbstractOverlay {
         }
         else if(player2 != null)
         {
-            if(winner == 1)
+            if(winner == -1)
                 player2Name.setText(player2.getName() + " wins");
             else
                 player2Name.setText(player2.getName() + " looses");
@@ -134,7 +134,7 @@ public class GameOverOverlay extends AbstractOverlay {
         }
         else if(ai2 != null)
         {
-            if(winner == 1)
+            if(winner == -1)
                 player2Name.setText("Player 2 wins");
             else
                 player2Name.setText("Player 2 looses");

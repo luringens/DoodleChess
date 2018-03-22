@@ -34,9 +34,7 @@ public class UiBoard extends Actor {
     {
         this.assetManager = assetManager;
         this.game = game;
-        Texture texture = new Texture(Gdx.files.internal("segoeui.png"));
-        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        segoeUi = new BitmapFont(Gdx.files.internal("segoeui.fnt"), new TextureRegion(texture), false);
+        segoeUi = AssetLoader.GetDefaultFont(assetManager);
         tile = new Texture(Gdx.files.internal("tile.png"));
         tile_black = new Texture(Gdx.files.internal("tile_black.png"));
         tile_highlight = new Texture(Gdx.files.internal("tile_highlight.png"));

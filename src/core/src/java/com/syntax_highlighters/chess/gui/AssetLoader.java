@@ -34,7 +34,6 @@ public class AssetLoader {
                 "tile.png",
                 "tile_black.png",
                 "tile_highlight.png",
-                "segoeui.png",
                 "button_template.png",
                 "pixel.png",
                 "overlay.png",
@@ -46,9 +45,9 @@ public class AssetLoader {
             manager.load(path, Texture.class);
         }
 
-        Texture texture = new Texture(Gdx.files.internal("segoeui.png"));
+        Texture texture = new Texture(Gdx.files.internal("IndieFlower.png"));
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        font = new BitmapFont(Gdx.files.internal("segoeui.fnt"), new TextureRegion(texture), false);
+        font = new BitmapFont(Gdx.files.internal("IndieFlower.fnt"), new TextureRegion(texture), false);
     }
 
     public static String getAccountPath() {
