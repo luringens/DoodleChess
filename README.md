@@ -91,7 +91,7 @@ Developers:
 - Benjamin Dyhre Bjønnes  (bbj018)
 - Loc Tri Le (lle016)
 - Stian Soltvedt  (zuk005)
-- Robin Grundvåg  (rgr015)
+- Robin Grundvåg  (rgr015) (sometimes theAzack9 in commits)
 - Vegard Itland (vit005)
 - Sverre Magnus Engø  (sen006)
 - Robin el Salim  (rsa035)
