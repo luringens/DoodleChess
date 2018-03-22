@@ -122,7 +122,7 @@ public class GameScreen extends AbstractScreen {
                     chessGame.setScreen(new MainMenuScreen(chessGame));
                     return;
                 }
-                gameOver(game.nextPlayerIsWhite() ? 1 : -1);
+                gameOver(game.nextPlayerIsWhite() ? -1 : 1);
             }
         });
         stage.addActor(giveUp);
