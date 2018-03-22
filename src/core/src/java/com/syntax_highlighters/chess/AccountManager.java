@@ -52,14 +52,11 @@ public class AccountManager {
 
     public List<Account> getTop(int n){
         myAccounts = sort(myAccounts);
-        List<Account> reverseAccounts = new ArrayList<>();
-        for(int i=myAccounts.size()-1; i>=0; i--)
-            reverseAccounts.add(myAccounts.get(i));
         if(myAccounts.size() <= n)
-            return(reverseAccounts);
+            return(myAccounts);
         List<Account> returnAccounts = new ArrayList<Account>();
         for(int i=0; i<n; i++)
-            returnAccounts.add(reverseAccounts.get(i));
+            returnAccounts.add(myAccounts.get(i));
         return returnAccounts;
     }
 

@@ -53,6 +53,7 @@ public class AccountOverlay extends Overlay {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 setVisible(false);
+                username.setText("");
             }
         });
         mainMenu.setSize(200, 75);

@@ -34,13 +34,12 @@ public class Text extends Actor {
         layout.setText(font, text);
 
         setX(x - layout.width/2.f);
-        setY(y + layout.height/2.f);
+        setY(y - layout.height/2.f);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         font.setColor(getColor());
-        font.getData().setScale(getScaleX(), getScaleY());
-        font.draw(batch, text, getX(), getY());
+        font.draw(batch, text, getX(), getY() + getHeight());
     }
 }
