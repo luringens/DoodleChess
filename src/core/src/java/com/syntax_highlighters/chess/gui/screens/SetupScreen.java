@@ -76,7 +76,7 @@ public class SetupScreen extends AbstractScreen {
             }
         });
 
-        AccountOverlay accountOverlay = new AccountOverlay(assetManager);
+        AccountOverlay accountOverlay = new AccountOverlay(game, assetManager);
         accountOverlay.setVisible(false);
 
 

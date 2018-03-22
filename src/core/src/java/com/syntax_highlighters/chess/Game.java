@@ -205,12 +205,4 @@ public class Game {
         return (p1.getX() + p1.getY()) % 2 == (p2.getX() + p2.getY()) % 2;
     }
 
-    /***
-     * Fetches the games account manager
-     * 
-     * @return the account manager
-     */
-    public AccountManager getAccountManager() {
-        return accountManager;
-    }
 }

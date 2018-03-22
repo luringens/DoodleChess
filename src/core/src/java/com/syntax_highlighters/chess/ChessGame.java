@@ -23,15 +23,19 @@ public class ChessGame extends Game {
     private ShaderProgram program;
     private FrameBuffer paperBuffer;
 	private Texture paper;
+	private AccountManager accountManager;
 
-    /***
+	/***
      * Game creation event, used to initialize resources
      */
 	@Override
 	public void create () {
 		assetManager = new AssetManager();
 		AssetLoader.LoadAssets(assetManager);
+		// TODO: Loading screen to prevent the black frames before load
 		assetManager.finishLoading();
+
+		accountManager = new AccountManager();
 
         paper = assetManager.get("paper.png", Texture.class);
 
@@ -121,4 +125,13 @@ public class ChessGame extends Game {
         paperBuffer.end();
         batch.setShader(null);
     }
+
+	/***
+	 * Fetches the games account manager
+	 *
+	 * @return the account manager
+	 */
+	public AccountManager getAccountManager() {
+		return accountManager;
+	}
 }

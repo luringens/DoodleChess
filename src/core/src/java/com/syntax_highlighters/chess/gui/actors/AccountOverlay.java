@@ -15,8 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.syntax_highlighters.chess.Account;
+import com.syntax_highlighters.chess.AccountManager;
+import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
+
+import java.util.List;
 
 public class AccountOverlay extends Overlay {
     private Text usernameLabel;
@@ -27,7 +32,7 @@ public class AccountOverlay extends Overlay {
 
     private TextField username;
 
-    public AccountOverlay(AssetManager assetManager) {
+    public AccountOverlay(ChessGame game, AssetManager assetManager) {
         super("Create new account:", assetManager);
 
         BitmapFont font = AssetLoader.GetDefaultFont(assetManager);
@@ -62,7 +67,17 @@ public class AccountOverlay extends Overlay {
                     // TODO: Warn user that username is invalid
                     return;
                 }
-                // TODO: hook up with Account api
+                AccountManager accountManager = game.getAccountManager();
+                Account newAccount = new Account(name);
+
+                if(!accountManager.addAccount(newAccount))
+                {
+                    // TODO: Warn user that the name is already taken
+                    return;
+                }
+                // Account successfully created
+                username.setText("");
+                setVisible(false);
             }
         });
 
