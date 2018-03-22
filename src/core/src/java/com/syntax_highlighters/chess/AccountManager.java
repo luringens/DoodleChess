@@ -1,6 +1,7 @@
 package com.syntax_highlighters.chess;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
@@ -70,14 +71,16 @@ public class AccountManager {
             filetext += a.getName() + "," + String.valueOf(a.getWinCount()) + "," + String.valueOf(a.getLossCount()) + "\n";
         }
         try {
-            Files.write(Paths.get(filename), filetext.getBytes(), StandardOpenOption.APPEND);
+            if(Files.exists(Paths.get(filename)))
+                Files.write(Paths.get(filename), filetext.getBytes(), StandardOpenOption.APPEND);
+            else
+                Files.createFile(Paths.get(filename));
         }catch (IOException e) {
             System.out.println("You fool, this cannot possibly be done!");
         }
     }
 
     public void load(String filename){
-        String filetext = "";
         try{
             for(String s: Files.readAllLines(Paths.get(filename))){
                 String[] stats = s.split(",");
