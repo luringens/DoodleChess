@@ -73,8 +73,11 @@ public class AccountManager {
         try {
             if(Files.exists(Paths.get(filename)))
                 Files.write(Paths.get(filename), filetext.getBytes(), StandardOpenOption.WRITE);
-            else
+            else {
                 Files.createFile(Paths.get(filename));
+                Files.write(Paths.get(filename), filetext.getBytes(), StandardOpenOption.WRITE);
+            }
+
         }catch (IOException e) {
             System.out.println("You fool, this cannot possibly be done!");
         }
