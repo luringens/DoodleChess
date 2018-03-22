@@ -14,11 +14,13 @@ import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
 
 public class GameOverOverlay extends AbstractOverlay {
     private boolean hidePlayer1 = false;
+    private Text white;
     private Text player1Name;
     private Text player1Wins;
     private Text player1Losses;
 
     private boolean hidePlayer2 = false;
+    private Text black;
     private Text player2Name;
     private Text player2Wins;
     private Text player2Losses;
@@ -32,6 +34,14 @@ public class GameOverOverlay extends AbstractOverlay {
         AssetManager assetManager = game.getAssetManager();
 
         BitmapFont font = AssetLoader.GetDefaultFont(assetManager);
+
+        white = new Text(font);
+        white.setText("White pieces:");
+        white.setColor(0,0,0,1);
+
+        black = new Text(font);
+        black.setText("Black pieces:");
+        black.setColor(0,0,0,1);
 
         player1Name = new Text(font);
         player1Name.setText("");
@@ -77,9 +87,9 @@ public class GameOverOverlay extends AbstractOverlay {
         if(player1 != null)
         {
             if(winner == -1)
-                player1Name.setText(player1.getName() + " wins:");
+                player1Name.setText(player1.getName() + " wins");
             else
-                player1Name.setText(player1.getName() + " looses:");
+                player1Name.setText(player1.getName() + " looses");
             player1Wins.setText("Wins: " + player1.getWinCount());
             player1Losses.setText("Losses: " + player1.getLossCount());
         }
@@ -134,6 +144,8 @@ public class GameOverOverlay extends AbstractOverlay {
         super.draw(batch, parentAlpha);
 
         if(!hidePlayer1) {
+            white.setCenter(getX() + getWidth() / 3.f, getY() + getHeight() / 2.f + 80.f);
+            white.draw(batch, parentAlpha);
             player1Name.setCenter(getX() + getWidth() / 3.f, getY() + getHeight() / 2.f + 40.f);
             player1Name.draw(batch, parentAlpha);
             player1Wins.setCenter(getX() + getWidth() / 3.f, getY() + getHeight() / 2.f);
@@ -143,6 +155,8 @@ public class GameOverOverlay extends AbstractOverlay {
         }
 
         if(!hidePlayer2) {
+            black.setCenter(getX() + getWidth() / 3.f * 2.f, getY() + getHeight() / 2.f + 80.f);
+            black.draw(batch, parentAlpha);
             player2Name.setCenter(getX() + getWidth() / 3.f * 2.f, getY() + getHeight() / 2.f + 40.f);
             player2Name.draw(batch, parentAlpha);
             player2Wins.setCenter(getX() + getWidth() / 3.f * 2.f, getY() + getHeight() / 2.f);

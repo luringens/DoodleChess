@@ -100,7 +100,6 @@ public class Button extends Actor {
             batch.setColor(Color.BLACK);
         }
         batch.draw(preRenderedButtons.get(textureId).getColorBufferTexture(), getX(),getY(),getWidth(),getHeight());
-        //batch.draw(preRenderedButtons.get(textureId).getColorBufferTexture(), getX(),getY());
 
         text.setCenter(getX() + getWidth()/2.f, getY() + getHeight()/2.f);
 
