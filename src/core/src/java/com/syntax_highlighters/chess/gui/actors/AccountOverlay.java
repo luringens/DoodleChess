@@ -74,6 +74,7 @@ public class AccountOverlay extends AbstractOverlay {
                 username.setText("");
                 setVisible(false);
                 screen.updateAccountLists(game);
+                accountManager.save(AssetLoader.getAccountPath());
             }
         });
 

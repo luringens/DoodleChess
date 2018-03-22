@@ -41,6 +41,7 @@ public class ChessGame extends Game {
 		assetManager.finishLoading();
 
 		accountManager = new AccountManager();
+		accountManager.load(AssetLoader.getAccountPath());
 
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("uiskin.atlas"));
 		skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);

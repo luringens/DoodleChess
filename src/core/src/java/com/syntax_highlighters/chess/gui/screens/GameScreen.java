@@ -18,6 +18,7 @@ import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.Game;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
+import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.UiBoard;
 import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
@@ -52,6 +53,8 @@ public class GameScreen extends AbstractScreen {
     private AiDifficulty ai1;
     private AiDifficulty ai2;
 
+    private ChessGame chessGame;
+
     /***
      * Constructor.
      *
@@ -64,7 +67,7 @@ public class GameScreen extends AbstractScreen {
     public GameScreen(ChessGame chessgame, Account player1, Account player2, AiDifficulty player1Difficulty, AiDifficulty player2Difficulty) {
         super(chessgame);
         assetManager = chessgame.getAssetManager();
-
+        this.chessGame = chessGame;
         this.game = new Game(player1Difficulty, player2Difficulty);
 
         this.player1 = player1;
@@ -169,6 +172,7 @@ public class GameScreen extends AbstractScreen {
             if(player2 != null)
                 player2.win();
         }
+        chessGame.getAccountManager().save(AssetLoader.getAccountPath());
 
         gameOverOverlay.updateText(winner, player1, player2, ai1, ai2);
         gameOverOverlay.setVisible(true);

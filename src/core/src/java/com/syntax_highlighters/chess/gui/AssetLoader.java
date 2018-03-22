@@ -50,4 +50,8 @@ public class AssetLoader {
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         font = new BitmapFont(Gdx.files.internal("segoeui.fnt"), new TextureRegion(texture), false);
     }
+
+    public static String getAccountPath() {
+        return "accounts.data";
+    }
 }

@@ -94,9 +94,9 @@ public class AccountManager {
                 myAccounts.add(new Account(name, wins, losses));
             }
         }catch(IOException e){
-            System.out.println("You fool, this cannot possibly be done!");
-            System.out.println(e);
+            // Skip if file doesn't exist
         }
+        
 
     }
 }
