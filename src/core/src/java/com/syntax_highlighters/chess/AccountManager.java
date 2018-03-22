@@ -1,6 +1,7 @@
 package com.syntax_highlighters.chess;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
@@ -8,7 +9,10 @@ import java.util.Comparator;
 import java.util.List;
 
 public class AccountManager {
-    static List<Account> myAccounts = new ArrayList<Account>();
+    List<Account> myAccounts = new ArrayList<Account>();
+    public int accountSize(){
+        return myAccounts.size();
+    }
 
     /**
      * Constructor.
@@ -70,14 +74,20 @@ public class AccountManager {
             filetext += a.getName() + "," + String.valueOf(a.getWinCount()) + "," + String.valueOf(a.getLossCount()) + "\n";
         }
         try {
-            Files.write(Paths.get(filename), filetext.getBytes(), StandardOpenOption.APPEND);
+            if(Files.exists(Paths.get(filename)))
+                Files.write(Paths.get(filename), filetext.getBytes(), StandardOpenOption.WRITE);
+            else {
+                Files.createFile(Paths.get(filename));
+                Files.write(Paths.get(filename), filetext.getBytes(), StandardOpenOption.WRITE);
+            }
+
         }catch (IOException e) {
-            System.out.println("You fool, this cannot possibly be done!");
+            System.out.println("You fool, ");
+            System.out.println(e);
         }
     }
 
     public void load(String filename){
-        String filetext = "";
         try{
             for(String s: Files.readAllLines(Paths.get(filename))){
                 String[] stats = s.split(",");
@@ -88,6 +98,7 @@ public class AccountManager {
             }
         }catch(IOException e){
             System.out.println("You fool, this cannot possibly be done!");
+            System.out.println(e);
         }
 
     }
