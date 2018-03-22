@@ -18,7 +18,7 @@ public class AccountManager {
 
     public Account getAccount(String name){
         for(Account a: myAccounts)
-            if(a.getName() == name)
+            if(a.getName().equals(name))
                 return a;
         return null;
     }
@@ -31,20 +31,13 @@ public class AccountManager {
         return reverseAccounts;
     }
 
-    public Account getAccountByName(String name){
-        for(Account a : myAccounts)
-            if(a.getName() == name)
-                return a; 
-        return null;
-    }
-
     public boolean addAccount(Account acc){
         boolean canAdd = true;
         if(myAccounts.isEmpty())
             canAdd = true;
         else{
             for(Account a: myAccounts)
-                if(a.getName() == acc.getName())
+                if(a.getName().equals(acc.getName()))
                     canAdd = false;
         }
         if(canAdd)
