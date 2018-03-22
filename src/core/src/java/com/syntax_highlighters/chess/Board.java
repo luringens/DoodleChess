@@ -327,7 +327,9 @@ public class Board {
         ChessPieceKing king = allPieces.stream()
                 .filter(p -> p instanceof ChessPieceKing && p.isWhite() == whitePlayer)
                 .map(p -> (ChessPieceKing)p).findFirst().orElse(null);
-        return king == null || king.isThreatened(this) && king.allPossibleMoves(this).size() == 0;
+        return king == null || king.isThreatened(this) && allPieces.stream()
+                .filter(p -> p.isWhite() == whitePlayer)
+                .mapToLong(p -> p.allPossibleMoves(this).size()).sum() == 0;
     }
 
     @Override
