@@ -25,13 +25,16 @@ public class AccountManager {
 
     private List<Account> sort(List<Account> accounts){
         accounts.sort(Comparator.comparing(Account::getWinCount));
-        return accounts;
+        List<Account> reverseAccounts = new ArrayList<>();
+        for(int i=accounts.size()-1; i>=0; i--)
+            reverseAccounts.add(accounts.get(i));
+        return reverseAccounts;
     }
 
     public boolean addAccount(Account acc){
         boolean canAdd = true;
         for(Account a: myAccounts)
-            if(a.equals(acc))
+            if(a.getName() == acc.getName())
                 canAdd = false;
         if(canAdd)
             myAccounts.add(acc);
@@ -40,11 +43,14 @@ public class AccountManager {
 
     public List<Account> getTop(int n){
         myAccounts = sort(myAccounts);
+        List<Account> reverseAccounts = new ArrayList<>();
+        for(int i=myAccounts.size()-1; i>=0; i--)
+            reverseAccounts.add(myAccounts.get(i));
         if(myAccounts.size() <= n)
-            return(myAccounts);
+            return(reverseAccounts);
         List<Account> returnAccounts = new ArrayList<Account>();
         for(int i=0; i<n; i++)
-            returnAccounts.add(myAccounts.get(i));
+            returnAccounts.add(reverseAccounts.get(i));
         return returnAccounts;
     }
 
