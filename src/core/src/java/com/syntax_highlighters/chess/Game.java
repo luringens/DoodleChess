@@ -61,14 +61,6 @@ public class Game {
         if (piece.isWhite() != nextPlayerWhite) return false; // wrong color of piece
         
         // Performs move if valid, returns whether move was performed
-
-        if (piece instanceof ChessPieceKing || piece instanceof ChessPieceRook){
-            piece.setHasMoved(true);
-        }
-        
-        //TODO: move rook if castling.
-        //TODO: update all "movedLast" pawns such that the specialty move an-passant is only possible for 1 move.
-
         boolean result = board.movePiece(piece, to);
         if (result) {
             nextPlayerWhite = !nextPlayerWhite;
