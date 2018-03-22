@@ -20,6 +20,7 @@ import com.syntax_highlighters.chess.gui.screens.SetupScreen;
 public class AccountOverlay extends AbstractOverlay {
     private Text usernameLabel;
     private Text notice;
+    private Text error;
 
     private Button mainMenu;
     private Button createAccount;
@@ -39,6 +40,10 @@ public class AccountOverlay extends AbstractOverlay {
         notice.setText("*Username has to be unique");
         notice.setColor(0,0,0,1);
 
+        error = new Text(font);
+        error.setText("");
+        error.setColor(0,0,0,1);
+
         mainMenu = new Button("Close", assetManager);
         mainMenu.addListener(new ClickListener(){
             @Override
@@ -57,15 +62,15 @@ public class AccountOverlay extends AbstractOverlay {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 String name = username.getText();
-                if(name == null || name.isEmpty())
+                if(name == null || name.trim().isEmpty())
                 {
-                    // TODO: Warn user that username is invalid
+                    error.setText("* Name cannot be null or whitespace");
                     return;
                 }
 
                 if(name.toLowerCase().equals("player 1") || name.toLowerCase().equals("player 2"))
                 {
-                    //  TODO: Warn user that name is prereserved
+                    error.setText("* Name " + name + " is reserved");
                     return;
                 }
 
@@ -74,7 +79,7 @@ public class AccountOverlay extends AbstractOverlay {
 
                 if(!accountManager.addAccount(newAccount))
                 {
-                    // TODO: Warn user that the name is already taken
+                    error.setText("* " + name + " is already taken");
                     return;
                 }
                 // Account successfully created
@@ -124,6 +129,10 @@ public class AccountOverlay extends AbstractOverlay {
         notice.setCenter(0, getY() + getHeight() /2.f);
         notice.setX(getX() + getWidth()/2.f - 150.f);
         notice.draw(batch, parentAlpha);
+
+        error.setCenter(0, getY() + getHeight() / 2.f - 30.f);
+        error.setX(getX() + getWidth()/2.f - 150.f);
+        error.draw(batch, parentAlpha);
 
         mainMenu.setPosition(getX() + getWidth() / 2.f - mainMenu.getWidth() - 50.f, getY() + 50);
         createAccount.setPosition(getX() + getWidth() / 2.f + 50.f, getY() + 50);
