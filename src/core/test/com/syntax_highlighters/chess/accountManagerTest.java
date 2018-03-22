@@ -30,7 +30,7 @@ public class accountManagerTest {
 
         am2.load("/Users/robinelsalim/desktop/accounts.txt");
 
-        assertEquals(5, am2.getAll().size());
+        assertEquals(4, am2.accountSize());
 
 
 

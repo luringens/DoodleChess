@@ -9,7 +9,10 @@ import java.util.Comparator;
 import java.util.List;
 
 public class AccountManager {
-    static List<Account> myAccounts = new ArrayList<Account>();
+    List<Account> myAccounts = new ArrayList<Account>();
+    public int accountSize(){
+        return myAccounts.size();
+    }
 
     /**
      * Constructor.
