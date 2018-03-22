@@ -31,6 +31,13 @@ public class AccountManager {
         return reverseAccounts;
     }
 
+    public Account getAccountByName(String name){
+        for(Account a : myAccounts)
+            if(a.getName() == name)
+                return a; 
+        return null;
+    }
+
     public boolean addAccount(Account acc){
         boolean canAdd = true;
         if(myAccounts.isEmpty())
