@@ -95,3 +95,12 @@ Developers:
 Coach: Jonathan Prieto-Cubides(jcu043@uib.no)
 
 Meeting time: Tuesdays, 12-14 and Thursdays, 14-16
+
+## Attribution
+
+The program's UI is built on LibGDX, which is licensed under Apache 2.0.
+
+The program also uses the Indie Flower font, licensed under the Open Font License.
+
+The chess AI is based on the examples from the Chess Programming Wiki. It is a common MiniMax implementation with alpha/beta pruning. See the ![Chess Programming Wiki](https://chessprogramming.wikispaces.com/Minimax)), including pages for A/B pruning, for the resources used during the development of the AI.
+The scores used for evaluating the score of a given chess position is also from the ![Chess Programming Wiki](https://chessprogramming.wikispaces.com/Simplified+evaluation+function), which are shared by default under the Creative Commons Attribution-ShareAlike 3.0. However, it is taken from an email from Tomasz Michniewski sent to a Polish chess programming wiki without linking to the source, so whether or not the wiki can claim copyright on the content in the first place is unknown.
