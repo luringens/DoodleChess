@@ -33,9 +33,13 @@ public class AccountManager {
 
     public boolean addAccount(Account acc){
         boolean canAdd = true;
-        for(Account a: myAccounts)
-            if(a.getName() == acc.getName())
-                canAdd = false;
+        if(myAccounts.isEmpty())
+            canAdd = true;
+        else{
+            for(Account a: myAccounts)
+                if(a.getName() == acc.getName())
+                    canAdd = false;
+        }
         if(canAdd)
             myAccounts.add(acc);
         return canAdd;
