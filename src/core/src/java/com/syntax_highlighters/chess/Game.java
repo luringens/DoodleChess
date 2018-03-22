@@ -62,6 +62,12 @@ public class Game {
         
         // Performs move if valid, returns whether move was performed
         boolean result = board.movePiece(piece, to);
+        if(piece instanceof ChessPiecePawn)
+            if(piece.getPosition().getY() == 1 || piece.getPosition().getY() == 8) {
+            Position newQueenPos = piece.getPosition();
+            board.removePiece(piece);
+            board.putAtPosition(newQueenPos, new ChessPieceQueen(newQueenPos, piece.isWhite()));  
+            }
         if (result) {
             nextPlayerWhite = !nextPlayerWhite;
         }
