@@ -76,7 +76,8 @@ public class AccountManager {
             else
                 Files.createFile(Paths.get(filename));
         }catch (IOException e) {
-            System.out.println("You fool, this cannot possibly be done!");
+            System.out.println("You fool, ");
+            System.out.println(e);
         }
     }
 
@@ -91,6 +92,7 @@ public class AccountManager {
             }
         }catch(IOException e){
             System.out.println("You fool, this cannot possibly be done!");
+            System.out.println(e);
         }
 
     }
