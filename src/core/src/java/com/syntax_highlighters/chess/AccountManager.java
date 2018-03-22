@@ -72,7 +72,7 @@ public class AccountManager {
         }
         try {
             if(Files.exists(Paths.get(filename)))
-                Files.write(Paths.get(filename), filetext.getBytes(), StandardOpenOption.APPEND);
+                Files.write(Paths.get(filename), filetext.getBytes(), StandardOpenOption.WRITE);
             else
                 Files.createFile(Paths.get(filename));
         }catch (IOException e) {
