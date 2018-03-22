@@ -91,6 +91,7 @@ public class MoveLegalityTest {
         Board board = new Board();
         board.setupNewGame();
         IChessPiece testPawn;
+
         //Do moves to place pawns into enpassant situation.
         Move firstMove = new Move(new Position(6,2),new Position(6,4),board.getAtPosition(new Position(6,2)));
         firstMove.DoMove(board);
@@ -101,6 +102,7 @@ public class MoveLegalityTest {
         Move fourthMove = new Move(new Position(6,7),new Position(6, 5),board.getAtPosition(new Position(6,7)));
         fourthMove.DoMove(board);
         testPawn = board.getAtPosition(new Position(6,5));
+
         // check if the enpassant move position is among the legal moves the piece can perform.
         assertTrue(testPawn.allPossibleMoves(board).contains(new Position(7,6)));
     }

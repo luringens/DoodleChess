@@ -1,6 +1,8 @@
 package syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.Game;
+import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.*;
 import org.junit.Before;
@@ -9,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import javax.swing.*;
 
 import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BoardStartupTest {
@@ -26,6 +29,7 @@ class BoardStartupTest {
         setUp();
         boolean isEmpty = true;
         Position pos;
+
         for (int y = 3; y <= 6; y++) {
             for (int x = 1; x <= 8; x++) {
                 pos = new Position(x, y);
@@ -143,16 +147,17 @@ class BoardStartupTest {
         assertTrue(WleftBish instanceof ChessPieceRook);
 
     }
-    /*
+
     @Test
     public void BlackCannotMoveFirst(){
-        Position oldPos = new Position(7,1);
-        Position newPos = new Position(6,3);
-        IChessPiece testKnight = new ChessPieceKnight(oldPos,false);
 
-        Move move = new Move(oldPos,newPos,testKnight);
+        Game game = new Game(null,null);
+        board = game.getBoard();
 
-        //TODO: Find out how this works .. :P
-        //assertThrows(RuntimeException.class, move.DoMove(board));
-        }*/
+        IChessPiece testPawn = board.getAtPosition(new Position(1,7));
+
+
+        assertFalse((game.performMove(new Position(1,7),new Position(1,6))));
+        assertEquals(new Position(1,7), testPawn.getPosition());
+    }
 }
