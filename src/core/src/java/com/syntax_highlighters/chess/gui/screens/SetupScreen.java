@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
@@ -24,6 +25,8 @@ public class SetupScreen extends AbstractScreen {
     private Stage stage;
 
     private Text title;
+    private Text white;
+    private Text black;
 
     private AiDifficulty player1Difficulty;
     private AiDifficulty player2Difficulty;
@@ -52,6 +55,16 @@ public class SetupScreen extends AbstractScreen {
         title.setText("Select AI level");
         title.setColor(0,0,0,1);
         stage.addActor(title);
+
+        white = new Text(AssetLoader.GetDefaultFont(assetManager));
+        white.setText("White pieces:");
+        white.setColor(0,0,0,1);
+        stage.addActor(white);
+
+        black = new Text(AssetLoader.GetDefaultFont(assetManager));
+        black.setText("Black pieces:");
+        black.setColor(0,0,0,1);
+        stage.addActor(black);
 
         addDifficultyList(game, -1);
         addDifficultyList(game, 1);
@@ -163,11 +176,6 @@ public class SetupScreen extends AbstractScreen {
 
     private void addDifficultyList(ChessGame game, int player)
     {
-        /*Text title = new Text(AssetLoader.GetDefaultFont(assetManager));
-        title.setText("Player" + (player == -1 ? "1" : "2"));
-        title.setColor(0,0,0,1);
-        stage.addActor(title);*/
-
         SelectBox box = new SelectBox(game.skin);
 
         ArrayList<String> accounts = new ArrayList<>();
@@ -179,6 +187,7 @@ public class SetupScreen extends AbstractScreen {
 
         box.setItems(accounts.toArray());
         box.setSelected("Player" + (player == -1 ? "1" : "2"));
+        box.setAlignment(Align.center);
         box.setSize(200,  45);
         stage.addActor(box);
         if(player == -1)
@@ -188,7 +197,6 @@ public class SetupScreen extends AbstractScreen {
 
         for(int i = 0; i < 4; ++i)
         {
-
             String text = null;
             switch(i)
             {
@@ -249,22 +257,23 @@ public class SetupScreen extends AbstractScreen {
 
         title.setCenter(width / 2.f, centerH + buttonHeight * 4);
 
+        white.setCenter(centerW - buttonWidth + player1Title.getWidth() / 2.f, centerH + buttonHeight * 3.75f);
+        black.setCenter(centerW + buttonWidth + player2Title.getWidth() / 2.f, centerH + buttonHeight * 3.75f);
+
         player1Title.setPosition(width / 2.f - buttonWidth - player1Title.getWidth() / 2.f,
-                height / 2.f + buttonHeight * 2.75f - player1Title.getHeight() / 2.f);
+                height / 2.f + buttonHeight * 2.5f - player1Title.getHeight() / 2.f);
         player2Title.setPosition(width / 2.f + buttonWidth - player2Title.getWidth() / 2.f,
-                height / 2.f + buttonHeight * 2.75f - player1Title.getHeight() / 2.f);
-        //player1Title.setCenter(width / 2.f - buttonWidth, height / 2.f + buttonHeight * 2.75f);
-        //player2Title.setCenter(width / 2.f + buttonWidth, height / 2.f + buttonHeight * 2.75f);
+                height / 2.f + buttonHeight * 2.5f - player1Title.getHeight() / 2.f);
 
         for(int i = 0; i < player1Buttons.size(); ++i)
         {
             Button button = player1Buttons.get(i);
-            button.setPosition(centerW - buttonWidth, centerH - buttonHeight * (i-2));
+            button.setPosition(centerW - buttonWidth, centerH - buttonHeight * (i-1.5f));
         }
         for(int i = 0; i < player2Buttons.size(); ++i)
         {
             Button button = player2Buttons.get(i);
-            button.setPosition(centerW + buttonWidth, centerH - buttonHeight * (i-2));
+            button.setPosition(centerW + buttonWidth, centerH - buttonHeight * (i-1.5f));
         }
 
         float bottomBarY = centerH - buttonHeight * 3;
