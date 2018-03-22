@@ -24,6 +24,7 @@ public class AccountManager {
     }
 
     private List<Account> sort(List<Account> accounts){
+        myAccounts.add(new Account("Eirik", 10000, 0));
         accounts.sort(Comparator.comparing(Account::getWinCount));
         List<Account> reverseAccounts = new ArrayList<>();
         for(int i=accounts.size()-1; i>=0; i--)
