@@ -61,6 +61,10 @@ the game use the command:
 $ java -jar src/desktop/target/chess-desktop-1.0-jar-with-dependencies.jar
 ```
 
+## Game design model
+
+See our updated [product specification](/docs/product-spec/product-specification.pdf) (section on class diagram) to see an overview of the classes and the relationships between them, coupled with a brief, high-level explanation of the design choices that we have made. Also see the [HTML version of the class diagram](/docs/diagrams/classdiagram.html) to see a version of the class diagram where you can open up the classes and look at the methods available in their public API. If you click on the diagram to enlarge, then click on the edit button at the bottom, you are brought to draw.io, where you can even edit the diagram as you please! (Changes made to the version at draw.io does not affect the files in this repo.)
+
 ## Documentation
 
 The simplest way to generate the documentation is to run javadoc on all source code files in the `src/core` folder. On Linux or Mac, try running this command in the project root folder:
@@ -87,7 +91,7 @@ Developers:
 - Benjamin Dyhre Bjønnes  (bbj018)
 - Loc Tri Le (lle016)
 - Stian Soltvedt  (zuk005)
-- Robin Grundvåg  (rgr015)
+- Robin Grundvåg  (rgr015) (sometimes theAzack9 in commits)
 - Vegard Itland (vit005)
 - Sverre Magnus Engø  (sen006)
 - Robin el Salim  (rsa035)
@@ -98,9 +102,9 @@ Meeting time: Tuesdays, 12-14 and Thursdays, 14-16
 
 ## Attribution
 
-The program's UI is built on LibGDX, which is licensed under Apache 2.0.
+The program's UI is built on LibGDX, which is licensed under ![Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0). A copy of the license can be found at `assets/LICENSE.txt`.
 
-The program also uses the Indie Flower font, licensed under the Open Font License.
+The program also uses the Indie Flower font, licensed under the Open Font License that can be found at `assets/OFL.txt`.
 
 The chess AI is based on the examples from the Chess Programming Wiki. It is a common MiniMax implementation with alpha/beta pruning. See the ![Chess Programming Wiki](https://chessprogramming.wikispaces.com/Minimax)), including pages for A/B pruning, for the resources used during the development of the AI.
 The scores used for evaluating the score of a given chess position is also from the ![Chess Programming Wiki](https://chessprogramming.wikispaces.com/Simplified+evaluation+function), which are shared by default under the Creative Commons Attribution-ShareAlike 3.0. However, it is taken from an email from Tomasz Michniewski sent to a Polish chess programming wiki without linking to the source, so whether or not the wiki can claim copyright on the content in the first place is unknown.
