@@ -61,6 +61,10 @@ the game use the command:
 $ java -jar src/desktop/target/chess-desktop-1.0-jar-with-dependencies.jar
 ```
 
+## Game design model
+
+See our updated [product specification](/docs/product-spec/product-specification.pdf) (section on class diagram) to see an overview of the classes and the relationships between them, coupled with a brief, high-level explanation of the design choices that we have made. Also see the [HTML version of the class diagram](/docs/diagrams/classdiagram.html) to see a version of the class diagram where you can open up the classes and look at the methods available in their public API. If you click on the diagram to enlarge, then click on the edit button at the bottom, you are brought to draw.io, where you can even edit the diagram as you please! (Changes made to the version at draw.io does not affect the files in this repo.)
+
 ## Documentation
 
 The simplest way to generate the documentation is to run javadoc on all source code files in the `src/core` folder. On Linux or Mac, try running this command in the project root folder:
