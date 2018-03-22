@@ -27,6 +27,7 @@ public class SetupScreen extends AbstractScreen {
     private Text title;
     private Text white;
     private Text black;
+    private Text playerNote;
 
     private AiDifficulty player1Difficulty;
     private AiDifficulty player2Difficulty;
@@ -66,6 +67,11 @@ public class SetupScreen extends AbstractScreen {
         black.setColor(0,0,0,1);
         stage.addActor(black);
 
+        playerNote = new Text(AssetLoader.GetDefaultFont(assetManager));
+        playerNote.setText("Note: Using the names Player 1 or Player 2 will not count to any score");
+        playerNote.setColor(0,0,0,1);
+        stage.addActor(playerNote);
+
         addDifficultyList(game, -1);
         addDifficultyList(game, 1);
 
@@ -91,12 +97,6 @@ public class SetupScreen extends AbstractScreen {
                 AccountManager manager = game.getAccountManager();
                 Account player1 = manager.getAccount(selected1);
                 Account player2 = manager.getAccount(selected2);
-
-                if((player1 == null && player1Difficulty == null) || (player2 == null && player2Difficulty == null))
-                {
-                    // Acount does not exist
-                    return;
-                }
                 game.setScreen(new GameScreen(game, player1, player2, player1Difficulty, player2Difficulty));
             }
         });
@@ -130,8 +130,6 @@ public class SetupScreen extends AbstractScreen {
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         Gdx.input.setInputProcessor(stage);
-
-
 
         // add this last
         stage.addActor(accountOverlay);
@@ -220,6 +218,15 @@ public class SetupScreen extends AbstractScreen {
                     button.setSelected(true);
                     if(difficulty >= -1 && difficulty < AiDifficulty.values().length)
                         setDifficulty(player, difficulty);
+
+                    if(player == -1)
+                    {
+                        player1Title.setVisible(difficulty == -1);
+                    }
+                    else
+                    {
+                        player2Title.setVisible(difficulty == -1);
+                    }
                 }
             });
 
@@ -260,6 +267,7 @@ public class SetupScreen extends AbstractScreen {
         white.setCenter(centerW - buttonWidth + player1Title.getWidth() / 2.f, centerH + buttonHeight * 3.75f);
         black.setCenter(centerW + buttonWidth + player2Title.getWidth() / 2.f, centerH + buttonHeight * 3.75f);
 
+
         player1Title.setPosition(width / 2.f - buttonWidth - player1Title.getWidth() / 2.f,
                 height / 2.f + buttonHeight * 2.5f - player1Title.getHeight() / 2.f);
         player2Title.setPosition(width / 2.f + buttonWidth - player2Title.getWidth() / 2.f,
@@ -282,6 +290,7 @@ public class SetupScreen extends AbstractScreen {
 
         mainMenu.setPosition(centerW - buttonWidth - 10, bottomBarY);
         createAccount.setPosition(centerW, bottomBarY);
+        playerNote.setCenter(width / 2.f, bottomBarY - 10.f);
     }
 
     @Override

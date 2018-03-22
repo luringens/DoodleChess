@@ -62,6 +62,13 @@ public class AccountOverlay extends AbstractOverlay {
                     // TODO: Warn user that username is invalid
                     return;
                 }
+
+                if(name.toLowerCase().equals("player 1") || name.toLowerCase().equals("player 2"))
+                {
+                    //  TODO: Warn user that name is prereserved
+                    return;
+                }
+
                 AccountManager accountManager = game.getAccountManager();
                 Account newAccount = new Account(name);
 
