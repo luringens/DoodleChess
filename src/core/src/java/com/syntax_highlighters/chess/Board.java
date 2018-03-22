@@ -124,8 +124,7 @@ public class Board {
         
         IChessPiece target = getAtPosition(pos);
         if (target != null) {
-            pieces.remove(target);
-            initBoard();
+            removePiece(target);
         }
 
         Position oldPos = piece.getPosition();
@@ -354,10 +353,23 @@ public class Board {
 
     /**
      * Removes a piece from the board.
+     *
+     * In order to not invalidate all the positions in the lookup table, swap
+     * the piece in the list with the last piece, before removing
+     *
      * @param p The piece to remove from the board.
      */
     public void removePiece(IChessPiece p) {
-        pieces.remove(p);
+        int index = lookupPositionIndex(p.getPosition());
+        int lastPieceIndex = pieces.size()-1;
+        if (index != lastPieceIndex) {
+            IChessPiece lastPieceInList = pieces.get(lastPieceIndex);
+            pieces.set(index, lastPieceInList);
+            updatePositionIndex(lastPieceInList.getPosition(), index);
+        }
+        
+        // p should now be at the end of the list
+        pieces.remove(pieces.size()-1);
         updatePositionIndex(p.getPosition(), -1);
     }
 

@@ -61,7 +61,19 @@ the game use the command:
 $ java -jar src/desktop/target/chess-desktop-1.0-jar-with-dependencies.jar
 ```
 
-Some error on OSX can be solved (for now) adding the `-XstartOnFirstThread` flag.
+## Documentation
+
+The simplest way to generate the documentation is to run javadoc on all source code files in the `src/core` folder. On Linux or Mac, try running this command in the project root folder:
+
+```
+find src/core/ -type f -name "*.java" | xargs javadoc -d docs/api
+```
+
+If this doesn't work, you can use this equivalent but much longer version:
+
+```
+javadoc -d docs/api/ -classpath src/core/target/chess-core-1.0-sources.jar -sourcepath src/core/src/java/ com.syntax_highlighters.chess com.syntax_highlighters.chess.entities com.syntax_highlighters.chess.gui com.syntax_highlighters.chess.gui.actors com.syntax_highlighters.chess.gui.screens
+```
 
 ## Contributing
 

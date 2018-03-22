@@ -59,6 +59,7 @@ public class MainMenuScreen extends AbstractScreen {
                 game.setScreen(new SetupScreen(game));
             }
         });
+        /*
 
         scoreButton.addListener(new ClickListener() {
             @Override
@@ -66,6 +67,7 @@ public class MainMenuScreen extends AbstractScreen {
                 //game.setScreen(new SetupScoreScreen(game, assetManager));
             }
         });
+        */
     }
 
     /***
