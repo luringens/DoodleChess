@@ -8,12 +8,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 
-public class Overlay extends Actor {
+public class AbstractOverlay extends Actor {
     private Texture pixel;
     private Texture overlay;
     private Text title;
 
-    public Overlay(String titleText, AssetManager assetManager) {
+    public AbstractOverlay(String titleText, AssetManager assetManager) {
         pixel = assetManager.get("pixel.png", Texture.class);
         overlay = assetManager.get("overlay.png", Texture.class);
 
@@ -38,5 +38,10 @@ public class Overlay extends Actor {
 
         title.setCenter(getX() + getWidth()/2.f, getY() + getHeight() - 60);
         title.draw(batch, parentAlpha);
+    }
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        return this;
     }
 }

@@ -8,10 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.ChessGame;
+import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
 
-public class GameOverOverlay extends Overlay {
+public class GameOverOverlay extends AbstractOverlay {
     private boolean hidePlayer1 = false;
     private Text player1Name;
     private Text player1Wins;
@@ -26,42 +27,38 @@ public class GameOverOverlay extends Overlay {
 
     private ChessGame game;
 
-    public GameOverOverlay(ChessGame game, Account player1, Account player2) {
+    public GameOverOverlay(ChessGame game) {
         super("Game over", game.getAssetManager());
         AssetManager assetManager = game.getAssetManager();
 
         BitmapFont font = AssetLoader.GetDefaultFont(assetManager);
-        hidePlayer1 = player1 == null;
-        // TODO: fetch from account
-        if(player1 != null) {
-            player1Name = new Text(font);
-            player1Name.setText(player1.getName() + ":");
-            player1Name.setColor(0, 0, 0, 1);
 
-            player1Wins = new Text(font);
-            player1Wins.setText("Wins: " + player1.getWinCount());
-            player1Wins.setColor(0, 0, 0, 1);
+        player1Name = new Text(font);
+        player1Name.setText("");
+        player1Name.setColor(0, 0, 0, 1);
 
-            player1Losses = new Text(font);
-            player1Losses.setText("Losses: " + player1.getLossCount());
-            player1Losses.setColor(0, 0, 0, 1);
-        }
+        player1Wins = new Text(font);
+        player1Wins.setText("");
+        player1Wins.setColor(0, 0, 0, 1);
 
-        hidePlayer2 = player2 == null;
-        // TODO: fetch from account
-        if(player2 != null) {
-            player2Name = new Text(font);
-            player2Name.setText(player2.getName() + ":");
-            player2Name.setColor(0, 0, 0, 1);
+        player1Losses = new Text(font);
+        player1Losses.setText("");
+        player1Losses.setColor(0, 0, 0, 1);
 
-            player2Wins = new Text(font);
-            player2Wins.setText("Wins: " + player2.getWinCount());
-            player2Wins.setColor(0, 0, 0, 1);
+        player2Name = new Text(font);
+        player2Name.setText("");
+        player2Name.setColor(0, 0, 0, 1);
 
-            player2Losses = new Text(font);
-            player2Losses.setText("Losses: " + player2.getLossCount());
-            player2Losses.setColor(0, 0, 0, 1);
-        }
+        player2Wins = new Text(font);
+        player2Wins.setText("");
+        player2Wins.setColor(0, 0, 0, 1);
+
+        player2Losses = new Text(font);
+        player2Losses.setText("");
+        player2Losses.setColor(0, 0, 0, 1);
+
+        hidePlayer1 = true;
+        hidePlayer2 = true;
 
         mainMenuButton = new Button("To main menu", assetManager);
         mainMenuButton.setSize(200, 75);
@@ -72,6 +69,50 @@ public class GameOverOverlay extends Overlay {
                 game.setScreen(new MainMenuScreen(game));
             }
         });
+    }
+
+    public void updateText(int winner, Account player1, Account player2, AiDifficulty ai1, AiDifficulty ai2)
+    {
+        hidePlayer1 = player1 == null && ai2 == null;
+        if(player1 != null)
+        {
+            if(winner == -1)
+                player1Name.setText(player1.getName() + " wins:");
+            else
+                player1Name.setText(player1.getName() + " looses:");
+            player1Wins.setText("Wins: " + player1.getWinCount());
+            player1Losses.setText("Losses: " + player1.getLossCount());
+        }
+        else if(ai1 != null)
+        {
+            if(winner == -1)
+                player1Name.setText(ai1.name() + " Ai wins");
+            else
+                player1Name.setText(ai1.name() + " Ai looses");
+            player1Wins.setText("");
+            player1Losses.setText("");
+        }
+
+        hidePlayer2 = player2 == null && ai2 == null;
+        if(player2 != null)
+        {
+            if(winner == 1)
+                player2Name.setText(player2.getName() + " wins");
+            else
+                player2Name.setText(player2.getName() + " looses");
+
+            player2Wins.setText("Wins: " + player2.getWinCount());
+            player2Losses.setText("Losses: " + player2.getLossCount());
+        }
+        else if(ai2 != null)
+        {
+            if(winner == 1)
+                player2Name.setText(ai2.name() + " Ai wins");
+            else
+                player2Name.setText(ai2.name() + " Ai looses");
+            player2Wins.setText("");
+            player2Losses.setText("");
+        }
     }
 
     @Override

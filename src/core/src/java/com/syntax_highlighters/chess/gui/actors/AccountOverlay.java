@@ -1,31 +1,23 @@
 package com.syntax_highlighters.chess.gui.actors;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.gui.AssetLoader;
-import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
 import com.syntax_highlighters.chess.gui.screens.SetupScreen;
 
-import java.util.List;
-
-public class AccountOverlay extends Overlay {
+public class AccountOverlay extends AbstractOverlay {
     private Text usernameLabel;
     private Text notice;
 
@@ -111,11 +103,6 @@ public class AccountOverlay extends Overlay {
         mainMenu.setVisible(visible);
         createAccount.setVisible(visible);
         username.setVisible(visible);
-    }
-
-    @Override
-    public Actor hit(float x, float y, boolean touchable) {
-        return this;
     }
 
     @Override

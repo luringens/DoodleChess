@@ -19,11 +19,8 @@ import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.UiBoard;
 import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
-import sun.awt.Mutex;
 
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Game main screen
@@ -46,6 +43,11 @@ public class GameScreen extends AbstractScreen {
     private Thread aiThread;
     private Semaphore aiLock = new Semaphore(1, true);
 
+    private Account player1;
+    private Account player2;
+    private AiDifficulty ai1;
+    private AiDifficulty ai2;
+
     /***
      * Constructor.
      *
@@ -60,6 +62,11 @@ public class GameScreen extends AbstractScreen {
         assetManager = game.getAssetManager();
 
         this.game = new Game(player1Difficulty, player2Difficulty);
+
+        this.player1 = player1;
+        this.player2 = player2;
+        this.ai1 = player1Difficulty;
+        this.ai2 = player2Difficulty;
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -81,7 +88,7 @@ public class GameScreen extends AbstractScreen {
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        gameOverOverlay = new GameOverOverlay(game, player1, player2);
+        gameOverOverlay = new GameOverOverlay(game);
         gameOverOverlay.setVisible(false);
         stage.addActor(gameOverOverlay);
 
@@ -112,6 +119,36 @@ public class GameScreen extends AbstractScreen {
         aiThread.start();
     }
 
+    private void gameOver()
+    {
+        isGameOver = true;
+
+        if(game.getWinner() == -1 )
+        {
+            if(player1 != null)
+                player1.win();
+            if(player2 != null)
+                player2.loss();
+        }
+        else if(game.getWinner() == 1)
+        {
+            if(player1 != null)
+                player1.loss();
+            if(player2 != null)
+                player2.win();
+        }
+        else
+        {
+            if(player1 != null)
+                player1.win();
+            if(player2 != null)
+                player2.win();
+        }
+
+        gameOverOverlay.updateText(game.getWinner(), player1, player2, ai1, ai2);
+        gameOverOverlay.setVisible(true);
+    }
+
     /***
      * Render the screen
      *
@@ -132,8 +169,7 @@ public class GameScreen extends AbstractScreen {
                 {
                     if(!isGameOver)
                     {
-                        isGameOver = true;
-                        //gameOverOverlay.setVisible(true);
+                        gameOver();
                     }
                     stage.act(delta);
                     stage.draw();

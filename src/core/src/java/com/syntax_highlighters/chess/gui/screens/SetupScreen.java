@@ -2,13 +2,10 @@ package com.syntax_highlighters.chess.gui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
@@ -130,17 +127,15 @@ public class SetupScreen extends AbstractScreen {
     public void updateAccountLists(ChessGame game)
     {
         ArrayList<String> accounts = new ArrayList<>();
+        accounts.add("Player 1");
         for(Account acc : game.getAccountManager().getAll())
         {
             accounts.add(acc.getName());
         }
-        accounts.add("Player 1");
         player1Title.setItems(accounts.toArray());
-        player1Title.setSelected("Player1");
         accounts.remove("Player 1");
-        accounts.add("Player 2");
+        accounts.add(0,"Player 2");
         player2Title.setItems(accounts.toArray());
-        player2Title.setSelected("Player2");
 
     }
 
