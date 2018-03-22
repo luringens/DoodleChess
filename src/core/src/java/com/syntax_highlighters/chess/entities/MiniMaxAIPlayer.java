@@ -6,9 +6,9 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class MiniMaxAIPlayer implements IAiPlayer {
-    private static final int EASY_DEPTH = 3;
-    private static final int MED_DEPTH = 4;
-    private static final int HARD_DEPTH = 5;
+    private static final int EASY_DEPTH = 2;
+    private static final int MED_DEPTH = 3;
+    private static final int HARD_DEPTH = 4;
     private final boolean isWhite;
     private int diff;
     private Random rand;
