@@ -5,3 +5,22 @@ docs/classdiagram.png
 docs/classdiagram.xml
 *.DS_Store
 .vscode
+accounts.data
+
+# Build output
+*target*
+
+# User-specific stuff:
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/dictionaries
+
+# Sensitive or high-churn files:
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/libraries/
+

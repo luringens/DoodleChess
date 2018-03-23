@@ -16,21 +16,23 @@
 These roles are not final, but serve as a reminder of what people are good at. \\
 
 \begin{tabular}{l l l}
-    Name                   & Specialization \\
+    Name                   & Role \\
     \midrule
-    Robin Grundvåg         & Code \\
+    Robin Grundvåg         & GUI \\
     Benjamin Dyhre Bjønnes & Code \\
+    Eirik Jørgensen        & Code \\
     Vegard Itland          & Documentation \\
-    Eirik Jørgensen        & Graphics \\
     Loc Tri Le             & Graphics \\
     Robin el Salim         & Test suites \\
     Sverre Magnus Engø     & Test suites \\
-    Stian Soltvedt         & Version control \\
+    Stian Soltvedt         & Meeting lead, code and Version control \\
 \end{tabular}
 
 \section*{Version control}
 
 A de-facto policy of using the syntax ``[Affected file] change description'' or ``[Topic] content description'' in commit message titles has been adopted. Furthermore, a de-facto policy of pushing meeting notes directly to the master branch has taken effect. This policy will be subject to review and a high probability of change in later meetings.
+
+Our repo structure will be a master branch for versions that are in a good state (v0.1, v0.2, v1.0, etc.), while all other development happens on the develop branch. We should strive to keep each commit on develop compilable --- feature branches can be created for work that will leave the project uncompilable for some time.
 
 \section*{Communication}
 
