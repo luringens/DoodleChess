@@ -1,6 +1,8 @@
 package com.syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.entities.ChessPiecePawn;
+import com.syntax_highlighters.chess.entities.ChessPieceQueen;
 
 /**
  * Stores info about a move in the game.
@@ -20,6 +22,7 @@ public class Move {
     Position newPos;
     private boolean hadMoved;
     private IChessPiece tookPiece = null;
+    private IChessPiece pawnPromotion = null;
 
     /**
      * For inheritance only!
@@ -39,6 +42,9 @@ public class Move {
         this.newPos = newPos;
         this.piece = piece;
         this.hadMoved = piece.hasMoved();
+        if (piece instanceof ChessPiecePawn && (newPos.getY() == 1 || newPos.getY() == 8)) {
+            this.pawnPromotion = new ChessPieceQueen(newPos, piece.isWhite());
+        }
     }
 
     /**
@@ -91,6 +97,10 @@ public class Move {
         tookPiece = b.getAtPosition(newPos);
         piece.setHasMoved(true);
         b.putAtPosition(newPos, piece);
+        if (pawnPromotion != null) {
+            b.removePiece(piece);
+            b.putAtPosition(newPos, pawnPromotion);
+        }
     }
 
     /**
@@ -104,6 +114,10 @@ public class Move {
     public void UndoMove(Board b) {
         if (!hasDoneMove) throw new RuntimeException("Can not undo a move that has not been done");
         hasDoneMove = false;
+        if (pawnPromotion != null) {
+            b.removePiece(pawnPromotion);
+            b.putAtPosition(newPos, piece);
+        }
         b.putAtPosition(oldPos, piece);
         piece.setHasMoved(hadMoved);
         if (tookPiece != null) {
