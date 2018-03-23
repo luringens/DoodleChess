@@ -11,14 +11,14 @@ public class accountManagerTest {
         AccountManager am = new AccountManager();
 
 
-        for(int i =1; i<5; i++){
+        for(int i =1; i<=4; i++){
             am.addAccount(new Account("a"+i));
         }
 
-        am.save("/Users/robinelsalim/desktop/accounts.txt");
+        am.save("accounts.txt");
         AccountManager am2 = new AccountManager();
 
-        am2.load("/Users/robinelsalim/desktop/accounts.txt");
+        am2.load("accounts.txt");
 
         assertEquals(4, am2.accountSize());
 
