@@ -12,7 +12,7 @@ import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.actors.Button;
 
-/***
+/**
  * Main menu screen
  */
 public class MainMenuScreen extends AbstractScreen {
@@ -23,7 +23,7 @@ public class MainMenuScreen extends AbstractScreen {
     private Button playButton;
     private Button scoreButton;
 
-    /***
+    /**
      * Constructor.
      *
      * Initializes resources used to render this screen.
@@ -69,7 +69,7 @@ public class MainMenuScreen extends AbstractScreen {
 
     }
 
-    /***
+    /**
      * Renders the screen
      * @param delta time passed since last frame, in seconds
      */
@@ -79,7 +79,7 @@ public class MainMenuScreen extends AbstractScreen {
         stage.draw();
     }
 
-    /***
+    /**
      * Resize event.
      *
      * Used to correctly position the elements on screen and update the viewport size to support the new window size.
@@ -108,7 +108,7 @@ public class MainMenuScreen extends AbstractScreen {
         scoreButton.setPosition(x + 80, height/1.75f - 75);
     }
 
-    /***
+    /**
      * Disposes classes that needs disposing.
      */
     @Override
@@ -116,25 +116,25 @@ public class MainMenuScreen extends AbstractScreen {
         stage.dispose();
     }
 
-    /***
+    /**
      * unused
      */
     @Override
     public void show() {}
 
-    /***
+    /**
      * unused
      */
     @Override
     public void pause() {}
 
-    /***
+    /**
      * unused
      */
     @Override
     public void resume() {}
 
-    /***
+    /**
      * unused
      */
     @Override

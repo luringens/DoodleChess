@@ -14,6 +14,11 @@ import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 
+/**
+ * UI board.
+ *
+ * Here be dragons.
+ */
 public class UiBoard extends Actor {
 
     private Texture tile;

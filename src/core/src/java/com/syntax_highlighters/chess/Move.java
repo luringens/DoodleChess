@@ -9,7 +9,9 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
  * position is, and which piece was moved. Can be used to represent both past
  * moves and future potential moves.
  *
- * This class should be immutable.
+ * Can perform a move without any validity checks. Stores enough information
+ * about the previous board state to reset it, provided that no further state
+ * changes to the board have happened since the move was applied.
  */
 public class Move {
     boolean hasDoneMove = false;
@@ -25,7 +27,8 @@ public class Move {
     protected Move() {}
     
     /**
-     * Constructor.
+     * Construct a new Move from the given position to the given position using
+     * the given piece.
      *
      * @param oldPos The old position of the piece
      * @param newPos The new position of the piece
@@ -74,6 +77,14 @@ public class Move {
         return this.piece.isWhite();
     }
 
+    /**
+     * Apply the move to the board.
+     *
+     * Modifies the board state.
+     *
+     * @param b The current state of the board
+     * @throws RuntimeException if the move has been applied before
+     */
     public void DoMove(Board b) {
         if (hasDoneMove) throw new RuntimeException("Move has already been done.");
         hasDoneMove = true;
@@ -82,6 +93,14 @@ public class Move {
         b.putAtPosition(newPos, piece);
     }
 
+    /**
+     * Revert to the old state of the board.
+     *
+     * Modifies the board state.
+     *
+     * @param b The state of the board after this move was performed
+     * @throws RuntimeException if the move has not been applied before
+     */
     public void UndoMove(Board b) {
         if (!hasDoneMove) throw new RuntimeException("Can not undo a move that has not been done");
         hasDoneMove = false;

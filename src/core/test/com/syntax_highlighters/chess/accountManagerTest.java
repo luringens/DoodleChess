@@ -4,10 +4,13 @@ import com.syntax_highlighters.chess.AccountManager;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests concerning the behavior of the AccountManager class.
+ */
 public class accountManagerTest {
 
     @Test
-    public void saveLoadTest(){
+    public void loadingSavedFileGivesCorrectNumberOfAccountsInAccountManager(){
         AccountManager am = new AccountManager();
 
 

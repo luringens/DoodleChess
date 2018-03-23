@@ -77,6 +77,9 @@ public class Board {
      * the list of pieces, or -1 if the position is empty.
      *
      * No bounds checks.
+     *
+     * @return The index of the piece occupying the position in the pieces list,
+     * if the position is occupied, or -1 otherwise
      */
     private int lookupPositionIndex(Position pos) {
         return positionsLookupTable[pos.getY()-1][pos.getX()-1];
@@ -228,9 +231,8 @@ public class Board {
      * If the king is moving 2 steps in any direction it can only be castling.
      * If king is castling, the ability to caste has already been checked, so the rook can move to it's new position
      * before the king is moved, without taking an extra turn.
-     *
-     * @return void
      */
+    @Deprecated
     private void performCastling(IChessPiece piece, Position toPosition){
         Position rookpos = null, oldRookpos = null;
         if (toPosition.getX() < 5) {
@@ -299,6 +301,17 @@ public class Board {
         return ret;
     }
 
+    /**
+     * Determine whether a given move puts a given king at risk.
+     *
+     * Used in order to determine illegal moves, seeing as moves which leave the
+     * king threatened are not legal in chess.
+     *
+     * @param m The move to consider
+     * @param kingWhite Whether to check for the white or the black king
+     *
+     * @return true if the move is safe, false otherwise
+     */
     public boolean moveDoesntPutKingInCheck(Move m, Boolean kingWhite) {
         Optional<IChessPiece> a = getAllPieces().stream()
             .filter(p -> p.isWhite() == kingWhite && p instanceof ChessPieceKing)
@@ -321,6 +334,13 @@ public class Board {
         return this.lastMove;
     }
 
+    /**
+     * Determine whether the given player is in checkmate.
+     *
+     * @param whitePlayer Whether to check for the white or the black king
+     *
+     * @return true if the given player is in checkmate, false otherwise
+     */
     public boolean checkMate(boolean whitePlayer) {
         List<IChessPiece> allPieces = getAllPieces();
         if (allPieces.size() == 0) return false; // not possible
@@ -332,6 +352,12 @@ public class Board {
                 .mapToLong(p -> p.allPossibleMoves(this).size()).sum() == 0;
     }
 
+    /**
+     * Convenience method for displaying the board.
+     * 
+     * @return A String indicating the current positions of each of the pieces
+     * on the board, arranged in a 2D grid
+     */
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();

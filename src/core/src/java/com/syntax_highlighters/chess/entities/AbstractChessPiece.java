@@ -8,6 +8,14 @@ import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Abstract class that implements common chess piece functionality.
+ *
+ * Also contains a static method for creating chess pieces based on algebraic
+ * notation (AN). Algebraic notation is generally used for describing chess
+ * moves (Ne5 is, for instance, read as "knight to E5"), but they're equally
+ * adequate at simply describing a piece of a given kind at a given position.
+ */
 public abstract class AbstractChessPiece implements IChessPiece {
     protected boolean isWhite;
     protected Position position;
@@ -82,10 +90,16 @@ public abstract class AbstractChessPiece implements IChessPiece {
      * R = rook
      * P = pawn
      *
+     * The purpose of this method is to simplify batch creation of different
+     * pieces by allowing a loop over a collection of strings.
+     *
      * @param piece The string defining the piece and position
      * @param isWhite Whether the piece is white or not
      *
      * @return The correct type of piece at the correct position
+     *
+     * @throws IllegalArgumentException if the piece notation does not conform
+     * to the expected format
      */
     public static IChessPiece fromChessNotation(String piece, boolean isWhite) {
         assert piece.length() == 3; // of the form [KQNBRP][A-Ha-h][1-8]
@@ -144,10 +158,13 @@ public abstract class AbstractChessPiece implements IChessPiece {
 
     /** Creates a list of possible moves in a direction.
      *
+     * Stops when reaching another piece, or when the end of the board is
+     * reached.
+     *
      * @param dx 0 for no horizontal movement, -1 or 1 for movement.
      * @param dy 0 for no vertical movement, -1 or 1 for movement.
      * @param board The board to look at.
-     * @return
+     * @return A list containing all possible moves in a direction
      */
     protected List<Move> movesInDirection(int dx, int dy, Board board) {
         ArrayList<Move> moves = new ArrayList<>();
@@ -166,6 +183,18 @@ public abstract class AbstractChessPiece implements IChessPiece {
         return moves;
     }
 
+    /**
+     * Helper method: determine whether the piece, if moving in a certain
+     * direction, will end up threatening the target position.
+     *
+     * Stops when reaching another piece, when the target position is reached,
+     * or when the edge of the board is reached.
+     *
+     * @param dx 0 for no horizontal movement, -1 or 1 for movement
+     * @param dy 0 for no vertical movement, -1 or 1 for movement
+     * @param board The board to look at
+     * @return true if this piece threatens the target position, false otherwise
+     */
     protected boolean threatenDirection(int dx, int dy, Position target, Board board) {
         Position nextPos = new Position(position.getX() + dx, position.getY() + dy);
         while (board.isOnBoard(nextPos)) {

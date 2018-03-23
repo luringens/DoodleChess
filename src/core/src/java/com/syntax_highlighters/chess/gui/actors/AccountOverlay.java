@@ -17,6 +17,12 @@ import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.screens.SetupScreen;
 
+/**
+ * Overlay displayed when creating new account.
+ *
+ * Allows user to type in an account name, but requires the account name to be
+ * unique.
+ */
 public class AccountOverlay extends AbstractOverlay {
     private Text usernameLabel;
     private Text notice;

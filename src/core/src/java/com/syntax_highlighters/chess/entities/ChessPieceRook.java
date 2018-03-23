@@ -9,7 +9,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Rook chess piece.
+ */
 public class ChessPieceRook extends AbstractChessPiece {
+    /**
+     * Construct a rook at the given position with the given color.
+     *
+     * @param pos The position to place the rook at
+     * @param isWhite Whether or not this bishop is white
+     */
     public ChessPieceRook(Position pos, boolean isWhite) {
         super(pos, isWhite);
     }
@@ -82,6 +91,9 @@ public class ChessPieceRook extends AbstractChessPiece {
         return isWhite() ? "rook_white.png" : "rook_black.png";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean threatens(Position p, Board b) {
         return threatenDirection(0, 1, p, b)

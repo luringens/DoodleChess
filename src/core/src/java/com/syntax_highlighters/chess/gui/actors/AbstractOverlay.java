@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 
+/**
+ * Abstract overlay class implementing common functionality between overlays.
+ */
 public class AbstractOverlay extends Actor {
     private Texture pixel;
     private Texture overlay;

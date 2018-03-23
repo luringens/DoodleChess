@@ -10,9 +10,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Tests asserting that the number of moves available to the different pieces is
+ * as expected in different situations.
+ */
 class ChessPieceTest {
     @Test
-    void TestKingMoves() {
+    void KingHasCorrectNumberOfMovesFromCenter() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
         IChessPiece king = new ChessPieceKing(new Position(4,4), false);
         pieces.add(king);
@@ -23,7 +27,7 @@ class ChessPieceTest {
     }
 
     @Test
-    void TestBishopMoves() {
+    void BishopHasCorrectNumberOfMovesFromCenter() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
         IChessPiece piece = new ChessPieceBishop(new Position(4,4), false);
         pieces.add(piece);
@@ -33,7 +37,7 @@ class ChessPieceTest {
         assertEquals(13, moves.size());
     }
     @Test
-    void TestQueenMoves() {
+    void QueenHasCorrectNumberOfMovesFromCenter() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
         IChessPiece piece = new ChessPieceQueen(new Position(4,4), false);
         pieces.add(piece);
@@ -43,7 +47,7 @@ class ChessPieceTest {
         assertEquals(27, moves.size());
     }
     @Test
-    void TestRookMoves2() {
+    void RookHasCorrectNumberOfMovesFromCenter() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
         IChessPiece piece = new ChessPieceRook(new Position(4,4), false);
         pieces.add(piece);
@@ -54,7 +58,7 @@ class ChessPieceTest {
     }
 
     @Test
-    void TestPawn() {
+    void PawnHasCorrectNumberOfMovesFromStartingPosition() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
         IChessPiece piece = new ChessPiecePawn(new Position(7,7), false);
         pieces.add(piece);
@@ -65,7 +69,7 @@ class ChessPieceTest {
     }
 
     @Test
-    void TestKnight() {
+    void KnightHasCorrectNumberOfMovesFromCenter() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
         IChessPiece piece = new ChessPieceKnight(new Position(4,4), false);
         pieces.add(piece);
@@ -76,7 +80,7 @@ class ChessPieceTest {
     }
 
     @Test
-    void TestCastling() {
+    void KingHasCorrectNumberOfMovesWhenCastlingPossibleOnBothSides() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
         IChessPiece piece = new ChessPieceKing(new Position(5,1), true);
         IChessPiece piece2 = new ChessPieceRook(new Position(8,1), true);
@@ -91,7 +95,7 @@ class ChessPieceTest {
     }
 
     @Test
-    public void checkMateKingTest(){
+    public void KingHasNoAvailableMovesWhenInCheckmate(){
         Board b = new Board();
         b.setupNewGame();
 

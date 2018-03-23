@@ -9,7 +9,17 @@ import com.syntax_highlighters.chess.Position;
 import java.util.stream.Collectors;
 import java.util.List;
 import java.util.ArrayList;
+
+/**
+ * King chess piece.
+ */
 public class ChessPieceKing extends AbstractChessPiece {
+    /**
+     * Create a king at the given position with the given color.
+     *
+     * @param pos The position to place the king at
+     * @param isWhite Whether or not this king is white
+     */
     public ChessPieceKing(Position pos, boolean isWhite) {
         super(pos, isWhite);
     }
@@ -78,15 +88,17 @@ public class ChessPieceKing extends AbstractChessPiece {
                 .collect(Collectors.toList());
     }
 
-    // I might want to make this either an interface in
-    // com.syntax_highlighters.chess or a static interface in Position.
+    /**
+     * Interface used in the canCastle method.
+     *
+     * I might want to make this either an interface in
+     * com.syntax_highlighters.chess or a static interface in Position so it can
+     * be referenced by other classes.
+     */
     private interface PositionManipulator {
         Position transform(Position pos);
     }
     
-    // checks that given the board state, the list of threatened positions, the
-    // starting position, the target position, and the direction, the king can
-    // castle
     /**
      * Check if the king can castle in the specified direction.
      *
@@ -162,6 +174,9 @@ public class ChessPieceKing extends AbstractChessPiece {
         return isWhite() ? "king_white.png" : "king_black.png";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean threatens(Position p, Board b) {
         return position.neighbors().stream().anyMatch(p::equals);

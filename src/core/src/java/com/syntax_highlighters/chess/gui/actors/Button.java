@@ -16,6 +16,11 @@ import com.syntax_highlighters.chess.gui.AssetLoader;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+/**
+ * Button class for easier button creation.
+ *
+ * Creates buttons with a cool wavy effect.
+ */
 public class Button extends Actor {
     private int textureId;
     private Text text;

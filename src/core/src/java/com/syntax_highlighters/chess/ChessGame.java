@@ -30,7 +30,7 @@ public class ChessGame extends Game {
 	private AccountManager accountManager;
 	public Skin skin;
 
-	/***
+	/**
      * Game creation event, used to initialize resources
      */
 	@Override
@@ -55,7 +55,7 @@ public class ChessGame extends Game {
 		setScreen(new MainMenuScreen(this));
 	}
 
-    /***
+    /**
      * Overloaded setScreen method to recompute the background
      * @param screen the new screen
      */
@@ -74,7 +74,7 @@ public class ChessGame extends Game {
         recomputeBackground();
 	}
 
-    /***
+    /**
      * Resize event
      * @param width new window width
      * @param height new window height
@@ -84,7 +84,7 @@ public class ChessGame extends Game {
 		super.resize(width, height);
 	}
 
-    /***
+    /**
      * Game's main rendering function
      * This will render the paper background first and then the current screen.
      */
@@ -98,7 +98,7 @@ public class ChessGame extends Game {
 		super.render();
 	}
 
-    /***
+    /**
      * Disposes classes that needs disposing.
      */
 	@Override
@@ -109,7 +109,7 @@ public class ChessGame extends Game {
 	    paperBuffer.dispose();
 	}
 
-    /***
+    /**
      * Libgdx manager for storing misc assets.
      * @return the AssetManager
      */
@@ -117,7 +117,7 @@ public class ChessGame extends Game {
         return assetManager;
     }
 
-    /***
+    /**
      * Will regenerate the wrinkles for the background using a custom built shader.
      * We generate it in an offscreen buffer to prevent lag from computing the image every single draw call.
      *
@@ -135,7 +135,7 @@ public class ChessGame extends Game {
         batch.setShader(null);
     }
 
-	/***
+	/**
 	 * Fetches the games account manager
 	 *
 	 * @return the account manager

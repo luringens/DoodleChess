@@ -9,7 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Pawn chess piece.
+ */
 public class ChessPiecePawn extends AbstractChessPiece {
+    /**
+     * Create a pawn at the given position with the given color.
+     *
+     * @param pos The position to place the pawn at
+     * @param isWhite Whether or not the pawn is white
+     */
     public ChessPiecePawn (Position pos, boolean isWhite) {
         super(pos, isWhite);
     }
@@ -178,6 +187,27 @@ public class ChessPiecePawn extends AbstractChessPiece {
         return this.getPosition().south(nSteps);
     }
 
+    /**
+     * Determine whether this piece threatens a given position.
+     *
+     * This method is not entirely accurate. Specifically, it does not
+     * consider the move en passant, because to correctly handle that move, it
+     * will need to know the intent of the caller - that is to say, whether the
+     * caller is a pawn which is attempting to move two steps forward the next
+     * turn or not.
+     *
+     * Since the alternative is to indicate that a lot of positions
+     * are threatened which really aren't, and since en passant being possible
+     * is quite a rare occurrence, and since the most important function of this
+     * method is to determine whether the king will be safe or not, for which
+     * the en passant rule does not apply anyways, this controlled inaccuracy of
+     * the method is allowed.
+     *
+     * @param position The position to consider
+     * @param board The current board state
+     *
+     * @return true if the piece threatens the position, false otherwise
+     */
     @Override
     public boolean threatens(Position p, Board b) {
         return p.equals(forward(1).east(1)) || p.equals(forward(1).west(1));

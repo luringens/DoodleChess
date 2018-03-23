@@ -20,6 +20,13 @@ import com.syntax_highlighters.chess.gui.actors.Text;
 
 import java.util.ArrayList;
 
+/**
+ * Screen allowing for setup options of the game of chess to be played.
+ *
+ * Allows account creation and selection, selection of AI level of either
+ * player, return to main menu, and starting a new game according to the current
+ * setup.
+ */
 public class SetupScreen extends AbstractScreen {
 
     private Stage stage;

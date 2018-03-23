@@ -3,13 +3,26 @@ package com.syntax_highlighters.chess;
 import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import com.syntax_highlighters.chess.entities.ChessPieceRook;
 
+/**
+ * Special move which places the king behind the rook.
+ *
+ * Only legal if neither the king nor the rook has moved, the path between them
+ * is clear, the king is not in check, and the king doesn't pass over or end up
+ * at a position threatened by an enemy piece.
+ *
+ * The king moves two steps towards the rook, and the rook is then placed on the
+ * other side of the king.
+ *
+ * This class does not perform any checks concerning whether castling is legal
+ * between the king and the rook.
+ */
 public class CastlingMove extends Move {
     private ChessPieceRook rook;
     private Position rookOldPos;
     private Position rookNewPos;
 
     /**
-     * Constructor.
+     * Construct a castling move between the given king and rook.
      *
      * @param king The king to castle with.
      * @param rook The rook to castle with.
@@ -30,6 +43,9 @@ public class CastlingMove extends Move {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void DoMove(Board b) {
         if (hasDoneMove) throw new RuntimeException("Move has already been done.");
@@ -38,6 +54,9 @@ public class CastlingMove extends Move {
         b.putAtPosition(rookNewPos, rook);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void UndoMove(Board b) {
         if (!hasDoneMove) throw new RuntimeException("Can not undo a move that has not been done");

@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+/**
+ * Helper class which loads the assets used in the game.
+ */
 public class AssetLoader {
     public static BitmapFont font;
 

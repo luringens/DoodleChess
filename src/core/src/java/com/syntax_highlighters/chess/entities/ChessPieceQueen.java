@@ -9,7 +9,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Queen chess piece.
+ */
 public class ChessPieceQueen extends AbstractChessPiece {
+    /**
+     * Create a queen at the given position with the given color.
+     *
+     * @param pos The position to place the queen at
+     * @param isWhite Whether or not this queen is white
+     */
     public ChessPieceQueen(Position pos, boolean isWhite) {
         super(pos, isWhite);
     }
@@ -83,6 +92,9 @@ public class ChessPieceQueen extends AbstractChessPiece {
         return isWhite() ? "queen_white.png" : "queen_black.png";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean threatens(Position p, Board b) {
         return threatenDirection(1, 1, p, b)

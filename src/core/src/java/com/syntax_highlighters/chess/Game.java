@@ -10,8 +10,8 @@ import com.syntax_highlighters.chess.entities.*;
  * Game class keeping track of the game state.
  *
  * Contains a Board, as well as the two players, white and black. Keeps track of
- * which player's turn it is. Records move history. The UI uses the API of this
- * class to interact with the game.
+ * which player's turn it is. The UI uses the API of this class to interact with
+ * the game.
  */
 public class Game {
     private Board board;
@@ -22,8 +22,6 @@ public class Game {
     private AccountManager accountManager = null;
 
     /**
-     * Constructor.
-     *
      * Creates a new, blank game and sets up the board.
      *
      * @param whiteAi The difficulty for the white AI, or `null` for no AI
@@ -74,6 +72,12 @@ public class Game {
         return result;
     }
 
+    /**
+     * Perform AI move if next player is AI.
+     *
+     * If the next player is an AI player, make the player perform a move, and
+     * then change turns. Otherwise do nothing.
+     */
     public void PerformAIMove() {
         if (nextPlayerIsAI()) {
             if (nextPlayerWhite) {
@@ -101,6 +105,8 @@ public class Game {
      *
      * NOTE: Returns a reference to the internal Board in this class. Changes
      * made to the return value affects the original.
+     *
+     * @return The current board state
      */
     public Board getBoard() {
         return this.board;

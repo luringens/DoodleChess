@@ -16,6 +16,10 @@ import com.syntax_highlighters.chess.gui.actors.Text;
 
 import java.util.List;
 
+/**
+ * Screen displaying the scores of the top ten players accounts in the accounts
+ * data.
+ */
 public class ScoreScreen extends AbstractScreen {
     private Text title;
 

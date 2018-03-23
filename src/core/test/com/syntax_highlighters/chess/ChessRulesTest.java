@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Tests designed to check some of the weirder rules of chess, such as en
+ * passant and castling.
+ */
 public class ChessRulesTest {
     private Board board;
     private List<IChessPiece> pieces;
@@ -21,12 +25,22 @@ public class ChessRulesTest {
     private ChessPieceKing king;
     private ChessPieceRook rook;
     
+    /**
+     * Helper method: initialize board like in a normal chess game.
+     */
     public void setUpStandard() {
         board = new Board();
         board.setupNewGame();
         pieces = board.getAllPieces();
     }
 
+    /**
+     * Helper method: initialize board in such a way that castling between left
+     * rook and king for white player is possible.
+     *
+     * Only set up those two pieces in the correct positions. They can
+     * henceforth be accessed using the variables "king" and "rook".
+     */
     public void setUpCastle() {
         king = new ChessPieceKing(new Position(5, 1), true);
         rook = new ChessPieceRook(new Position(1, 1), true);
@@ -37,7 +51,13 @@ public class ChessRulesTest {
         board = new Board(pieces);
     }
 
-    // this does not work correctly...
+    /**
+     * Helper method: initialize board with one white pawn at position D2 and
+     * one black pawn at position E7.
+     *
+     * Only set up those two pieces in the correct positions. They can
+     * henceforth be accessed using the variables "whitePawn" and "blackPawn".
+     */
     @Before
     public void setUp() {
         whitePawn = new ChessPiecePawn(new Position(4, 2), true);

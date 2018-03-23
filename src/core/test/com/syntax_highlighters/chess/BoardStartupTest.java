@@ -14,12 +14,19 @@ import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Tests for the initial board setup, checks that the preconditions for a new
+ * game of chess holds.
+ */
 class BoardStartupTest {
 
     private Board board;
 
+    // NOTE: Although this is marked using @Before, it doesn't work on my
+    // system. It requires the method to be called in every test method.
+    // - Vegard
     @Before
-    private void setUp() {
+    public void setUp() {
         board = new Board();
         board.setupNewGame();
     }
@@ -30,6 +37,8 @@ class BoardStartupTest {
         boolean isEmpty = true;
         Position pos;
 
+        // Go through the middle positions of the board, ensure those positions
+        // are empty
         for (int y = 3; y <= 6; y++) {
             for (int x = 1; x <= 8; x++) {
                 pos = new Position(x, y);
@@ -38,12 +47,12 @@ class BoardStartupTest {
                 }
             }
         }
-        assertEquals(isEmpty, true);
+        assertEquals(true, isEmpty);
 
     }
 
     @Test
-    void KingsPos(){
+    void KingsArePositionedCorrectly(){
         setUp();
         Position wPos = new Position(5, 1);
         Position bPos = new Position(5, 8);
@@ -57,7 +66,7 @@ class BoardStartupTest {
     }
 
     @Test
-    void QueensPos() {
+    void QueensArePositionedCorrectly() {
         setUp();
         Position wPos = new Position(4, 1);
         Position bPos = new Position(4, 8);
@@ -70,7 +79,7 @@ class BoardStartupTest {
     }
 
     @Test
-    void PawnsPos() {
+    void PawnsArePositionedCorrectly() {
         setUp();
         Position Wpos;
         Position Bpos;
@@ -90,7 +99,7 @@ class BoardStartupTest {
     }
 
     @Test
-    void BishopsPos() {
+    void BishopsArePositionedCorrectly() {
         setUp();
         Position BleftPos = new Position(3, 8);
         Position BrightPos = new Position(6, 8);
@@ -109,7 +118,7 @@ class BoardStartupTest {
     }
 
     @Test
-    void KnightsPos() {
+    void KnightsArePositionedCorrectly() {
         setUp();
 
         Position BleftPos = new Position(2, 8);
@@ -129,7 +138,7 @@ class BoardStartupTest {
     }
 
     @Test
-    void RooksPos() {
+    void RooksArePositionedCorrectly() {
         setUp();
         Position BleftPos = new Position(1, 8);
         Position BrightPos = new Position(8, 8);

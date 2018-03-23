@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.syntax_highlighters.chess.Board;
 
+/**
+ * Text class for easier creation of the text in the game's font.
+ */
 public class Text extends Actor {
     private BitmapFont font;
     private String text;

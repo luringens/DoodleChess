@@ -12,6 +12,13 @@ import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
 
+/**
+ * Overlay which is displayed on the screen after the game is over.
+ *
+ * SUGGESTION: A button to dismiss in order to see the state of the board
+ * underneath (may require more buttons/checks in the screen below it so you can
+ * either display it again or at least exit to main menu)
+ */
 public class GameOverOverlay extends AbstractOverlay {
     private Text white;
     private Text player1Name;

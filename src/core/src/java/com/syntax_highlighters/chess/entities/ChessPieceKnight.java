@@ -8,7 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Knight chess piece.
+ */
 public class ChessPieceKnight extends AbstractChessPiece {
+    /**
+     * Create a knight at the given position with the given color.
+     *
+     * @param pos The position to place the knight at
+     * @param isWhite Whether or not this knight is white
+     */
     public ChessPieceKnight(Position pos, boolean isWhite) {
         super(pos, isWhite);
     }
@@ -101,6 +110,9 @@ public class ChessPieceKnight extends AbstractChessPiece {
         return isWhite() ? "knight_white.png" : "knight_black.png";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean threatens(Position p, Board b) {
         return Math.abs(p.getX() - position.getX()) == 1 && Math.abs(p.getY() - position.getY()) == 2

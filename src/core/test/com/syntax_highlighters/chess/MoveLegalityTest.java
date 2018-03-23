@@ -15,11 +15,13 @@ import javax.swing.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+/**
+ * Tests designed to show that moves which should clearly be illegal are illegal.
+ */
 public class MoveLegalityTest {
 
     @Test
-    public void HorseThreeStraightCheckMove() {
+    public void HorseCannotMoveThreeStepsInStraightLine() {
         Board board = new Board();
 
         Position pos = new Position(3, 3);
@@ -36,7 +38,7 @@ public class MoveLegalityTest {
     }
 
     @Test
-    public void WhitePawnBackwards() {
+    public void WhitePawnCannotMoveBackwards() {
         Board board = new Board();
 
         Position pos = new Position(3, 3);
@@ -50,7 +52,7 @@ public class MoveLegalityTest {
     }
 
     @Test
-    public void BlackPawnBackwards() {
+    public void BlackPawnCannotMoveBackwards() {
         Board board = new Board();
 
         Position pos = new Position(3, 3);
@@ -65,7 +67,7 @@ public class MoveLegalityTest {
     }
 
     @Test
-    public void PawnAttackEmptySquare() {
+    public void PawnCannotAttackEmptySquare() {
         Board board = new Board();
 
         Position pos = new Position(3, 3);
@@ -80,7 +82,7 @@ public class MoveLegalityTest {
     }
 
     @Test
-    public void PieceAttackAlly() {
+    public void PieceCannotAttackAlly() {
         Board board = new Board();
 
         Position AtkPos = new Position(3, 3);

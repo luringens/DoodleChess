@@ -8,6 +8,9 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+/**
+ * Tests pertaining to the behavior of the AI.
+ */
 class AiTest {
     @Test
     void takesQueenOverPawn() {
@@ -30,7 +33,7 @@ class AiTest {
     }
 
     @Test
-    void speedTestEasy() {
+    void easyAICompletesWithinOneSecondFromStartingPosition() {
         final long allowedTime = 1000;
         IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Easy);
         long time = speedTest(ai);
@@ -39,13 +42,19 @@ class AiTest {
     }
 
     @Test
-    void speedTestMedium() {
+    void mediumAICompletesWithinThreeSecondsFromStartingPosition() {
         final long allowedTime = 3000;
         IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Medium);
         long time = speedTest(ai);
         assertTrue("The medium AI is too slow (" + time + " >= " + allowedTime + ")",
                 time < allowedTime);
     }
+
+    // NOTE: There is no requirement for the hard AI to finish within a certain
+    // amount of time - which is good, because our hard AI takes an ungodly
+    // amount of time to finish.
+    //
+    // Anyways, that's why there is no test for that.
 
     /** Measures how long an AI spends deciding a move on a fresh chess board.
      * @param ai The AI to measure.

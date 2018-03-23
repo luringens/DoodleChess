@@ -27,7 +27,7 @@ import com.syntax_highlighters.chess.gui.actors.Text;
 import java.util.concurrent.Semaphore;
 
 /**
- * Game main screen
+ * Game main screen.
  */
 public class GameScreen extends AbstractScreen {
     private AssetManager assetManager;
@@ -55,7 +55,7 @@ public class GameScreen extends AbstractScreen {
 
     private ChessGame chessGame;
 
-    /***
+    /**
      * Constructor.
      *
      * We have put the AI on a separate thread to stop the window from becoming unresponsive while the AI is thinking.
@@ -193,7 +193,7 @@ public class GameScreen extends AbstractScreen {
 
     }
 
-    /***
+    /**
      * Render the screen
      *
      * Due to how the AI works do we have to draw it to an offscreen buffer before we let it think.
@@ -260,7 +260,7 @@ public class GameScreen extends AbstractScreen {
         batch.end();
     }
 
-    /***
+    /**
      * Resize event.
      *
      * Used to correctly position the elements on screen and update the viewport size to support the new window size.
@@ -289,7 +289,7 @@ public class GameScreen extends AbstractScreen {
         gameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, false);
     }
 
-    /***
+    /**
      * Disposes classes that needs disposing.
      */
     @Override
@@ -297,25 +297,25 @@ public class GameScreen extends AbstractScreen {
         stage.dispose();
     }
 
-    /***
+    /**
      * unused
      */
     @Override
     public void show() {}
 
-    /***
+    /**
      * unused
      */
     @Override
     public void hide() {}
 
-    /***
+    /**
      * unused
      */
     @Override
     public void pause() {}
 
-    /***
+    /**
      * unused
      */
     @Override

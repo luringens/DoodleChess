@@ -9,7 +9,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Bishop chess piece.
+ */
 public class ChessPieceBishop extends AbstractChessPiece {
+    /**
+     * Create a bishop at the given position with the given color.
+     *
+     * @param pos The position to place the bishop at
+     * @param isWhite Whether or not this bishop is white
+     */
     public ChessPieceBishop(Position pos, boolean isWhite) {
         super(pos, isWhite);
     }
@@ -77,6 +86,9 @@ public class ChessPieceBishop extends AbstractChessPiece {
         return isWhite() ? "bishop_white.png" : "bishop_black.png";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean threatens(Position p, Board b) {
         return threatenDirection(1, 1, p, b)
