@@ -10,74 +10,59 @@ course in Spring 2018.
 ## Getting Started
 
 ### Prerequisites
- 
-- [JDK v8 or higher](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
-- [Maven](https://maven.apache.org/download.cgi)
 
-### Installation
+- [JDK v8 or higher](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
+
+### Installing
 
 ```
 $ git clone https://gitlab.uib.no/inf112-v2018/gruppe-6.git chess-syntax-highlighters
 $ cd chess-syntax-highlighters
-$ mvn install
-$ mvn -Pdesktop package
 ```
+
+### Running
 
 We can play the game running the following command:
 
 ```
-$ java -jar "src/desktop/target/chess-desktop-1.0-jar-with-dependencies.jar"
+$ gradlew run
 ```
 
+There is now a tar and zip file available in `build/distributions/` that contains a bin folder with a run file for running the game.
 
-## Hacking 
+Note: This will not run the tests
 
-### Intellij IDEA
+### Building a fat-jar
 
-- Open the `chess.iml` file and you should be ready to go.
-
-*Note*: You might get a notification that says "Maven projects need to
-be imported", if this happens, then just select the "Import Changes"
-option.
-
-### Manual build
-
-- To build the project run the command:
+A fat-jar is a jar file with all the dependencies aswell
 
 ```
-$ mvn -Pdesktop package
+$ gradlew fatjar
 ```
 
-- To skip tests run the command:
+the jar should now be available in `build/libs/DoodleChess-fat.jar` and can be run using `java -jar build/libs/DoodleChess-fat.jar`
+
+Note: This will not run the tests
+
+### Running tests
 
 ```
-$ mvn -Pdesktop package -DskipTests
+$ gradlew test
 ```
 
-- The jar file for desktop should now be located in `src/desktop/target`. To run
-the game use the command:
+### Building javadoc
 
 ```
-$ java -jar src/desktop/target/chess-desktop-1.0-jar-with-dependencies.jar
+$ gradlew javadoc
 ```
+
+The javadoc should now be available in `docs/api`
+
+## Hacking
 
 ## Game design model
 
 See our updated [product specification](/docs/product-spec/product-specification.pdf) (section on class diagram) to see an overview of the classes and the relationships between them, coupled with a brief, high-level explanation of the design choices that we have made. Also see the [HTML version of the class diagram](/docs/diagrams/classdiagram.html) to see a version of the class diagram where you can open up the classes and look at the methods available in their public API. If you click on the diagram to enlarge, then click on the edit button at the bottom, you are brought to draw.io, where you can even edit the diagram as you please! (Changes made to the version at draw.io does not affect the files in this repo.)
-
-## Documentation
-
-The simplest way to generate the documentation is to run javadoc on all source code files in the `src/core` folder. On Linux or Mac, try running this command in the project root folder:
-
-```
-find src/core/ -type f -name "*.java" | xargs javadoc -d docs/api
-```
-
-If this doesn't work, you can use this equivalent but much longer version:
-
-```
-javadoc -d docs/api/ -classpath src/core/target/chess-core-1.0-sources.jar -sourcepath src/core/src/java/ com.syntax_highlighters.chess com.syntax_highlighters.chess.entities com.syntax_highlighters.chess.gui com.syntax_highlighters.chess.gui.actors com.syntax_highlighters.chess.gui.screens
-```
 
 ## Contributing
 

@@ -203,8 +203,8 @@ public class ChessPiecePawn extends AbstractChessPiece {
      * the en passant rule does not apply anyways, this controlled inaccuracy of
      * the method is allowed.
      *
-     * @param position The position to consider
-     * @param board The current board state
+     * @param p The position to consider
+     * @param b The current board state
      *
      * @return true if the piece threatens the position, false otherwise
      */

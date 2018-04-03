@@ -12,7 +12,7 @@ import com.syntax_highlighters.chess.ChessGame;
  *
  * Creates a new application running our amazing version of chess!
  */
-public class ChessDesktop {
+public class Main {
     /**
      * Program entry point.
      *
