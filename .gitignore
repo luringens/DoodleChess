@@ -11,9 +11,9 @@ build/*
 docs/api/*
 *.iws
 *.iml
-*ipr
 accounts.txt
 .idea/*
+out/*
 
 # Build output
 *target*

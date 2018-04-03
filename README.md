@@ -60,6 +60,16 @@ The javadoc should now be available in `docs/api`
 
 ## Hacking
 
+### Running with Intellij
+
+First run:
+
+```
+$ gradlew idea
+```
+
+then open the .ipr file and you should be good to go
+
 ## Game design model
 
 See our updated [product specification](/docs/product-spec/product-specification.pdf) (section on class diagram) to see an overview of the classes and the relationships between them, coupled with a brief, high-level explanation of the design choices that we have made. Also see the [HTML version of the class diagram](/docs/diagrams/classdiagram.html) to see a version of the class diagram where you can open up the classes and look at the methods available in their public API. If you click on the diagram to enlarge, then click on the edit button at the bottom, you are brought to draw.io, where you can even edit the diagram as you please! (Changes made to the version at draw.io does not affect the files in this repo.)

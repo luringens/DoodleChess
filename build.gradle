@@ -32,9 +32,8 @@ configurations {
 dependencies {
     
     // Use JUnit test framework
-    testCompileOnly(
-        'junit:junit:4.12'
-    )
+    testCompile 'junit:junit:4.12' 
+
     testImplementation(
         'org.junit.jupiter:junit-jupiter-api:5.1.0'
     )
@@ -88,3 +87,4 @@ task fatjar(group: 'Build', description:'Assembles a "fat jar" containing all th
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
+
