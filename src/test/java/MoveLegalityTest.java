@@ -3,10 +3,8 @@ package syntax_highlighters.chess;
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.*;
-import javafx.geometry.Pos;
 import org.junit.jupiter.api.Test;
 import com.syntax_highlighters.chess.Move;
-import sun.font.CompositeStrike;
 
 import java.util.ArrayList;
 import java.util.List;
