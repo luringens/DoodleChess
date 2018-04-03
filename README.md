@@ -26,7 +26,7 @@ $ mvn -Pdesktop package
 We can play the game running the following command:
 
 ```
-$ java -jar "src/desktop/target/chess-desktop-1.0-jar-with-dependencies.jar
+$ java -jar "src/desktop/target/chess-desktop-1.0-jar-with-dependencies.jar"
 ```
 
 
