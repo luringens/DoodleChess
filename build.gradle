@@ -12,6 +12,8 @@ plugins {
 // Define the main class for the application
 mainClassName = 'com.syntax_highlighters.java.Main'
 
+test.outputs.upToDateWhen {false}
+
 ext {
     gdxVersion = "1.9.8"
 }
