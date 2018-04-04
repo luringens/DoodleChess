@@ -1,7 +1,9 @@
 package com.syntax_highlighters.chess.entities;
 import com.syntax_highlighters.chess.*;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -27,10 +29,11 @@ import java.util.stream.Collectors;
 public class MiniMaxAIPlayer implements IAiPlayer {
     private static final int EASY_DEPTH = 3;
     private static final int MED_DEPTH = 4;
-    private static final int HARD_DEPTH = 5;
+    private static final int HARD_DEPTH = 4;
     private final boolean isWhite;
     private int diff;
     private final Random rand;
+    private double chanceOfMistake = 0.0;
 
     /**
      * Create a minimaxing AI player with the given color and difficulty.
@@ -49,8 +52,17 @@ public class MiniMaxAIPlayer implements IAiPlayer {
      */
     @Override
     public void PerformMove(Board board) {
-        if (board.checkMate(isWhite)) return;
-        MiniMaxMove(diff, board, isWhite);
+        Move m = GetMove(board);
+        if (m != null) m.DoMove(board);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Move GetMove(Board board) {
+        if (board.checkMate(isWhite)) return null;
+        return MiniMaxMove(diff, board);
     }
 
     /**
@@ -62,8 +74,8 @@ public class MiniMaxAIPlayer implements IAiPlayer {
     @Override
     public void SetDifficulty(AiDifficulty diff) {
         switch (diff) {
-            case Easy: this.diff = EASY_DEPTH; break;
-            case Medium: this.diff = MED_DEPTH; break;
+            case Easy: this.diff = EASY_DEPTH; chanceOfMistake = 0.3; break;
+            case Medium: this.diff = MED_DEPTH; chanceOfMistake = 0.2; break;
             case Hard: this.diff = HARD_DEPTH; break;
             default: throw new IllegalArgumentException("Invalid enum.");
         }
@@ -77,28 +89,36 @@ public class MiniMaxAIPlayer implements IAiPlayer {
      * 
      * @param depth The number of moves to look ahead
      * @param board The current board state
-     * @param isWhite Whether or not the AI player plays with the white pieces
+     * @return The suggested best move.
      */
-    private void MiniMaxMove(int depth, Board board, boolean isWhite) {
+    private Move MiniMaxMove(int depth, Board board) {
         assert(depth >= 1);
         List<Move> moves = board.getAllPieces().stream()
                 .filter(p -> p.isWhite() == isWhite)
                 .flatMap(p -> p.allPossibleMoves(board).stream())
                 .collect(Collectors.toList());
 
-        int bestScore = Integer.MIN_VALUE;
-        Move bestMove = null;
-        for (Move move : moves) {
-            move.DoMove(board);
-            int score = MiniMaxScore(depth - 1, board,
-                    isWhite, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
-            move.UndoMove(board);
-            if (score > bestScore) {
-                bestScore = score;
-                bestMove = move;
+        // Helper class since Java doesn't have tuples.
+        class result {
+            private result(Move m, int s) {
+                move = m;
+                score = s;
             }
+            Move move;
+            private int score;
         }
-        if (bestMove != null) bestMove.DoMove(board);
+
+        // Parallel processing.
+        Optional<result> optionalMove = moves.parallelStream().map(move -> {
+            Board boardCopy = board.copy();
+            move.DoMove(boardCopy);
+            int score = MiniMaxScore(depth - 1, boardCopy,
+                    isWhite, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            move.UndoMove(boardCopy);
+            return new result(move, score);
+        }).max(Comparator.comparing(result -> result.score));
+
+        return optionalMove.isPresent() ? optionalMove.get().move : null;
     }
 
     /**
@@ -131,6 +151,9 @@ public class MiniMaxAIPlayer implements IAiPlayer {
         // NOTE: code duplication; consider refactoring
         if (isMaximizing) {
             for (Move move : moves) {
+                // Make a mistake if difficulty is set to do so.
+                if (rand.nextDouble() < chanceOfMistake) continue;
+
                 // Check if the move takes the king.
                 if (move.getPosition() == board.getKing(isWhite)) return 10000;
 
@@ -146,6 +169,9 @@ public class MiniMaxAIPlayer implements IAiPlayer {
         }
         else {
             for (Move move : moves) {
+                // Make a mistake if difficulty is set to do so.
+                if (rand.nextDouble() < chanceOfMistake) continue;
+
                 // Check if the move takes the king.
                 if (move.getPosition() == board.getKing(!isWhite)) return -10000;
 
