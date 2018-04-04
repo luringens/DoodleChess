@@ -67,7 +67,7 @@ public class ChessPieceBishop extends AbstractChessPiece {
      */
     @Override
     public IChessPiece copy() {
-        return new ChessPieceBishop(this.getPosition(), this.isWhite());
+        return new ChessPieceBishop(this.getPosition().copy(), this.isWhite());
     }
 
     /**

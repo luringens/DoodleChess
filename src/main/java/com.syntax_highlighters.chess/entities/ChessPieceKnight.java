@@ -91,7 +91,7 @@ public class ChessPieceKnight extends AbstractChessPiece {
      */
     @Override
     public IChessPiece copy() {
-        return new ChessPieceKnight(this.getPosition(), this.isWhite());
+        return new ChessPieceKnight(this.getPosition().copy(), this.isWhite());
     }
 
     /**
