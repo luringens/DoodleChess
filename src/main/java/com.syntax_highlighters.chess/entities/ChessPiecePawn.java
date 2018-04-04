@@ -155,7 +155,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
      */
     @Override
     public IChessPiece copy () {
-        return new ChessPiecePawn(this.getPosition(), this.isWhite());
+        return new ChessPiecePawn(this.getPosition().copy(), this.isWhite());
     }
 
     /**

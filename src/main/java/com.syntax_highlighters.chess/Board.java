@@ -382,6 +382,7 @@ public class Board {
      */
     public void removePiece(IChessPiece p) {
         int index = lookupPositionIndex(p.getPosition());
+        assert(index > 0 && index < pieces.size());
         int lastPieceIndex = pieces.size()-1;
         if (index != lastPieceIndex) {
             IChessPiece lastPieceInList = pieces.get(lastPieceIndex);

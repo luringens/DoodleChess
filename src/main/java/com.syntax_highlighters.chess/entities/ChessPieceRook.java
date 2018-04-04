@@ -72,7 +72,7 @@ public class ChessPieceRook extends AbstractChessPiece {
      */
     @Override
     public IChessPiece copy() {
-        return new ChessPieceRook(this.getPosition(), this.isWhite());
+        return new ChessPieceRook(this.getPosition().copy(), this.isWhite());
     }
 
     /**
