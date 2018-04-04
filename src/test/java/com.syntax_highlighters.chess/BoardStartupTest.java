@@ -1,4 +1,4 @@
-package syntax_highlighters.chess;
+package com.syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Game;
@@ -26,7 +26,7 @@ class BoardStartupTest {
     // system. It requires the method to be called in every test method.
     // - Vegard
     @Before
-    public void setUp() {
+    private void setUp() {
         board = new Board();
         board.setupNewGame();
     }
@@ -158,7 +158,7 @@ class BoardStartupTest {
     }
 
     @Test
-    public void BlackCannotMoveFirst(){
+    void BlackCannotMoveFirst(){
 
         Game game = new Game(null,null);
         board = game.getBoard();

@@ -1,4 +1,4 @@
-package syntax_highlighters.chess;
+package com.syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.*;
 import com.syntax_highlighters.chess.entities.*;
@@ -95,7 +95,7 @@ class ChessPieceTest {
     }
 
     @Test
-    public void KingHasNoAvailableMovesWhenInCheckmate(){
+    void KingHasNoAvailableMovesWhenInCheckmate(){
         Board b = new Board();
         b.setupNewGame();
 

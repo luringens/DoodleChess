@@ -1,4 +1,4 @@
-package syntax_highlighters.chess;
+package com.syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.*;
 import com.syntax_highlighters.chess.entities.*;
@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
  * Tests designed to check some of the weirder rules of chess, such as en
  * passant and castling.
  */
-public class ChessRulesTest {
+class ChessRulesTest {
     private Board board;
     private List<IChessPiece> pieces;
     private ChessPiecePawn whitePawn;
@@ -28,7 +27,7 @@ public class ChessRulesTest {
     /**
      * Helper method: initialize board like in a normal chess game.
      */
-    public void setUpStandard() {
+    private void setUpStandard() {
         board = new Board();
         board.setupNewGame();
         pieces = board.getAllPieces();
@@ -41,7 +40,7 @@ public class ChessRulesTest {
      * Only set up those two pieces in the correct positions. They can
      * henceforth be accessed using the variables "king" and "rook".
      */
-    public void setUpCastle() {
+    private void setUpCastle() {
         king = new ChessPieceKing(new Position(5, 1), true);
         rook = new ChessPieceRook(new Position(1, 1), true);
         
@@ -59,7 +58,7 @@ public class ChessRulesTest {
      * henceforth be accessed using the variables "whitePawn" and "blackPawn".
      */
     @Before
-    public void setUp() {
+    private void setUp() {
         whitePawn = new ChessPiecePawn(new Position(4, 2), true);
         blackPawn = new ChessPiecePawn(new Position(5, 7), false);
         
@@ -71,7 +70,7 @@ public class ChessRulesTest {
     }
     
     @Test
-    public void whitePawnCanMoveTwoStepsOnce() {
+    void whitePawnCanMoveTwoStepsOnce() {
         setUp();
         Position twoForward = forward(whitePawn, 2);
 
@@ -79,7 +78,7 @@ public class ChessRulesTest {
     }
     
     @Test
-    public void blackPawnCanMoveTwoStepsOnce() {
+    void blackPawnCanMoveTwoStepsOnce() {
         setUp();
         Position twoForward = forward(blackPawn, 2);
 
@@ -87,7 +86,7 @@ public class ChessRulesTest {
     }
     
     @Test
-    public void whitePawnCannotMoveTwoStepsTwice() {
+    void whitePawnCannotMoveTwoStepsTwice() {
         setUp();
         
         // move forward two steps
@@ -100,7 +99,7 @@ public class ChessRulesTest {
     }
     
     @Test
-    public void blackPawnCannotMoveTwoStepsTwice() {
+    void blackPawnCannotMoveTwoStepsTwice() {
         setUp();
 
         // move forward two steps
@@ -113,7 +112,7 @@ public class ChessRulesTest {
     }
 
     @Test
-    public void whitePawnCanPerformEnPassant() {
+    void whitePawnCanPerformEnPassant() {
         setUp();
         
         // setup board:
@@ -147,7 +146,7 @@ public class ChessRulesTest {
     }
     
     @Test
-    public void blackPawnCanPerformEnPassant() {
+    void blackPawnCanPerformEnPassant() {
         setUp(); // I really need to figure out that @Before bug...
 
         // setup board:
@@ -182,7 +181,7 @@ public class ChessRulesTest {
     }
 
     @Test
-    public void pawnCannotPerformEnPassantIfOtherPawnNotJustMoved() {
+    void pawnCannotPerformEnPassantIfOtherPawnNotJustMoved() {
         // tests just one kind of pawn, since presumably this works the same
         // for either color
         setUp();
@@ -197,7 +196,7 @@ public class ChessRulesTest {
     }
 
     @Test
-    public void pawnCannotPerformEnPassantIfLastMoveWasSingleStep() {
+    void pawnCannotPerformEnPassantIfLastMoveWasSingleStep() {
         // tests just one kind of pawn, since presumably this works the same
         // for either color
         setUp();
@@ -213,7 +212,7 @@ public class ChessRulesTest {
     }
 
     @Test
-    public void knightsCanJumpOverPieces() {
+    void knightsCanJumpOverPieces() {
         setUpStandard(); // set up a standard game of chess
 
         List<IChessPiece> knights = pieces.stream()
@@ -241,7 +240,7 @@ public class ChessRulesTest {
     }
 
     @Test
-    public void kingCanPerformCastleWithUnmovedTower() {
+    void kingCanPerformCastleWithUnmovedTower() {
         setUpCastle();
         Position oldKingPos = king.getPosition();
         Position kingTarget = oldKingPos.west(2);
@@ -263,7 +262,7 @@ public class ChessRulesTest {
     }
 
     @Test
-    public void kingCannotPerformCastleWithMovedTower() {
+    void kingCannotPerformCastleWithMovedTower() {
         setUpCastle();
 
         board.movePiece(rook, rook.getPosition().north(1));
@@ -273,7 +272,7 @@ public class ChessRulesTest {
     }
     
     @Test
-    public void kingCannotPerformCastleAfterMoved() {
+    void kingCannotPerformCastleAfterMoved() {
         setUpCastle();
 
         board.movePiece(king, king.getPosition().north(1));
@@ -283,7 +282,7 @@ public class ChessRulesTest {
     }
 
     @Test
-    public void kingCannotPerformCastleWhenPathThreatened() {
+    void kingCannotPerformCastleWhenPathThreatened() {
         setUpCastle();
         Position rookpos = new Position(4, 8);
         board.putAtPosition(rookpos, new ChessPieceRook(rookpos, false));
@@ -293,7 +292,7 @@ public class ChessRulesTest {
     }
 
     @Test
-    public void kingCannotPerformCastleWhenPathBlocked() {
+    void kingCannotPerformCastleWhenPathBlocked() {
         setUpStandard(); // standard chess game - there are pieces to either side of the kings
         List<IChessPiece> kings = pieces.stream()
             .filter(p -> p instanceof ChessPieceKing)
@@ -306,7 +305,7 @@ public class ChessRulesTest {
     }
 
     @Test
-    public void kingCannotPerformCastleWithEnemyPiece() {
+    void kingCannotPerformCastleWithEnemyPiece() {
         setUpCastle();
         // replace the white rook with a black rook
         Position rookpos = new Position(1, 1);
@@ -317,7 +316,7 @@ public class ChessRulesTest {
     }
 
     @Test
-    public void kingCannotMoveToThreatenedPosition() {
+    void kingCannotMoveToThreatenedPosition() {
         setUpCastle(); // so we have a convenient way of referring to the king
         Position rookpos = new Position(4, 8); // threaten position 4,1
         board.putAtPosition(rookpos, new ChessPieceRook(rookpos, false));
@@ -338,7 +337,7 @@ public class ChessRulesTest {
      * @param target The position to check for
      * @param piece The piece to be moved
      */
-    public void noAvailableMoveLeadsTo(Position target, IChessPiece piece) {
+    private void noAvailableMoveLeadsTo(Position target, IChessPiece piece) {
         List<Move> possibleMoves = piece.allPossibleMoves(board);
 
         for (Move m : possibleMoves) {
@@ -355,7 +354,7 @@ public class ChessRulesTest {
      * @param target The position to check for
      * @param piece The piece to be moved
      */
-    public void existsMoveToPosition(Position target, IChessPiece piece) {
+    private void existsMoveToPosition(Position target, IChessPiece piece) {
         assertTrue("No move to " + target, piece.canMoveTo(target, board));
     }
     

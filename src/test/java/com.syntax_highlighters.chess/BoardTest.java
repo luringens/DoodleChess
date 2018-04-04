@@ -1,4 +1,4 @@
-package syntax_highlighters.chess;
+package com.syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Position;
@@ -18,22 +18,22 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @see Board
  */
-public class BoardTest {
-    Board board = new Board ();
-    Position p = new Position(3,2);
-    IChessPiece piece = new ChessPieceKing(p,true);
-    List<IChessPiece> pieceList = new ArrayList<>();
+class BoardTest {
+    private Board board = new Board ();
+    private Position p = new Position(3,2);
+    private IChessPiece piece = new ChessPieceKing(p,true);
+    private List<IChessPiece> pieceList = new ArrayList<>();
 
 
     @Test
-    public void putAtPositionShouldPutCorrectPieceAtCorrectPosition(){
+    void putAtPositionShouldPutCorrectPieceAtCorrectPosition(){
         board.putAtPosition(p,piece);
         assertEquals(piece, board.getAtPosition(p));
     }
 
     //Tests that the newBoard Function return 0.
     @Test
-      public void emptyBoardContainsNoPieces() {
+    void emptyBoardContainsNoPieces() {
       Board b = new Board();
       assertEquals(b.getAllPieces().size(),0);
 
@@ -41,7 +41,7 @@ public class BoardTest {
     
     //Tests that the Occupied function returns true if it actually is occupied.
     @Test
-      public void isOccupiedReturnsTrueForOccupiedSquare(){
+    void isOccupiedReturnsTrueForOccupiedSquare(){
          Board k = new Board();
          k.putAtPosition(p,piece);
          assertTrue(k.isOccupied(p));
@@ -52,14 +52,14 @@ public class BoardTest {
      * false if it isn't Occupied.
      */
     @Test
-    public void isOccupiedReturnsFalseForEmptySquare(){
+    void isOccupiedReturnsFalseForEmptySquare(){
         Board k = new Board();
         assertFalse(k.isOccupied(p));
     }
 
     //Tests that getAtPosition on occupied square does not return null
     @Test
-    public void getAtPositionDoesNotReturnNullIfSquareIsOccupied(){
+    void getAtPositionDoesNotReturnNullIfSquareIsOccupied(){
        Board k = new Board();
        k.putAtPosition(p,piece);
        assertNotNull(k.getAtPosition(p));
@@ -67,7 +67,7 @@ public class BoardTest {
 
     // Tests that getAtPosition on unoccupied position returns null.
     @Test
-    public void getAtPositionReturnsNullIfSquareIsNotOccupied(){
+    void getAtPositionReturnsNullIfSquareIsNotOccupied(){
         Board k = new Board();
         assertNull(k.getAtPosition(p));
     }
@@ -75,7 +75,7 @@ public class BoardTest {
 
     //Tests that the putAtEmptyPosition function works if the position is empty.
     @Test
-    public void putAtEmptyPositionBehavesCorrectlyWhenPositionEmpty(){
+    void putAtEmptyPositionBehavesCorrectlyWhenPositionEmpty(){
        Board k = new Board();
        k.putAtEmptyPosition(p,piece);
        assertEquals(k.getAtPosition(p),piece);
@@ -86,7 +86,7 @@ public class BoardTest {
      * and the copied board changed.
      */
     @Test
-    public void changesMadeToCopiedBoardDoesNotAffectOriginal(){
+    void changesMadeToCopiedBoardDoesNotAffectOriginal(){
         Board k = new Board();
         Board h = k.copy();
         h.putAtEmptyPosition(p,piece);
@@ -99,7 +99,7 @@ public class BoardTest {
      * Position isn't empty.. More elegantly.
      */
     @Test
-    public void putAtEmptyPositionThrowsExceptionWhenPositionOccupied(){
+    void putAtEmptyPositionThrowsExceptionWhenPositionOccupied(){
         Board k = new Board();
         k.putAtPosition(p, piece);
        assertThrows(IllegalArgumentException.class, ()-> {k.putAtEmptyPosition(p, piece);});
@@ -109,7 +109,7 @@ public class BoardTest {
      *Tests if altering the list in anyway will change the state of the board.
      */
     @Test
-    public void getAllPiecesReturnsShallowCopyOfInternalList(){
+    void getAllPiecesReturnsShallowCopyOfInternalList(){
         Board k = new Board();
         k.setupNewGame();
         k.getAllPieces().remove(5);
@@ -120,7 +120,7 @@ public class BoardTest {
     }
 
     @Test
-    public void modificationsOfDifferentBoardsAreIndependent(){
+    void modificationsOfDifferentBoardsAreIndependent(){
 
         Board k = new Board(pieceList);
         Board h = new Board();

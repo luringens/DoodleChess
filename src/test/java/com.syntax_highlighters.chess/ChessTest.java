@@ -1,4 +1,4 @@
-package syntax_highlighters.chess;
+package com.syntax_highlighters.chess;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
  *
  * If this test fails, we are all in big trouble.
  */
-public class ChessTest {
+class ChessTest {
 
     @Test
-    public void junitIsSetUpCorrectly() {
+    void junitIsSetUpCorrectly() {
         Assertions.assertEquals(1, 1);
     }
 }

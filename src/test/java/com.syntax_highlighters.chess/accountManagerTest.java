@@ -1,4 +1,5 @@
-package syntax_highlighters.chess;
+package com.syntax_highlighters.chess;
+
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
 import org.junit.jupiter.api.Test;
@@ -7,14 +8,13 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests concerning the behavior of the AccountManager class.
  */
-public class accountManagerTest {
+class accountManagerTest {
 
     @Test
-    public void loadingSavedFileGivesCorrectNumberOfAccountsInAccountManager(){
+    void loadingSavedFileGivesCorrectNumberOfAccountsInAccountManager(){
         AccountManager am = new AccountManager();
 
-
-        for(int i =1; i<=4; i++){
+        for(int i =1; i<=4; i++) {
             am.addAccount(new Account("a"+i));
         }
 
@@ -24,10 +24,5 @@ public class accountManagerTest {
         am2.load("accounts.txt");
 
         assertEquals(4, am2.accountSize());
-
-
-
-
     }
-
 }

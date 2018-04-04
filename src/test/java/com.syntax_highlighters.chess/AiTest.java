@@ -1,4 +1,4 @@
-package syntax_highlighters.chess;
+package com.syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.*;
 import com.syntax_highlighters.chess.entities.*;
@@ -60,7 +60,7 @@ class AiTest {
      * @param ai The AI to measure.
      * @return The number of millseconds spent.
      */
-    long speedTest(IAiPlayer ai) {
+    private long speedTest(IAiPlayer ai) {
         Board board = new Board();
         board.setupNewGame();
 

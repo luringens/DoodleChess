@@ -1,25 +1,19 @@
-package syntax_highlighters.chess;
+package com.syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.*;
 import org.junit.jupiter.api.Test;
-import com.syntax_highlighters.chess.Move;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests designed to show that moves which should clearly be illegal are illegal.
  */
-public class MoveLegalityTest {
+class MoveLegalityTest {
 
     @Test
-    public void HorseCannotMoveThreeStepsInStraightLine() {
+    void HorseCannotMoveThreeStepsInStraightLine() {
         Board board = new Board();
 
         Position pos = new Position(3, 3);
@@ -36,7 +30,7 @@ public class MoveLegalityTest {
     }
 
     @Test
-    public void WhitePawnCannotMoveBackwards() {
+    void WhitePawnCannotMoveBackwards() {
         Board board = new Board();
 
         Position pos = new Position(3, 3);
@@ -50,7 +44,7 @@ public class MoveLegalityTest {
     }
 
     @Test
-    public void BlackPawnCannotMoveBackwards() {
+    void BlackPawnCannotMoveBackwards() {
         Board board = new Board();
 
         Position pos = new Position(3, 3);
@@ -65,7 +59,7 @@ public class MoveLegalityTest {
     }
 
     @Test
-    public void PawnCannotAttackEmptySquare() {
+    void PawnCannotAttackEmptySquare() {
         Board board = new Board();
 
         Position pos = new Position(3, 3);
@@ -80,7 +74,7 @@ public class MoveLegalityTest {
     }
 
     @Test
-    public void PieceCannotAttackAlly() {
+    void PieceCannotAttackAlly() {
         Board board = new Board();
 
         Position AtkPos = new Position(3, 3);

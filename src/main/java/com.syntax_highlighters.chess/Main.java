@@ -1,4 +1,4 @@
-package com.syntax_highlighters.java;
+package com.syntax_highlighters.chess;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
