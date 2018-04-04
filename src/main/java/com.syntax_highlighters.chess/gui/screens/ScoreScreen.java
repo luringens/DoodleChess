@@ -21,11 +21,11 @@ import java.util.List;
  * data.
  */
 public class ScoreScreen extends AbstractScreen {
-    private Text title;
+    private final Text title;
 
-    private Stage stage;
-    private Table scoreList;
-    private Button mainMenuButton;
+    private final Stage stage;
+    private final Table scoreList;
+    private final Button mainMenuButton;
 
     public ScoreScreen(ChessGame game) {
         super(game);

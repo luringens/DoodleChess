@@ -29,29 +29,29 @@ import java.util.ArrayList;
  */
 public class SetupScreen extends AbstractScreen {
 
-    private Stage stage;
+    private final Stage stage;
 
-    private Text title;
-    private Text white;
-    private Text black;
-    private Text playerNote;
+    private final Text title;
+    private final Text white;
+    private final Text black;
+    private final Text playerNote;
 
     private AiDifficulty player1Difficulty;
     private AiDifficulty player2Difficulty;
-    private AssetManager assetManager;
+    private final AssetManager assetManager;
 
     private SelectBox player1Title;
     private SelectBox player2Title;
 
-    private ArrayList<Button> player1Buttons = new ArrayList<>();
-    private ArrayList<Button> player2Buttons = new ArrayList<>();
+    private final ArrayList<Button> player1Buttons = new ArrayList<>();
+    private final ArrayList<Button> player2Buttons = new ArrayList<>();
 
-    private Button playButton;
-    private Button mainMenu;
-    private Button createAccount;
+    private final Button playButton;
+    private final Button mainMenu;
+    private final Button createAccount;
 
-    float buttonWidth = 200;
-    float buttonHeight = 75;
+    final float buttonWidth = 200;
+    final float buttonHeight = 75;
 
     public SetupScreen(ChessGame game)
     {

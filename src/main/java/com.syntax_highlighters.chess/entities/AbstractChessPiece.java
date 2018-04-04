@@ -17,7 +17,7 @@ import java.util.List;
  * adequate at simply describing a piece of a given kind at a given position.
  */
 public abstract class AbstractChessPiece implements IChessPiece {
-    protected boolean isWhite;
+    protected final boolean isWhite;
     protected Position position;
     protected boolean hasMoved = false;
 

@@ -26,7 +26,7 @@ public class Board {
     private IChessPiece blackKing = null; // For caching purposes.
 
     // for performance
-    private int[][] positionsLookupTable = new int[BOARD_HEIGHT][BOARD_WIDTH];
+    private final int[][] positionsLookupTable = new int[BOARD_HEIGHT][BOARD_WIDTH];
 
     List<IChessPiece> pieces = new ArrayList<>();
 

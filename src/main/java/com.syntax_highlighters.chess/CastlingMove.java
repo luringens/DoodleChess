@@ -17,9 +17,9 @@ import com.syntax_highlighters.chess.entities.ChessPieceRook;
  * between the king and the rook.
  */
 public class CastlingMove extends Move {
-    private ChessPieceRook rook;
-    private Position rookOldPos;
-    private Position rookNewPos;
+    private final ChessPieceRook rook;
+    private final Position rookOldPos;
+    private final Position rookNewPos;
 
     /**
      * Construct a castling move between the given king and rook.

@@ -12,9 +12,9 @@ import com.syntax_highlighters.chess.gui.AssetLoader;
  * Abstract overlay class implementing common functionality between overlays.
  */
 public class AbstractOverlay extends Actor {
-    private Texture pixel;
-    private Texture overlay;
-    private Text title;
+    private final Texture pixel;
+    private final Texture overlay;
+    private final Text title;
 
     public AbstractOverlay(String titleText, AssetManager assetManager) {
         pixel = assetManager.get("pixel.png", Texture.class);

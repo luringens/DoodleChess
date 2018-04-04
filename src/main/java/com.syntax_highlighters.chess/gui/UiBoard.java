@@ -21,16 +21,16 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
  */
 public class UiBoard extends Actor {
 
-    private Texture tile;
-    private Texture tile_black;
+    private final Texture tile;
+    private final Texture tile_black;
     private Texture tile_highlight;
 
-    private BitmapFont segoeUi;
-    private Game game;
+    private final BitmapFont segoeUi;
+    private final Game game;
 
-    private AssetManager assetManager;
+    private final AssetManager assetManager;
 
-    private float LEGEND_OFFSET = 50;
+    private final float LEGEND_OFFSET = 50;
 
     private IChessPiece selectedPiece = null;
 

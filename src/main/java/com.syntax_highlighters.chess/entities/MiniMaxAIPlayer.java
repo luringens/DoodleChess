@@ -30,7 +30,7 @@ public class MiniMaxAIPlayer implements IAiPlayer {
     private static final int HARD_DEPTH = 5;
     private final boolean isWhite;
     private int diff;
-    private Random rand;
+    private final Random rand;
 
     /**
      * Create a minimaxing AI player with the given color and difficulty.

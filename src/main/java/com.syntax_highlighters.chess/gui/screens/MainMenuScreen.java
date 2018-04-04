@@ -17,11 +17,11 @@ import com.syntax_highlighters.chess.gui.actors.Button;
  */
 public class MainMenuScreen extends AbstractScreen {
 
-    private Stage stage;
-    private Image background;
+    private final Stage stage;
+    private final Image background;
 
-    private Button playButton;
-    private Button scoreButton;
+    private final Button playButton;
+    private final Button scoreButton;
 
     /**
      * Constructor.

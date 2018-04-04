@@ -11,7 +11,8 @@ import java.util.List;
  */
 public class Position {
 
-    private int x, y;
+    private final int x;
+    private final int y;
     
     /**
      * Constructor.

@@ -24,12 +24,12 @@ import com.syntax_highlighters.chess.gui.screens.SetupScreen;
  * unique.
  */
 public class AccountOverlay extends AbstractOverlay {
-    private Text usernameLabel;
-    private Text notice;
-    private Text error;
+    private final Text usernameLabel;
+    private final Text notice;
+    private final Text error;
 
-    private Button mainMenu;
-    private Button createAccount;
+    private final Button mainMenu;
+    private final Button createAccount;
 
     private TextField username;
 

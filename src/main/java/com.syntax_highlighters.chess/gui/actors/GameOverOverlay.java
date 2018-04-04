@@ -20,17 +20,17 @@ import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
  * either display it again or at least exit to main menu)
  */
 public class GameOverOverlay extends AbstractOverlay {
-    private Text white;
-    private Text player1Name;
-    private Text player1Wins;
-    private Text player1Losses;
+    private final Text white;
+    private final Text player1Name;
+    private final Text player1Wins;
+    private final Text player1Losses;
 
-    private Text black;
-    private Text player2Name;
-    private Text player2Wins;
-    private Text player2Losses;
+    private final Text black;
+    private final Text player2Name;
+    private final Text player2Wins;
+    private final Text player2Losses;
 
-    private Button mainMenuButton;
+    private final Button mainMenuButton;
 
     private ChessGame game;
 

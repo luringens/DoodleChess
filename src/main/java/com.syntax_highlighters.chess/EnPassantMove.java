@@ -15,7 +15,7 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
  */
 public class EnPassantMove extends Move {
     protected IChessPiece piece;
-    private IChessPiece passantTakesPiece;
+    private final IChessPiece passantTakesPiece;
 
     /**
      * Constructor.

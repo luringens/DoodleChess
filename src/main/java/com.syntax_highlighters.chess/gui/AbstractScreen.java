@@ -13,7 +13,7 @@ import com.syntax_highlighters.chess.ChessGame;
  * them.
  */
 public abstract class AbstractScreen implements Screen {
-    private ChessGame game;
+    private final ChessGame game;
 
     protected AbstractScreen(ChessGame game)
     {

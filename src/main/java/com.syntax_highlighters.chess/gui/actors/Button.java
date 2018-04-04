@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public class Button extends Actor {
     private int textureId;
-    private Text text;
+    private final Text text;
     private boolean selected = false;
 
     private static final int TEXTURE_COUNT = 20;

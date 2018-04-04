@@ -10,9 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class coordPieceTest {
 
-    private Position p = new Position(3,2);
-    private String notation = "a4";
-    private Position note = Position.fromChessNotation(notation);
+    private final Position p = new Position(3,2);
+    private final String notation = "a4";
+    private final Position note = Position.fromChessNotation(notation);
 
 
 

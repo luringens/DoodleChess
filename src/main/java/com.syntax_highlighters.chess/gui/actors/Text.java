@@ -10,7 +10,7 @@ import com.syntax_highlighters.chess.Board;
  * Text class for easier creation of the text in the game's font.
  */
 public class Text extends Actor {
-    private BitmapFont font;
+    private final BitmapFont font;
     private String text;
 
     public Text(BitmapFont font) {

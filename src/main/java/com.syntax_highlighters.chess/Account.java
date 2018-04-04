@@ -6,7 +6,7 @@ package com.syntax_highlighters.chess;
  * Stores: name of account, number of wins, number of losses.
  */
 public class Account {
-    private String name;
+    private final String name;
     private int wins;
     private int losses;
 

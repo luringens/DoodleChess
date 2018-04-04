@@ -14,7 +14,7 @@ import com.syntax_highlighters.chess.entities.*;
  * the game.
  */
 public class Game {
-    private Board board;
+    private final Board board;
     private IAiPlayer whiteAI = null;
     private IAiPlayer blackAI = null;
     private boolean nextPlayerWhite = true;

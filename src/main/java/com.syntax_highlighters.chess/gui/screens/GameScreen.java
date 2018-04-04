@@ -32,28 +32,28 @@ import java.util.concurrent.Semaphore;
 public class GameScreen extends AbstractScreen {
     private AssetManager assetManager;
 
-    private Game game;
-    private Stage stage;
-    private UiBoard board;
-    private Text turnText;
-    private Button giveUp;
+    private final Game game;
+    private final Stage stage;
+    private final UiBoard board;
+    private final Text turnText;
+    private final Button giveUp;
 
     private boolean waitingForAi = false;
     private boolean resizeFBO = false;
     private FrameBuffer gameBuffer;
 
     private boolean isGameOver = false;
-    private GameOverOverlay gameOverOverlay;
+    private final GameOverOverlay gameOverOverlay;
 
     private Thread aiThread;
-    private Semaphore aiLock = new Semaphore(1, true);
+    private final Semaphore aiLock = new Semaphore(1, true);
 
-    private Account player1;
-    private Account player2;
-    private AiDifficulty ai1;
-    private AiDifficulty ai2;
+    private final Account player1;
+    private final Account player2;
+    private final AiDifficulty ai1;
+    private final AiDifficulty ai2;
 
-    private ChessGame chessGame;
+    private final ChessGame chessGame;
 
     /**
      * Constructor.

@@ -19,10 +19,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * @see Board
  */
 class BoardTest {
-    private Board board = new Board ();
-    private Position p = new Position(3,2);
-    private IChessPiece piece = new ChessPieceKing(p,true);
-    private List<IChessPiece> pieceList = new ArrayList<>();
+    private final Board board = new Board ();
+    private final Position p = new Position(3,2);
+    private final IChessPiece piece = new ChessPieceKing(p,true);
+    private final List<IChessPiece> pieceList = new ArrayList<>();
 
 
     @Test
