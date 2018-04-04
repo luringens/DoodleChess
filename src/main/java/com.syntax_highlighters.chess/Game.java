@@ -18,8 +18,6 @@ public class Game {
     private IAiPlayer whiteAI = null;
     private IAiPlayer blackAI = null;
     private boolean nextPlayerWhite = true;
-    private List<Move> history;
-    private AccountManager accountManager = null;
 
     /**
      * Creates a new, blank game and sets up the board.
@@ -36,11 +34,8 @@ public class Game {
         }
 
         this.board = new Board();
-        this.history = new ArrayList<>();
         
         this.board.setupNewGame();
-
-        accountManager = new AccountManager();
     }
 
     /**

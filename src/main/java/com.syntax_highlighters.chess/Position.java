@@ -124,12 +124,11 @@ public class Position {
      * @return A list of this postion's neighbors
      */
     public List<Position> neighbors() {
-        return Arrays.asList(new Position[]{
+        return Arrays.asList(
                 north    (1), south    (1),
                 east     (1), west     (1),
                 northeast(1), northwest(1),
-                southeast(1), southwest(1)
-        });
+                southeast(1), southwest(1));
     }
 
     /**
@@ -158,8 +157,8 @@ public class Position {
         assert "abcdefgh".contains(""+file);
         assert "12345678".contains(""+rank);
         
-        int xPos = (int)(file - 'a' + 1);
-        int yPos = (int)(rank - '0');
+        int xPos = file - 'a' + 1;
+        int yPos = rank - '0';
         return new Position(xPos, yPos);
     }
 
