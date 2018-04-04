@@ -16,8 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
 
-import java.util.UUID;
-
 /**
  * Wrapper for LibGdx Game class
  */

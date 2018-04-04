@@ -2,7 +2,6 @@ package com.syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.*;
 import com.syntax_highlighters.chess.entities.*;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

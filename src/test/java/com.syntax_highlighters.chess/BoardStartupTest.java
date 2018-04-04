@@ -2,13 +2,10 @@ package com.syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Game;
-import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.*;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
-
-import javax.swing.*;
 
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.assertFalse;

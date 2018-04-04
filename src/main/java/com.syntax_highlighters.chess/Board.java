@@ -5,7 +5,6 @@ import com.syntax_highlighters.chess.entities.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Holds the current state of the board.

@@ -8,7 +8,6 @@ import com.syntax_highlighters.chess.Position;
 
 import java.util.stream.Collectors;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * King chess piece.
