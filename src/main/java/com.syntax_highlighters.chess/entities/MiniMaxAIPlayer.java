@@ -98,16 +98,6 @@ public class MiniMaxAIPlayer implements IAiPlayer {
                 .flatMap(p -> p.allPossibleMoves(board).stream())
                 .collect(Collectors.toList());
 
-        // Helper class since Java doesn't have tuples.
-        class result {
-            private result(Move m, int s) {
-                move = m;
-                score = s;
-            }
-            Move move;
-            private int score;
-        }
-
         // Parallel processing.
         Optional<result> optionalMove = moves.parallelStream().map(move -> {
             Board boardCopy = board.copy();
@@ -203,4 +193,14 @@ public class MiniMaxAIPlayer implements IAiPlayer {
         }
         return score;
     }
+}
+
+// Helper class since Java doesn't have tuples.
+class result {
+    result(Move m, int s) {
+        move = m;
+        score = s;
+    }
+    Move move;
+    int score;
 }
