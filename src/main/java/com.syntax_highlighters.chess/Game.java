@@ -114,7 +114,7 @@ public class Game {
      * Get the piece currently occupying position p
      *
      * @param p The position to retrieve piece at
-     * @return null if position was occupied, the piece occupying it otherwise
+     * @return null if position is unoccupied, the piece occupying it otherwise
      */
     public IChessPiece getPieceAtPosition(Position p) {
         return this.board.getAtPosition(p);
