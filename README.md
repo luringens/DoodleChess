@@ -20,12 +20,14 @@ $ git clone https://gitlab.uib.no/inf112-v2018/gruppe-6.git chess-syntax-highlig
 $ cd chess-syntax-highlighters
 ```
 
+Note: if you are using linux or mac, then you might have to do `chmod -x gradlew` first in order to be able to run the gradlew script
+
 ### Running
 
 We can play the game running the following command:
 
 ```
-$ gradlew run
+$ ./gradlew run
 ```
 
 There is now a tar and zip file available in `build/distributions/` that contains a bin folder with a run file for running the game.
@@ -37,7 +39,7 @@ Note: This will not run the tests
 A fat-jar is a jar file with all the dependencies aswell
 
 ```
-$ gradlew fatjar
+$ ./gradlew fatjar
 ```
 
 the jar should now be available in `build/libs/DoodleChess-fat.jar` and can be run using `java -jar build/libs/DoodleChess-fat.jar`
@@ -47,13 +49,13 @@ Note: This will not run the tests
 ### Running tests
 
 ```
-$ gradlew test
+$ ./gradlew test
 ```
 
 ### Building javadoc
 
 ```
-$ gradlew javadoc
+$ ./gradlew javadoc
 ```
 
 The javadoc should now be available in `docs/api`
@@ -65,7 +67,7 @@ The javadoc should now be available in `docs/api`
 First run:
 
 ```
-$ gradlew idea
+$ ./gradlew idea
 ```
 
 then open the .ipr file and you should be good to go
