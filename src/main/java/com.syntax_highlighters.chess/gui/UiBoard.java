@@ -60,8 +60,7 @@ public class UiBoard extends Actor {
                     return false;
                 }
 
-                IChessPiece clicked = game.getPieceAtPosition(new Position(px, py));
-                selectedPiece = clicked;
+                selectedPiece = game.getPieceAtPosition(new Position(px, py));;
                 return true;
             }
 
@@ -77,8 +76,7 @@ public class UiBoard extends Actor {
                     return;
                 }
 
-                IChessPiece clicked = game.getPieceAtPosition(new Position(px, py));
-                selectedPiece = clicked;
+                selectedPiece = game.getPieceAtPosition(new Position(px, py));;
             }
         });
     }
@@ -158,10 +156,9 @@ public class UiBoard extends Actor {
             float y = ry * tileHeight + 5 + getY() + LEGEND_OFFSET;
             float aspect = tex.getWidth() / (float) tex.getHeight();
 
-            float height = tileHeight;
             float width = tileWidth * aspect;
 
-            batch.draw(tex, x, y, width, height);
+            batch.draw(tex, x, y, width, tileHeight);
         }
     }
 

@@ -19,6 +19,7 @@ import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.Text;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Screen allowing for setup options of the game of chess to be played.
@@ -40,8 +41,8 @@ public class SetupScreen extends AbstractScreen {
     private AiDifficulty player2Difficulty;
     private final AssetManager assetManager;
 
-    private SelectBox player1Title;
-    private SelectBox player2Title;
+    private SelectBox<String> player1Title;
+    private SelectBox<String> player2Title;
 
     private final ArrayList<Button> player1Buttons = new ArrayList<>();
     private final ArrayList<Button> player2Buttons = new ArrayList<>();
@@ -91,8 +92,8 @@ public class SetupScreen extends AbstractScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
 
-                String selected1 = (String)player1Title.getSelected();
-                String selected2 = (String)player2Title.getSelected();
+                String selected1 = player1Title.getSelected();
+                String selected2 = player2Title.getSelected();
 
                 // TODO: Get account
                 if(selected1 == null || selected1.isEmpty() || selected2 == null || selected2.isEmpty()
@@ -150,10 +151,10 @@ public class SetupScreen extends AbstractScreen {
         {
             accounts.add(acc.getName());
         }
-        player1Title.setItems(accounts.toArray());
+        player1Title.setItems(accounts.stream().map(String::toString).toArray(String[]::new));
         accounts.remove("Player 1");
         accounts.add(0,"Player 2");
-        player2Title.setItems(accounts.toArray());
+        player2Title.setItems(accounts.stream().map(String::toString).toArray(String[]::new));
 
     }
 
@@ -181,7 +182,7 @@ public class SetupScreen extends AbstractScreen {
 
     private void addDifficultyList(ChessGame game, int player)
     {
-        SelectBox box = new SelectBox(game.skin);
+        SelectBox<String> box = new SelectBox<>(game.skin);
 
         ArrayList<String> accounts = new ArrayList<>();
         accounts.add("Player" + (player == -1 ? "1" : "2"));
@@ -190,7 +191,7 @@ public class SetupScreen extends AbstractScreen {
             accounts.add(acc.getName());
         }
 
-        box.setItems(accounts.toArray());
+        box.setItems(accounts.stream().map(String::toString).toArray(String[]::new));
         box.setSelected("Player" + (player == -1 ? "1" : "2"));
         box.setAlignment(Align.center);
         box.setSize(200,  45);
@@ -202,7 +203,7 @@ public class SetupScreen extends AbstractScreen {
 
         for(int i = 0; i < 4; ++i)
         {
-            String text = null;
+            String text;
             switch(i)
             {
                 case 0: text = "No Ai"; break;
