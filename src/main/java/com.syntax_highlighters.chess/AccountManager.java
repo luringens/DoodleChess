@@ -12,7 +12,7 @@ import java.util.List;
  * them, such as fetching a given account or return a sorted list of accounts.
  */
 public class AccountManager {
-    List<Account> myAccounts = new ArrayList<Account>();
+    List<Account> myAccounts = new ArrayList<>();
     public int accountSize(){
         return myAccounts.size();
     }
@@ -82,7 +82,7 @@ public class AccountManager {
         myAccounts = sort(myAccounts);
         if(myAccounts.size() <= n)
             return(myAccounts);
-        List<Account> returnAccounts = new ArrayList<Account>();
+        List<Account> returnAccounts = new ArrayList<>();
         for(int i=0; i<n; i++)
             returnAccounts.add(myAccounts.get(i));
         return returnAccounts;
@@ -110,21 +110,25 @@ public class AccountManager {
      * @param filename The name of the file to save to
      */
     public void save(String filename){
-        String filetext = "";
+        StringBuilder filetext = new StringBuilder();
         for(Account a: myAccounts){
-            filetext += a.getName() + "," + String.valueOf(a.getWinCount()) + "," + String.valueOf(a.getLossCount()) + "\n";
+            filetext.append(a.getName())
+                    .append(",")
+                    .append(String.valueOf(a.getWinCount()))
+                    .append(",")
+                    .append(String.valueOf(a.getLossCount()))
+                    .append("\n");
         }
         try {
             if(Files.exists(Paths.get(filename)))
-                Files.write(Paths.get(filename), filetext.getBytes(), StandardOpenOption.WRITE);
+                Files.write(Paths.get(filename), filetext.toString().getBytes(), StandardOpenOption.WRITE);
             else {
                 Files.createFile(Paths.get(filename));
-                Files.write(Paths.get(filename), filetext.getBytes(), StandardOpenOption.WRITE);
+                Files.write(Paths.get(filename), filetext.toString().getBytes(), StandardOpenOption.WRITE);
             }
 
         }catch (IOException e) {
-            System.out.println("You fool, ");
-            System.out.println(e);
+            System.out.println("Failed to save statistics: " + e.getMessage());
         }
     }
 

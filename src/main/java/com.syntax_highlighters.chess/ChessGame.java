@@ -73,16 +73,6 @@ public class ChessGame extends Game {
 	}
 
     /**
-     * Resize event
-     * @param width new window width
-     * @param height new window height
-     */
-	@Override
-	public void resize (int width, int height) {
-		super.resize(width, height);
-	}
-
-    /**
      * Game's main rendering function
      * This will render the paper background first and then the current screen.
      */

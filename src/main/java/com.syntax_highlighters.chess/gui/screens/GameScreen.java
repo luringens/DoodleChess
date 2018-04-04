@@ -28,7 +28,7 @@ import java.util.concurrent.Semaphore;
  * Game main screen.
  */
 public class GameScreen extends AbstractScreen {
-    private AssetManager assetManager;
+    private final AssetManager assetManager;
 
     private final Game game;
     private final Stage stage;
@@ -163,26 +163,25 @@ public class GameScreen extends AbstractScreen {
     {
         isGameOver = true;
 
-        if(winner == 1 )
-        {
-            if(player1 != null)
-                player1.win();
-            if(player2 != null)
-                player2.loss();
-        }
-        else if(winner == -1)
-        {
-            if(player1 != null)
-                player1.loss();
-            if(player2 != null)
-                player2.win();
-        }
-        else
-        {
-            if(player1 != null)
-                player1.win();
-            if(player2 != null)
-                player2.win();
+        switch (winner) {
+            case 1:
+                if (player1 != null)
+                    player1.win();
+                if (player2 != null)
+                    player2.loss();
+                break;
+            case -1:
+                if (player1 != null)
+                    player1.loss();
+                if (player2 != null)
+                    player2.win();
+                break;
+            default:
+                if (player1 != null)
+                    player1.win();
+                if (player2 != null)
+                    player2.win();
+                break;
         }
         chessGame.getAccountManager().save(AssetLoader.getAccountPath());
 

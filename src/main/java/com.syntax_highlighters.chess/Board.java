@@ -174,10 +174,7 @@ public class Board {
      */
     public boolean isEnemy(IChessPiece piece, Position pos) {
         IChessPiece pieceAtPos = getAtPosition(pos);
-        if(pieceAtPos != null)
-            return pieceAtPos.isWhite() != piece.isWhite();
-        else
-            return false;
+        return pieceAtPos != null && pieceAtPos.isWhite() != piece.isWhite();
     }
 
     /**
@@ -188,10 +185,7 @@ public class Board {
      */
     public boolean isFriendly(IChessPiece piece, Position pos) {
         IChessPiece pieceAtPos = getAtPosition(pos);
-        if(pieceAtPos != null)
-            return pieceAtPos.isWhite() == piece.isWhite();
-        else
-            return false;
+        return pieceAtPos != null && pieceAtPos.isWhite() == piece.isWhite();
     }
 
     /**
@@ -233,7 +227,7 @@ public class Board {
      */
     @Deprecated
     private void performCastling(IChessPiece piece, Position toPosition){
-        Position rookpos = null, oldRookpos = null;
+        Position rookpos, oldRookpos;
         if (toPosition.getX() < 5) {
             oldRookpos = piece.getPosition().west(4);
             rookpos = toPosition.east(1);

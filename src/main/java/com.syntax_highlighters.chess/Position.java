@@ -187,6 +187,6 @@ public class Position {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(new Integer(this.x), new Integer(this.y));
+        return Objects.hash(this.x, this.y);
     }
 }

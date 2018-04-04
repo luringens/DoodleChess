@@ -100,7 +100,7 @@ class BoardTest {
     void putAtEmptyPositionThrowsExceptionWhenPositionOccupied(){
         Board k = new Board();
         k.putAtPosition(p, piece);
-       assertThrows(IllegalArgumentException.class, ()-> {k.putAtEmptyPosition(p, piece);});
+       assertThrows(IllegalArgumentException.class, ()-> k.putAtEmptyPosition(p, piece));
     }
     
     /*

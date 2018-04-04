@@ -1,6 +1,5 @@
 package com.syntax_highlighters.chess;
 
-import com.syntax_highlighters.chess.*;
 import com.syntax_highlighters.chess.entities.*;
 
 import org.junit.jupiter.api.Test;
@@ -97,7 +96,7 @@ class ChessRulesTest {
         twoForward = forward(whitePawn, 2);
         noAvailableMoveLeadsTo(twoForward, whitePawn);
     }
-    
+
     @Test
     void blackPawnCannotMoveTwoStepsTwice() {
         setUp();
@@ -105,7 +104,7 @@ class ChessRulesTest {
         // move forward two steps
         Position twoForward = forward(blackPawn, 2);
         board.movePiece(blackPawn, twoForward);
-        
+
         // get new "two forward" position
         twoForward = forward(blackPawn, 2);
         noAvailableMoveLeadsTo(twoForward, blackPawn);

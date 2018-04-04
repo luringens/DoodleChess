@@ -1,7 +1,6 @@
 package com.syntax_highlighters.chess;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import com.syntax_highlighters.chess.entities.*;
@@ -175,27 +174,27 @@ public class Game {
      */
     public boolean insufficientMaterial() {
         List<IChessPiece> pieces = board.getAllPieces();
-        
+
         List<IChessPiece> kings = pieces.stream()
-            .filter(p -> p instanceof ChessPieceKing)
-            .collect(Collectors.toList());
-        
+                .filter(p -> p instanceof ChessPieceKing)
+                .collect(Collectors.toList());
+
         List<IChessPiece> knights = pieces.stream()
-            .filter(p -> p instanceof ChessPieceKnight)
-            .collect(Collectors.toList());
+                .filter(p -> p instanceof ChessPieceKnight)
+                .collect(Collectors.toList());
 
         List<IChessPiece> bishops = pieces.stream()
-            .filter(p -> p instanceof ChessPieceBishop)
-            .collect(Collectors.toList());
+                .filter(p -> p instanceof ChessPieceBishop)
+                .collect(Collectors.toList());
 
-        if (kings.size() < 2) return true; // obviously
-        
-        return pieces.size() == kings.size() ||
-               pieces.size() == 3 && bishops.size() == 1 ||
-               pieces.size() == 3 && knights.size() == 1 ||
-               pieces.size() == 4 && bishops.size() == 2 &&
-               sameColoredSquare(bishops.get(0).getPosition(),
-                       bishops.get(1).getPosition());
+        // obviously
+        return kings.size() < 2
+            || pieces.size() == kings.size()
+            || pieces.size() == 3 && bishops.size() == 1
+            || pieces.size() == 3 && knights.size() == 1
+            || pieces.size() == 4 && bishops.size() == 2
+                && sameColoredSquare(bishops.get(0).getPosition(), bishops.get(1).getPosition());
+
     }
 
     /**

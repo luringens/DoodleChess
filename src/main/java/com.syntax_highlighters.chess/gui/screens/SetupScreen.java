@@ -19,7 +19,6 @@ import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.Text;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 /**
  * Screen allowing for setup options of the game of chess to be played.
