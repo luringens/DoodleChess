@@ -55,7 +55,7 @@ class AiTest {
         final long allowedTime = 3000;
         IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Hard);
         long time = speedTest(ai);
-        assertTrue("The medium AI is too slow (" + time + " >= " + allowedTime + ")",
+        assertTrue("The hard AI is too slow (" + time + " >= " + allowedTime + ")",
                 time < allowedTime);
     }
 

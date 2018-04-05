@@ -46,9 +46,9 @@ public class CastlingMove extends Move {
     @Override
     public void DoMove(Board b) {
         if (hasDoneMove) throw new RuntimeException("Move has already been done.");
-        hasDoneMove = true;
         b.putAtPosition(newPos, getPiece(b));
         b.putAtPosition(rookNewPos, b.getAtPosition(rookOldPos));
+        hasDoneMove = true;
     }
 
     /**
@@ -57,8 +57,8 @@ public class CastlingMove extends Move {
     @Override
     public void UndoMove(Board b) {
         if (!hasDoneMove) throw new RuntimeException("Can not undo a move that has not been done");
-        hasDoneMove = false;
         b.putAtPosition(oldPos, getPiece(b));
         b.putAtPosition(rookOldPos, b.getAtPosition(rookNewPos));
+        hasDoneMove = false;
     }
 }
