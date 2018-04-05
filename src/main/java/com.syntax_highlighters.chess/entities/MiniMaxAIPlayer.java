@@ -131,8 +131,11 @@ public class MiniMaxAIPlayer implements IAiPlayer {
      */
     private int MiniMaxScore(int depth, Board board, boolean isWhite, boolean isMaximizing, int alpha, int beta) {
         if (depth <= 0) return evaluateScore(board, isWhite);
+
+        boolean lookingAtWhite = isWhite == isMaximizing;
+
         List<Move> moves = board.getAllPieces().stream()
-                .filter(p -> p.isWhite() == (isWhite == isMaximizing))
+                .filter(p -> p.isWhite() == lookingAtWhite)
                 .flatMap(p -> p.allPossibleMoves(board).stream())
                 .collect(Collectors.toList());
 
@@ -144,8 +147,8 @@ public class MiniMaxAIPlayer implements IAiPlayer {
                 // Make a mistake if difficulty is set to do so.
                 if (rand.nextDouble() < chanceOfMistake) continue;
 
-                // Check if the move takes the king.
-                if (move.getPosition() == board.getKing(isWhite)) return 10000;
+                // Check if the move puts the opponent in checkmate.
+                if (board.checkMate(lookingAtWhite)) return 100000;
 
                 move.DoMove(board);
                 int score = MiniMaxScore(depth - 1, board, isWhite, false, alpha, beta);
@@ -162,8 +165,8 @@ public class MiniMaxAIPlayer implements IAiPlayer {
                 // Make a mistake if difficulty is set to do so.
                 if (rand.nextDouble() < chanceOfMistake) continue;
 
-                // Check if the move takes the king.
-                if (move.getPosition() == board.getKing(!isWhite)) return -10000;
+                // Check if the move puts the opponent in checkmate.
+                if (board.checkMate(lookingAtWhite)) return -100000;
 
                 move.DoMove(board);
                 int score = MiniMaxScore(depth - 1, board, isWhite, true, alpha, beta);
