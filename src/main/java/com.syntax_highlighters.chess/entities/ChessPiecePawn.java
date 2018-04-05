@@ -70,7 +70,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
         
         // check if one step forward can be performed
         if (board.isOnBoard(f1) && !board.isOccupied(f1)) {
-            possibleMoves.add(new Move(pos, f1, this));
+            possibleMoves.add(new Move(pos, f1, board));
             
             // two steps forward
             Position f2 = this.forward(2);
@@ -78,7 +78,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
             // if one step forward can be performed, check if two steps forward
             // can be performed
             if (!this.hasMoved() && board.isOnBoard(f2) && !board.isOccupied(f2)) {
-                possibleMoves.add(new Move(pos, f2, this));
+                possibleMoves.add(new Move(pos, f2, board));
             }
         }
 
@@ -115,7 +115,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
             
             if (lastMove == null) return; // pawn can't possibly have just moved there
             if (pieceAtPos == null) return; // there is no piece at that position, enemy or friend
-            if (lastMove.getPiece() != pieceAtPos) return; // the piece wasn't the last moved piece
+            if (lastMove.getPiece(board) != pieceAtPos) return; // the piece wasn't the last moved piece
             if (!(pieceAtPos instanceof ChessPiecePawn)) return; // piece isn't pawn
             
             // check that the last move was a double step
@@ -125,10 +125,10 @@ public class ChessPiecePawn extends AbstractChessPiece {
             
             // en passant can be performed
             if (isWhite()) {
-                possibleMoves.add(new EnPassantMove(this.getPosition(), pos.north(1), this, pieceAtPos));
+                possibleMoves.add(new EnPassantMove(this.getPosition(), pos.north(1), board, pieceAtPos));
             }
             else {
-                possibleMoves.add(new EnPassantMove(this.getPosition(), pos.south(1), this, pieceAtPos));
+                possibleMoves.add(new EnPassantMove(this.getPosition(), pos.south(1), board, pieceAtPos));
             }
         }
     }
@@ -144,7 +144,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
     private void takeEnemiesMove (Board board, ArrayList<Move> possibleMoves, Position pos) {
         if (board.isOnBoard(pos)) {
             if (board.isEnemy(this, pos)) {
-                possibleMoves.add(new Move(this.getPosition(), pos, this));
+                possibleMoves.add(new Move(this.getPosition(), pos, board));
             }
         }
     }

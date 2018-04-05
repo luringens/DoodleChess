@@ -62,7 +62,7 @@ public class ChessPieceKing extends AbstractChessPiece {
         List<Move> possibleMoves = getPosition().neighbors().stream()
             .filter(p -> board.isOnBoard(p) &&
                     !board.isFriendly(this, p))
-            .map(p -> new Move(this.getPosition(), p, this))
+            .map(p -> new Move(this.getPosition(), p, board))
             .collect(Collectors.toList());
 
         // handle castling

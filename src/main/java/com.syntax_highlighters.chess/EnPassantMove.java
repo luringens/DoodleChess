@@ -14,19 +14,20 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
  * two steps forward.
  */
 public class EnPassantMove extends Move {
-    private final IChessPiece passantTakesPiece;
+    private final Position passantTakesPos;
+    private IChessPiece passantTakesPiece = null;
 
     /**
      * Constructor.
      *
      * @param oldPos The old position of the pawn
      * @param newPos The new position of the pawn
-     * @param piece The pawn that was moved
+     * @param board The board to work on
      * @param takes The pawn this pawn captures
      */
-    public EnPassantMove(Position oldPos, Position newPos, IChessPiece piece, IChessPiece takes) {
-        super(oldPos, newPos, piece);
-        this.passantTakesPiece = takes;
+    public EnPassantMove(Position oldPos, Position newPos, Board board, IChessPiece takes) {
+        super(oldPos, newPos, board);
+        this.passantTakesPos = takes.getPosition();
     }
 
     /**
@@ -35,6 +36,7 @@ public class EnPassantMove extends Move {
     @Override
     public void DoMove(Board b) {
         super.DoMove(b);
+        passantTakesPiece = b.getAtPosition(passantTakesPos);
         b.removePiece(passantTakesPiece);
     }
 
@@ -44,6 +46,6 @@ public class EnPassantMove extends Move {
     @Override
     public void UndoMove(Board b) {
         super.UndoMove(b);
-        b.putAtPosition(passantTakesPiece.getPosition(), passantTakesPiece);
+        b.putAtPosition(passantTakesPos, passantTakesPiece);
     }
 }

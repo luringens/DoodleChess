@@ -14,15 +14,21 @@ import com.syntax_highlighters.chess.entities.ChessPieceQueen;
  * Can perform a move without any validity checks. Stores enough information
  * about the previous board state to reset it, provided that no further state
  * changes to the board have happened since the move was applied.
+ *
+ * IMPORTANT CONCURRENCY NOTE:
+ * Move attempts to not save any references to pieces, and as such, a move
+ * generated on one board can be used on any other board, provided the board is
+ * in the same state.
+ * This is no longer the case once the move has been used! This is due to how the
+ * move may store a reference to taken pieces in order to restore them.
  */
 public class Move {
     boolean hasDoneMove = false;
-    protected IChessPiece piece;
     Position oldPos;
     Position newPos;
     private boolean hadMoved;
     private IChessPiece tookPiece = null;
-    private IChessPiece pawnPromotion = null;
+    private boolean wasPawn = false;
 
     /**
      * For inheritance only!
@@ -35,16 +41,13 @@ public class Move {
      *
      * @param oldPos The old position of the piece
      * @param newPos The new position of the piece
-     * @param piece The piece that was moved
+     * @param board The board to get piece info from
      */
-    public Move(Position oldPos, Position newPos, IChessPiece piece) {
+    public Move(Position oldPos, Position newPos, Board board) {
         this.oldPos = oldPos;
         this.newPos = newPos;
-        this.piece = piece;
+        IChessPiece piece = this.getPiece(board);
         this.hadMoved = piece.hasMoved();
-        if (piece instanceof ChessPiecePawn && (newPos.getY() == 1 || newPos.getY() == 8)) {
-            this.pawnPromotion = new ChessPieceQueen(newPos, piece.isWhite());
-        }
     }
 
     /**
@@ -68,19 +71,22 @@ public class Move {
     /**
      * Get the piece that was moved.
      *
+     * @param board The board to get the piece from
      * @return The piece
      */
-    public IChessPiece getPiece() {
-        return this.piece;
+    public IChessPiece getPiece(Board board) {
+        Position p = hasDoneMove ? newPos : oldPos;
+        return board.getAtPosition(p);
     }
 
     /**
      * Get the color of the moved piece.
      *
+     * @param board The board to get the piece from
      * @return Whether the moved piece was white
      */
-    public boolean isWhite() {
-        return this.piece.isWhite();
+    public boolean isWhite(Board board) {
+        return this.getPiece(board).isWhite();
     }
 
     /**
@@ -93,14 +99,17 @@ public class Move {
      */
     public void DoMove(Board b) {
         if (hasDoneMove) throw new RuntimeException("Move has already been done.");
-        hasDoneMove = true;
         tookPiece = b.getAtPosition(newPos);
+
+        IChessPiece piece = this.getPiece(b);
         piece.setHasMoved(true);
         b.putAtPosition(newPos, piece);
-        if (pawnPromotion != null) {
+        if (piece instanceof ChessPiecePawn && (newPos.getY() == 1 || newPos.getY() == 8)) {
+            this.wasPawn = true;
             b.removePiece(piece);
-            b.putAtPosition(newPos, pawnPromotion);
+            b.putAtPosition(newPos, new ChessPieceQueen(newPos, piece.isWhite()));
         }
+        hasDoneMove = true;
     }
 
     /**
@@ -113,9 +122,10 @@ public class Move {
      */
     public void UndoMove(Board b) {
         if (!hasDoneMove) throw new RuntimeException("Can not undo a move that has not been done");
-        hasDoneMove = false;
-        if (pawnPromotion != null) {
-            b.removePiece(pawnPromotion);
+
+        IChessPiece piece = this.getPiece(b);
+        if (this.wasPawn) {
+            b.removePiece(getPiece(b));
             b.putAtPosition(newPos, piece);
         }
         b.putAtPosition(oldPos, piece);
@@ -123,5 +133,7 @@ public class Move {
         if (tookPiece != null) {
             b.putAtPosition(tookPiece.getPosition(), tookPiece);
         }
+
+        hasDoneMove = false;
     }
 }

@@ -173,10 +173,10 @@ public abstract class AbstractChessPiece implements IChessPiece {
         while (board.isOnBoard(nextPos)) {
             if (board.isFriendly(this, nextPos)) break;
             if (board.isEnemy(this, nextPos)) {
-                moves.add(new Move(this.position, nextPos, this));
+                moves.add(new Move(this.position, nextPos, board));
                 break;
             }
-            moves.add(new Move(this.position, nextPos, this));
+            moves.add(new Move(this.position, nextPos, board));
             nextPos = new Position(nextPos.getX() + dx, nextPos.getY() + dy);
         }
 

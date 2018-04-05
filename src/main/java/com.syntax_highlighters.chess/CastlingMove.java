@@ -17,7 +17,6 @@ import com.syntax_highlighters.chess.entities.ChessPieceRook;
  * between the king and the rook.
  */
 public class CastlingMove extends Move {
-    private final ChessPieceRook rook;
     private final Position rookOldPos;
     private final Position rookNewPos;
 
@@ -30,8 +29,6 @@ public class CastlingMove extends Move {
     public CastlingMove(ChessPieceKing king, ChessPieceRook rook) {
         this.oldPos = king.getPosition();
         this.rookOldPos = rook.getPosition();
-        this.rook = rook;
-        this.piece = king;
 
         if (rook.getPosition().getX() < king.getPosition().getX()) {
             this.newPos = king.getPosition().west(2);
@@ -50,8 +47,8 @@ public class CastlingMove extends Move {
     public void DoMove(Board b) {
         if (hasDoneMove) throw new RuntimeException("Move has already been done.");
         hasDoneMove = true;
-        b.putAtPosition(newPos, piece);
-        b.putAtPosition(rookNewPos, rook);
+        b.putAtPosition(newPos, getPiece(b));
+        b.putAtPosition(rookNewPos, b.getAtPosition(rookOldPos));
     }
 
     /**
@@ -61,7 +58,7 @@ public class CastlingMove extends Move {
     public void UndoMove(Board b) {
         if (!hasDoneMove) throw new RuntimeException("Can not undo a move that has not been done");
         hasDoneMove = false;
-        b.putAtPosition(oldPos, piece);
-        b.putAtPosition(rookOldPos, rook);
+        b.putAtPosition(oldPos, getPiece(b));
+        b.putAtPosition(rookOldPos, b.getAtPosition(rookNewPos));
     }
 }
