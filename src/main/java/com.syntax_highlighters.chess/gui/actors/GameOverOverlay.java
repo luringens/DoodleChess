@@ -31,6 +31,7 @@ public class GameOverOverlay extends AbstractOverlay {
     private final Text player2Losses;
 
     private final Button mainMenuButton;
+    private final Button dismissOverlayButton;
 
     private ChessGame game;
 
@@ -79,6 +80,16 @@ public class GameOverOverlay extends AbstractOverlay {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 game.setScreen(new MainMenuScreen(game));
+            }
+        });
+
+        dismissOverlayButton = new Button("Dismiss", assetManager);
+        dismissOverlayButton.setSize(200, 75);
+        dismissOverlayButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                GameOverOverlay.this.setVisible(false);
             }
         });
     }
@@ -148,12 +159,14 @@ public class GameOverOverlay extends AbstractOverlay {
         super.setStage(stage);
         if(stage == null) return;
         stage.addActor(mainMenuButton);
+        stage.addActor(dismissOverlayButton);
     }
 
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         mainMenuButton.setVisible(visible);
+        dismissOverlayButton.setVisible(visible);
     }
 
     @Override
@@ -179,7 +192,9 @@ public class GameOverOverlay extends AbstractOverlay {
         player2Losses.setCenter(getX() + getWidth() / 3.f * 2.f, getY() + getHeight() / 2.f - 30.f);
         player2Losses.draw(batch, parentAlpha);
 
-        mainMenuButton.setPosition(getX() + getWidth()/2.f - mainMenuButton.getWidth()/2.f,
+        mainMenuButton.setPosition(getX() + getWidth()/2.f - mainMenuButton.getWidth(),
                 getY() + 50.f);
+
+        dismissOverlayButton.setPosition(getX() + getWidth()/2.f, getY() + 50.f);
     }
 }

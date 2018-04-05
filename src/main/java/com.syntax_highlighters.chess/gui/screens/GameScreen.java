@@ -35,12 +35,14 @@ public class GameScreen extends AbstractScreen {
     private final UiBoard board;
     private final Text turnText;
     private final Button giveUp;
+    private final Button showResults;
 
     private boolean waitingForAi = false;
     private boolean resizeFBO = false;
     private FrameBuffer gameBuffer;
 
     private boolean isGameOver = false;
+    private int winner = 0; // NOTE: do not consider this valid until isGameOver
     private final GameOverOverlay gameOverOverlay;
 
     private Thread aiThread;
@@ -88,6 +90,19 @@ public class GameScreen extends AbstractScreen {
         stage.addActor(turnText);
         turnText.setText(this.game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
         gameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+
+        // display results button (initially invisible, but becomes visible when
+        // game ends)
+        showResults = new Button("Show results", assetManager);
+        showResults.setSize(200, 75);
+        showResults.setVisible(false); // do not show initially
+        showResults.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gameOverOverlay.setVisible(true);
+            }
+        });
+        stage.addActor(showResults);
 
         if(player1 == null && ai1 != null && player2 == null && ai2 != null)
             giveUp = new Button("Leave match", assetManager);
@@ -161,16 +176,17 @@ public class GameScreen extends AbstractScreen {
 
     private void gameOver(int winner)
     {
+        this.winner = winner;
         isGameOver = true;
 
         switch (winner) {
-            case 1:
+            case 1: // white player won
                 if (player1 != null)
                     player1.win();
                 if (player2 != null)
                     player2.loss();
                 break;
-            case -1:
+            case -1: // black player won
                 if (player1 != null)
                     player1.loss();
                 if (player2 != null)
@@ -187,7 +203,7 @@ public class GameScreen extends AbstractScreen {
 
         gameOverOverlay.updateText(winner, player1, player2, ai1, ai2);
         gameOverOverlay.setVisible(true);
-
+        setTurnText();
     }
 
     /**
@@ -205,7 +221,12 @@ public class GameScreen extends AbstractScreen {
         try {
             aiLock.acquire(1);
 
-            giveUp.setVisible(!game.nextPlayerIsAI() || (player1 == null && player2 == null));
+            // NOTE: when game is over, giveUp button is turned invisible, and
+            // showResults button is turned visible. Otherwise, give up is
+            // visible if applicable.
+            giveUp.setVisible(!isGameOver &&
+                    (!game.nextPlayerIsAI() || (player1 == null && player2 == null)));
+            showResults.setVisible(isGameOver);
 
             if(!waitingForAi) {
                 // Game over check
@@ -237,7 +258,7 @@ public class GameScreen extends AbstractScreen {
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
                 Gdx.gl.glEnable(GL20.GL_BLEND);
                 Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-                turnText.setText(game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
+                setTurnText();
                 stage.act(delta);
                 stage.draw();
                 gameBuffer.end();
@@ -258,6 +279,34 @@ public class GameScreen extends AbstractScreen {
     }
 
     /**
+     * Helper method: set turn text according to whose turn it is, or to who the
+     * winner is if the game is over, and center text.
+     *
+     * Uses state variables "winner" and "isGameOver" in GameScreen.
+     *
+     * NOTE: May want to update this later if we implement arbitrary color
+     * choice
+     */
+    private void setTurnText() {
+        if (!isGameOver) {
+            turnText.setText(game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
+        }
+        else {
+            turnText.setText(winner == 1  ? "White has won the game" :
+                             winner == -1 ? "Black has won the game" :
+                                            "It's a draw!");
+        }
+        
+        // this is modeled after the similar operation in the resize method
+        // below
+        int width = Gdx.graphics.getWidth();  // I think this is right
+        int height = Gdx.graphics.getHeight();
+        float size = Math.min(width, height) - 100;
+        size = Math.min(size, 1000);
+        turnText.setCenter(width / 2.f, height / 2.f - size / 2.f - 10.f);
+    }
+
+    /**
      * Resize event.
      *
      * Used to correctly position the elements on screen and update the viewport size to support the new window size.
@@ -273,7 +322,11 @@ public class GameScreen extends AbstractScreen {
         board.setPosition(width / 2.f - size / 2.f, height / 2.f - size / 2.f + 25);
         turnText.setCenter(width / 2.f, height / 2.f - size / 2.f - 10.f);
 
-        giveUp.setPosition(width / 2.f + size/2.f + 20.f - giveUp.getWidth(), height / 2.f - size / 2.f - giveUp.getHeight() / 1.5f);
+        giveUp.setPosition(width / 2.f + size/2.f + 20.f - giveUp.getWidth(),
+                height / 2.f - size / 2.f - giveUp.getHeight() / 1.5f);
+
+        showResults.setPosition(width/2.f + size/2.f + 20.f - showResults.getWidth(),
+                height/2.f - size/2.f - showResults.getHeight()/1.5f);
 
         if(waitingForAi)
         {
