@@ -26,7 +26,7 @@ class AiTest {
 
         Board board = new Board(pieces);
         
-        IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Easy);
+        IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Hard);
         ai.PerformMove(board);
 
         assertFalse(board.getAllPieces().contains(queen));
@@ -49,12 +49,15 @@ class AiTest {
         assertTrue("The medium AI is too slow (" + time + " >= " + allowedTime + ")",
                 time < allowedTime);
     }
-
-    // NOTE: There is no requirement for the hard AI to finish within a certain
-    // amount of time - which is good, because our hard AI takes an ungodly
-    // amount of time to finish.
-    //
-    // Anyways, that's why there is no test for that.
+    
+    @Test
+    void hardAICompletesWithinThreeSecondsFromStartingPosition() {
+        final long allowedTime = 3000;
+        IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Hard);
+        long time = speedTest(ai);
+        assertTrue("The medium AI is too slow (" + time + " >= " + allowedTime + ")",
+                time < allowedTime);
+    }
 
     /** Measures how long an AI spends deciding a move on a fresh chess board.
      * @param ai The AI to measure.
