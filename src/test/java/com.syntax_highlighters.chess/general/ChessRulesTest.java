@@ -1,5 +1,9 @@
-package com.syntax_highlighters.chess;
+package com.syntax_highlighters.chess.general;
 
+import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.EnPassantMove;
+import com.syntax_highlighters.chess.Move;
+import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.*;
 
 import org.junit.jupiter.api.Test;
@@ -169,7 +173,7 @@ class ChessRulesTest {
 
         // Execute en passant
         Optional<Move> enpassant = blackPawn.allPossibleMoves(board).stream()
-                .filter(m -> m instanceof  EnPassantMove)
+                .filter(m -> m instanceof EnPassantMove)
                 .findFirst();
         assertTrue("No en passant move available", enpassant.isPresent());
         enpassant.get().DoMove(board);

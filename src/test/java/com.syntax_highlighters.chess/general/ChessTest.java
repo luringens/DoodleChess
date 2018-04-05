@@ -1,4 +1,4 @@
-package com.syntax_highlighters.chess;
+package com.syntax_highlighters.chess.general;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

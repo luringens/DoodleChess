@@ -1,5 +1,7 @@
-package com.syntax_highlighters.chess;
+package com.syntax_highlighters.chess.general;
 
+import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.*;
 import org.junit.jupiter.api.Test;
 

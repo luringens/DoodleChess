@@ -87,4 +87,3 @@ task fatjar(group: 'Build', description:'Assembles a "fat jar" containing all th
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
-

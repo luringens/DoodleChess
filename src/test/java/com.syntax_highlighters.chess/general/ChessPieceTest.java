@@ -1,4 +1,4 @@
-package com.syntax_highlighters.chess;
+package com.syntax_highlighters.chess.general;
 
 import com.syntax_highlighters.chess.*;
 import com.syntax_highlighters.chess.entities.*;

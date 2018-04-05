@@ -27,7 +27,7 @@ build:
 
 test:
   stage: test
-  script: gradle check
+  script: gradle test --tests com.syntax_highlighters.chess.general.*
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
