@@ -1,0 +1,89 @@
+plugins {
+    // Apply the java plugin to add support for Java
+    id 'java'
+
+    // Apply intallij plugin
+    id 'idea'
+
+    // Apply the application plugin to add support for building an application
+    id 'application'
+
+    // Gradle pretty test (https://github.com/radarsh/gradle-test-logger-plugin)
+    id 'com.adarshr.test-logger' version '1.2.0'
+}
+
+// Define the main class for the application
+mainClassName = 'com.syntax_highlighters.chess.Main'
+
+// Current logger type used by the gradle-test-logger
+testlogger {
+    theme 'mocha'
+}
+
+// Remember to add the assets when building
+sourceSets {
+    main {
+        resources {
+            srcDirs = ['assets']
+        }
+    }
+}
+
+configurations {
+    // configuration that holds jars to copy into lib
+    extraLibs
+}
+
+ext {
+    // Selected libGDX version
+    gdxVersion = "1.9.8"
+}
+
+dependencies {
+    
+    // Use JUnit test framework with vintage module for junit 4 compatibility
+    testCompile 'junit:junit:4.12' 
+
+    testImplementation(
+        'org.junit.jupiter:junit-jupiter-api:5.1.0'
+    )
+    testRuntimeOnly(
+        'org.junit.jupiter:junit-jupiter-engine:5.1.0',
+        'org.junit.vintage:junit-vintage-engine:5.1.0'
+    )
+    
+    //Defines dependencies for LibGdx
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+
+    //Defines dependencies for LibGdx, used in the fat-jar
+    extraLibs "com.badlogicgames.gdx:gdx:$gdxVersion"
+    extraLibs "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    extraLibs "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+}
+
+// Use gradle built in JUnit test platform
+test {
+    useJUnitPlatform()
+}
+
+repositories {
+    // Use jcenter for resolving dependencies.
+    jcenter()
+}
+
+// Change destination of javadoc output
+javadoc {
+    destinationDir = new File('./docs/api/')
+}
+
+// Custom task to create a "fat-jar"
+task fatjar(group: 'Build', description:'Assembles a "fat jar" containing all the libraries and the main classes', type: Jar) {    
+    manifest {
+        attributes 'Main-Class': 'com.syntax_highlighters.chess.Main'
+    }
+    baseName = 'DoodleChess-fat'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
