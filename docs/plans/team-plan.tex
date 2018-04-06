@@ -21,24 +21,26 @@ These roles are not final, but serve as a reminder of what people are good at. \
     Robin Grundvåg         & GUI \\
     Benjamin Dyhre Bjønnes & Code \\
     Eirik Jørgensen        & Code \\
-    Vegard Itland          & Documentation \\
-    Loc Tri Le             & Graphics \\
-    Robin el Salim         & Test suites \\
+    Vegard Itland          & Documentation, GUI \\
+    Loc Tri Le             & GFX \\
+    Robin el Salim         & SFX \\
     Sverre Magnus Engø     & Test suites \\
-    Stian Soltvedt         & Meeting lead, code and Version control \\
+    Stian Soltvedt         & AI, version control\\
 \end{tabular}
 
 \section*{Version control}
 
-A de-facto policy of using the syntax ``[Affected file] change description'' or ``[Topic] content description'' in commit message titles has been adopted. Furthermore, a de-facto policy of pushing meeting notes directly to the master branch has taken effect. This policy will be subject to review and a high probability of change in later meetings.
+The repo structure is organized around the develop branch, which is where most of the changes to the code base are made. Usually when the change is small or essential to many areas of the project, commits are made directly to develop, but bigger changes which are less central to the core of the project (such as GUI or AI, which draw on the chess logic API but is not required by it) have been known to receive their own branches and later merged or rebased back in. The develop branch is merged into the master branch on release, and every commit on the master branch should be a release version of the game (v0.1, v0.2, v1.0, etc.)
 
-Our repo structure will be a master branch for versions that are in a good state (v0.1, v0.2, v1.0, etc.), while all other development happens on the develop branch. We should strive to keep each commit on develop compilable --- feature branches can be created for work that will leave the project uncompilable for some time.
+Commit message titles should be brief, of the format "[Topic] short description of change". It's possible but not required to leave more detailed messages in the commit message body. Ideally, every commit should build and all the tests should be passing. Particularly the latter is not always achievable nor desirable, as other people may depend on work in progress, and more tests are good even if they don't pass, but it's an ideal to strive towards.
+
+A more detailed explanation of our contribution guidelines can be found in \texttt{CONTRIBUTING.md} in the root project folder.
 
 \section*{Communication}
 
 We will be using Discord for most forms of communication due to the handy ability to create multiple channels for chat. Facebook Messenger may be used when prompt response is needed.
 
-A Trello project has been established and will be used to keep track of tasks to perform, and who is assigned to them.
+We're using Gitlab issues for issue tracking, and have started using milestones which we connect relevant issues to. Ideally, we will create relatively small and achievable issues in order to more easily track our progress, but we will avoid creating nonsensically small or trivial issues to avoid issue board clutter. Issues are tagged with relevant labels, and commits which are made in order to advance particular issues should be marked with the issue number in the topic part of the commit title.
 
 \section*{Risks}
 
