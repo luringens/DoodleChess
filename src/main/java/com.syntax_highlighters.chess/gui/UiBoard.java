@@ -132,7 +132,12 @@ public class UiBoard extends Actor {
 
     private void renderPieces(Batch batch)
     {
-
+        // get the king of the current player (if the king is threatened, the
+        // piece threatening it should be highlighted)
+        Board b = game.getBoard();
+        IChessPiece king = b.getKing(game.nextPlayerIsWhite());
+        Position kingPos = king.getPosition();
+        
         float tileWidth = getSpaceWidth();
         float tileHeight = getSpaceHeight();
         for(IChessPiece piece : game.getPieces()) {
@@ -143,8 +148,10 @@ public class UiBoard extends Actor {
             if (piece == selectedPiece) {
                 batch.setColor(1, 0.84f, 0, 1);
             }
-            else
-            {
+            else if (piece.isWhite() != king.isWhite() && piece.threatens(kingPos, b)) {
+                batch.setColor(1, 0, 0, 1); // highlight attacking piece with red
+            }
+            else {
                 batch.setColor(1, 1, 1, 1);
             }
 
