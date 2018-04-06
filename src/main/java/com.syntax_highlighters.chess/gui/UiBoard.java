@@ -125,7 +125,7 @@ public class UiBoard extends Actor {
         for(int x = 0; x < Board.BOARD_WIDTH; ++x)
             for(int y = 0; y < Board.BOARD_HEIGHT; ++y)
             {
-                if((x + y) % 2 == 0) continue;
+                if((x + y) % 2 != 0) continue;
                 batch.draw(tile_black, x * tileWidth + getX() + LEGEND_OFFSET, y * tileHeight + getY() + LEGEND_OFFSET, tileWidth, tileHeight);
             }
     }
