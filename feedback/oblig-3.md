@@ -1,4 +1,5 @@
 Feedback INF112 spring 2018 - Oblig.3
+----
 
 Group: Syntax Highlighters
 
@@ -18,14 +19,16 @@ You're doing a great job. The repository looks now like a serious project. ;)
 - Despite the fact the game is nice, the interface could be have
   a better text font, maybe stronger like other stuff in the game.
 
-- Aspects to improve in the deliverables:
 
-  + The UML diagram is missing the attributes in each class but
-    also the relevant methods. Both with their respective type.
++ Aspects to improve in the deliverables:
 
-    The design model should be fixed e.g. following the examples sent by Torill.
+The UML diagram is missing the attributes in each class but
+also the relevant methods. Both with their respective type.
 
-Score: 90.8 (of 100)
-Evaluation: PASS
+The design model should be fixed e.g. following the examples sent by Torill.
 
-Graded by Joakim and Jonathan, Bergen 2018-04-08
+
+**Score: 90.8 (of 100)**
+**Evaluation: PASS**
+
+*Graded by Joakim and Jonathan, Bergen 2018-04-08*
