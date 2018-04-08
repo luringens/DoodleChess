@@ -89,7 +89,7 @@ public class ChessPieceQueen extends AbstractChessPiece {
      */
     @Override
     public String getAssetName() {
-        return isWhite() ? "queen_white.png" : "queen_black.png";
+        return "queen_white.png";
     }
 
     /**

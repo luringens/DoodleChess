@@ -2,8 +2,10 @@ package com.syntax_highlighters.chess.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -13,6 +15,8 @@ import com.syntax_highlighters.chess.Game;
 import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.IChessPiece;
+
+import java.util.function.Predicate;
 
 /**
  * UI board.
@@ -34,11 +38,24 @@ public class UiBoard extends Actor {
 
     private IChessPiece selectedPiece = null;
 
+    private ShaderProgram setColorShader;
+    private Color currentColor = null;
 
-    public UiBoard(AssetManager assetManager, Game game, Stage stage)
+    private Color blackColor = null;
+    private Color whiteColor = null;
+
+    private Color selectedColor = new Color(1,0.84f,0, 1.0f);
+    private Color threatensColor= new Color(1,0,0, 1.0f);
+
+
+    public UiBoard(AssetManager assetManager, Game game, Stage stage, Color whiteColor, Color blackColor)
     {
         this.assetManager = assetManager;
         this.game = game;
+
+        this.blackColor = blackColor;
+        this.whiteColor = whiteColor;
+
         segoeUi = AssetLoader.GetDefaultFont(assetManager);
         tile = new Texture(Gdx.files.internal("tile.png"));
         tile_black = new Texture(Gdx.files.internal("tile_black.png"));
@@ -79,6 +96,12 @@ public class UiBoard extends Actor {
                 selectedPiece = game.getPieceAtPosition(new Position(px, py));;
             }
         });
+
+        setColorShader = new ShaderProgram(Gdx.files.internal("shaders/id.vert"), Gdx.files.internal("shaders/setColor.frag"));
+        if(!setColorShader.isCompiled())
+        {
+            System.out.println(setColorShader.getLog());
+        }
     }
 
     public float getSpaceWidth()
@@ -130,43 +153,80 @@ public class UiBoard extends Actor {
             }
     }
 
+    private void renderPiece(Batch batch, IChessPiece piece, IChessPiece king, Color tint, float tileWidth, float tileHeight)
+    {
+
+        Position pos = piece.getPosition();
+        int rx = pos.getX() - 1;
+        int ry = pos.getY() - 1;
+
+        if (piece == selectedPiece) {
+            if(!selectedColor.equals(currentColor))
+            {
+                batch.end();
+                batch.begin();
+                setColorShader.setUniformf("u_tint", selectedColor);
+                currentColor = selectedColor;
+            }
+        }
+        else if (piece.isWhite() != king.isWhite() && piece.threatens(king.getPosition(), game.getBoard())) {
+            if(!threatensColor.equals(currentColor))
+            {
+                batch.end();
+                batch.begin();
+                setColorShader.setUniformf("u_tint", threatensColor);
+                currentColor = threatensColor;
+            }
+        }
+        else
+        {
+            if(!tint.equals(currentColor))
+            {
+                batch.end();
+                batch.begin();
+                setColorShader.setUniformf("u_tint", tint);
+                currentColor = tint;
+            }
+        }
+
+        String assetName = piece.getAssetName();
+        Texture tex = assetManager.get(assetName, Texture.class);
+        tex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+        float x = rx * tileWidth + 5 + getX() + LEGEND_OFFSET;
+        float y = ry * tileHeight + 5 + getY() + LEGEND_OFFSET;
+        float aspect = tex.getWidth() / (float) tex.getHeight();
+
+        float width = tileWidth * aspect;
+
+        batch.draw(tex, x, y, width, tileHeight);
+    }
+
     private void renderPieces(Batch batch)
     {
         // get the king of the current player (if the king is threatened, the
         // piece threatening it should be highlighted)
-        Board b = game.getBoard();
-        IChessPiece king = b.getKing(game.nextPlayerIsWhite());
-        Position kingPos = king.getPosition();
-        
+        IChessPiece king = game.getBoard().getKing(game.nextPlayerIsWhite());
+
         float tileWidth = getSpaceWidth();
         float tileHeight = getSpaceHeight();
-        for(IChessPiece piece : game.getPieces()) {
-            Position pos = piece.getPosition();
-            int rx = pos.getX() - 1;
-            int ry = pos.getY() - 1;
 
-            if (piece == selectedPiece) {
-                batch.setColor(1, 0.84f, 0, 1);
-            }
-            else if (piece.isWhite() != king.isWhite() && piece.threatens(kingPos, b)) {
-                batch.setColor(1, 0, 0, 1); // highlight attacking piece with red
-            }
-            else {
-                batch.setColor(1, 1, 1, 1);
-            }
+        batch.end();
 
-            String assetName = piece.getAssetName();
-            Texture tex = assetManager.get(assetName, Texture.class);
-            tex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        batch.setShader(setColorShader);
+        batch.begin();
+        final Color col = this.whiteColor;
+        game.getPieces().stream().filter(IChessPiece::isWhite).forEach(x -> renderPiece(batch, x, king, col, tileWidth, tileHeight));
+        batch.end();
 
-            float x = rx * tileWidth + 5 + getX() + LEGEND_OFFSET;
-            float y = ry * tileHeight + 5 + getY() + LEGEND_OFFSET;
-            float aspect = tex.getWidth() / (float) tex.getHeight();
+        batch.begin();
+        final Color col2 = this.blackColor;
+        game.getPieces().stream().filter(x -> !x.isWhite()).forEach(x -> renderPiece(batch, x, king, col2, tileWidth, tileHeight));
+        batch.end();
 
-            float width = tileWidth * aspect;
 
-            batch.draw(tex, x, y, width, tileHeight);
-        }
+        batch.begin();
+        batch.setShader(null);
     }
 
     private void renderMoves(Batch batch)

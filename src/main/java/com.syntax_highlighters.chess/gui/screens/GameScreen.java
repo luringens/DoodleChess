@@ -78,7 +78,7 @@ public class GameScreen extends AbstractScreen {
         this.ai1 = attrib1.getAIDifficulty();
         this.ai2 = attrib2.getAIDifficulty();
         this.player1Color = attrib1.getColor();
-        this.player2Color = attrib1.getColor();
+        this.player2Color = attrib2.getColor();
         this.chessGame = chessGame;
         
         this.game = new Game(ai1, ai2);
@@ -86,7 +86,7 @@ public class GameScreen extends AbstractScreen {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        board = new UiBoard(assetManager, this.game, stage);
+        board = new UiBoard(assetManager, this.game, stage, this.player1Color, this.player2Color);
         float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 50;
         board.setSize(size, size);
         stage.addActor(board);
