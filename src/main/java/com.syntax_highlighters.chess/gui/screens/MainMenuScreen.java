@@ -2,6 +2,7 @@ package com.syntax_highlighters.chess.gui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.actors.Button;
+import com.syntax_highlighters.chess.gui.actors.Pencil;
+import com.syntax_highlighters.chess.gui.actors.PencilSelector;
 
 /**
  * Main menu screen
@@ -66,7 +69,6 @@ public class MainMenuScreen extends AbstractScreen {
                 game.setScreen(new ScoreScreen(game));
             }
         });
-
     }
 
     /**

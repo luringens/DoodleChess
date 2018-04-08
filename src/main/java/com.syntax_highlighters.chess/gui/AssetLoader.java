@@ -39,7 +39,12 @@ public class AssetLoader {
                 "button_template.png",
                 "pixel.png",
                 "overlay.png",
-                "background2.png"
+                "background2.png",
+                "pencils/base1.png",
+                "pencils/base2.png",
+                "pencils/wood1.png",
+                "pencils/wood2.png",
+                "pencils/wood3.png",
         };
 
         for(String path : textures)
