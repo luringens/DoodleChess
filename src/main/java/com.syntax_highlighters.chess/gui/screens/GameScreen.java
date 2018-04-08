@@ -65,8 +65,10 @@ public class GameScreen extends AbstractScreen {
      * We have put the AI on a separate thread to stop the window from becoming unresponsive while the AI is thinking.
      *
      * @param chessGame current ChessGame
-     * @param player1Difficulty Difficulty of player 1 (null if no ai)
-     * @param player2Difficulty Difficulty of player 2 (null if no ai)
+     * @param attrib1 Attributes for player 1 (account info, AI difficulty,
+     * piece color)
+     * @param attrib2 Attributes for player 2 (account info, AI difficulty,
+     * piece color)
      */
     public GameScreen(ChessGame chessGame, PlayerAttributes attrib1, PlayerAttributes attrib2) {
         super(chessGame);
