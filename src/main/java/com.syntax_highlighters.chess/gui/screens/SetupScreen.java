@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.graphics.Color;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
 import com.syntax_highlighters.chess.ChessGame;
@@ -17,6 +18,7 @@ import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.actors.AccountOverlay;
 import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.Text;
+import com.syntax_highlighters.chess.PlayerAttributes;
 
 import java.util.ArrayList;
 
@@ -99,12 +101,23 @@ public class SetupScreen extends AbstractScreen {
                         || selected1.equals(selected2))
                 {
                     // Invalid account selection
+                    // NOTE: maybe we should have an error message
                     return;
                 }
                 AccountManager manager = game.getAccountManager();
                 Account player1 = manager.getAccount(selected1);
                 Account player2 = manager.getAccount(selected2);
-                game.setScreen(new GameScreen(game, player1, player2, player1Difficulty, player2Difficulty));
+
+                // Set color - atm it's just black and white, but this should be
+                // changed with color picker integration
+                // TODO: Change this to let the player decide the colors
+                Color c1 = new Color(1,1,1,1); // white
+                Color c2 = new Color(0,0,0,1); // black
+
+                // Create player attribute objects
+                PlayerAttributes attrib1 = createAttributes(player1, player1Difficulty, c1);
+                PlayerAttributes attrib2 = createAttributes(player2, player2Difficulty, c2);
+                game.setScreen(new GameScreen(game, attrib1, attrib2));
             }
         });
 
@@ -249,6 +262,26 @@ public class SetupScreen extends AbstractScreen {
                 player2Buttons.add(button);
             stage.addActor(button);
         }
+    }
+
+    /**
+     * Helper method: create a PlayerAttributes instance based on the Account,
+     * AiDifficulty and Color passed as arguments.
+     *
+     * Chooses the correct constructor based on which of the arguments are null.
+     *
+     * @param acc The selected Account, if selected, or null
+     * @param diff The selected AI difficulty, if selected, or null
+     * @param color The selected Color
+     *
+     * @return A PlayerAttributes object which contains the Account information
+     * (if there is no AI information), or otherwise contains the AI difficulty
+     * information
+     */
+    private PlayerAttributes createAttributes(Account acc, AiDifficulty diff, Color color) {
+        if (diff == null)
+            return new PlayerAttributes(acc, color);
+        return new PlayerAttributes(diff, color);
     }
 
     @Override

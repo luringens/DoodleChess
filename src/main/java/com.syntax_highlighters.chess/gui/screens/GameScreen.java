@@ -2,6 +2,7 @@ package com.syntax_highlighters.chess.gui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -21,6 +22,7 @@ import com.syntax_highlighters.chess.gui.UiBoard;
 import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
+import com.syntax_highlighters.chess.PlayerAttributes;
 
 import java.util.concurrent.Semaphore;
 
@@ -52,6 +54,8 @@ public class GameScreen extends AbstractScreen {
     private final Account player2;
     private final AiDifficulty ai1;
     private final AiDifficulty ai2;
+    private final Color player1Color;
+    private final Color player2Color;
 
     private final ChessGame chessGame;
 
@@ -64,16 +68,20 @@ public class GameScreen extends AbstractScreen {
      * @param player1Difficulty Difficulty of player 1 (null if no ai)
      * @param player2Difficulty Difficulty of player 2 (null if no ai)
      */
-    public GameScreen(ChessGame chessGame, Account player1, Account player2, AiDifficulty player1Difficulty, AiDifficulty player2Difficulty) {
+    public GameScreen(ChessGame chessGame, PlayerAttributes attrib1, PlayerAttributes attrib2) {
         super(chessGame);
+        
         assetManager = chessGame.getAssetManager();
+        
+        this.player1 = attrib1.getAccount();
+        this.player2 = attrib2.getAccount();
+        this.ai1 = attrib1.getAIDifficulty();
+        this.ai2 = attrib2.getAIDifficulty();
+        this.player1Color = attrib1.getColor();
+        this.player2Color = attrib1.getColor();
         this.chessGame = chessGame;
-        this.game = new Game(player1Difficulty, player2Difficulty);
-
-        this.player1 = player1;
-        this.player2 = player2;
-        this.ai1 = player1Difficulty;
-        this.ai2 = player2Difficulty;
+        
+        this.game = new Game(ai1, ai2);
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
