@@ -20,7 +20,7 @@ $ git clone https://gitlab.uib.no/inf112-v2018/gruppe-6.git chess-syntax-highlig
 $ cd chess-syntax-highlighters
 ```
 
-Note: if you are using linux or mac, then you might have to do `chmod -x gradlew` first in order to be able to run the gradlew script
+Note: if you are using linux or mac, then you might have to do `chmod +x gradlew` first in order to be able to run the gradlew script
 
 ### Running
 
