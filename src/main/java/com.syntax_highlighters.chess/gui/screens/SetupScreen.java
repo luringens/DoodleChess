@@ -90,34 +90,16 @@ public class SetupScreen extends AbstractScreen {
             @Override
             public void colorSelected(PencilSelector.ColorSelectEvent event, Color color) {
                 selector.hide(1.0f);
-                if(selectingPlayer == 0)
-                {
-                    final Color currentColor = player1Color;
-                    DelayAction delay = new DelayAction();
-                    delay.setDuration(1.0f);
-                    player1Color = color;
-                    RunnableAction runnable = new RunnableAction();
-                    runnable.setRunnable(() -> {
-                        selector.releaseColor(currentColor);
-                        selector.selectColor(player1Color);
+                final Color currentColor = swapColor(color); // returns previously selected color
+                DelayAction delay = new DelayAction();
+                delay.setDuration(1.0f);
+                RunnableAction runnable = new RunnableAction();
+                runnable.setRunnable(() -> {
+                    selector.releaseColor(currentColor);
+                    selector.selectColor(player1Color);
 
-                    });
-                    selector.addAction(new SequenceAction(delay, runnable));
-                }
-                else if(selectingPlayer == 1)
-                {
-                    final Color currentColor = player2Color;
-                    DelayAction delay = new DelayAction();
-                    delay.setDuration(1.0f);
-                    player2Color = color;
-                    RunnableAction runnable = new RunnableAction();
-                    runnable.setRunnable(() -> {
-                        selector.releaseColor(currentColor);
-                        selector.selectColor(player2Color);
-
-                    });
-                    selector.addAction(new SequenceAction(delay, runnable));
-                }
+                });
+                selector.addAction(new SequenceAction(delay, runnable));
 
                 selectingPlayer = -1;
             }
@@ -331,6 +313,26 @@ public class SetupScreen extends AbstractScreen {
      */
     private boolean invalidAccountSelection(String acc1, String acc2) {
         return acc1 == null || acc1.isEmpty() || acc2 == null || acc2.isEmpty() || acc1.equals(acc2);
+    }
+
+    /**
+     * Helper method: Exchange the selecting player's color with the given
+     * color, and return the old color.
+     *
+     * @param color The color to change to
+     * @return The new selected color
+     */
+    private Color swapColor(Color color) {
+        Color ret = null;
+        if (selectingPlayer == 0) {
+            ret = player1Color;
+            player1Color = color;
+        }
+        else if (selectingPlayer == 1) {
+            ret = player2Color;
+            player2Color = color;
+        }
+        return ret;
     }
 
     /**
