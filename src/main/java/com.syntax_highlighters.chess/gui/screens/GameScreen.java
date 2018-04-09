@@ -9,9 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.Game;
@@ -33,7 +31,6 @@ public class GameScreen extends AbstractScreen {
     private final AssetManager assetManager;
 
     private final Game game;
-    private final Stage stage;
     private final UiBoard board;
     private final Text turnText;
     private final Button giveUp;
@@ -85,7 +82,6 @@ public class GameScreen extends AbstractScreen {
         
         this.game = new Game(ai1, ai2);
 
-        stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
         board = new UiBoard(assetManager, this.game, stage, this.player1Color, this.player2Color);
@@ -348,36 +344,4 @@ public class GameScreen extends AbstractScreen {
         gameBuffer.dispose();
         gameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, false);
     }
-
-    /**
-     * Disposes classes that needs disposing.
-     */
-    @Override
-    public void dispose() {
-        stage.dispose();
-    }
-
-    /**
-     * unused
-     */
-    @Override
-    public void show() {}
-
-    /**
-     * unused
-     */
-    @Override
-    public void hide() {}
-
-    /**
-     * unused
-     */
-    @Override
-    public void pause() {}
-
-    /**
-     * unused
-     */
-    @Override
-    public void resume() {}
 }

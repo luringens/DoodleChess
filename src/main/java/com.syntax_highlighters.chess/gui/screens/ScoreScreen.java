@@ -3,10 +3,8 @@ package com.syntax_highlighters.chess.gui.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
@@ -23,15 +21,11 @@ import java.util.List;
 public class ScoreScreen extends AbstractScreen {
     private final Text title;
 
-    private final Stage stage;
     private final Table scoreList;
     private final Button mainMenuButton;
 
     public ScoreScreen(ChessGame game) {
         super(game);
-
-        stage = new Stage(new ScreenViewport());
-
 
         BitmapFont font = AssetLoader.GetDefaultFont(game.getAssetManager());
 
@@ -132,37 +126,4 @@ public class ScoreScreen extends AbstractScreen {
 
         mainMenuButton.setPosition(width / 2.f - mainMenuButton.getWidth() / 2.f, height / 2.f - 400.f + mainMenuButton.getHeight());
     }
-
-    /***
-     * Disposes classes that needs disposing.
-     */
-    @Override
-    public void dispose() {
-        stage.dispose();
-    }
-
-    /***
-     * unused
-     */
-    @Override
-    public void pause() {}
-
-    /***
-     * unused
-     */
-    @Override
-    public void resume() {}
-
-    /***
-     * unused
-     */
-    @Override
-    public void hide() {}
-
-    /***
-     * unused
-     */
-    @Override
-    public void show() {}
-
 }

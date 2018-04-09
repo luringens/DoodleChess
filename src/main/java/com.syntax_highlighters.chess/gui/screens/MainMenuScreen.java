@@ -5,10 +5,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.actors.Button;
@@ -20,7 +18,6 @@ import com.syntax_highlighters.chess.gui.actors.PencilSelector;
  */
 public class MainMenuScreen extends AbstractScreen {
 
-    private final Stage stage;
     private final Image background;
 
     private final Button playButton;
@@ -36,8 +33,6 @@ public class MainMenuScreen extends AbstractScreen {
         super(game);
 
         AssetManager assetManager = game.getAssetManager();
-
-        stage = new Stage(new ScreenViewport());
 
         Texture tex = assetManager.get("background2.png", Texture.class);
         tex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -109,36 +104,4 @@ public class MainMenuScreen extends AbstractScreen {
         playButton.setPosition(x + 80, height/1.75f);
         scoreButton.setPosition(x + 80, height/1.75f - 75);
     }
-
-    /**
-     * Disposes classes that needs disposing.
-     */
-    @Override
-    public void dispose() {
-        stage.dispose();
-    }
-
-    /**
-     * unused
-     */
-    @Override
-    public void show() {}
-
-    /**
-     * unused
-     */
-    @Override
-    public void pause() {}
-
-    /**
-     * unused
-     */
-    @Override
-    public void resume() {}
-
-    /**
-     * unused
-     */
-    @Override
-    public void hide() {}
 }

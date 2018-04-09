@@ -111,6 +111,13 @@ public class AccountOverlay extends AbstractOverlay {
     @Override
     protected void setStage(Stage stage) {
         super.setStage(stage);
+        
+        // I added this line after it gave me a NullPointerException at some
+        // point after refactoring Stage to AbstractScreen. It solved the issue
+        // and somehow doesn't create horrible problems with the game UI. I have
+        // no idea why.
+        if (stage == null) return;
+        
         stage.addActor(mainMenu);
         stage.addActor(createAccount);
         stage.addActor(username);

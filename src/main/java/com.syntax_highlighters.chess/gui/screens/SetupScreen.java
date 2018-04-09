@@ -3,11 +3,9 @@ package com.syntax_highlighters.chess.gui.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.graphics.Color;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
@@ -30,8 +28,6 @@ import java.util.ArrayList;
  * setup.
  */
 public class SetupScreen extends AbstractScreen {
-
-    private final Stage stage;
 
     private final Text title;
     private final Text white;
@@ -59,8 +55,7 @@ public class SetupScreen extends AbstractScreen {
     {
         super(game);
         this.assetManager = game.getAssetManager();
-        stage = new Stage(new ScreenViewport());
-
+        
         title = createText("Select AI level", Color.BLACK);
         white = createText("White pieces:", Color.BLACK);
         black = createText("Black pieces:", Color.BLACK);
@@ -332,11 +327,6 @@ public class SetupScreen extends AbstractScreen {
     };
 
     @Override
-    public void show() {
-
-    }
-
-    @Override
     public void render(float delta) {
         stage.act(delta);
         stage.draw();
@@ -378,25 +368,5 @@ public class SetupScreen extends AbstractScreen {
         mainMenu.setPosition(centerW - buttonWidth - 10, bottomBarY);
         createAccount.setPosition(centerW, bottomBarY);
         playerNote.setCenter(width / 2.f, bottomBarY - 10.f);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
     }
 }
