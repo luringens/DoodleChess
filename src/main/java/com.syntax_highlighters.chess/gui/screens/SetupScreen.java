@@ -83,28 +83,17 @@ public class SetupScreen extends AbstractScreen {
         mainMenu = createButton("Main menu", () -> game.setScreen(new MainMenuScreen(game)));
         createAccount = createButton("Create account", () -> accountOverlay.setVisible(true));
 
-        // TODO: refactor to prettify constructor
+        // I wish I could simplify it more than this, but I can't justify
+        // creating a createPencilSelector method or a separate
+        // ColorChangeCallback interface.
         PencilSelector selector= new PencilSelector(assetManager);
         selector.setPosition(100, -150);
         selector.addListener(new PencilSelector.ColorSelectListener(){
             @Override
             public void colorSelected(PencilSelector.ColorSelectEvent event, Color color) {
-                selector.hide(1.0f);
-                final Color currentColor = swapColor(color); // returns previously selected color
-                DelayAction delay = new DelayAction();
-                delay.setDuration(1.0f);
-                RunnableAction runnable = new RunnableAction();
-                runnable.setRunnable(() -> {
-                    selector.releaseColor(currentColor);
-                    selector.selectColor(player1Color);
-
-                });
-                selector.addAction(new SequenceAction(delay, runnable));
-
-                selectingPlayer = -1;
+                selectNewColor(color);
             }
         });
-        //selector.hide();
         stage.addActor(selector);
         selector.hide(0.0f);
         selector.selectColor(player1Color);
@@ -368,6 +357,29 @@ public class SetupScreen extends AbstractScreen {
         PlayerAttributes attrib1 = createAttributes(player1, player1Difficulty, player1Color);
         PlayerAttributes attrib2 = createAttributes(player2, player2Difficulty, player2Color);
         game.setScreen(new GameScreen(game, attrib1, attrib2));
+    }
+
+    /**
+     * Helper method: select new color.
+     *
+     * Handles the state changes and delay actions.
+     *
+     * @param color The new color
+     */
+    private void selectNewColor(Color color) {
+        selector.hide(1.0f);
+        final Color currentColor = swapColor(color); // returns previously selected color
+        DelayAction delay = new DelayAction();
+        delay.setDuration(1.0f);
+        RunnableAction runnable = new RunnableAction();
+        runnable.setRunnable(() -> {
+            selector.releaseColor(currentColor);
+            selector.selectColor(player1Color);
+
+        });
+        selector.addAction(new SequenceAction(delay, runnable));
+
+        selectingPlayer = -1;
     }
     
     /**
