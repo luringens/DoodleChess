@@ -130,15 +130,8 @@ public class SetupScreen extends AbstractScreen {
 
     private void resetbuttonList(int player)
     {
-        if(player == -1)
-        {
-            for(Button button : player1Buttons)
-                button.setSelected(false);
-        }
-        else
-        {
-            for(Button button : player2Buttons)
-                button.setSelected(false);
+        for (int i = 0; i < player1Buttons.size(); i++) {
+            getAIDifficultySettingButton(player, i).setSelected(false);
         }
     }
 
@@ -171,41 +164,20 @@ public class SetupScreen extends AbstractScreen {
         else
             player2Title = box;
 
-        for(int i = 0; i < 4; ++i)
+        String[] labels = new String[]{"No Ai", "Easy", "Medium", "Hard"};
+        for(int i = 0; i < labels.length; ++i)
         {
-            String text;
-            switch(i)
-            {
-                case 0: text = "No Ai"; break;
-                case 1: text = "Easy"; break;
-                case 2: text = "Medium"; break;
-                case 3: text = "Hard"; break;
-                default: text = "Unknown"; break;
-            }
-
-            Button button = new Button(text, assetManager);
-
-            button.setSize(buttonWidth, buttonHeight);
-
             final int difficulty = i-1;
-            button.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    super.clicked(event, x, y);
-                    resetbuttonList(player);
-                    button.setSelected(true);
-                    if(difficulty >= -1 && difficulty < AiDifficulty.values().length)
-                        setDifficulty(player, difficulty);
+            Button button = createButton(labels[i], () -> {
+                resetbuttonList(player);
+                getAIDifficultySettingButton(player, difficulty+1).setSelected(true);
+                if(difficulty >= -1 && difficulty < AiDifficulty.values().length)
+                    setDifficulty(player, difficulty);
 
-                    if(player == -1)
-                    {
-                        player1Title.setVisible(difficulty == -1);
-                    }
-                    else
-                    {
-                        player2Title.setVisible(difficulty == -1);
-                    }
-                }
+                if(player == -1)
+                    player1Title.setVisible(difficulty == -1);
+                else
+                    player2Title.setVisible(difficulty == -1);
             });
 
             if(i == 0)
@@ -218,8 +190,28 @@ public class SetupScreen extends AbstractScreen {
                 player1Buttons.add(button);
             else
                 player2Buttons.add(button);
-            stage.addActor(button);
         }
+    }
+
+    /**
+     * Helper method: Retrieve the AI difficulty selection button of the given
+     * player at the given position.
+     *
+     * @param player -1 for player 1, or 1 for player 2
+     * @param index The index of the button to select - in range [0,4)
+     *
+     * @return The selected button
+     */
+    private Button getAIDifficultySettingButton(int player, int index) {
+        if (!(player == -1 || player == 1)) {
+            throw new IllegalArgumentException("player == -1 || player == 1");
+        }
+        if (!(0 <= index && index < 4)) {
+            throw new IllegalArgumentException("0 <= index && index < 4");
+        }
+
+        return (player == -1 ? player1Buttons : player2Buttons).get(index);
+
     }
 
     /**
