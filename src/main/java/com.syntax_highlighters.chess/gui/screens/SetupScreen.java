@@ -61,100 +61,29 @@ public class SetupScreen extends AbstractScreen {
         this.assetManager = game.getAssetManager();
         stage = new Stage(new ScreenViewport());
 
-        title = new Text(AssetLoader.GetDefaultFont(assetManager));
-        title.setText("Select AI level");
-        title.setColor(0,0,0,1);
-        stage.addActor(title);
-
-        white = new Text(AssetLoader.GetDefaultFont(assetManager));
-        white.setText("White pieces:");
-        white.setColor(0,0,0,1);
-        stage.addActor(white);
-
-        black = new Text(AssetLoader.GetDefaultFont(assetManager));
-        black.setText("Black pieces:");
-        black.setColor(0,0,0,1);
-        stage.addActor(black);
-
-        playerNote = new Text(AssetLoader.GetDefaultFont(assetManager));
-        playerNote.setText("Note: Using the names Player 1 or Player 2 will not count to any score");
-        playerNote.setColor(0,0,0,1);
-        stage.addActor(playerNote);
+        title = createText("Select AI level", Color.BLACK);
+        white = createText("White pieces:", Color.BLACK);
+        black = createText("Black pieces:", Color.BLACK);
+        playerNote = createText("Note: Using the names Player 1 or Player 2 will not count to any score", Color.BLACK);
 
         addDifficultyList(game, -1);
         addDifficultyList(game, 1);
 
-        playButton = new Button("Play", assetManager);
-        playButton.setSize(buttonWidth, buttonHeight);
-        stage.addActor(playButton);
-
-        playButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-
-                String selected1 = player1Title.getSelected();
-                String selected2 = player2Title.getSelected();
-
-                // TODO: Get account
-                if(selected1 == null || selected1.isEmpty() || selected2 == null || selected2.isEmpty()
-                        || selected1.equals(selected2))
-                {
-                    // Invalid account selection
-                    // NOTE: maybe we should have an error message
-                    return;
-                }
-                AccountManager manager = game.getAccountManager();
-                Account player1 = manager.getAccount(selected1);
-                Account player2 = manager.getAccount(selected2);
-
-                // Set color - atm it's just black and white, but this should be
-                // changed with color picker integration
-                // TODO: Change this to let the player decide the colors
-                Color c1 = new Color(1,1,1,1); // white
-                Color c2 = new Color(0,0,0,1); // black
-
-                // Create player attribute objects
-                PlayerAttributes attrib1 = createAttributes(player1, player1Difficulty, c1);
-                PlayerAttributes attrib2 = createAttributes(player2, player2Difficulty, c2);
-                game.setScreen(new GameScreen(game, attrib1, attrib2));
-            }
-        });
-
-        mainMenu = new Button("Main menu", assetManager);
-        mainMenu.setSize(buttonWidth, buttonHeight);
-        stage.addActor(mainMenu);
-        mainMenu.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                game.setScreen(new MainMenuScreen(game));
-            }
-        });
-
         AccountOverlay accountOverlay = new AccountOverlay(game, this, assetManager);
         accountOverlay.setVisible(false);
+        
+        playButton = createButton("Play", () -> startGame(game));
 
-
-        createAccount = new Button("Create account", assetManager);
-        createAccount.setSize(buttonWidth, buttonHeight);
-        stage.addActor(createAccount);
-        createAccount.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                accountOverlay.setVisible(true);
-            }
-        });
+        mainMenu = createButton("Main menu", () -> game.setScreen(new MainMenuScreen(game)));
+        createAccount = createButton("Create account", () -> accountOverlay.setVisible(true));
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
         Gdx.input.setInputProcessor(stage);
 
         // add this last
         stage.addActor(accountOverlay);
     }
-
+    
     public void updateAccountLists(ChessGame game)
     {
         ArrayList<String> accounts = new ArrayList<>();
@@ -164,11 +93,15 @@ public class SetupScreen extends AbstractScreen {
             accounts.add(acc.getName());
         }
         player1Title.setItems(accounts.stream().map(String::toString).toArray(String[]::new));
-        accounts.remove("Player 1");
-        accounts.add(0,"Player 2");
+        
+        // Reuse account list for right-hand side, but exchange dummy account
+        // "Player 1" with "Player 2"
+        accounts.set(0,"Player 2");
         player2Title.setItems(accounts.stream().map(String::toString).toArray(String[]::new));
 
     }
+
+    /* HELPER METHODS */
 
     private void resetbuttonList(int player)
     {
@@ -283,6 +216,120 @@ public class SetupScreen extends AbstractScreen {
             return new PlayerAttributes(acc, color);
         return new PlayerAttributes(diff, color);
     }
+
+    /**
+     * Helper method: Create a Text object with the given text and color, and
+     * add it to the stage.
+     *
+     * This method is used increase readability and maintainability in the setup
+     * process, where every line of text created requires 4 lines of code. Using
+     * this method, the same can be accomplished in one.
+     *
+     * @param text The text content
+     * @param color The color of the text
+     *
+     * @return The newly created object
+     */
+    private Text createText(String text, Color color) {
+        Text t = new Text(AssetLoader.GetDefaultFont(assetManager));
+        t.setText(text);
+        t.setColor(color);
+        stage.addActor(t);
+        return t;
+    }
+    
+    /**
+     * Helper method: Create a button with the given text and click callback,
+     * and add it to the stage.
+     *
+     * NOTE: Does not work if you need to know the parameters of the clicked
+     * method, instead of simply the fact that the button was clicked.
+     *
+     * @param text The button text
+     * @param action The callback action
+     *
+     * @return The newly created button
+     */
+    private Button createButton(String text, Callback action) {
+        Button b = new Button(text, assetManager);
+        b.setSize(buttonWidth, buttonHeight);
+        stage.addActor(b);
+        b.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                action.perform();
+            }
+        });
+        return b;
+    }
+    
+    /**
+     * Helper method: Determine if the account selection is invalid.
+     *
+     * True if either string is null or empty, or if they are equal to each
+     * other (you cannot play with the same account on both sides).
+     *
+     * @param acc1 The first account name
+     * @param acc2 The second account name
+     *
+     * @return true if the account selection is invalid, false otherwise
+     */
+    private boolean invalidAccountSelection(String acc1, String acc2) {
+        return acc1 == null || acc1.isEmpty() || acc2 == null || acc2.isEmpty() || acc1.equals(acc2);
+    }
+
+    /**
+     * Helper method: Start the game.
+     *
+     * NOTE: The ChessGame parameter passed is there because although
+     * AbstractScreen has a ChessGame game field, that field is private and
+     * cannot be accessed in subclasses. The reason it could be accessed in the
+     * constructor is because it's there present as a local variable passed to
+     * the constructor, and thus accessible from the anonymous class created.
+     * This is perhaps not ideal - perhaps the game field should be protected in
+     * AbstactScreen instead - but this is a workaround designed not to disturb
+     * legacy code before I fully know the implications.
+     *
+     * May be refactored by anyone who wants to touch this hornet's nest.
+     *
+     * @param game Local variable instance parameter
+     */
+    private void startGame(ChessGame game) {
+        String selected1 = player1Title.getSelected();
+        String selected2 = player2Title.getSelected();
+
+        if(invalidAccountSelection(selected1, selected2))
+        {
+            // TODO: create error message(?)
+            return;
+        }
+        AccountManager manager = game.getAccountManager();
+        Account player1 = manager.getAccount(selected1);
+        Account player2 = manager.getAccount(selected2);
+
+        // Set color - atm it's just black and white, but this should be
+        // changed with color picker integration
+        // TODO: Change this to let the player decide the colors
+        Color c1 = new Color(1,1,1,1); // white
+        Color c2 = new Color(0,0,0,1); // black
+
+        // Create player attribute objects
+        PlayerAttributes attrib1 = createAttributes(player1, player1Difficulty, c1);
+        PlayerAttributes attrib2 = createAttributes(player2, player2Difficulty, c2);
+        game.setScreen(new GameScreen(game, attrib1, attrib2));
+    }
+    
+    /**
+     * Callback on button click.
+     *
+     * NOTE: Not aware of button click parameters, but enough for buttons, which
+     * normally only need to know *that* a button was clicked, not anything
+     * else.
+     */
+    private interface Callback {
+        void perform();
+    };
 
     @Override
     public void show() {
