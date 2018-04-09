@@ -91,7 +91,7 @@ public class SetupScreen extends AbstractScreen {
         selector.addListener(new PencilSelector.ColorSelectListener(){
             @Override
             public void colorSelected(PencilSelector.ColorSelectEvent event, Color color) {
-                selectNewColor(color);
+                selectNewColor(selector, color);
             }
         });
         stage.addActor(selector);
@@ -366,7 +366,7 @@ public class SetupScreen extends AbstractScreen {
      *
      * @param color The new color
      */
-    private void selectNewColor(Color color) {
+    private void selectNewColor(PencilSelector selector, Color color) {
         selector.hide(1.0f);
         final Color currentColor = swapColor(color); // returns previously selected color
         DelayAction delay = new DelayAction();
