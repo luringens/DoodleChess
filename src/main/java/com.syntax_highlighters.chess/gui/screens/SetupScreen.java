@@ -3,6 +3,9 @@ package com.syntax_highlighters.chess.gui.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
@@ -15,6 +18,7 @@ import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.actors.AccountOverlay;
 import com.syntax_highlighters.chess.gui.actors.Button;
+import com.syntax_highlighters.chess.gui.actors.PencilSelector;
 import com.syntax_highlighters.chess.gui.actors.Text;
 import com.syntax_highlighters.chess.PlayerAttributes;
 
@@ -41,6 +45,10 @@ public class SetupScreen extends AbstractScreen {
     private SelectBox<String> player1Title;
     private SelectBox<String> player2Title;
 
+    private Button player1ColorShow;
+    private Button player2ColorShow;
+    private int selectingPlayer = -1;
+
     private final ArrayList<Button> player1Buttons = new ArrayList<>();
     private final ArrayList<Button> player2Buttons = new ArrayList<>();
 
@@ -50,6 +58,9 @@ public class SetupScreen extends AbstractScreen {
 
     final float buttonWidth = 200;
     final float buttonHeight = 75;
+
+    private Color player1Color = Color.WHITE;
+    private Color player2Color = Color.BLACK;
 
     public SetupScreen(ChessGame game)
     {
@@ -71,6 +82,54 @@ public class SetupScreen extends AbstractScreen {
 
         mainMenu = createButton("Main menu", () -> game.setScreen(new MainMenuScreen(game)));
         createAccount = createButton("Create account", () -> accountOverlay.setVisible(true));
+
+        // TODO: refactor to prettify constructor
+        PencilSelector selector= new PencilSelector(assetManager);
+        selector.setPosition(100, -150);
+        selector.addListener(new PencilSelector.ColorSelectListener(){
+            @Override
+            public void colorSelected(PencilSelector.ColorSelectEvent event, Color color) {
+                selector.hide(1.0f);
+                if(selectingPlayer == 0)
+                {
+                    final Color currentColor = player1Color;
+                    DelayAction delay = new DelayAction();
+                    delay.setDuration(1.0f);
+                    player1Color = color;
+                    RunnableAction runnable = new RunnableAction();
+                    runnable.setRunnable(() -> {
+                        selector.releaseColor(currentColor);
+                        selector.selectColor(player1Color);
+
+                    });
+                    selector.addAction(new SequenceAction(delay, runnable));
+                }
+                else if(selectingPlayer == 1)
+                {
+                    final Color currentColor = player2Color;
+                    DelayAction delay = new DelayAction();
+                    delay.setDuration(1.0f);
+                    player2Color = color;
+                    RunnableAction runnable = new RunnableAction();
+                    runnable.setRunnable(() -> {
+                        selector.releaseColor(currentColor);
+                        selector.selectColor(player2Color);
+
+                    });
+                    selector.addAction(new SequenceAction(delay, runnable));
+                }
+
+                selectingPlayer = -1;
+            }
+        });
+        //selector.hide();
+        stage.addActor(selector);
+        selector.hide(0.0f);
+        selector.selectColor(player1Color);
+        selector.selectColor(player2Color);
+
+        player1ColorShow = createButton("Choose color", () -> {selector.show(1.0f); selectingPlayer = 0;});
+        player2ColorShow = createButton("Choose color", () -> {selector.show(1.0f); selectingPlayer = 1;});
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.input.setInputProcessor(stage);
@@ -303,15 +362,9 @@ public class SetupScreen extends AbstractScreen {
         Account player1 = manager.getAccount(selected1);
         Account player2 = manager.getAccount(selected2);
 
-        // Set color - atm it's just black and white, but this should be
-        // changed with color picker integration
-        // TODO: Change this to let the player decide the colors
-        Color c1 = new Color(1,1,1,1); // white
-        Color c2 = new Color(0,0,0,1); // black
-
         // Create player attribute objects
-        PlayerAttributes attrib1 = createAttributes(player1, player1Difficulty, c1);
-        PlayerAttributes attrib2 = createAttributes(player2, player2Difficulty, c2);
+        PlayerAttributes attrib1 = createAttributes(player1, player1Difficulty, player1Color);
+        PlayerAttributes attrib2 = createAttributes(player2, player2Difficulty, player2Color);
         game.setScreen(new GameScreen(game, attrib1, attrib2));
     }
     
@@ -339,16 +392,21 @@ public class SetupScreen extends AbstractScreen {
         float centerW = width / 2.f - buttonWidth / 2.f;
         float centerH = height / 2.f - buttonHeight / 2.f;
 
-        title.setCenter(width / 2.f, centerH + buttonHeight * 4);
+        title.setCenter(width / 2.f, centerH + buttonHeight * 5);
 
-        white.setCenter(centerW - buttonWidth + player1Title.getWidth() / 2.f, centerH + buttonHeight * 3.75f);
-        black.setCenter(centerW + buttonWidth + player2Title.getWidth() / 2.f, centerH + buttonHeight * 3.75f);
+        white.setCenter(centerW - buttonWidth + player1Title.getWidth() / 2.f, centerH + buttonHeight * 4.75f);
+        black.setCenter(centerW + buttonWidth + player2Title.getWidth() / 2.f, centerH + buttonHeight * 4.75f);
 
 
         player1Title.setPosition(width / 2.f - buttonWidth - player1Title.getWidth() / 2.f,
-                height / 2.f + buttonHeight * 2.5f - player1Title.getHeight() / 2.f);
+                height / 2.f + buttonHeight * 3.5f - player1Title.getHeight() / 2.f);
         player2Title.setPosition(width / 2.f + buttonWidth - player2Title.getWidth() / 2.f,
-                height / 2.f + buttonHeight * 2.5f - player1Title.getHeight() / 2.f);
+                height / 2.f + buttonHeight * 3.5f - player1Title.getHeight() / 2.f);
+
+        player1ColorShow.setPosition(width / 2.f - buttonWidth - player1Title.getWidth() / 2.f,
+                height / 2.f + buttonHeight * 2.25f - player1Title.getHeight() / 2.f);
+        player2ColorShow.setPosition(width / 2.f + buttonWidth - player2Title.getWidth() / 2.f,
+                height / 2.f + buttonHeight * 2.25f - player1Title.getHeight() / 2.f);
 
         for(int i = 0; i < player1Buttons.size(); ++i)
         {

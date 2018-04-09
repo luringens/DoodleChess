@@ -64,6 +64,7 @@ public class MainMenuScreen extends AbstractScreen {
                 game.setScreen(new ScoreScreen(game));
             }
         });
+
     }
 
     /**

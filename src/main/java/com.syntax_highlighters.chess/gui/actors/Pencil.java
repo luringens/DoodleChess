@@ -18,6 +18,8 @@ public class Pencil extends Actor {
     private Texture base;
     private Texture wood;
 
+    private boolean isSelected = false;
+
     public Pencil(AssetManager manager, Color color) {
         super();
 
@@ -32,6 +34,18 @@ public class Pencil extends Actor {
         wood = manager.get("pencils/wood" + tex + ".png", Texture.class);
 
         this.color = color;
+    }
+
+    public Color getColor() {
+        return this.color;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 
     @Override
