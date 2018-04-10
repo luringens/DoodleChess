@@ -165,6 +165,7 @@ public class Game {
                 || board.checkMate(Color.BLACK)
                 || insufficientMaterial()
                 || board.getAllPieces().stream()
+                .filter(p -> p.getColor() == nextPlayerColor)
                 .noneMatch(p -> p.allPossibleMoves(board).size() > 0);
     }
 

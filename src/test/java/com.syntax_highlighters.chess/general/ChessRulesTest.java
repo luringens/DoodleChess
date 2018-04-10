@@ -160,10 +160,13 @@ class ChessRulesTest {
 
         List<IChessPiece> pieces = new ArrayList<>();
         pieces.add(new ChessPieceKing(new Position(6, 7), Color.WHITE));
+        pieces.add(new ChessPiecePawn(new Position(7, 6), Color.WHITE));
         pieces.add(new ChessPieceKing(new Position(8, 6), Color.BLACK));
-        pieces.add(new ChessPieceKing(new Position(8, 6), Color.BLACK));
+        pieces.add(new ChessPiecePawn(new Position(8, 5), Color.BLACK));
+        pieces.add(new ChessPiecePawn(new Position(8, 4), Color.WHITE));
         Board b = new Board(pieces);
         Game g = Game.setupTestBoard(b, Color.BLACK);
+        System.out.println(b);
         assertTrue(g.isGameOver());
     }
 
