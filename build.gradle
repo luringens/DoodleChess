@@ -56,11 +56,13 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 
     //Defines dependencies for LibGdx, used in the fat-jar
     extraLibs "com.badlogicgames.gdx:gdx:$gdxVersion"
     extraLibs "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
     extraLibs "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    extraLibs "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 }
 
 // Use gradle built in JUnit test platform
