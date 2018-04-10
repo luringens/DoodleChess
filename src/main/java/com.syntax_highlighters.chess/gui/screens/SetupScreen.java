@@ -16,6 +16,7 @@ import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
+import com.syntax_highlighters.chess.gui.Audio;
 import com.syntax_highlighters.chess.gui.actors.AccountOverlay;
 import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.PencilSelector;
@@ -108,7 +109,7 @@ public class SetupScreen extends AbstractScreen {
         // add this last
         stage.addActor(accountOverlay);
     }
-    
+
     public void updateAccountLists(ChessGame game)
     {
         ArrayList<String> accounts = new ArrayList<>();
@@ -433,4 +434,5 @@ public class SetupScreen extends AbstractScreen {
         createAccount.setPosition(centerW, bottomBarY);
         playerNote.setCenter(width / 2.f, bottomBarY - 10.f);
     }
+
 }

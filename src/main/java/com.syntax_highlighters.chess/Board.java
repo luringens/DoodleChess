@@ -17,7 +17,7 @@ import java.util.Random;
  * The white player starts at rows 1 and 2
  * The black player starts at rows 7 and 8
  */
-public class Board {
+public class    Board {
     // constants, just in case
     public static final int BOARD_WIDTH = 8;
     public static final int BOARD_HEIGHT = 8;

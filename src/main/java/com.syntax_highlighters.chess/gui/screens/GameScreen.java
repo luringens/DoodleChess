@@ -16,6 +16,7 @@ import com.syntax_highlighters.chess.Game;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
+import com.syntax_highlighters.chess.gui.Audio;
 import com.syntax_highlighters.chess.gui.UiBoard;
 import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
@@ -71,7 +72,6 @@ public class GameScreen extends AbstractScreen {
         super(chessGame);
         
         assetManager = chessGame.getAssetManager();
-        
         this.player1 = attrib1.getAccount();
         this.player2 = attrib2.getAccount();
         this.ai1 = attrib1.getAIDifficulty();

@@ -73,10 +73,10 @@ public class UiBoard extends Actor {
 
                 if(((UiBoard)event.getTarget()).moveSelected(px, py))
                 {
+                    Audio.makeMove(assetManager);
                     selectedPiece = null;
                     return false;
                 }
-
                 selectedPiece = game.getPieceAtPosition(new Position(px, py));;
                 return true;
             }
@@ -122,8 +122,7 @@ public class UiBoard extends Actor {
                 Position pos = move.getPosition();
                 if(pos.getX() == px && pos.getY() == py)
                 {
-                    game.performMove(selectedPiece.getPosition(), pos);
-                    return true;
+                    return game.performMove(selectedPiece.getPosition(), pos);
                 }
             }
         }

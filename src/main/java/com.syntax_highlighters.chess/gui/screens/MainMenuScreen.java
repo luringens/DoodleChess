@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
+import com.syntax_highlighters.chess.gui.Audio;
 import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.Pencil;
 import com.syntax_highlighters.chess.gui.actors.PencilSelector;
@@ -48,8 +49,9 @@ public class MainMenuScreen extends AbstractScreen {
         stage.addActor(background);
         stage.addActor(playButton);
         stage.addActor(scoreButton);
-
         Gdx.input.setInputProcessor(stage);
+
+        Audio.themeMusic(assetManager);
 
         playButton.addListener(new ClickListener() {
             @Override

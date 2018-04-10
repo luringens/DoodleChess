@@ -2,6 +2,8 @@ package com.syntax_highlighters.chess.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -55,6 +57,9 @@ public class AssetLoader {
         Texture texture = new Texture(Gdx.files.internal("IndieFlower.png"));
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         font = new BitmapFont(Gdx.files.internal("IndieFlower.fnt"), new TextureRegion(texture), false);
+        manager.load("tick.wav",Sound.class);
+        manager.load("kho.wav",Sound.class);
+        manager.load("chesstheme.wav",Music.class);
     }
 
     public static String getAccountPath() {

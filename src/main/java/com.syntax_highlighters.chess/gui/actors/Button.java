@@ -8,7 +8,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.syntax_highlighters.chess.gui.AssetLoader;
+import com.syntax_highlighters.chess.gui.Audio;
 
 import java.util.ArrayList;
 
@@ -47,6 +50,14 @@ public class Button extends Actor {
         this.text.setColor(0,0,0,1);
 
         textureId = (int)(Math.random() * TEXTURE_COUNT);
+
+        this.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event,float x, float y, int pointer, Actor fromActor){
+                super.enter(event,x,y,pointer,fromActor);
+                Audio.menuSound(manager);
+            }
+        });
     }
 
     private void renderTextures(int textureCount, Texture template, ShaderProgram shader) {
