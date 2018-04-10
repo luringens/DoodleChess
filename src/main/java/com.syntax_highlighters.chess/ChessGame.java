@@ -23,10 +23,7 @@ public class ChessGame extends Game {
 	private AssetManager assetManager;
 	private SpriteBatch batch;
 	private ShaderProgram noiseShader;
-	private ShaderProgram offsetShader;
-	private ShaderProgram offsetShader2;
 	private FrameBuffer paperBuffer;
-	private FrameBuffer paperBuffer2;
 	private FrameBuffer screenBuffer;
 	private Texture paper;
 	private AccountManager accountManager;
@@ -54,15 +51,8 @@ public class ChessGame extends Game {
         paper = assetManager.get("paper.png", Texture.class);
 
 		batch = new SpriteBatch();
-		noiseShader = new ShaderProgram(Gdx.files.internal("shaders/id.vert"), Gdx.files.internal("shaders/wrinkles.frag"));
-		offsetShader = new ShaderProgram(Gdx.files.internal("shaders/id.vert"), Gdx.files.internal("shaders/offsetNoise.frag"));
-		offsetShader2 = new ShaderProgram(Gdx.files.internal("shaders/id.vert"), Gdx.files.internal("shaders/removeWhite.frag"));
-		if(!offsetShader2.isCompiled())
-		{
-			System.out.println(offsetShader2.getLog());
-		}
+		noiseShader = new ShaderProgram(Gdx.files.internal("shaders/id.vert"), Gdx.files.internal("shaders/noise.frag"));
 		paperBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, ishW, ishH, false);
-		paperBuffer2 = new FrameBuffer(Pixmap.Format.RGBA8888, ishW, ishH, false);
 		screenBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
 		setScreen(new MainMenuScreen(this));
@@ -108,22 +98,10 @@ public class ChessGame extends Game {
 
 		// Draw paper background
 		batch.begin();
-		batch.draw(paperBuffer2.getColorBufferTexture(), 0,0, ishW, ishH, 0, 0, ishW, ishH, false, false);
+		batch.draw(paperBuffer.getColorBufferTexture(), 0,0, ishW, ishH, 0, 0, ishW, ishH, false, false);
 		batch.end();
 
-		// Draw screen to buffer
-		screenBuffer.begin();
-		Gdx.gl.glClearColor(1f, 1f, 1f, 0f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		super.render();
-		screenBuffer.end();
-
-		// Draw buffer to screen
-		batch.begin();
-		batch.setShader(offsetShader2);
-		batch.draw(screenBuffer.getColorBufferTexture(), 0, 0, 800, 800, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, true);
-		batch.end();
-		batch.setShader(null);
 	}
 
     /**
@@ -135,7 +113,6 @@ public class ChessGame extends Game {
 	    batch.dispose();
 		noiseShader.dispose();
 	    paperBuffer.dispose();
-		paperBuffer2.dispose();
 		screenBuffer.dispose();
 	}
 
@@ -155,23 +132,13 @@ public class ChessGame extends Game {
      */
     private void recomputeBackground()
     {
-        batch.setShader(noiseShader);
-        paperBuffer.begin();
-        batch.begin();
-		noiseShader.setUniformf("u_offset", new Vector2((float)Math.random() * 100.f, (float)Math.random() * 100.f));
-        batch.draw(paper, 0, 0, ishW, ishH);
-        batch.end();
-        paperBuffer.end();
-		batch.setShader(offsetShader);
-		paperBuffer2.begin();
+		batch.setShader(noiseShader);
+		paperBuffer.begin();
 		batch.begin();
-		offsetShader.setUniformf("u_offset", new Vector2((float)Math.random() * 100.f, (float)Math.random() * 100.f));
-		Gdx.gl.glActiveTexture(GL20.GL_TEXTURE1);
-		paperBuffer.getColorBufferTexture().bind(1);
-		offsetShader.setUniformi("u_texture2", 1);
+		noiseShader.setUniformf("u_offset", new Vector2((float)Math.random() * 100.f, (float)Math.random() * 100.f));
 		batch.draw(paperBuffer.getColorBufferTexture(), 0, 0, ishW, ishH);
 		batch.end();
-		paperBuffer2.end();
+		paperBuffer.end();
 		batch.setShader(null);
 		Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
     }

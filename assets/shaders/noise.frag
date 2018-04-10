@@ -9,7 +9,6 @@ precision mediump float;
 #extension GL_EXT_gpu_shader4 : enable
 
 uniform sampler2D u_texture;
-uniform sampler2D u_texture2;
 uniform vec2 u_offset;
 
 varying vec2 v_texCoords;
@@ -65,19 +64,17 @@ void main()
     
     float x = noiseX;
     float y =  noiseY;
-    vec4 texCol = clamp(texture2D(u_texture2, v_texCoords), 
-                      vec4(0,0,0,0), vec4(1,1,1,1)) ;
     
     
     for(float i = 1.0; i < 4.0; ++i)
     {
         float thing = float(1<<int(i));
-        noise += 1.0/i * snoise(v_texCoords * 10.0 * thing + texCol.xy);
+        noise += 1.0/i * snoise(v_texCoords * 10.0 * thing);
     }
     noise = (noise + 1.0) / 4.0;
-        float noise3 = snoise(v_texCoords * 800.0 ) - ((snoise(v_texCoords * 50.0) + 1.0) / 2.0) - ((snoise(v_texCoords * 20.0* texCol.xy) + 1.0) / 2.0);
+        float noise3 = snoise(v_texCoords * 800.0 ) - ((snoise(v_texCoords * 50.0) + 1.0) / 2.0) - ((snoise(v_texCoords * 20.0) + 1.0) / 2.0);
     noise3 = clamp(noise3, 0.0, 0.05);
-    gl_FragColor = vec4(0.94, 0.94, 0.94, 1.0) / (1.0-texCol*0.9) * (1.0 - noise * 0.04) - noise3*0.7;
+    gl_FragColor = vec4(0.94, 0.94, 0.94, 1.0) * (1.0 - noise * 0.04);
     //gl_FragColor = texCol;
     //ragColor = texture(iChannel1, v_texCoords);
 }

@@ -147,15 +147,17 @@ public class MiniMaxAIPlayer implements IAiPlayer {
                 // Make a mistake if difficulty is set to do so.
                 if (rand.nextDouble() < chanceOfMistake) continue;
 
-                // Check if the move puts the opponent in checkmate.
-                if (board.checkMate(lookingAtWhite)) return 100000;
-
                 move.DoMove(board);
+                // Check if the move puts the opponent in checkmate.
+                if (board.checkMate(!lookingAtWhite)) {
+                    move.UndoMove(board);
+                    return 100000;
+                }
                 int score = MiniMaxScore(depth - 1, board, isWhite, false, alpha, beta);
                 move.UndoMove(board);
 
                 // Alpha-beta pruning - early return for optimization
-                if (score >= beta) return beta;
+                //if (score >= beta) return beta;
                 alpha = Math.max(alpha, score);
             }
             return alpha;
@@ -165,15 +167,17 @@ public class MiniMaxAIPlayer implements IAiPlayer {
                 // Make a mistake if difficulty is set to do so.
                 if (rand.nextDouble() < chanceOfMistake) continue;
 
-                // Check if the move puts the opponent in checkmate.
-                if (board.checkMate(lookingAtWhite)) return -100000;
-
                 move.DoMove(board);
+                // Check if the move puts the opponent in checkmate.
+                if (board.checkMate(!lookingAtWhite)) {
+                    move.UndoMove(board);
+                    return -100000;
+                }
                 int score = MiniMaxScore(depth - 1, board, isWhite, true, alpha, beta);
                 move.UndoMove(board);
 
                 // Alpha-beta pruning - early return for optimization
-                if (score <= alpha) return alpha;
+                //if (score <= alpha) return alpha;
                 beta = Math.min(beta, score);
             }
             return beta;
