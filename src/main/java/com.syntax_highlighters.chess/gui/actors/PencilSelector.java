@@ -81,7 +81,9 @@ public class PencilSelector extends Actor {
                 int index = (int)(x / 32.f);
                 if(index >= 0 && index < pencils.size())
                 {
-                    self.fire(new ColorSelectEvent(pencils.get(index)));
+                    Pencil selectedP = pencils.get(index);
+                    if (!selectedP.isSelected())
+                        self.fire(new ColorSelectEvent(pencils.get(index)));
                 }
 
             }
