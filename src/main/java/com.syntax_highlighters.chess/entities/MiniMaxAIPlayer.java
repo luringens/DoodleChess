@@ -90,14 +90,24 @@ public class MiniMaxAIPlayer implements IAiPlayer {
      */
     private Move MiniMaxMove(int depth, Board board) {
         assert(depth >= 1);
-
-        // Increase search depth when few pieces remain
         List<IChessPiece> pieces = board.getAllPieces();
-        if (pieces.size() < 15) depth++;
-        if (pieces.size() < 10) depth++;
-        if (pieces.size() < 7) depth++;
-        if (pieces.size() < 5) depth += 3;
+
+        boolean easy = depth == EASY_DEPTH;
+        boolean med = depth == MED_DEPTH;
+
+        // Increase search depth when few pieces remain, unless set to easy.
+        if (!easy) {
+            if (pieces.size() < 15) depth++;
+            if (pieces.size() < 10) depth++;
+
+            // Don't become unstoppable late-game unless set to hard.
+            if (!med) {
+                if (pieces.size() < 7) depth++;
+                if (pieces.size() < 5) depth += 3;
+            }
+        }
         int finalDepth = depth; // Stupid Java lambda thing
+
 
         // Get all possible first moves for the AI.
         List<Move> moves = pieces.stream()
