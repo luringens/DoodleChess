@@ -10,6 +10,7 @@ public class Account {
     private int wins;
     private int losses;
     private int rating;
+    private int points;
 
     /**
      * Construct a new account with the given name.
@@ -100,6 +101,24 @@ public class Account {
      */
     public int getRating() {
         return this.rating;
+    }
+
+    /**
+     * Get the points of the player.
+     *
+     * @return The points for this account
+     */
+    public int getPoints() {
+        return this.points;
+    }
+
+    /**
+     * Set the points of the player.
+     *
+     * @return void
+     */
+    public void addPoints(int n) {
+        this.points += n;
     }
 
     /**
