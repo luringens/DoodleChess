@@ -2,9 +2,11 @@ package com.syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.entities.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Random;
 
 /**
  * Holds the current state of the board.
@@ -114,6 +116,127 @@ public class Board {
             putAtPosition(piece.getPosition(), piece);
         }
     }
+
+    /**
+     *
+     * @param hcpW
+     * @param hcpB
+     * @param bonusW
+     * @param bonusB
+     */
+    public void setupRandomGame(int hcpW, int hcpB,int bonusW, int bonusB) {
+        if (bonusW > 16 && bonusB > 16) {
+            throw new IllegalArgumentException("Invalid bonus value. Must be 0 < Bonus < 16. ");
+        }
+
+        int[] WhiteTiles = generateTileScores(hcpW, bonusW);
+        int[] BlackTiles = generateTileScores(hcpB,bonusB);
+        int[][] Bmap = generateTileMap(bonusB);
+        int[][] Wmap = generateTileMap(bonusW);
+        int N = 0;
+
+        IChessPiece Wking = new ChessPieceKing(new Position(4,1), Color.WHITE);
+        IChessPiece Bking = new ChessPieceKing(new Position(4,8), Color.BLACK);
+
+        for (int x = 0; x < Bmap.length; x++) {
+            for (int y = 0; y < Bmap[x].length; y++) {
+                if( Bmap[x][y] == 1 && !(x==4 && y == 1)){
+                    IChessPiece piece = AbstractChessPiece.GetPiecefromScore(x+1,7-y+1,BlackTiles[N], Color.BLACK);
+                    putAtPosition(piece.getPosition(),piece);
+                    N = N + 1;
+                }
+            }
+        }
+        N = 0;
+        for (int x = 0; x < Wmap.length; x++) {
+            for (int y = 0; y < Wmap[x].length; y++) {
+                if( Wmap[x][y] == 1 && !(x==4 && y == 8)){
+                    IChessPiece piece = AbstractChessPiece.GetPiecefromScore(x+1,y+1,WhiteTiles[N], Color.WHITE);
+                    putAtPosition(piece.getPosition(),piece);
+                    N = N + 1;
+                }
+            }
+        }
+        putAtPosition(Wking.getPosition(),Wking);
+        putAtPosition(Bking.getPosition(),Bking);
+
+    }
+
+    /**
+     * Generates a tilemap to be used when placing the pieces. The tiles are randomly placed.
+     * @param bonus
+     * @return
+     */
+    public int[][] generateTileMap(int bonus){
+        int[][] map = new int[8][4];
+        Random rand = new Random();
+
+        map[4][1] = 1;
+
+        while (bonus - 1 + 15 > 0){
+            int x = rand.nextInt(8);
+            int y = rand.nextInt(4);
+            if (map[x][y] == 0){
+                map[x][y] = 1;
+                bonus = bonus - 1;
+            }
+        }
+        return map;
+    }
+
+    /**
+     * Generates a list of scores to be used in the random generator. The function
+     * tries to exploit randomness as best it can.
+     * TODO: Make sure it cannot end up in an infinite loop when hcp is high and bonus is low.
+     *
+     * @param hcp Handicap for each player
+     * @param bonus Bonus pieces assigned to a player.
+     * @return
+     */
+    public int[] generateTileScores(int hcp, int bonus){
+
+        Random rdm = new Random();
+        int[] N = new int[15 +  bonus];
+        int[] values = new int[]{100,320,330,500,900};
+        int score = hcp*70;
+
+        while (score > 1){
+            int chng = 0;
+            int temp = 0;
+            int x = rdm.nextInt(N.length );
+
+            if (N[x] < 100 ){
+                chng = values[rdm.nextInt(5)];
+                N[x] = chng;
+                score = score - chng;
+            }if (N[x] < 320 && N[x] > 100){
+                if (rdm.nextInt(2) == 2) { //Rolls a "dice" to reduce probability.
+                    chng = values[rdm.nextInt(4) + 1]; //Decreasing bounds so that it does not "upgrade down".
+                    temp = N[x];
+                    N[x] = chng;
+                    score = score -(chng-temp);
+                }
+            }else if (N[x] < 330 && N[x] > 320){
+                if (rdm.nextInt(2) == 2);{
+                    chng = values[rdm.nextInt(3) + 2];
+                    temp = N[x];
+                    N[x] = chng;
+                    score = score -(chng-temp);
+                }
+            }else if (N[x] < 500){
+                if (rdm.nextInt(2) == 2) { //This corresponds to a probability of around 12.5%
+                    chng = values[rdm.nextInt(2) + 3];
+                    N[x] = chng;
+                    score = score -(chng-temp);
+                }
+            }
+        }
+        for (int i = 0; i < N.length; i++){
+            if (N[i] == 0){N[i] = 100;}
+        }
+        return N;
+    }
+
 
     /**
      * Put a piece at a position on the board.

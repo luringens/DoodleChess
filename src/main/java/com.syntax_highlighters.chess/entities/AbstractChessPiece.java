@@ -126,6 +126,25 @@ public abstract class AbstractChessPiece implements IChessPiece {
         }
     }
 
+    public static IChessPiece GetPiecefromScore(int x, int y, int score, Color color){
+
+        Position pos = new Position(x,y);
+        switch(score) {
+            case 100:
+                return new ChessPiecePawn(pos, color);
+            case 320:
+                return new ChessPieceKnight(pos, color);
+            case 330:
+                return new ChessPieceBishop(pos, color);
+            case 500:
+                return new ChessPieceRook(pos, color);
+            case 900:
+                return new ChessPieceQueen(pos, color);
+            default:
+                throw new IllegalArgumentException("Invalid piece score: " + score);
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
