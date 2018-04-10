@@ -1,9 +1,6 @@
 package com.syntax_highlighters.chess.general;
 
-import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.EnPassantMove;
-import com.syntax_highlighters.chess.Move;
-import com.syntax_highlighters.chess.Position;
+import com.syntax_highlighters.chess.*;
 import com.syntax_highlighters.chess.entities.*;
 
 import org.junit.jupiter.api.Test;
@@ -147,7 +144,29 @@ class ChessRulesTest {
         assertTrue("En passant does not capture enemy piece",
                 board.getAtPosition(blackPos) == null);
     }
-    
+
+    @Test
+    void noAvailableMovesMeansGameOver() {
+        //  A B C D E F G H
+        // _________________
+        // |. . . . . . . .| 8
+        // |. . . . . K . .| 7 White king
+        // |. . . . . . p K| 6 White pawn, black king
+        // |. . . . . . . p| 5 Black pawn
+        // |. . . . . . . p| 4 White pawn
+        // |. . . . . . . .| 3
+        // |. . . . . . . .| 2
+        // |._._._._._._._.| 1
+
+        List<IChessPiece> pieces = new ArrayList<>();
+        pieces.add(new ChessPieceKing(new Position(6, 7), Color.WHITE));
+        pieces.add(new ChessPieceKing(new Position(8, 6), Color.BLACK));
+        pieces.add(new ChessPieceKing(new Position(8, 6), Color.BLACK));
+        Board b = new Board(pieces);
+        Game g = Game.setupTestBoard(b, Color.BLACK);
+        assertTrue(g.isGameOver());
+    }
+
     @Test
     void blackPawnCanPerformEnPassant() {
         setUp(); // I really need to figure out that @Before bug...
