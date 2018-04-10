@@ -69,12 +69,10 @@ void main()
     for(float i = 1.0; i < 4.0; ++i)
     {
         float thing = float(1<<int(i));
-        noise += 1.0/i * snoise(v_texCoords * 10.0 * thing);
+        noise += 1.0/i * snoise(v_texCoords * 25.0 * thing);
     }
     noise = (noise + 1.0) / 4.0;
-        float noise3 = snoise(v_texCoords * 800.0 ) - ((snoise(v_texCoords * 50.0) + 1.0) / 2.0) - ((snoise(v_texCoords * 20.0) + 1.0) / 2.0);
-    noise3 = clamp(noise3, 0.0, 0.05);
-    gl_FragColor = vec4(0.94, 0.94, 0.94, 1.0) * (1.0 - noise * 0.04);
+    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0) * (1.0 - noise * 0.03);
     //gl_FragColor = texCol;
     //ragColor = texture(iChannel1, v_texCoords);
 }
