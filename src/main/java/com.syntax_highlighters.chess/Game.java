@@ -33,8 +33,21 @@ public class Game {
         }
 
         this.board = new Board();
-        
         this.board.setupNewGame();
+    }
+
+    private Game(Board board, Color nextPlayerColor) {
+        this.board = board;
+        this.nextPlayerColor = nextPlayerColor;
+    }
+
+    /**
+     * Set up a game with a board for testing purposes.
+     * DO NOT USE FOR ACTUAL GAMES.
+     * @param board The board to use
+     */
+    public static Game setupTestBoard(Board board, Color nextPlayerColor) {
+        return new Game(board, nextPlayerColor);
     }
 
     /**
