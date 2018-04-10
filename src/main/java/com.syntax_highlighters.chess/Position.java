@@ -153,17 +153,36 @@ public class Position {
      * intermediate positions between the two if they are in a straight line.
      */
     public List<Position> stepsToPosition(Position goal) {
-        List<Position> l = new ArrayList<>();
-        l.add(this);
-        if (Math.abs(this.getX() - goal.getX()) == Math.abs(this.getY() - goal.getY())) {
-            int dx = (int)Math.signum(this.getX() - goal.getX());
-            int dy = (int)Math.signum(this.getY() - goal.getY());
-            for (int i = 0; !goal.equals(new Position(this.getX() + dx*i, this.getY() + dy*i)); i++) {
-                l.add(new Position(this.getX() + dx*i, this.getY() + dy*i));
-            }
+        List<Position> intermediatePositions = new ArrayList<>();
+        intermediatePositions.add(this); // add initial position, regardless
+        
+        int xdiff = goal.getX() - this.getX();
+        int ydiff = goal.getY() - this.getY();
+        boolean straightLine = xdiff == 0 || ydiff == 0 || Math.abs(ydiff) == Math.abs(xdiff);
+        
+        if (!this.equals(goal) && straightLine) {
+            // find direction of change in x and y for each step
+            // Note that dx and dy cannot both be 0, because if so, then
+            // this.equals(goal)
+            final int dx = (int)Math.signum(xdiff); // -1, 0 or 1
+            final int dy = (int)Math.signum(ydiff); // -1, 0 or 1
+            
+            // create a manipulator which returns the next position in the given
+            // direction
+            Manipulator m = p -> new Position(p.getX() + dx, p.getY() + dy);
+            Position current = m.transform(this); // start from the first position
+            do {
+                intermediatePositions.add(current);
+                current = m.transform(current);
+            } while (!goal.equals(current));
         }
-        l.add(goal);
-        return l;
+        
+        intermediatePositions.add(goal); // add final position, regardless
+        return intermediatePositions;
+    }
+
+    public static interface Manipulator {
+        Position transform(Position pos);
     }
 
 

@@ -115,17 +115,6 @@ public class ChessPieceKing extends AbstractChessPiece {
                 .filter(m -> board.moveDoesntPutKingInCheck(m, color))
                 .collect(Collectors.toList());
     }
-
-    /**
-     * Interface used in the canCastle method.
-     *
-     * I might want to make this either an interface in
-     * com.syntax_highlighters.chess or a static interface in Position so it can
-     * be referenced by other classes.
-     */
-    private interface PositionManipulator {
-        Position transform(Position pos);
-    }
     
     /**
      * Check if the king can castle in the specified direction.
@@ -138,7 +127,7 @@ public class ChessPieceKing extends AbstractChessPiece {
      * @return true if castling is possible in the given direction, false
      * otherwise
      */
-    private boolean canCastle(Board board, Position pos, Position target, PositionManipulator direction) {
+    private boolean canCastle(Board board, Position pos, Position target, Position.Manipulator direction) {
 
         // Check the squares between the king and rook (assuming the rook is in
         // the direction specified by direction) for whether they're occupied,
