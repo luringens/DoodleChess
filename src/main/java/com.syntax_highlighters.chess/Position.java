@@ -3,6 +3,7 @@ package com.syntax_highlighters.chess;
 import java.util.Objects; // Objects.hash
 import java.util.Arrays; // asList
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Position on a grid (x, y).
@@ -130,6 +131,41 @@ public class Position {
                 northeast(1), northwest(1),
                 southeast(1), southwest(1));
     }
+
+    /**
+     * Return a List containing all intermediate positions between this position
+     * and the given position, including the start and end positions.
+     *
+     * If the positions are not in a straight line, there are no intermediate
+     * positions, and the list contains only the start and end positions.
+     *
+     * If the start and end positions are the same, the position list contains
+     * the first position twice, both as starting position and as ending
+     * position. Thus the list will always have at least two elements.
+     *
+     * The positions should be sorted in order of proximity to the starting
+     * position. Thus, the starting position is always the first position, and
+     * the ending position is always the last.
+     *
+     * @param goal The goal position
+     *
+     * @return A List containing the starting position, ending position, and all
+     * intermediate positions between the two if they are in a straight line.
+     */
+    public List<Position> stepsToPosition(Position goal) {
+        List<Position> l = new ArrayList<>();
+        l.add(this);
+        if (Math.abs(this.getX() - goal.getX()) == Math.abs(this.getY() - goal.getY())) {
+            int dx = (int)Math.signum(this.getX() - goal.getX());
+            int dy = (int)Math.signum(this.getY() - goal.getY());
+            for (int i = 0; !goal.equals(new Position(this.getX() + dx*i, this.getY() + dy*i)); i++) {
+                l.add(new Position(this.getX() + dx*i, this.getY() + dy*i));
+            }
+        }
+        l.add(goal);
+        return l;
+    }
+
 
     /**
      * Return the position in chess notation.
