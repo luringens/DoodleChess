@@ -9,6 +9,7 @@ public class Account {
     private final String name;
     private int wins;
     private int losses;
+    private int rating;
 
     /**
      * Construct a new account with the given name.
@@ -19,6 +20,7 @@ public class Account {
         this.name = name;
         this.wins = 0;
         this.losses = 0;
+        this.rating = 1000;
     }
 
     /**
@@ -32,7 +34,23 @@ public class Account {
         this.name = name;
         this.wins = wins;
         this.losses = losses;
+        this.rating = 1000;
     }
+    /**
+     * Construct a new account with a given name and the given win/loss numbers.
+     *
+     * @param name The account username
+     * @param wins The number of wins
+     * @param losses The number of losses
+     * @param rating The rating of player
+     */
+    public Account(String name, int wins, int losses, int rating){
+        this.name = name;
+        this.wins = wins;
+        this.losses = losses;
+        this.rating = rating;
+    }
+
 
     /**
      * Get the name of the account.
@@ -73,6 +91,15 @@ public class Account {
      */
     public int getLossCount(){
         return this.losses;
+    }
+
+    /**
+     * Get the rating of the player.
+     *
+     * @return The rating for this account
+     */
+    public int getRating() {
+        return this.rating;
     }
 
     /**

@@ -9,6 +9,7 @@ import com.syntax_highlighters.chess.ChessGame;
 /**
  * Application entry point.
  *
+ *
  * Creates a new application running our amazing version of chess!
  */
 public class Main {

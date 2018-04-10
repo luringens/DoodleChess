@@ -44,7 +44,7 @@ public class AccountManager {
      * @return a properly sorted list of accounts
      */
     private List<Account> sort(List<Account> accounts){
-        accounts.sort(Comparator.comparing(Account::getWinCount));
+        accounts.sort(Comparator.comparing(Account::getRating));
         List<Account> reverseAccounts = new ArrayList<>();
         for(int i=accounts.size()-1; i>=0; i--)
             reverseAccounts.add(accounts.get(i));
@@ -117,6 +117,8 @@ public class AccountManager {
                     .append(String.valueOf(a.getWinCount()))
                     .append(",")
                     .append(String.valueOf(a.getLossCount()))
+                    .append(",")
+                    .append(String.valueOf(a.getRating()))
                     .append("\n");
         }
         try {
@@ -148,7 +150,8 @@ public class AccountManager {
                 String name = stats[0];
                 int wins = Integer.parseInt(stats[1]);
                 int losses = Integer.parseInt(stats[2]);
-                myAccounts.add(new Account(name, wins, losses));
+                int rating = Integer.parseInt(stats[3]);
+                myAccounts.add(new Account(name, wins, losses, rating));
             }
         }catch(IOException e){
             // Skip if file doesn't exist
