@@ -16,7 +16,7 @@ public class Game {
     private final Board board;
     private IAiPlayer whiteAI = null;
     private IAiPlayer blackAI = null;
-    private boolean nextPlayerWhite = true;
+    private Color nextPlayerColor = Color.WHITE;
 
     /**
      * Creates a new, blank game and sets up the board.
@@ -26,10 +26,10 @@ public class Game {
      */
     public Game(AiDifficulty whiteAi, AiDifficulty blackAi) {
         if (whiteAi != null) {
-            this.whiteAI = new MiniMaxAIPlayer(true, whiteAi);
+            this.whiteAI = new MiniMaxAIPlayer(Color.WHITE, whiteAi);
         }
         if (blackAi != null) {
-            this.blackAI = new MiniMaxAIPlayer(false, blackAi);
+            this.blackAI = new MiniMaxAIPlayer(Color.BLACK, blackAi);
         }
 
         this.board = new Board();
@@ -50,12 +50,12 @@ public class Game {
         if (piece == null) return false; // there is no piece at the given position
         
         // Check that the piece belongs to the current player
-        if (piece.isWhite() != nextPlayerWhite) return false; // wrong color of piece
+        if (piece.getColor() != nextPlayerColor) return false; // wrong color of piece
         
         // Performs move if valid, returns whether move was performed
         boolean result = board.movePiece(piece, to);
         if (result) {
-            nextPlayerWhite = !nextPlayerWhite;
+            nextPlayerColor = nextPlayerColor.opponentColor();
         }
         return result;
     }
@@ -68,13 +68,13 @@ public class Game {
      */
     public void PerformAIMove() {
         if (nextPlayerIsAI()) {
-            if (nextPlayerWhite) {
+            if (nextPlayerColor.isWhite()) {
                 whiteAI.PerformMove(board);
             }
             else {
                 blackAI.PerformMove(board);
             }
-            nextPlayerWhite = !nextPlayerWhite;
+            nextPlayerColor = nextPlayerColor.opponentColor();
         }
     }
 
@@ -85,7 +85,8 @@ public class Game {
      * human
      */
     public boolean nextPlayerIsAI() {
-        return (nextPlayerWhite && whiteAI != null) || (!nextPlayerWhite && blackAI != null);
+        return (nextPlayerColor.isWhite() && whiteAI != null)
+                || (nextPlayerColor.isBlack() && blackAI != null);
     }
 
     /**
@@ -134,8 +135,8 @@ public class Game {
      *
      * @return true if it's white's turn to move, false otherwise
      */
-    public boolean nextPlayerIsWhite() {
-        return nextPlayerWhite;
+    public Color nextPlayerColor() {
+        return nextPlayerColor;
     }
 
     /**
@@ -147,8 +148,8 @@ public class Game {
      * @return true if the game is over, false otherwise
      */
     public boolean isGameOver() {
-        return board.checkMate(true)
-                || board.checkMate(false)
+        return board.checkMate(Color.WHITE)
+                || board.checkMate(Color.BLACK)
                 || insufficientMaterial()
                 || board.getAllPieces().stream()
                 .noneMatch(p -> p.allPossibleMoves(board).size() > 0);
@@ -215,8 +216,8 @@ public class Game {
      * or a draw
      */
     public int getWinner() {
-        if (board.checkMate(true)) return -1;
-        if (board.checkMate(false)) return 1;
+        if (board.checkMate(Color.WHITE)) return -1;
+        if (board.checkMate(Color.BLACK)) return 1;
         return 0;
     }
 

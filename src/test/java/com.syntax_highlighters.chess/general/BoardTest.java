@@ -3,6 +3,7 @@ package com.syntax_highlighters.chess.general;
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.ChessPieceKing;
+import com.syntax_highlighters.chess.entities.Color;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 import org.junit.jupiter.api.Test;
 import java.util.List;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BoardTest {
     private final Board board = new Board ();
     private final Position p = new Position(3,2);
-    private final IChessPiece piece = new ChessPieceKing(p,true);
+    private final IChessPiece piece = new ChessPieceKing(p, Color.WHITE);
     private final List<IChessPiece> pieceList = new ArrayList<>();
 
 

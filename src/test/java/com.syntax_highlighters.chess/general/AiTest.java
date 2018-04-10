@@ -16,19 +16,22 @@ class AiTest {
     @Test
     void takesQueenOverPawn() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
-        IChessPiece queen = new ChessPieceQueen(new Position(3, 3), false);
+        IChessPiece queen = new ChessPieceQueen(new Position(3, 3), Color.BLACK);
         pieces.add(queen);
-        pieces.add(new ChessPiecePawn(new Position(1, 3), false));
-        pieces.add(new ChessPiecePawn(new Position(2, 2), true));
+        pieces.add(new ChessPiecePawn(new Position(1, 3), Color.BLACK));
+        pieces.add(new ChessPiecePawn(new Position(2, 2), Color.WHITE));
 
         // Add kings so the AI doesn't think it's Game Over.
-        pieces.add(new ChessPieceKing(new Position(1, 8), false));
-        pieces.add(new ChessPieceKing(new Position(8, 8), true));
+        pieces.add(new ChessPieceKing(new Position(8, 8), Color.BLACK));
+        pieces.add(new ChessPieceKing(new Position(8, 1), Color.WHITE));
 
         Board board = new Board(pieces);
-        
-        IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Hard);
+
+        IAiPlayer ai = new MiniMaxAIPlayer(Color.WHITE, AiDifficulty.Hard);
+
+        System.out.println(board);
         ai.PerformMove(board);
+        System.out.println(board);
 
         assertFalse(board.getAllPieces().contains(queen));
     }

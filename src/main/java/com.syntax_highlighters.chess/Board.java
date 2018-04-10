@@ -104,13 +104,13 @@ public class Board {
 
         // add all white pieces
         for (String p : whitePieces) {
-            IChessPiece piece = AbstractChessPiece.fromChessNotation(p, true);
+            IChessPiece piece = AbstractChessPiece.fromChessNotation(p, Color.WHITE);
             putAtPosition(piece.getPosition(), piece);
         }
 
         // add all black pieces
         for (String p : blackPieces) {
-            IChessPiece piece = AbstractChessPiece.fromChessNotation(p, false);
+            IChessPiece piece = AbstractChessPiece.fromChessNotation(p, Color.BLACK);
             putAtPosition(piece.getPosition(), piece);
         }
     }
@@ -174,7 +174,7 @@ public class Board {
      */
     public boolean isEnemy(IChessPiece piece, Position pos) {
         IChessPiece pieceAtPos = getAtPosition(pos);
-        return pieceAtPos != null && pieceAtPos.isWhite() != piece.isWhite();
+        return pieceAtPos != null && pieceAtPos.getColor() != piece.getColor();
     }
 
     /**
@@ -185,7 +185,7 @@ public class Board {
      */
     public boolean isFriendly(IChessPiece piece, Position pos) {
         IChessPiece pieceAtPos = getAtPosition(pos);
-        return pieceAtPos != null && pieceAtPos.isWhite() == piece.isWhite();
+        return pieceAtPos != null && pieceAtPos.getColor() == piece.getColor();
     }
 
     /**
@@ -301,13 +301,13 @@ public class Board {
      * king threatened are not legal in chess.
      *
      * @param m The move to consider
-     * @param kingWhite Whether to check for the white or the black king
+     * @param kingColor The color of the king to check for
      *
      * @return true if the move is safe, false otherwise
      */
-    public boolean moveDoesntPutKingInCheck(Move m, Boolean kingWhite) {
+    public boolean moveDoesntPutKingInCheck(Move m, Color kingColor) {
         Optional<IChessPiece> a = getAllPieces().stream()
-            .filter(p -> p.isWhite() == kingWhite && p instanceof ChessPieceKing)
+            .filter(p -> p.getColor() == kingColor && p instanceof ChessPieceKing)
             .findFirst();
         if (!a.isPresent()) return true; // no move can put king in check
         
@@ -330,18 +330,18 @@ public class Board {
     /**
      * Determine whether the given player is in checkmate.
      *
-     * @param whitePlayer Whether to check for the white or the black king
+     * @param playerColor The color of the player to check for
      *
      * @return true if the given player is in checkmate, false otherwise
      */
-    public boolean checkMate(boolean whitePlayer) {
+    public boolean checkMate(Color playerColor) {
         List<IChessPiece> allPieces = getAllPieces();
         if (allPieces.size() == 0) return false; // not possible
         ChessPieceKing king = allPieces.stream()
-                .filter(p -> p instanceof ChessPieceKing && p.isWhite() == whitePlayer)
+                .filter(p -> p instanceof ChessPieceKing && p.getColor() == playerColor)
                 .map(p -> (ChessPieceKing)p).findFirst().orElse(null);
         return king == null || king.isThreatened(this) && allPieces.stream()
-                .filter(p -> p.isWhite() == whitePlayer)
+                .filter(p -> p.getColor() == playerColor)
                 .mapToLong(p -> p.allPossibleMoves(this).size()).sum() == 0;
     }
 
@@ -354,7 +354,7 @@ public class Board {
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
-        for (int y = 1; y <= 8; y++) {
+        for (int y = 8; y >= 1; y--) {
             for (int x = 1; x <= 8; x++) {
                 IChessPiece p = this.getAtPosition(new Position(x, y));
                 if (p != null) {
@@ -398,14 +398,14 @@ public class Board {
     /**
      * Find the king of the specified color and caches the result.
      *
-     * @param white Whether to look for the white or black king.
+     * @param color The color of king to look for.
      * @return The king of the specified color.
      */
-    public IChessPiece getKing(boolean white) {
-        if (white) {
+    public IChessPiece getKing(Color color) {
+        if (color.isWhite()) {
             if (whiteKing == null) {
                 whiteKing = getAllPieces().stream()
-                        .filter(p -> p.isWhite() && p instanceof ChessPieceKing)
+                        .filter(p -> p.getColor().isWhite() && p instanceof ChessPieceKing)
                         .findFirst().orElse(null);
             }
             return whiteKing;
@@ -413,7 +413,7 @@ public class Board {
         else {
             if (blackKing == null) {
                 blackKing = getAllPieces().stream()
-                        .filter(p -> !p.isWhite() && p instanceof ChessPieceKing)
+                        .filter(p -> p.getColor().isBlack() && p instanceof ChessPieceKing)
                         .findFirst().orElse(null);
             }
             return blackKing;

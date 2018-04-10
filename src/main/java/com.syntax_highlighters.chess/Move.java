@@ -1,5 +1,6 @@
 package com.syntax_highlighters.chess;
 
+import com.syntax_highlighters.chess.entities.Color;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.entities.ChessPiecePawn;
 import com.syntax_highlighters.chess.entities.ChessPieceQueen;
@@ -83,10 +84,10 @@ public class Move {
      * Get the color of the moved piece.
      *
      * @param board The board to get the piece from
-     * @return Whether the moved piece was white
+     * @return The color of the piece
      */
-    public boolean isWhite(Board board) {
-        return this.getPiece(board).isWhite();
+    public Color getColor(Board board) {
+        return this.getPiece(board).getColor();
     }
 
     /**
@@ -107,7 +108,7 @@ public class Move {
         if (piece instanceof ChessPiecePawn && (newPos.getY() == 1 || newPos.getY() == 8)) {
             this.wasPawn = true;
             b.removePiece(piece);
-            b.putAtPosition(newPos, new ChessPieceQueen(newPos, piece.isWhite()));
+            b.putAtPosition(newPos, new ChessPieceQueen(newPos, piece.getColor()));
         }
         hasDoneMove = true;
     }

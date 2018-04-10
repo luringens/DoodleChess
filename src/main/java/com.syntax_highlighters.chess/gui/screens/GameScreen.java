@@ -94,7 +94,7 @@ public class GameScreen extends AbstractScreen {
         turnText = new Text(font);
         turnText.setColor(0,0,0,1);
         stage.addActor(turnText);
-        turnText.setText(this.game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
+        turnText.setText(this.game.nextPlayerColor().isWhite() ? "White's turn" : "Black's turn");
         gameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
         // display results button (initially invisible, but becomes visible when
@@ -141,7 +141,7 @@ public class GameScreen extends AbstractScreen {
                     chessGame.setScreen(new MainMenuScreen(chessGame));
                     return;
                 }
-                gameOver(game.nextPlayerIsWhite() ? -1 : 1);
+                gameOver(game.nextPlayerColor().isWhite() ? -1 : 1);
             }
         });
         stage.addActor(giveUp);
@@ -295,7 +295,7 @@ public class GameScreen extends AbstractScreen {
      */
     private void setTurnText() {
         if (!isGameOver) {
-            turnText.setText(game.nextPlayerIsWhite() ? "White's turn" : "Black's turn");
+            turnText.setText(game.nextPlayerColor().isWhite() ? "White's turn" : "Black's turn");
         }
         else {
             turnText.setText(winner == 1  ? "White has won the game" :

@@ -1,10 +1,7 @@
 package com.syntax_highlighters.chess.entities;
 import com.syntax_highlighters.chess.*;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -30,7 +27,7 @@ public class MiniMaxAIPlayer implements IAiPlayer {
     private static final int EASY_DEPTH = 3;
     private static final int MED_DEPTH = 4;
     private static final int HARD_DEPTH = 4;
-    private final boolean isWhite;
+    private final Color color;
     private int diff;
     private final Random rand;
     private double chanceOfMistake = 0.0;
@@ -38,11 +35,11 @@ public class MiniMaxAIPlayer implements IAiPlayer {
     /**
      * Create a minimaxing AI player with the given color and difficulty.
      *
-     * @param isWhite Whether or not the AI player plays with the white pieces
+     * @param color Whether or not the AI player plays with the white pieces
      * @param diff The difficulty setting of the AI
      */
-    public MiniMaxAIPlayer(boolean isWhite, AiDifficulty diff) {
-        this.isWhite = isWhite;
+    public MiniMaxAIPlayer(Color color, AiDifficulty diff) {
+        this.color = color;
         this.SetDifficulty(diff);
         rand = new Random(); // add a certain random element to avoid AI vs. AI repetition
     }
@@ -61,7 +58,7 @@ public class MiniMaxAIPlayer implements IAiPlayer {
      */
     @Override
     public Move GetMove(Board board) {
-        if (board.checkMate(isWhite)) return null;
+        if (board.checkMate(color)) return null;
         return MiniMaxMove(diff, board);
     }
 
@@ -74,8 +71,8 @@ public class MiniMaxAIPlayer implements IAiPlayer {
     @Override
     public void SetDifficulty(AiDifficulty diff) {
         switch (diff) {
-            case Easy: this.diff = EASY_DEPTH; chanceOfMistake = 0.3; break;
-            case Medium: this.diff = MED_DEPTH; chanceOfMistake = 0.2; break;
+            case Easy: this.diff = EASY_DEPTH; chanceOfMistake = 0.2; break;
+            case Medium: this.diff = MED_DEPTH; chanceOfMistake = 0.1; break;
             case Hard: this.diff = HARD_DEPTH; break;
             default: throw new IllegalArgumentException("Invalid enum.");
         }
@@ -93,17 +90,23 @@ public class MiniMaxAIPlayer implements IAiPlayer {
      */
     private Move MiniMaxMove(int depth, Board board) {
         assert(depth >= 1);
+
+        // Get all possible first moves for the AI.
         List<Move> moves = board.getAllPieces().stream()
-                .filter(p -> p.isWhite() == isWhite)
+                .filter(p -> p.getColor() == color)
                 .flatMap(p -> p.allPossibleMoves(board).stream())
                 .collect(Collectors.toList());
 
-        // Parallel processing.
+        // Parallel processing. Do all moves, keep the one with the highest score.
         Optional<result> optionalMove = moves.parallelStream().map(move -> {
+            // Make a copy of the board so the threads don't share state.
             Board boardCopy = board.copy();
+
+            // Perform the move, then recursively check possible outcomes.
             move.DoMove(boardCopy);
-            int score = MiniMaxScore(depth - 1, boardCopy,
-                    isWhite, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            int score = MiniMaxScore(depth - 1, boardCopy, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+            // Undo the move to keep it valid
             move.UndoMove(boardCopy);
             return new result(move, score);
         }).max(Comparator.comparing(result -> result.score));
@@ -120,7 +123,6 @@ public class MiniMaxAIPlayer implements IAiPlayer {
      *
      * @param depth The remaining depth to consider
      * @param board The board state at this stage of the lookahead
-     * @param isWhite Whether or not the AI player plays with the white pieces
      * @param isMaximizing Whether the player should maximize or minimize at
      * this point
      * @param alpha The current alpha value
@@ -129,17 +131,15 @@ public class MiniMaxAIPlayer implements IAiPlayer {
      * @return The score the board will result in assuming both players play
      * optimally for depth number of moves
      */
-    private int MiniMaxScore(int depth, Board board, boolean isWhite, boolean isMaximizing, int alpha, int beta) {
-        if (depth <= 0) return evaluateScore(board, isWhite);
+    private int MiniMaxScore(int depth, Board board, boolean isMaximizing, int alpha, int beta) {
+        if (depth <= 0) return evaluateScore(board, color);
 
-        boolean lookingAtWhite = isWhite == isMaximizing;
+        Color pieceColor = isMaximizing ? color : color.opponentColor();
 
         List<Move> moves = board.getAllPieces().stream()
-                .filter(p -> p.isWhite() == lookingAtWhite)
+                .filter(p -> p.getColor() == pieceColor)
                 .flatMap(p -> p.allPossibleMoves(board).stream())
                 .collect(Collectors.toList());
-
-        if (moves.size() == 0) return evaluateScore(board, isWhite);
 
         // NOTE: code duplication; consider refactoring
         if (isMaximizing) {
@@ -149,15 +149,15 @@ public class MiniMaxAIPlayer implements IAiPlayer {
 
                 move.DoMove(board);
                 // Check if the move puts the opponent in checkmate.
-                if (board.checkMate(!lookingAtWhite)) {
+                if (board.checkMate(pieceColor.opponentColor())) {
                     move.UndoMove(board);
                     return 100000;
                 }
-                int score = MiniMaxScore(depth - 1, board, isWhite, false, alpha, beta);
+                int score = MiniMaxScore(depth - 1, board, false, alpha, beta);
                 move.UndoMove(board);
 
                 // Alpha-beta pruning - early return for optimization
-                //if (score >= beta) return beta;
+                if (score >= beta) return beta;
                 alpha = Math.max(alpha, score);
             }
             return alpha;
@@ -169,15 +169,15 @@ public class MiniMaxAIPlayer implements IAiPlayer {
 
                 move.DoMove(board);
                 // Check if the move puts the opponent in checkmate.
-                if (board.checkMate(!lookingAtWhite)) {
+                if (board.checkMate(pieceColor.opponentColor())) {
                     move.UndoMove(board);
                     return -100000;
                 }
-                int score = MiniMaxScore(depth - 1, board, isWhite, true, alpha, beta);
+                int score = MiniMaxScore(depth - 1, board, true, alpha, beta);
                 move.UndoMove(board);
 
                 // Alpha-beta pruning - early return for optimization
-                //if (score <= alpha) return alpha;
+                if (score <= alpha) return alpha;
                 beta = Math.min(beta, score);
             }
             return beta;
@@ -188,14 +188,14 @@ public class MiniMaxAIPlayer implements IAiPlayer {
      * Helper method: determine the score of the board for a given player.
      *
      * @param board The current board state
-     * @param forWhite Whether to determine score for white or black player
+     * @param color The color to determine score for
      *
      * @return The score of the board for the given player
      */
-    private int evaluateScore(Board board, boolean forWhite) {
+    private int evaluateScore(Board board, Color color) {
         int score = rand.nextInt(10) - 5;
         for (IChessPiece p : board.getAllPieces()) {
-            if (p.isWhite() == forWhite) score += p.getPositionalScore();
+            if (p.getColor() == color) score += p.getPositionalScore();
             else score -= p.getPieceScore();
         }
         return score;

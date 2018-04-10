@@ -13,7 +13,7 @@ class AiSpeedTest {
     @Test
     void easyAICompletesWithinOneSecondFromStartingPosition() {
         final long allowedTime = 1000;
-        IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Easy);
+        IAiPlayer ai = new MiniMaxAIPlayer(Color.WHITE, AiDifficulty.Easy);
         long time = speedTest(ai);
         assertTrue("The easy AI is too slow (" + time + " >= " + allowedTime + ")",
                 time < allowedTime);
@@ -22,7 +22,7 @@ class AiSpeedTest {
     @Test
     void mediumAICompletesWithinThreeSecondsFromStartingPosition() {
         final long allowedTime = 3000;
-        IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Medium);
+        IAiPlayer ai = new MiniMaxAIPlayer(Color.WHITE, AiDifficulty.Medium);
         long time = speedTest(ai);
         assertTrue("The medium AI is too slow (" + time + " >= " + allowedTime + ")",
                 time < allowedTime);
@@ -31,7 +31,7 @@ class AiSpeedTest {
     @Test
     void hardAICompletesWithinThreeSecondsFromStartingPosition() {
         final long allowedTime = 3000;
-        IAiPlayer ai = new MiniMaxAIPlayer(true, AiDifficulty.Hard);
+        IAiPlayer ai = new MiniMaxAIPlayer(Color.WHITE, AiDifficulty.Hard);
         long time = speedTest(ai);
         assertTrue("The hard AI is too slow (" + time + " >= " + allowedTime + ")",
                 time < allowedTime);

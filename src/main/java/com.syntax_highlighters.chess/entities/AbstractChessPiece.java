@@ -17,18 +17,18 @@ import java.util.List;
  * adequate at simply describing a piece of a given kind at a given position.
  */
 public abstract class AbstractChessPiece implements IChessPiece {
-    protected final boolean isWhite;
+    protected final Color color;
     protected Position position;
     protected boolean hasMoved = false;
 
     /**
      * Chess piece at given position with given color.
      *
-     * @param isWhite Whether or not the piece is white
+     * @param color The color of the piece.
      * @param pos The position the piece is created at
      */
-    public AbstractChessPiece(Position pos, boolean isWhite) {
-        this.isWhite = isWhite;
+    public AbstractChessPiece(Position pos, Color color) {
+        this.color = color;
         this.position = pos;
     }
 
@@ -36,8 +36,8 @@ public abstract class AbstractChessPiece implements IChessPiece {
      * {@inheritDoc}
      */
     @Override
-    public boolean isWhite() {
-        return isWhite;
+    public Color getColor() {
+        return this.color;
     }
 
     /**
@@ -94,14 +94,14 @@ public abstract class AbstractChessPiece implements IChessPiece {
      * pieces by allowing a loop over a collection of strings.
      *
      * @param piece The string defining the piece and position
-     * @param isWhite Whether the piece is white or not
+     * @param color The color of the piece
      *
      * @return The correct type of piece at the correct position
      *
      * @throws IllegalArgumentException if the piece notation does not conform
      * to the expected format
      */
-    public static IChessPiece fromChessNotation(String piece, boolean isWhite) {
+    public static IChessPiece fromChessNotation(String piece, Color color) {
         assert piece.length() == 3; // of the form [KQNBRP][A-Ha-h][1-8]
 
         // assure that the first part is referencing a valid type of piece
@@ -110,17 +110,17 @@ public abstract class AbstractChessPiece implements IChessPiece {
         Position pos = Position.fromChessNotation(piece.substring(1, piece.length()));
         switch(piece.charAt(0)) {
             case 'K':
-                return new ChessPieceKing(pos, isWhite);
+                return new ChessPieceKing(pos, color);
             case 'Q':
-                return new ChessPieceQueen(pos, isWhite);
+                return new ChessPieceQueen(pos, color);
             case 'B':
-                return new ChessPieceBishop(pos, isWhite);
+                return new ChessPieceBishop(pos, color);
             case 'R':
-                return new ChessPieceRook(pos, isWhite);
+                return new ChessPieceRook(pos, color);
             case 'N':
-                return new ChessPieceKnight(pos, isWhite);
+                return new ChessPieceKnight(pos, color);
             case 'P':
-                return new ChessPiecePawn(pos, isWhite);
+                return new ChessPiecePawn(pos, color);
             default:
                 throw new IllegalArgumentException("Invalid piece notation: " + piece);
         }
@@ -136,7 +136,7 @@ public abstract class AbstractChessPiece implements IChessPiece {
 
         // Score board is based on starting on the bottom.
         // Reverse for black.
-        if (isWhite()) {
+        if (color.isWhite()) {
             y = Board.BOARD_HEIGHT - y + 1;
         }
 

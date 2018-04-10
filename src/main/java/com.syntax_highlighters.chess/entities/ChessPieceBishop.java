@@ -17,10 +17,10 @@ public class ChessPieceBishop extends AbstractChessPiece {
      * Create a bishop at the given position with the given color.
      *
      * @param pos The position to place the bishop at
-     * @param isWhite Whether or not this bishop is white
+     * @param color The color of the piece
      */
-    public ChessPieceBishop(Position pos, boolean isWhite) {
-        super(pos, isWhite);
+    public ChessPieceBishop(Position pos, Color color) {
+        super(pos, color);
     }
 
     /**
@@ -58,7 +58,7 @@ public class ChessPieceBishop extends AbstractChessPiece {
         List<Move> sw = movesInDirection(1, -1, board);
         return Stream.of(ne, nw, se, sw)
                 .flatMap(Collection::stream)
-                .filter(m -> board.moveDoesntPutKingInCheck(m, isWhite))
+                .filter(m -> board.moveDoesntPutKingInCheck(m, color))
                 .collect(Collectors.toList());
     }
 
@@ -67,7 +67,7 @@ public class ChessPieceBishop extends AbstractChessPiece {
      */
     @Override
     public IChessPiece copy() {
-        return new ChessPieceBishop(this.getPosition(), this.isWhite());
+        return new ChessPieceBishop(this.getPosition(), this.getColor());
     }
 
     /**

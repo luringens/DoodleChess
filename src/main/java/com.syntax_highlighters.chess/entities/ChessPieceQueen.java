@@ -17,10 +17,10 @@ public class ChessPieceQueen extends AbstractChessPiece {
      * Create a queen at the given position with the given color.
      *
      * @param pos The position to place the queen at
-     * @param isWhite Whether or not this queen is white
+     * @param color The color of the piece
      */
-    public ChessPieceQueen(Position pos, boolean isWhite) {
-        super(pos, isWhite);
+    public ChessPieceQueen(Position pos, Color color) {
+        super(pos, color);
     }
 
     /**
@@ -63,7 +63,7 @@ public class ChessPieceQueen extends AbstractChessPiece {
         List<Move> w = movesInDirection(-1, 0, board);
         return Stream.of(ne, nw, se, sw, n, e, s, w)
                 .flatMap(Collection::stream)
-                .filter(m -> board.moveDoesntPutKingInCheck(m, isWhite))
+                .filter(m -> board.moveDoesntPutKingInCheck(m, color))
                 .collect(Collectors.toList());
 
     }
@@ -73,7 +73,7 @@ public class ChessPieceQueen extends AbstractChessPiece {
      */
     @Override
     public IChessPiece copy() {
-        return new ChessPieceQueen(this.getPosition(), this.isWhite());
+        return new ChessPieceQueen(this.getPosition(), this.getColor());
     }
 
     /**

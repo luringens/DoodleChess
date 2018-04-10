@@ -17,10 +17,10 @@ public class ChessPiecePawn extends AbstractChessPiece {
      * Create a pawn at the given position with the given color.
      *
      * @param pos The position to place the pawn at
-     * @param isWhite Whether or not the pawn is white
+     * @param color The color of the piece
      */
-    public ChessPiecePawn (Position pos, boolean isWhite) {
-        super(pos, isWhite);
+    public ChessPiecePawn (Position pos, Color color) {
+        super(pos, color);
     }
 
     /**
@@ -91,7 +91,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
         enPassantCheck(board, possibleMoves, pos.west(1));
 
         return possibleMoves.stream()
-                .filter(m -> board.moveDoesntPutKingInCheck(m, isWhite))
+                .filter(m -> board.moveDoesntPutKingInCheck(m, color))
                 .collect(Collectors.toList());
 
     }
@@ -107,8 +107,8 @@ public class ChessPiecePawn extends AbstractChessPiece {
     private void enPassantCheck (Board board, ArrayList<Move> possibleMoves, Position pos) {
         if (board.isOnBoard(pos)) {
             // en passant can only be performed at a pawn's fifth rank
-            if (isWhite() && pos.getY() != 5) return;
-            if (!isWhite() && pos.getY() != 4) return; // this is black's "fifth rank"
+            if (color.isWhite() && pos.getY() != 5) return;
+            if (color.isBlack() && pos.getY() != 4) return; // this is black's "fifth rank"
             
             IChessPiece pieceAtPos = board.getAtPosition(pos);
             Move lastMove = board.getLastMove();
@@ -124,7 +124,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
             if (Math.abs(newPos.getY() - oldPos.getY()) != 2) return; // last move was a single step
             
             // en passant can be performed
-            if (isWhite()) {
+            if (color.isWhite()) {
                 possibleMoves.add(new EnPassantMove(this.getPosition(), pos.north(1), board, pieceAtPos));
             }
             else {
@@ -155,7 +155,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
      */
     @Override
     public IChessPiece copy () {
-        return new ChessPiecePawn(this.getPosition(), this.isWhite());
+        return new ChessPiecePawn(this.getPosition(), this.getColor());
     }
 
     /**
@@ -183,7 +183,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
      * @return The position n steps forward
      */
     private Position forward(int nSteps) {
-        if (isWhite) return this.getPosition().north(nSteps);
+        if (color.isWhite()) return this.getPosition().north(nSteps);
         return this.getPosition().south(nSteps);
     }
 

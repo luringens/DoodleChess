@@ -17,10 +17,10 @@ public class ChessPieceRook extends AbstractChessPiece {
      * Construct a rook at the given position with the given color.
      *
      * @param pos The position to place the rook at
-     * @param isWhite Whether or not this bishop is white
+     * @param color The color of the piece.
      */
-    public ChessPieceRook(Position pos, boolean isWhite) {
-        super(pos, isWhite);
+    public ChessPieceRook(Position pos, Color color) {
+        super(pos, color);
     }
 
     /**
@@ -62,7 +62,7 @@ public class ChessPieceRook extends AbstractChessPiece {
         List<Move> w = movesInDirection(-1, 0, board);
         return Stream.of(n, e, s, w)
                 .flatMap(Collection::stream)
-                 .filter(m -> board.moveDoesntPutKingInCheck(m, isWhite))
+                 .filter(m -> board.moveDoesntPutKingInCheck(m, color))
                 .collect(Collectors.toList());
 
     }
@@ -72,7 +72,7 @@ public class ChessPieceRook extends AbstractChessPiece {
      */
     @Override
     public IChessPiece copy() {
-        return new ChessPieceRook(this.getPosition(), this.isWhite());
+        return new ChessPieceRook(this.getPosition(), this.getColor());
     }
 
     /**

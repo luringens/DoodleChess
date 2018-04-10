@@ -17,10 +17,10 @@ public class ChessPieceKing extends AbstractChessPiece {
      * Create a king at the given position with the given color.
      *
      * @param pos The position to place the king at
-     * @param isWhite Whether or not this king is white
+     * @param color The color of the piece
      */
-    public ChessPieceKing(Position pos, boolean isWhite) {
-        super(pos, isWhite);
+    public ChessPieceKing(Position pos, Color color) {
+        super(pos, color);
     }
 
     /**
@@ -83,7 +83,7 @@ public class ChessPieceKing extends AbstractChessPiece {
         }
 
         return possibleMoves.stream()
-                .filter(m -> board.moveDoesntPutKingInCheck(m, isWhite))
+                .filter(m -> board.moveDoesntPutKingInCheck(m, color))
                 .collect(Collectors.toList());
     }
 
@@ -121,7 +121,7 @@ public class ChessPieceKing extends AbstractChessPiece {
             if (!board.isOnBoard(pos)
                     || board.isOccupied(pos)
                     || board.getAllPieces().stream()
-                            .filter(p -> p.isWhite() != isWhite)
+                            .filter(p -> p.getColor() != color)
                             .anyMatch(p -> p.threatens(finalPos, board))                    )
                 return false;
         } while (!direction.transform(pos).equals(target));
@@ -133,7 +133,7 @@ public class ChessPieceKing extends AbstractChessPiece {
         // - The piece is a rook
         // - The rook hasn't moved
         IChessPiece piece = board.getAtPosition(direction.transform(pos));
-        return piece != null && piece.isWhite() == isWhite() &&
+        return piece != null && piece.getColor() == this.getColor() &&
                piece instanceof ChessPieceRook && !piece.hasMoved();
     }
 
@@ -145,7 +145,7 @@ public class ChessPieceKing extends AbstractChessPiece {
      */
     public boolean isThreatened(Board board) {
         return board.getAllPieces().stream()
-            .filter(p -> p.isWhite() != isWhite())
+            .filter(p -> p.getColor() != this.getColor())
             .anyMatch(p -> p.threatens(getPosition(), board));
     }
 
@@ -154,7 +154,7 @@ public class ChessPieceKing extends AbstractChessPiece {
      */
     @Override
     public IChessPiece copy() {
-        return new ChessPieceKing(this.getPosition(), this.isWhite());
+        return new ChessPieceKing(this.getPosition(), this.getColor());
     }
 
     /**

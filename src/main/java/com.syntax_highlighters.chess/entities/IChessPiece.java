@@ -19,7 +19,7 @@ public interface IChessPiece {
      *
      * @return true if the piece is white, false otherwise
      */
-    boolean isWhite();
+    Color getColor();
     
     /**
      * Get the position the piece is currently at.

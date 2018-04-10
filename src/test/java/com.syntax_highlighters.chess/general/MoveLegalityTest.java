@@ -20,7 +20,7 @@ class MoveLegalityTest {
         Position newPos = new Position(3, 6);
 
 
-        IChessPiece testKnight = new ChessPieceKnight(pos, true);
+        IChessPiece testKnight = new ChessPieceKnight(pos, Color.WHITE);
         board.putAtPosition(testKnight.getPosition(),testKnight);
         boolean IsMoveLegal = testKnight.allPossibleMoves(board).stream().anyMatch(m -> m.getPosition().equals(newPos));
 
@@ -35,7 +35,7 @@ class MoveLegalityTest {
 
         Position pos = new Position(3, 3);
         Position newPos = new Position(3, 2);
-        IChessPiece testPawn = new ChessPiecePawn(pos, true);
+        IChessPiece testPawn = new ChessPiecePawn(pos, Color.WHITE);
         board.putAtPosition(testPawn.getPosition(),testPawn);
 
         boolean IsMoveLegal = testPawn.allPossibleMoves(board).stream().anyMatch(m -> m.getPosition().equals(newPos));
@@ -50,7 +50,7 @@ class MoveLegalityTest {
         Position pos = new Position(3, 3);
         Position newPos = new Position(3, 4);
 
-        IChessPiece testPawn = new ChessPiecePawn(pos, false);
+        IChessPiece testPawn = new ChessPiecePawn(pos, Color.BLACK);
         board.putAtPosition(testPawn.getPosition(),testPawn);
 
         boolean IsMoveLegal = testPawn.allPossibleMoves(board).stream().anyMatch(m -> m.getPosition().equals(newPos));
@@ -65,7 +65,7 @@ class MoveLegalityTest {
         Position pos = new Position(3, 3);
         Position newPos = new Position(4, 4);
 
-        IChessPiece testPawn = new ChessPiecePawn(pos, true);
+        IChessPiece testPawn = new ChessPiecePawn(pos, Color.WHITE);
         board.putAtPosition(testPawn.getPosition(),testPawn);
 
         boolean IsMoveLegal = testPawn.allPossibleMoves(board).stream().anyMatch(m -> m.getPosition().equals(newPos));
@@ -80,8 +80,8 @@ class MoveLegalityTest {
         Position AtkPos = new Position(3, 3);
         Position DefPos = new Position(4, 4);
 
-        IChessPiece testQueen = new ChessPieceQueen(AtkPos, true);
-        IChessPiece testPawn = new ChessPiecePawn(DefPos, true);
+        IChessPiece testQueen = new ChessPieceQueen(AtkPos, Color.WHITE);
+        IChessPiece testPawn = new ChessPiecePawn(DefPos, Color.WHITE);
         board.putAtPosition(testQueen.getPosition(), testQueen);
         board.putAtPosition(testPawn.getPosition(), testPawn);
 

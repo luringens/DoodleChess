@@ -44,8 +44,8 @@ class ChessRulesTest {
      * henceforth be accessed using the variables "king" and "rook".
      */
     private void setUpCastle() {
-        king = new ChessPieceKing(new Position(5, 1), true);
-        rook = new ChessPieceRook(new Position(1, 1), true);
+        king = new ChessPieceKing(new Position(5, 1), Color.WHITE);
+        rook = new ChessPieceRook(new Position(1, 1), Color.WHITE);
         
         pieces = new ArrayList<>();
         pieces.add(king);
@@ -62,8 +62,8 @@ class ChessRulesTest {
      */
     @Before
     private void setUp() {
-        whitePawn = new ChessPiecePawn(new Position(4, 2), true);
-        blackPawn = new ChessPiecePawn(new Position(5, 7), false);
+        whitePawn = new ChessPiecePawn(new Position(4, 2), Color.WHITE);
+        blackPawn = new ChessPiecePawn(new Position(5, 7), Color.BLACK);
         
         pieces = new ArrayList<>();
         pieces.add(whitePawn);
@@ -288,7 +288,7 @@ class ChessRulesTest {
     void kingCannotPerformCastleWhenPathThreatened() {
         setUpCastle();
         Position rookpos = new Position(4, 8);
-        board.putAtPosition(rookpos, new ChessPieceRook(rookpos, false));
+        board.putAtPosition(rookpos, new ChessPieceRook(rookpos, Color.BLACK));
         
         noAvailableMoveLeadsTo(king.getPosition().west(2), king);
         
@@ -312,7 +312,7 @@ class ChessRulesTest {
         setUpCastle();
         // replace the white rook with a black rook
         Position rookpos = new Position(1, 1);
-        rook = new ChessPieceRook(rookpos, false);
+        rook = new ChessPieceRook(rookpos, Color.BLACK);
         board.putAtPosition(rookpos, rook);
 
         noAvailableMoveLeadsTo(king.getPosition().west(2), king);
@@ -322,7 +322,7 @@ class ChessRulesTest {
     void kingCannotMoveToThreatenedPosition() {
         setUpCastle(); // so we have a convenient way of referring to the king
         Position rookpos = new Position(4, 8); // threaten position 4,1
-        board.putAtPosition(rookpos, new ChessPieceRook(rookpos, false));
+        board.putAtPosition(rookpos, new ChessPieceRook(rookpos, Color.BLACK));
 
         Position threatenedPos1 = king.getPosition().west(1);
         Position threatenedPos2 = king.getPosition().northwest(1);
@@ -381,7 +381,7 @@ class ChessRulesTest {
      * @return The position n steps forward, as per color of the pawn
      */
     private Position forward(ChessPiecePawn pawn, int nSteps) {
-        if (pawn.isWhite())
+        if (pawn.getColor().isWhite())
             return pawn.getPosition().north(nSteps);
         return pawn.getPosition().south(nSteps);
     }

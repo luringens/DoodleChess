@@ -16,10 +16,10 @@ public class ChessPieceKnight extends AbstractChessPiece {
      * Create a knight at the given position with the given color.
      *
      * @param pos The position to place the knight at
-     * @param isWhite Whether or not this knight is white
+     * @param color The color of the piece
      */
-    public ChessPieceKnight(Position pos, boolean isWhite) {
-        super(pos, isWhite);
+    public ChessPieceKnight(Position pos, Color color) {
+        super(pos, color);
     }
 
     /**
@@ -66,7 +66,7 @@ public class ChessPieceKnight extends AbstractChessPiece {
         checkMove(board, possibleMoves, new Position(x-2,y+1));
         checkMove(board, possibleMoves, new Position(x-2,y-1));
         return possibleMoves.stream()
-                .filter(m -> board.moveDoesntPutKingInCheck(m, isWhite))
+                .filter(m -> board.moveDoesntPutKingInCheck(m, color))
                 .collect(Collectors.toList());
     }
 
@@ -91,7 +91,7 @@ public class ChessPieceKnight extends AbstractChessPiece {
      */
     @Override
     public IChessPiece copy() {
-        return new ChessPieceKnight(this.getPosition(), this.isWhite());
+        return new ChessPieceKnight(this.getPosition(), this.getColor());
     }
 
     /**

@@ -169,7 +169,7 @@ public class UiBoard extends Actor {
                 currentColor = selectedColor;
             }
         }
-        else if (piece.isWhite() != king.isWhite() && piece.threatens(king.getPosition(), game.getBoard())) {
+        else if (piece.getColor() != king.getColor() && piece.threatens(king.getPosition(), game.getBoard())) {
             if(!threatensColor.equals(currentColor))
             {
                 batch.end();
@@ -206,7 +206,7 @@ public class UiBoard extends Actor {
     {
         // get the king of the current player (if the king is threatened, the
         // piece threatening it should be highlighted)
-        IChessPiece king = game.getBoard().getKing(game.nextPlayerIsWhite());
+        IChessPiece king = game.getBoard().getKing(game.nextPlayerColor());
 
         float tileWidth = getSpaceWidth();
         float tileHeight = getSpaceHeight();
@@ -216,12 +216,12 @@ public class UiBoard extends Actor {
         batch.setShader(setColorShader);
         batch.begin();
         final Color col = this.whiteColor;
-        game.getPieces().stream().filter(IChessPiece::isWhite).forEach(x -> renderPiece(batch, x, king, col, tileWidth, tileHeight));
+        game.getPieces().stream().filter(x -> x.getColor().isWhite()).forEach(x -> renderPiece(batch, x, king, col, tileWidth, tileHeight));
         batch.end();
 
         batch.begin();
         final Color col2 = this.blackColor;
-        game.getPieces().stream().filter(x -> !x.isWhite()).forEach(x -> renderPiece(batch, x, king, col2, tileWidth, tileHeight));
+        game.getPieces().stream().filter(x -> x.getColor().isBlack()).forEach(x -> renderPiece(batch, x, king, col2, tileWidth, tileHeight));
         batch.end();
 
 

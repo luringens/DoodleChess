@@ -17,7 +17,7 @@ class ChessPieceTest {
     @Test
     void KingHasCorrectNumberOfMovesFromCenter() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
-        IChessPiece king = new ChessPieceKing(new Position(4,4), false);
+        IChessPiece king = new ChessPieceKing(new Position(4,4), Color.BLACK);
         pieces.add(king);
         Board board = new Board(pieces);
 
@@ -28,7 +28,7 @@ class ChessPieceTest {
     @Test
     void BishopHasCorrectNumberOfMovesFromCenter() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
-        IChessPiece piece = new ChessPieceBishop(new Position(4,4), false);
+        IChessPiece piece = new ChessPieceBishop(new Position(4,4), Color.BLACK);
         pieces.add(piece);
         Board board = new Board(pieces);
 
@@ -38,7 +38,7 @@ class ChessPieceTest {
     @Test
     void QueenHasCorrectNumberOfMovesFromCenter() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
-        IChessPiece piece = new ChessPieceQueen(new Position(4,4), false);
+        IChessPiece piece = new ChessPieceQueen(new Position(4,4), Color.BLACK);
         pieces.add(piece);
         Board board = new Board(pieces);
 
@@ -48,7 +48,7 @@ class ChessPieceTest {
     @Test
     void RookHasCorrectNumberOfMovesFromCenter() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
-        IChessPiece piece = new ChessPieceRook(new Position(4,4), false);
+        IChessPiece piece = new ChessPieceRook(new Position(4,4), Color.BLACK);
         pieces.add(piece);
         Board board = new Board(pieces);
 
@@ -59,7 +59,7 @@ class ChessPieceTest {
     @Test
     void PawnHasCorrectNumberOfMovesFromStartingPosition() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
-        IChessPiece piece = new ChessPiecePawn(new Position(7,7), false);
+        IChessPiece piece = new ChessPiecePawn(new Position(7,7), Color.BLACK);
         pieces.add(piece);
         Board board = new Board(pieces);
 
@@ -70,7 +70,7 @@ class ChessPieceTest {
     @Test
     void KnightHasCorrectNumberOfMovesFromCenter() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
-        IChessPiece piece = new ChessPieceKnight(new Position(4,4), false);
+        IChessPiece piece = new ChessPieceKnight(new Position(4,4), Color.BLACK);
         pieces.add(piece);
         Board board = new Board(pieces);
 
@@ -81,9 +81,9 @@ class ChessPieceTest {
     @Test
     void KingHasCorrectNumberOfMovesWhenCastlingPossibleOnBothSides() {
         ArrayList<IChessPiece> pieces = new ArrayList<>();
-        IChessPiece piece = new ChessPieceKing(new Position(5,1), true);
-        IChessPiece piece2 = new ChessPieceRook(new Position(8,1), true);
-        IChessPiece piece3 = new ChessPieceRook(new Position(1,1), true);
+        IChessPiece piece = new ChessPieceKing(new Position(5,1), Color.WHITE);
+        IChessPiece piece2 = new ChessPieceRook(new Position(8,1), Color.WHITE);
+        IChessPiece piece3 = new ChessPieceRook(new Position(1,1), Color.WHITE);
         pieces.add(piece);
         pieces.add(piece2);
         pieces.add(piece3);
