@@ -103,6 +103,15 @@ public class Account {
     }
 
     /**
+     * Set the rating of the player.
+     *
+     * @return void
+     */
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    /**
      * Get the win rate of this account.
      *
      * @return The percentage of games this player has won, as a number between

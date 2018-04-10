@@ -159,4 +159,14 @@ public class AccountManager {
         
 
     }
+
+    public void updateRating(Account winner, Account loser){
+        int winnerPoints = winner.getRating() + loser.getRating() + 400;
+        int loserPoints = winner.getRating() + loser.getRating() - 400;
+        winnerPoints = winnerPoints / (winner.getLossCount() + winner.getWinCount());
+        loserPoints = loserPoints / (loser.getLossCount() + loser.getWinCount());
+        winner.setRating(winnerPoints);
+        loser.setRating(loserPoints);
+        return;
+    }
 }
