@@ -91,8 +91,16 @@ public class MiniMaxAIPlayer implements IAiPlayer {
     private Move MiniMaxMove(int depth, Board board) {
         assert(depth >= 1);
 
+        // Increase search depth when few pieces remain
+        List<IChessPiece> pieces = board.getAllPieces();
+        if (pieces.size() < 15) depth++;
+        if (pieces.size() < 10) depth++;
+        if (pieces.size() < 7) depth++;
+        if (pieces.size() < 5) depth += 3;
+        int finalDepth = depth; // Stupid Java lambda thing
+
         // Get all possible first moves for the AI.
-        List<Move> moves = board.getAllPieces().stream()
+        List<Move> moves = pieces.stream()
                 .filter(p -> p.getColor() == color)
                 .flatMap(p -> p.allPossibleMoves(board).stream())
                 .collect(Collectors.toList());
@@ -104,7 +112,7 @@ public class MiniMaxAIPlayer implements IAiPlayer {
 
             // Perform the move, then recursively check possible outcomes.
             move.DoMove(boardCopy);
-            int score = MiniMaxScore(depth - 1, boardCopy, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            int score = MiniMaxScore(finalDepth - 1, boardCopy, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
             // Undo the move to keep it valid
             move.UndoMove(boardCopy);
@@ -137,9 +145,9 @@ public class MiniMaxAIPlayer implements IAiPlayer {
         Color pieceColor = isMaximizing ? color : color.opponentColor();
 
         List<Move> moves = board.getAllPieces().stream()
-                .filter(p -> p.getColor() == pieceColor)
-                .flatMap(p -> p.allPossibleMoves(board).stream())
-                .collect(Collectors.toList());
+            .filter(p -> p.getColor() == pieceColor)
+            .flatMap(p -> p.allPossibleMoves(board).stream())
+            .collect(Collectors.toList());
 
         // NOTE: code duplication; consider refactoring
         if (isMaximizing) {
@@ -193,10 +201,30 @@ public class MiniMaxAIPlayer implements IAiPlayer {
      * @return The score of the board for the given player
      */
     private int evaluateScore(Board board, Color color) {
+        // Check if we are in an "end state"
+        boolean endstate = false;
+        boolean whiteQueenExists = false;
+        boolean blackQueenExists = false;
+        for (IChessPiece p : board.getAllPieces()) {
+            if (p instanceof ChessPieceQueen) {
+                if (p.getColor().isWhite()) whiteQueenExists = true;
+                else blackQueenExists = true;
+            }
+        }
+
+        // Endstate is when both queens are dead.
+        if (!whiteQueenExists && !blackQueenExists) endstate = true;
+
         int score = rand.nextInt(10) - 5;
         for (IChessPiece p : board.getAllPieces()) {
-            if (p.getColor() == color) score += p.getPositionalScore();
-            else score -= p.getPieceScore();
+            int pscore;
+            if (endstate && p instanceof ChessPieceKing) {
+                pscore = ((ChessPieceKing)p).getEndgamePositionalScore();
+            }
+            else pscore = p.getPositionalScore();
+
+            if (p.getColor() == color) score += pscore;
+            else score -= pscore;
         }
         return score;
     }

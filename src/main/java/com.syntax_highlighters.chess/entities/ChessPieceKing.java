@@ -40,6 +40,35 @@ public class ChessPieceKing extends AbstractChessPiece {
         };
     }
 
+    private int[] endgamePositionScoreTable = new int[] {
+        -50, -40, -30, -20, -20, -30, -40, -50,
+        -30, -20, -10,   0,   0, -10, -20, -30,
+        -30, -10,  20,  30,  30,  20, -10, -30,
+        -30, -10,  30,  40,  40,  30, -10, -30,
+        -30, -10,  30,  40,  40,  30, -10, -30,
+        -30, -10,  20,  30,  30,  20, -10, -30,
+        -30, -30,   0,   0,   0,   0, -30, -30,
+        -50, -30, -30, -30, -30, -30, -30, -50
+    };
+
+    public int getEndgamePositionalScore() {
+        Position p = getPosition();
+        int x = p.getX();
+        int y = p.getY();
+
+        // Score board is based on starting on the bottom.
+        // Reverse for black.
+        if (color.isWhite()) {
+            y = Board.BOARD_HEIGHT - y + 1;
+        }
+
+        // Adjust for 0-based indexing.
+        x -= 1;
+        y -= 1;
+
+        return getPieceScore() + endgamePositionScoreTable[x + y * Board.BOARD_WIDTH];
+    }
+
     /**
      * Return all possible moves the king can make.
      *
