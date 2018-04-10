@@ -189,8 +189,4 @@ public class Position {
     public int hashCode() {
         return Objects.hash(this.x, this.y);
     }
-
-    public Position copy() {
-        return new Position(this.x, this.y);
-    }
 }
