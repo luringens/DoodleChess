@@ -12,17 +12,19 @@ public class Audio {
         sound.play();
     }
 
-    public static void themeMusic(AssetManager manager){
+    public static void themeMusic(AssetManager manager, Boolean num){
         Music music = manager.get("chesstheme.wav");
         music.setVolume(0.5f);
         music.play();
         music.setLooping(true);
+        if(num == false) music.setVolume(0.0f);
 
     }
 
     public static void makeMove(AssetManager manager){
         Sound sound = manager.get("kho.wav");
         sound.play();
+
     }
 
 }

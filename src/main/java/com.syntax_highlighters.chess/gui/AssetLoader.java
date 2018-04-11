@@ -47,6 +47,7 @@ public class AssetLoader {
                 "pencils/wood1.png",
                 "pencils/wood2.png",
                 "pencils/wood3.png",
+                "mutebutton.png",
         };
 
         for(String path : textures)
@@ -60,6 +61,7 @@ public class AssetLoader {
         manager.load("tick.wav",Sound.class);
         manager.load("kho.wav",Sound.class);
         manager.load("chesstheme.wav",Music.class);
+
     }
 
     public static String getAccountPath() {

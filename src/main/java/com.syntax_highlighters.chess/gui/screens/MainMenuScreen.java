@@ -51,7 +51,7 @@ public class MainMenuScreen extends AbstractScreen {
         stage.addActor(scoreButton);
         Gdx.input.setInputProcessor(stage);
 
-        Audio.themeMusic(assetManager);
+        Audio.themeMusic(assetManager,true);
 
         playButton.addListener(new ClickListener() {
             @Override

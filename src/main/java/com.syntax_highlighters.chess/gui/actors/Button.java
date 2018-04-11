@@ -5,11 +5,16 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.Audio;
 
@@ -37,6 +42,10 @@ public class Button extends Actor {
         Texture texture = manager.get("button_template.png");
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
+        Texture mute = manager.get("mutebutton.png");
+        mute.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+
         // WTF OpenGl...
         ShaderProgram.pedantic = false;
         boolean built = shader.isCompiled();
@@ -59,6 +68,7 @@ public class Button extends Actor {
             }
         });
     }
+
 
     private void renderTextures(int textureCount, Texture template, ShaderProgram shader) {
 
