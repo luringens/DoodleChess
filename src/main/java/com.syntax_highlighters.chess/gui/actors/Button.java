@@ -45,6 +45,9 @@ public class Button extends Actor {
         Texture mute = manager.get("mutebutton.png");
         mute.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
+        Texture unmute = manager.get("mutebutton.png");
+        mute.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
 
         // WTF OpenGl...
         ShaderProgram.pedantic = false;

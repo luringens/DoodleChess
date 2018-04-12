@@ -53,6 +53,7 @@ public class AssetLoader {
                 "pencils/wood2.png",
                 "pencils/wood3.png",
                 "mutebutton.png",
+                "soundbutton.png",
         };
 
         for(String path : textures)

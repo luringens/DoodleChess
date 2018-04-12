@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.Game;
@@ -118,7 +119,7 @@ public class GameScreen extends AbstractScreen {
         });
         stage.addActor(showResults);
 
-        mute = new Image(assetManager.get("mutebutton.png",Texture.class));
+        mute = new Image(assetManager.get("soundbutton.png", Texture.class));
         mute.setSize(100, 100);
         stage.addActor(mute);
 
@@ -126,6 +127,10 @@ public class GameScreen extends AbstractScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (paused)
+                    mute.setDrawable(new SpriteDrawable(new Sprite(assetManager.get("soundbutton.png", Texture.class))));
+                else
+                    mute.setDrawable(new SpriteDrawable(new Sprite(assetManager.get("mutebutton.png", Texture.class))));
                 Audio.themeMusic(assetManager, paused);
                 paused = !paused;
             }
