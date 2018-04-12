@@ -1,44 +1,69 @@
 package com.syntax_highlighters.chess.general;
 
 import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.Game;
+import com.syntax_highlighters.chess.Position;
+import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RandomMapgenTest{
 
+    Random rdm = new Random();
+    Board board = new Board();
 
-    void genTileMapTest(){
-        Random rdm = new Random();
+    @Test
+    void genTileMapTest() {
         int testBonus = rdm.nextInt(10);
-        Board board = new Board();
         int[][] testMap = board.generateTileMap(testBonus);
         int n = 0;
-        System.out.println(board);
-        for (int i = 1;i < 8; i++){
-            for(int j = 1;j < 4;j++){
-                if (testMap[i][j]== 0) n=+n;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (testMap[i][j] != 0) {
+                    n++;
+                }
             }
         }
-        assertEquals(16,n);
+        assertEquals(testBonus+15, n);
     }
-
+    //Tests that each element produced by generateTileScore is always a correct piece score.
+    @Test
     void GenerateTileScoreTest(){
+        int[] score = new int[]{100,320,330,500,900};
+        int[] Scores = board.generateTileScores(50,-5);
+        int contains = 0;
 
+        for (int i = 0; i < Scores.length; i++){
+            for (int j = 0; j < score.length;j++){
+                if (score[j] == Scores[i]){
+                        contains++;
+                }
+            }
+        }
+        assertEquals(Scores.length,contains);
     }
 
     void getPiecefromScoreTest(){
 
+
     }
     @Test
     void setupRandomGameTest(){
-        Board board = new Board();
-        Random rdm = new Random();
+        
+        int rdmBonus1 = rdm.nextInt(16 + 16 +1) - 16;
+        int rdmBonus2 = rdm.nextInt(16 + 16 +1) - 16;
+        int rdmHcp1 = rdm.nextInt(100 + 1);
+        int rdmHcp2 = rdm.nextInt(100 + 1);
+        board.setupRandomGame(rdmHcp1,rdmHcp2,rdmBonus1,rdmBonus2);
+        Position Bkingpos = new Position(4,8);
+        Position Wkingpos = new Position(4,1);
 
-        board.setupRandomGame(50,50,2,2);
-        System.out.println(board);
+        assertTrue(board.getAtPosition(Bkingpos) instanceof ChessPieceKing);
+        assertTrue(board.getAtPosition(Wkingpos) instanceof ChessPieceKing);
     }
 
 }

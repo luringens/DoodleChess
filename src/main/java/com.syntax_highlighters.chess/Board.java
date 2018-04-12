@@ -117,16 +117,20 @@ public class    Board {
         }
     }
 
-    /**
+    /** Sets up a random state of the game based on handicap and number of bonus pieces.
+     * TODO: Fix score generator.
      *
-     * @param hcpW
-     * @param hcpB
-     * @param bonusW
-     * @param bonusB
+     * @param hcpW White pieces handicap
+     * @param hcpB Black pieces handicap
+     * @param bonusW White bonus pieces
+     * @param bonusB Black bonus pieces
      */
     public void setupRandomGame(int hcpW, int hcpB,int bonusW, int bonusB) {
-        if (bonusW > 16 && bonusB > 16) {
-            throw new IllegalArgumentException("Invalid bonus value. Must be 0 < Bonus < 16. ");
+        if (bonusW > 16 || bonusB > 16 || bonusW < -15 || bonusB < -15) {
+            throw new IllegalArgumentException("Invalid bonus value. Must be -15 < Bonus < 16. ");
+        }
+        if (hcpB < 0 || hcpW < 0 || hcpB > 100 || hcpW > 100){
+            throw new IllegalArgumentException("Invalid handicap value. Must be 0 < hcp < 100. ");
         }
 
         int[] WhiteTiles = generateTileScores(hcpW, bonusW);
@@ -164,21 +168,22 @@ public class    Board {
 
     /**
      * Generates a tilemap to be used when placing the pieces. The tiles are randomly placed.
+     *
      * @param bonus
      * @return
      */
     public int[][] generateTileMap(int bonus){
         int[][] map = new int[8][4];
         Random rand = new Random();
-
+        System.out.println(map);
         map[4][1] = 1;
-
+        //For each iteration, has a probability of spawning a 1 in a random slot in the matrix 'map'.
         while (bonus - 1 + 15 > 0){
             int x = rand.nextInt(8);
             int y = rand.nextInt(4);
             if (map[x][y] == 0){
                 map[x][y] = 1;
-                bonus = bonus - 1;
+                bonus--;
             }
         }
         return map;
@@ -186,7 +191,8 @@ public class    Board {
 
     /**
      * Generates a list of scores to be used in the random generator. The function
-     * tries to exploit randomness as best it can.
+     * uses Random to randomize the scores.
+     *
      * TODO: Make sure it cannot end up in an infinite loop when hcp is high and bonus is low.
      *
      * @param hcp Handicap for each player
@@ -198,7 +204,7 @@ public class    Board {
         Random rdm = new Random();
         int[] N = new int[15 +  bonus];
         int[] values = new int[]{100,320,330,500,900};
-        int score = hcp*70;
+        int score = hcp*80;
 
         while (score > 1){
             int chng = 0;
@@ -206,7 +212,7 @@ public class    Board {
             int x = rdm.nextInt(N.length );
 
             if (N[x] < 100 ){
-                chng = values[rdm.nextInt(5)];
+                chng = values[rdm.nextInt(4)+1];//cannot upgrade to queen immediately from pawn.
                 N[x] = chng;
                 score = score - chng;
             }if (N[x] < 320 && N[x] > 100){
@@ -230,6 +236,7 @@ public class    Board {
                     score = score -(chng-temp);
                 }
             }
+            score = score + 10;
         }
         for (int i = 0; i < N.length; i++){
             if (N[i] == 0){N[i] = 100;}
