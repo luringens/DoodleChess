@@ -7,10 +7,13 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.ChessGame;
@@ -38,7 +41,7 @@ public class GameScreen extends AbstractScreen {
     private final Text turnText;
     private final Button giveUp;
     private final Button showResults;
-    private final Button mute;
+    private final Image mute;
 
     private boolean waitingForAi = false;
     private boolean resizeFBO = false;
@@ -115,8 +118,8 @@ public class GameScreen extends AbstractScreen {
         });
         stage.addActor(showResults);
 
-        mute = new Button("mute", assetManager);
-        mute.setSize(200, 75);
+        mute = new Image(assetManager.get("mutebutton.png",Texture.class));
+        mute.setSize(100, 100);
         stage.addActor(mute);
 
         mute.addListener(new ClickListener() {
