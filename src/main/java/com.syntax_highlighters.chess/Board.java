@@ -144,7 +144,7 @@ public class    Board {
 
         for (int x = 0; x < Bmap.length; x++) {
             for (int y = 0; y < Bmap[x].length; y++) {
-                if( Bmap[x][y] == 1 && !(x==4 && y == 1)){
+                if( Bmap[x][y] == 1){
                     IChessPiece piece = AbstractChessPiece.GetPiecefromScore(x+1,7-y+1,BlackTiles[N], Color.BLACK);
                     putAtPosition(piece.getPosition(),piece);
                     N = N + 1;
@@ -154,7 +154,7 @@ public class    Board {
         N = 0;
         for (int x = 0; x < Wmap.length; x++) {
             for (int y = 0; y < Wmap[x].length; y++) {
-                if( Wmap[x][y] == 1 && !(x==4 && y == 8)){
+                if( Wmap[x][y] == 1){
                     IChessPiece piece = AbstractChessPiece.GetPiecefromScore(x+1,y+1,WhiteTiles[N], Color.WHITE);
                     putAtPosition(piece.getPosition(),piece);
                     N = N + 1;
@@ -175,10 +175,9 @@ public class    Board {
     public int[][] generateTileMap(int bonus){
         int[][] map = new int[8][4];
         Random rand = new Random();
-        System.out.println(map);
-        map[4][1] = 1;
+        map[3][0] = 2;
         //For each iteration, has a probability of spawning a 1 in a random slot in the matrix 'map'.
-        while (bonus - 1 + 15 > 0){
+        while (bonus  + 15 > 0){
             int x = rand.nextInt(8);
             int y = rand.nextInt(4);
             if (map[x][y] == 0){
@@ -206,7 +205,7 @@ public class    Board {
         int[] values = new int[]{100,320,330,500,900};
         int score = hcp*80;
 
-        while (score > 1){
+        while (score > 1 && N.length > 0){
             int chng = 0;
             int temp = 0;
             int x = rdm.nextInt(N.length );
