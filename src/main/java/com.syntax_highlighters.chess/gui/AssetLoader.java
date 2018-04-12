@@ -4,9 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 
 /**
  * Helper class which loads the assets used in the game.
@@ -16,7 +21,7 @@ public class AssetLoader {
 
     public static BitmapFont GetDefaultFont(AssetManager assetManager)
     {
-        return font;
+        return assetManager.get("font24.ttf");
     }
 
     public static void LoadAssets(AssetManager manager)
@@ -55,12 +60,22 @@ public class AssetLoader {
             manager.load(path, Texture.class);
         }
 
-        Texture texture = new Texture(Gdx.files.internal("IndieFlower.png"));
-        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        font = new BitmapFont(Gdx.files.internal("IndieFlower.fnt"), new TextureRegion(texture), false);
         manager.load("tick.wav",Sound.class);
         manager.load("kho.wav",Sound.class);
         manager.load("chesstheme.wav",Music.class);
+        
+        // set the loaders for the generator and the fonts themselves
+        FileHandleResolver resolver = new InternalFileHandleResolver();
+        manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+        manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+
+
+        FreetypeFontLoader.FreeTypeFontLoaderParameter sizeParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        sizeParams.fontFileName = "Gaegu-bold.ttf";
+        sizeParams.fontParameters.size = 24;
+
+        manager.load("font24.ttf", BitmapFont.class, sizeParams);
+
 
     }
 
