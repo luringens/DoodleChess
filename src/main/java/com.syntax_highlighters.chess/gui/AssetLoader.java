@@ -72,7 +72,7 @@ public class AssetLoader {
 
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter sizeParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        sizeParams.fontFileName = "Gaegu-bold.ttf";
+        sizeParams.fontFileName = "Gaegu-Bold.ttf";
         sizeParams.fontParameters.size = 24;
 
         manager.load("font24.ttf", BitmapFont.class, sizeParams);
