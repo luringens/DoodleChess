@@ -44,16 +44,9 @@ public class GameScreen extends AbstractScreen {
     private final Button showResults;
     private final Image mute;
 
-    private boolean waitingForAi = false;
-    private boolean resizeFBO = false;
-    private FrameBuffer gameBuffer;
-
     private boolean isGameOver = false;
     private int winner = 0; // NOTE: do not consider this valid until isGameOver
     private final GameOverOverlay gameOverOverlay;
-
-    private Thread aiThread;
-    private final Semaphore aiLock = new Semaphore(1, true);
 
     private final Account player1;
     private final Account player2;
@@ -104,7 +97,6 @@ public class GameScreen extends AbstractScreen {
         turnText.setColor(0, 0, 0, 1);
         stage.addActor(turnText);
         turnText.setText(this.game.nextPlayerColor().isWhite() ? "White's turn" : "Black's turn");
-        gameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
         // display results button (initially invisible, but becomes visible when
         // game ends)
@@ -148,20 +140,7 @@ public class GameScreen extends AbstractScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 if (player1 == null && ai1 != null && player2 == null && ai2 != null) {
-                    try {
-                        aiLock.acquire(1);
-                        isGameOver = true;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } finally {
-                        aiLock.release(1);
-                    }
-
-                    try {
-                        aiThread.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    isGameOver = true;
                     chessGame.setScreen(new MainMenuScreen(chessGame));
                     return;
                 }
@@ -175,33 +154,6 @@ public class GameScreen extends AbstractScreen {
         gameOverOverlay = new GameOverOverlay(chessGame);
         gameOverOverlay.setVisible(false);
         stage.addActor(gameOverOverlay);
-
-        aiThread = new Thread(() -> {
-            while (true) {
-                try {
-                    try {
-                        aiLock.acquire(1);
-                        if (isGameOver) {
-                            waitingForAi = false;
-                            break;
-                        }
-                        if (waitingForAi && this.game.nextPlayerIsAI()) {
-                            this.game.PerformAIMove();
-                            waitingForAi = false;
-                        }
-                    }
-                    // Ignore exception
-                    catch (Exception e) {
-                    } finally {
-                        aiLock.release(1);
-                    }
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        aiThread.start();
     }
 
     private void gameOver(int winner) {
@@ -247,63 +199,28 @@ public class GameScreen extends AbstractScreen {
     @Override
     public void render(float delta) {
 
-        SpriteBatch batch = (SpriteBatch) stage.getBatch();
-        try {
-            aiLock.acquire(1);
+        // NOTE: when game is over, giveUp button is turned invisible, and
+        // showResults button is turned visible. Otherwise, give up is
+        // visible if applicable.
+        giveUp.setVisible(!isGameOver &&
+                (!game.nextPlayerIsAI() || (player1 == null && player2 == null)));
+        showResults.setVisible(isGameOver);
 
-            // NOTE: when game is over, giveUp button is turned invisible, and
-            // showResults button is turned visible. Otherwise, give up is
-            // visible if applicable.
-            giveUp.setVisible(!isGameOver &&
-                    (!game.nextPlayerIsAI() || (player1 == null && player2 == null)));
-            showResults.setVisible(isGameOver);
-
-            if (!waitingForAi) {
-                // Game over check
-                if (game.isGameOver()) {
-                    if (!isGameOver) {
-                        gameOver(game.getWinner());
-                    }
-                    stage.act(delta);
-                    stage.draw();
-                    aiLock.release(1);
-                    return;
-                }
-
-                // Tell ai thread to update
-                waitingForAi = game.nextPlayerIsAI();
-
-                // Resize buffer if necessary
-                if (resizeFBO) {
-                    resizeFBO = false;
-                    gameBuffer.dispose();
-                    gameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-                }
-
-                // Render to buffer
-                gameBuffer.begin();
-                Gdx.gl.glClearColor(0, 0, 0, 0);
-                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-                Gdx.gl.glEnable(GL20.GL_BLEND);
-                Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-                setTurnText();
-                stage.act(delta);
-                stage.draw();
-                gameBuffer.end();
-                Gdx.gl.glDisable(GL20.GL_BLEND);
+        // Game over check
+        if (game.isGameOver()) {
+            if (!isGameOver) {
+                gameOver(game.getWinner());
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            aiLock.release(1);
+            stage.act(delta);
+            stage.draw();
+            return;
         }
-        // Draw offscreen buffer
-        batch.begin();
-        batch.setColor(1, 1, 1, 1);
-        batch.draw(gameBuffer.getColorBufferTexture(), 0, 0, 0, 0, gameBuffer.getWidth(),
-                gameBuffer.getHeight(), 1, 1, 0, 0, 0,
-                gameBuffer.getWidth(), gameBuffer.getHeight(), false, true);
-        batch.end();
+        if(game.nextPlayerIsAI())
+            game.PerformAIMove();
+
+        setTurnText();
+        stage.act(delta);
+        stage.draw();
     }
 
     /**
@@ -355,14 +272,5 @@ public class GameScreen extends AbstractScreen {
 
         showResults.setPosition(width / 2.f + size / 2.f + 20.f - showResults.getWidth(),
                 height / 2.f - size / 2.f - showResults.getHeight() / 1.5f);
-
-        if (waitingForAi) {
-            resizeFBO = true;
-            return;
-        }
-
-        // Resizing the buffer
-        gameBuffer.dispose();
-        gameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, false);
     }
 }
