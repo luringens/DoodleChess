@@ -29,7 +29,6 @@ public class Move {
     Position newPos;
     private boolean hadMoved;
     private IChessPiece tookPiece = null;
-    private boolean wasPawn = false;
 
     /**
      * For inheritance only!
@@ -105,11 +104,6 @@ public class Move {
         IChessPiece piece = this.getPiece(b);
         piece.setHasMoved(true);
         b.putAtPosition(newPos, piece);
-        if (piece instanceof ChessPiecePawn && (newPos.getY() == 1 || newPos.getY() == 8)) {
-            this.wasPawn = true;
-            b.removePiece(piece);
-            b.putAtPosition(newPos, new ChessPieceQueen(newPos, piece.getColor()));
-        }
         hasDoneMove = true;
     }
 
@@ -125,10 +119,6 @@ public class Move {
         if (!hasDoneMove) throw new RuntimeException("Can not undo a move that has not been done");
 
         IChessPiece piece = this.getPiece(b);
-        if (this.wasPawn) {
-            b.removePiece(getPiece(b));
-            b.putAtPosition(newPos, piece);
-        }
         b.putAtPosition(oldPos, piece);
         piece.setHasMoved(hadMoved);
         if (tookPiece != null) {
