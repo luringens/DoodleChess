@@ -3,6 +3,7 @@ package com.syntax_highlighters.chess.entities;
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.EnPassantMove;
 import com.syntax_highlighters.chess.Move;
+import com.syntax_highlighters.chess.PromotionMove;
 import com.syntax_highlighters.chess.Position;
 
 import java.util.ArrayList;
@@ -70,7 +71,15 @@ public class ChessPiecePawn extends AbstractChessPiece {
         
         // check if one step forward can be performed
         if (board.isOnBoard(f1) && !board.isOccupied(f1)) {
-            possibleMoves.add(new Move(pos, f1, board));
+            if (f1.getY() == 1 || f1.getY() == 8) {
+                possibleMoves.add(new PromotionMove(pos, f1, board, new ChessPieceQueen(pos, this.getColor())));
+                possibleMoves.add(new PromotionMove(pos, f1, board, new ChessPieceRook(pos, this.getColor())));
+                possibleMoves.add(new PromotionMove(pos, f1, board, new ChessPieceKnight(pos, this.getColor())));
+                possibleMoves.add(new PromotionMove(pos, f1, board, new ChessPieceBishop(pos, this.getColor())));
+            }
+            else {
+                possibleMoves.add(new Move(pos, f1, board));
+            }
             
             // two steps forward
             Position f2 = this.forward(2);
