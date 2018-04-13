@@ -71,15 +71,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
         
         // check if one step forward can be performed
         if (board.isOnBoard(f1) && !board.isOccupied(f1)) {
-            if (f1.getY() == 1 || f1.getY() == 8) {
-                possibleMoves.add(new PromotionMove(pos, f1, board, new ChessPieceQueen(pos, this.getColor())));
-                possibleMoves.add(new PromotionMove(pos, f1, board, new ChessPieceRook(pos, this.getColor())));
-                possibleMoves.add(new PromotionMove(pos, f1, board, new ChessPieceKnight(pos, this.getColor())));
-                possibleMoves.add(new PromotionMove(pos, f1, board, new ChessPieceBishop(pos, this.getColor())));
-            }
-            else {
-                possibleMoves.add(new Move(pos, f1, board));
-            }
+            addRegularMove(board, possibleMoves, f1);
             
             // two steps forward
             Position f2 = this.forward(2);
@@ -87,7 +79,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
             // if one step forward can be performed, check if two steps forward
             // can be performed
             if (!this.hasMoved() && board.isOnBoard(f2) && !board.isOccupied(f2)) {
-                possibleMoves.add(new Move(pos, f2, board));
+                addRegularMove(board, possibleMoves, f2);
             }
         }
 
@@ -153,8 +145,30 @@ public class ChessPiecePawn extends AbstractChessPiece {
     private void takeEnemiesMove (Board board, ArrayList<Move> possibleMoves, Position pos) {
         if (board.isOnBoard(pos)) {
             if (board.isEnemy(this, pos)) {
-                possibleMoves.add(new Move(this.getPosition(), pos, board));
+                addRegularMove(board, possibleMoves, pos);
             }
+        }
+    }
+
+    /**
+     * Helper method: if position is on end of board, add four PromotionMoves,
+     * else add one regular move.
+     *
+     * @param board The board
+     * @param possibleMoves The list to add the move(s) to
+     * @param pos The position the move(s) lead to
+     */
+    private void addRegularMove(Board board, ArrayList<Move> possibleMoves, Position to) {
+        Position from = getPosition();
+        if (to.getY() == 1 || to.getY() == 8) {
+            Color c = this.getColor();
+            possibleMoves.add(new PromotionMove(from, to, board, new ChessPieceQueen(to, c)));
+            possibleMoves.add(new PromotionMove(from, to, board, new ChessPieceRook(to, c)));
+            possibleMoves.add(new PromotionMove(from, to, board, new ChessPieceKnight(to, c)));
+            possibleMoves.add(new PromotionMove(from, to, board, new ChessPieceBishop(to, c)));
+        }
+        else {
+            possibleMoves.add(new Move(from, to, board));
         }
     }
 
