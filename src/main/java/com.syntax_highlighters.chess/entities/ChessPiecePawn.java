@@ -164,8 +164,8 @@ public class ChessPiecePawn extends AbstractChessPiece {
             Color c = this.getColor();
             possibleMoves.add(new PromotionMove(from, to, board, new ChessPieceQueen(to, c)));
             possibleMoves.add(new PromotionMove(from, to, board, new ChessPieceRook(to, c)));
-            possibleMoves.add(new PromotionMove(from, to, board, new ChessPieceKnight(to, c)));
             possibleMoves.add(new PromotionMove(from, to, board, new ChessPieceBishop(to, c)));
+            possibleMoves.add(new PromotionMove(from, to, board, new ChessPieceKnight(to, c)));
         }
         else {
             possibleMoves.add(new Move(from, to, board));

@@ -7,14 +7,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent; import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Game;
 import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.IChessPiece;
+
+import com.syntax_highlighters.chess.gui.actors.PopupSelectionMenu;
+import com.syntax_highlighters.chess.gui.actors.MenuIcon;
 
 import java.util.function.Predicate;
 import java.util.List;
@@ -48,6 +52,7 @@ public class UiBoard extends Actor {
     private Color selectedColor = new Color(1,0.84f,0, 1.0f);
     private Color threatensColor= new Color(1,0,0, 1.0f);
 
+    private PopupSelectionMenu promotionSelection;
 
     public UiBoard(AssetManager assetManager, Game game, Stage stage, Color whiteColor, Color blackColor)
     {
@@ -56,6 +61,15 @@ public class UiBoard extends Actor {
 
         this.blackColor = blackColor;
         this.whiteColor = whiteColor;
+
+        this.promotionSelection = new PopupSelectionMenu(
+                "Select promotion:",
+                assetManager.get("queen_white.png", Texture.class),
+                assetManager.get("rook_white.png", Texture.class),
+                assetManager.get("bishop_white.png", Texture.class),
+                assetManager.get("knight_white.png", Texture.class));
+        this.promotionSelection.setVisible(false);
+        stage.addActor(promotionSelection);
 
         segoeUi = AssetLoader.GetDefaultFont(assetManager);
         tile = new Texture(Gdx.files.internal("tile.png"));
@@ -78,21 +92,8 @@ public class UiBoard extends Actor {
                     selectedPiece = game.getPieceAtPosition(p2);
                     return selectedPiece != null; // if piece selected, run touchUp (drag/drop)
                 }
-                makeMoveIfPossible(p1, p2);
+                makeMoveIfPossible(p1, p2, x, y);
                 return false; // do not run touchUp
-                // Else: tried to select a position to move to
-//                List<Move> moves = game.performMove(p1, p2);
-//                if (moves.size() == 1) {
-//                    // move was performed implicitly by game
-//                    Audio.makeMove(assetManager);
-//                    selectedPiece = null;
-//                }
-//                else if (moves.size() > 1) {
-//                    // user must choose between available moves before it's
-//                    // possible to make a move
-//                    // TODO: implement
-//                }
-//                return false; // do not run touchUp
             }
 
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
@@ -107,15 +108,7 @@ public class UiBoard extends Actor {
                 Position p1 = getSelectedPosition();
                 Position p2 = new Position(px, py);
 
-                makeMoveIfPossible(p1, p2);
-
-//                if(((UiBoard)event.getTarget()).moveSelected(px, py))
-//                {
-//                    selectedPiece = null;
-//                    return;
-//                }
-//
-//                selectedPiece = game.getPieceAtPosition(new Position(px, py));;
+                makeMoveIfPossible(p1, p2, x, y);
             }
         });
 
@@ -161,8 +154,8 @@ public class UiBoard extends Actor {
      * @param p1 The start position
      * @param p2 The goal position
      */
-    private void makeMoveIfPossible(Position p1, Position p2) {
-        List<Move> moves = game.performMove(p1, p2);
+    private void makeMoveIfPossible(Position p1, Position p2, float x, float y) {
+        final List<Move> moves = game.performMove(p1, p2);
         if (moves.size() == 1) {
             // move was performed implicitly by game
             Audio.makeMove(assetManager);
@@ -172,10 +165,30 @@ public class UiBoard extends Actor {
             // user must choose between available moves before it's
             // possible to make a move
             // TODO: implement move selection popup box
+            promotionSelection.setX(Math.min(x, getWidth()-promotionSelection.getWidth()));
+            promotionSelection.setY(y);
+            promotionSelection.setListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    int index = (int)(x / MenuIcon.SIZE);
+                    Move m = moves.get(index);
+                    game.performMove(m);
+                    selectedPiece = null;
+                    promotionSelection.setVisible(false);
+                    UiBoard.this.setTouchable(Touchable.enabled);
+                }
+            });
         }
         else {
             // select a new piece if applicable
             selectedPiece = game.getPieceAtPosition(p2);
+        }
+        promotionSelection.setVisible(moves.size() > 1);
+        if (promotionSelection.isVisible()) {
+            this.setTouchable(Touchable.disabled);
+        }
+        else {
+            this.setTouchable(Touchable.enabled);
         }
     }
 
@@ -343,6 +356,9 @@ public class UiBoard extends Actor {
         renderMoves(batch);
         renderPieces(batch);
         batch.setColor(1,1,1,1);
+        if (promotionSelection.isVisible()) {
+            promotionSelection.draw(batch, 1);
+        }
     }
 
 }
