@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -46,7 +47,11 @@ public class ChessGame extends Game {
 		accountManager.load(AssetLoader.getAccountPath());
 
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("uiskin.atlas"));
-		skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
+		skin = new Skin();
+		skin.add("default-font", AssetLoader.GetDefaultFont(assetManager), BitmapFont.class);
+
+		skin.addRegions(atlas);
+		skin.load(Gdx.files.internal("uiskin.json"));
 
         paper = assetManager.get("paper.png", Texture.class);
 
