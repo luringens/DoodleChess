@@ -53,19 +53,17 @@ public abstract class AbstractChessPiece implements IChessPiece {
      */
     @Override
     public boolean canMoveTo(Position pos, Board board) {
-        return getMoveTo(pos, board) != null;
+        return !getMovesTo(pos, board).isEmpty();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Move getMoveTo(Position pos, Board board) {
-        List<Move> moves = allPossibleMoves(board).stream()
+    public List<Move> getMovesTo(Position pos, Board board) {
+        return allPossibleMoves(board).stream()
             .filter(p -> p.getPosition().equals(pos))
             .collect(Collectors.toList());
-        if (moves.size() == 0) return null;
-        return moves.get(0);
     }
 
     /**

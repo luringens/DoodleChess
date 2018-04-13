@@ -1,6 +1,7 @@
 package com.syntax_highlighters.chess;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import com.syntax_highlighters.chess.entities.*;
@@ -56,21 +57,39 @@ public class Game {
      * @param to Coordinate to
      * @return If the move was valid and performed.
      */
-    public boolean performMove(Position from, Position to) {
+    public List<Move> performMove(Position from, Position to) {
         IChessPiece piece = getPieceAtPosition(from);
         
         // Check that the piece exists
-        if (piece == null) return false; // there is no piece at the given position
+        if (piece == null) return new ArrayList<>(); // there is no piece at the given position
         
         // Check that the piece belongs to the current player
-        if (piece.getColor() != nextPlayerColor) return false; // wrong color of piece
+        if (piece.getColor() != nextPlayerColor) return new ArrayList<>(); // wrong color of piece
         
         // Performs move if valid, returns whether move was performed
-        boolean result = board.movePiece(piece, to);
-        if (result) {
+        List<Move> result = board.movePiece(piece, to);
+        if (result.size() == 1) {
             nextPlayerColor = nextPlayerColor.opponentColor();
         }
         return result;
+    }
+
+    /**
+     * Perform the move.
+     *
+     * NOTE: no validation, such as in performMove - the game assumes that the
+     * move is valid, since it should have been retrieved using a previous call
+     * to performMove - the caller is responsible for ensuring that they do not
+     * call this move with an argument that is invalid.
+     *
+     * @param m The move to be performed
+     */
+    public void performMove(Move m) {
+        if (!(m != null)) {
+            throw new IllegalArgumentException("m != null");
+        }
+        m.DoMove(board);
+        nextPlayerColor = nextPlayerColor.opponentColor();
     }
 
     /**

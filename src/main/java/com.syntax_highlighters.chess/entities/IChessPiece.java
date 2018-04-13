@@ -40,14 +40,14 @@ public interface IChessPiece {
     boolean canMoveTo(Position pos, Board board);
 
     /**
-     * Get the move to a given position, if possible.
+     * Get the moves to a given position, if possible.
      *
      * @param pos The position to move to
      * @param board The current board state
      *
-     * @return The Move if the piece can move there, null otherwise
+     * @return A list of all legal moves to the given position, if any
      */
-    Move getMoveTo(Position pos, Board board);
+    List<Move> getMovesTo(Position pos, Board board);
 
     /**
      * Return all possible moves the piece can make.

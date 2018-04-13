@@ -370,23 +370,26 @@ public class    Board {
     }
 
     /**
-     * Move a piece to a position, if it can move there.
+     * Move a piece to a position, if there is one move to that position.
+     *
+     * NOTE: Implicitly performs the move if it has enough information to
+     * identify the given move uniquely. If not, leaves this up to the caller.
      *
      * @param piece The piece to move
      * @param toPosition The position to move to
      *
-     * @return true if the piece moved, false otherwise
+     * @return A list of all the moves to the given position, if any
      */
-    public boolean movePiece(IChessPiece piece, Position toPosition) {
+    public List<Move> movePiece(IChessPiece piece, Position toPosition) {
         assert isOnBoard(toPosition);
 
-        Move m = piece.getMoveTo(toPosition, this);
-        if (m != null) {
-            this.lastMove = m;
-            m.DoMove(this);
-            return true;
+        List<Move> moves = piece.getMovesTo(toPosition, this);
+        // Perform the move, if there is just one move.
+        if (moves.size() == 1) {
+            this.lastMove = moves.get(0);
+            lastMove.DoMove(this);
         }
-        return false;
+        return moves;
     }
 
     /**

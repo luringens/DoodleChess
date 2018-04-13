@@ -17,6 +17,7 @@ import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 
 import java.util.function.Predicate;
+import java.util.List;
 
 /**
  * UI board.
@@ -64,36 +65,57 @@ public class UiBoard extends Actor {
         this.addListener(new InputListener() {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 // input not valid when ai
-                if(game.nextPlayerIsAI()) return false;
+                if(game.nextPlayerIsAI()) return false; // do not run touchUp
 
                 float tileWidth = getSpaceWidth();
                 float tileHeight = getSpaceHeight();
                 int px = (int) ((x-LEGEND_OFFSET) / tileWidth) + 1;
                 int py = (int) ((y-LEGEND_OFFSET) / tileHeight) + 1;
-
-                if(((UiBoard)event.getTarget()).moveSelected(px, py))
-                {
-                    Audio.makeMove(assetManager);
-                    selectedPiece = null;
-                    return false;
+                
+                Position p1 = getSelectedPosition();
+                Position p2 = new Position(px, py);
+                if (p1 == null) {
+                    selectedPiece = game.getPieceAtPosition(p2);
+                    return selectedPiece != null; // if piece selected, run touchUp (drag/drop)
                 }
-                selectedPiece = game.getPieceAtPosition(new Position(px, py));;
-                return true;
+                makeMoveIfPossible(p1, p2);
+                return false; // do not run touchUp
+                // Else: tried to select a position to move to
+//                List<Move> moves = game.performMove(p1, p2);
+//                if (moves.size() == 1) {
+//                    // move was performed implicitly by game
+//                    Audio.makeMove(assetManager);
+//                    selectedPiece = null;
+//                }
+//                else if (moves.size() > 1) {
+//                    // user must choose between available moves before it's
+//                    // possible to make a move
+//                    // TODO: implement
+//                }
+//                return false; // do not run touchUp
             }
 
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                // NOTE: this method should only be run in the case that the
+                // user selected a piece in touchDown - we can assume
+                // selectedPiece to be not null
                 float tileWidth = getSpaceWidth();
                 float tileHeight = getSpaceHeight();
                 int px = (int) ((x-LEGEND_OFFSET) / tileWidth) + 1;
                 int py = (int) ((y-LEGEND_OFFSET) / tileHeight) + 1;
 
-                if(((UiBoard)event.getTarget()).moveSelected(px, py))
-                {
-                    selectedPiece = null;
-                    return;
-                }
+                Position p1 = getSelectedPosition();
+                Position p2 = new Position(px, py);
 
-                selectedPiece = game.getPieceAtPosition(new Position(px, py));;
+                makeMoveIfPossible(p1, p2);
+
+//                if(((UiBoard)event.getTarget()).moveSelected(px, py))
+//                {
+//                    selectedPiece = null;
+//                    return;
+//                }
+//
+//                selectedPiece = game.getPieceAtPosition(new Position(px, py));;
             }
         });
 
@@ -114,6 +136,50 @@ public class UiBoard extends Actor {
         return (getHeight() - LEGEND_OFFSET) / Board.BOARD_HEIGHT;
     }
 
+    /**
+     * Helper method: Return the position of the selected piece, if there is a
+     * selected piece.
+     *
+     * @return The position of the selected piece, or null if there is no
+     * selected piece
+     */
+    private Position getSelectedPosition() {
+        if (selectedPiece == null) return null;
+        return selectedPiece.getPosition();
+    }
+    
+    /**
+     * Helper method: Perform a move from one position to another, if possible.
+     *
+     * If more than one move is possible, creates a popup dialog which allows
+     * user to select the desired move, which disappears if the user clicks
+     * outside it, and which performs all the necessary actions to perform the
+     * selected move if the user selects one of the options inside it.
+     *
+     * Also sets the selectedPiece class variable as appropriate.
+     *
+     * @param p1 The start position
+     * @param p2 The goal position
+     */
+    private void makeMoveIfPossible(Position p1, Position p2) {
+        List<Move> moves = game.performMove(p1, p2);
+        if (moves.size() == 1) {
+            // move was performed implicitly by game
+            Audio.makeMove(assetManager);
+            selectedPiece = null;
+        }
+        else if (moves.size() > 1) {
+            // user must choose between available moves before it's
+            // possible to make a move
+            // TODO: implement move selection popup box
+        }
+        else {
+            // select a new piece if applicable
+            selectedPiece = game.getPieceAtPosition(p2);
+        }
+    }
+
+    @Deprecated
     private boolean moveSelected(int px, int py) {
         if(selectedPiece != null)
         {
@@ -122,7 +188,7 @@ public class UiBoard extends Actor {
                 Position pos = move.getPosition();
                 if(pos.getX() == px && pos.getY() == py)
                 {
-                    return game.performMove(selectedPiece.getPosition(), pos);
+                    return game.performMove(selectedPiece.getPosition(), pos).size() == 1;
                 }
             }
         }

@@ -163,7 +163,7 @@ class BoardStartupTest {
         IChessPiece testPawn = board.getAtPosition(new Position(1,7));
 
 
-        assertFalse((game.performMove(new Position(1,7),new Position(1,6))));
+        assertEquals(0, game.performMove(new Position(1,7),new Position(1,6)).size());
         assertEquals(new Position(1,7), testPawn.getPosition());
     }
 }
