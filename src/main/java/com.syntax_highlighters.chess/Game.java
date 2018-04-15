@@ -97,17 +97,23 @@ public class Game {
      *
      * If the next player is an AI player, make the player perform a move, and
      * then change turns. Otherwise do nothing.
+     *
+     * @return The move that was performed or null if no move was performed.
      */
-    public void PerformAIMove() {
+    public Move PerformAIMove() {
         if (nextPlayerIsAI()) {
+            Move move;
             if (nextPlayerColor.isWhite()) {
-                whiteAI.PerformMove(board);
+                move = whiteAI.GetMove(board);
             }
             else {
-                blackAI.PerformMove(board);
+                move = blackAI.GetMove(board);
             }
             nextPlayerColor = nextPlayerColor.opponentColor();
+            move.DoMove(board);
+            return move;
         }
+        return null;
     }
 
     /**
