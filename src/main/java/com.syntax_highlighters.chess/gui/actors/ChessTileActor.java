@@ -71,6 +71,16 @@ public class ChessTileActor extends Actor {
             }
         }
 
+        // Highlight the tile if it is a suggested move
+        Move suggested = boardGroup.getSuggestedMove();
+        if (suggested != null) {
+            if (position.equals(suggested.getOldPosition())
+                    || position.equals(suggested.getPosition())) {
+                batch.setColor(new Color(0.4f, 1.0f, 0.2f, 1.0f));
+                batch.draw(assetManager.get("tile_black.png", Texture.class), getX(), getY(), getWidth(), getHeight());
+            }
+        }
+
         // Draw the black overlay
         if(isBlack)
         {

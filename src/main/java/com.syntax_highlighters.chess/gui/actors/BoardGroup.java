@@ -32,6 +32,7 @@ public class BoardGroup extends Group {
     private Group pieceGroup;
     private final float LEGEND_OFFSET = 50;
     private PopupSelectionMenu promotionSelection;
+    private Move suggestedMove = null;
 
     /**
      * Constructor
@@ -250,5 +251,17 @@ public class BoardGroup extends Group {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         drawLegend(batch);
+    }
+
+    public Move getSuggestedMove() {
+        return suggestedMove;
+    }
+
+    public void clearSuggestion() {
+        suggestedMove = null;
+    }
+
+    public void showSuggestion(Move move) {
+        suggestedMove = move;
     }
 }

@@ -10,10 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.syntax_highlighters.chess.Account;
-import com.syntax_highlighters.chess.ChessGame;
-import com.syntax_highlighters.chess.Game;
+import com.syntax_highlighters.chess.*;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
+import com.syntax_highlighters.chess.entities.IAiPlayer;
+import com.syntax_highlighters.chess.entities.MiniMaxAIPlayer;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.Audio;
@@ -22,7 +22,6 @@ import com.syntax_highlighters.chess.gui.actors.BoardGroup;
 import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
-import com.syntax_highlighters.chess.PlayerAttributes;
 
 /**
  * Game main screen.
@@ -52,6 +51,7 @@ public class GameScreen extends AbstractScreen {
     private int xx = 1;
 
     private final ChessGame chessGame;
+    private com.syntax_highlighters.chess.entities.Color nextPlayerColor;
 
     /**
      * Constructor.
@@ -77,6 +77,7 @@ public class GameScreen extends AbstractScreen {
         this.chessGame = chessGame;
 
         this.game = new Game(ai1, ai2);
+        this.nextPlayerColor = this.game.nextPlayerColor().opponentColor();
 
         Gdx.input.setInputProcessor(stage);
 
@@ -195,7 +196,6 @@ public class GameScreen extends AbstractScreen {
      */
     @Override
     public void render(float delta) {
-
         // NOTE: when game is over, giveUp button is turned invisible, and
         // showResults button is turned visible. Otherwise, give up is
         // visible if applicable.
@@ -203,17 +203,35 @@ public class GameScreen extends AbstractScreen {
                 (!game.nextPlayerIsAI() || (player1 == null && player2 == null)));
         showResults.setVisible(isGameOver);
 
-        // Game over check
-        if (game.isGameOver()) {
-            if (!isGameOver) {
-                gameOver(game.getWinner());
+        // Has the board updated?
+        if (game.nextPlayerColor() != nextPlayerColor) {
+            System.out.println("Board updated!");
+            nextPlayerColor = game.nextPlayerColor();
+            board.clearSuggestion();
+
+            // Game over check
+            if (game.isGameOver()) {
+                if (!isGameOver) {
+                    gameOver(game.getWinner());
+                }
+                stage.act(delta);
+                stage.draw();
+                return;
             }
-            stage.act(delta);
-            stage.draw();
-            return;
+
+            // Do an AI turn if needed
+            if (game.nextPlayerIsAI()) {
+                game.PerformAIMove();
+            }
+
+            // Otherwise, suggest a simple move to the player.
+            else {
+                System.out.println(nextPlayerColor.isWhite());
+                IAiPlayer ai = new MiniMaxAIPlayer(nextPlayerColor, AiDifficulty.Easy);
+                Move move = ai.GetMove(game.getBoard());
+                board.showSuggestion(move);
+            }
         }
-        if(game.nextPlayerIsAI())
-            game.PerformAIMove();
 
         setTurnText();
         stage.act(delta);
