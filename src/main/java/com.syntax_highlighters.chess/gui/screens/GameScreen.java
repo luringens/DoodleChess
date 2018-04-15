@@ -117,9 +117,9 @@ public class GameScreen extends AbstractScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 if (paused)
-                    mute.setDrawable(muteDrawable);
-                else
                     mute.setDrawable(soundDrawable);
+                else
+                    mute.setDrawable(muteDrawable);
                 Audio.themeMusic(assetManager, paused);
                 paused = !paused;
             }
