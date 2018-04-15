@@ -46,6 +46,11 @@ public class Button extends Actor {
         ShaderProgram.pedantic = false;
         boolean built = shader.isCompiled();
 
+        if(!shader.isCompiled())
+        {
+            System.out.println(shader.getLog());
+        }
+
         if(!hasRendered)
             renderTextures(TEXTURE_COUNT, texture, shader);
 
@@ -99,7 +104,9 @@ public class Button extends Actor {
 
         if(Gdx.graphics.getFrameId() - lastFrame >= 60)
         {
-            textureId = (int)(Math.random() * (TEXTURE_COUNT-1));
+            int old = textureId;
+            while(old == textureId)
+                textureId = (int)(Math.random() * (TEXTURE_COUNT-1));
             lastFrame = Gdx.graphics.getFrameId();
         }
 
@@ -111,7 +118,8 @@ public class Button extends Actor {
         {
             batch.setColor(Color.BLACK);
         }
-        batch.draw(preRenderedButtons.get(textureId).getColorBufferTexture(), getX(),getY(),getWidth(),getHeight());
+        Texture tex = preRenderedButtons.get(textureId).getColorBufferTexture();
+        batch.draw(tex, getX(),getY(),getWidth(),getHeight(), 0, 0, tex.getWidth(), tex.getHeight(), false, true);
 
         text.setCenter(getX() + getWidth()/2.f, getY() + getHeight()/2.f);
 

@@ -100,7 +100,7 @@ public class AccountOverlay extends AbstractOverlay {
 
         TextField.TextFieldStyle style = new TextField.TextFieldStyle();
         style.font = font;
-        style.background = new WobbleDrawable(assetManager.get("button_template.png"), assetManager);
+        style.background = new WobbleDrawable(assetManager.get("button_template.png"), assetManager, Color.BLACK);
         style.fontColor = Color.BLACK;
         style.background.setLeftWidth(25);
         style.background.setRightWidth(25);

@@ -51,13 +51,14 @@ void main()
     float dx = 1.0f - abs(uv.x - 0.5f);
     float dy = 1.0f - abs(uv.y - 0.5f);
 
-    vec2 noisePos = uv * 3.f + floor(u_time * 2.f);
+    vec2 noisePos = uv * vec2(2.f, 1.f) * 3.f + floor(u_time * 2.f);
     float noise = snoise(noisePos);
 	
-    vec2 uvp = uv  + noise / 50.0f * vec2(dx, dy);
+    vec2 uvp = uv  + noise / 200.0f;
     
     vec4 color = texture2D(u_texture, uvp);
     
+    noise = noise / 2.f + 0.5f;
+    gl_FragColor = vec4(noise, noise, noise, 1.0f);
     gl_FragColor = color;
-    //gl_FragColor = vec4(noise, noise, noise, 1.0f);
 }
