@@ -57,7 +57,9 @@ public class PopupSelectionMenu extends Actor {
         for (MenuIcon ic : buttons) {
             ic.draw(batch, parentAlpha);
         }
-        this.setBounds(getX(), getY(), getWidth(), getHeight());
+        float x = getX();
+        float y = getY();
+        this.setBounds(x, y, getWidth(), getHeight());
     }
 
     public void setListener(ClickListener listener) {

@@ -1,17 +1,11 @@
 package com.syntax_highlighters.chess.gui.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -23,13 +17,11 @@ import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.Audio;
-import com.syntax_highlighters.chess.gui.UiBoard;
+import com.syntax_highlighters.chess.gui.actors.BoardGroup;
 import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
 import com.syntax_highlighters.chess.PlayerAttributes;
-
-import java.util.concurrent.Semaphore;
 
 /**
  * Game main screen.
@@ -38,7 +30,8 @@ public class GameScreen extends AbstractScreen {
     private final AssetManager assetManager;
 
     private final Game game;
-    private final UiBoard board;
+    //private final UiBoard board;
+    private final BoardGroup board;
     private final Text turnText;
     private final Button giveUp;
     private final Button showResults;
@@ -86,7 +79,7 @@ public class GameScreen extends AbstractScreen {
 
         Gdx.input.setInputProcessor(stage);
 
-        board = new UiBoard(assetManager, this.game, stage, this.player1Color, this.player2Color);
+        board = new BoardGroup(this.game, this.player2Color, this.player1Color, assetManager);
         float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 50;
         board.setSize(size, size);
         stage.addActor(board);
