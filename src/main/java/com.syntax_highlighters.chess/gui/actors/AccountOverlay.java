@@ -10,11 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.gui.AssetLoader;
+import com.syntax_highlighters.chess.gui.WobbleDrawable;
 import com.syntax_highlighters.chess.gui.screens.SetupScreen;
 
 /**
@@ -98,13 +100,14 @@ public class AccountOverlay extends AbstractOverlay {
 
         TextField.TextFieldStyle style = new TextField.TextFieldStyle();
         style.font = font;
-        style.background = new SpriteDrawable(new Sprite(assetManager.get("button_template.png", Texture.class)));
+        style.background = new WobbleDrawable(assetManager.get("button_template.png"), assetManager);
         style.fontColor = Color.BLACK;
         style.background.setLeftWidth(25);
         style.background.setRightWidth(25);
+        style.cursor = new SpriteDrawable(new Sprite(assetManager.get("cursor.png", Texture.class)));
 
         username = new TextField("", style);
-        username.setSize(200, 50);
+        username.setSize(200, 75);
 
     }
 
@@ -135,7 +138,7 @@ public class AccountOverlay extends AbstractOverlay {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        usernameLabel.setCenter(0, getY() + getHeight() /2.f+ 50.f);
+        usernameLabel.setCenter(0, getY() + getHeight() /2.f+ 75.f);
         usernameLabel.setX(getX() + getWidth()/2.f - 150.f);
         usernameLabel.draw(batch, parentAlpha);
 

@@ -48,18 +48,16 @@ void main()
     
     vec2 uvc = uv - 0.5f;
     
-    float square = 1.f - (uvc.x * uvc.x + uvc.y * uvc.y) * 4.f;
-    
-    
+    float dx = 1.0f - abs(uv.x - 0.5f);
+    float dy = 1.0f - abs(uv.y - 0.5f);
+
     vec2 noisePos = uv * 3.f + floor(u_time * 2.f);
     float noise = snoise(noisePos);
 	
-    vec2 uvp = uv  + noise / 25.f * square;
+    vec2 uvp = uv  + noise / 50.0f * vec2(dx, dy);
     
     vec4 color = texture2D(u_texture, uvp);
     
-    gl_FragColor = vec4(1,1,1,0);
-    gl_FragColor.a = color.a;
-
+    gl_FragColor = color;
     //gl_FragColor = vec4(noise, noise, noise, 1.0f);
 }

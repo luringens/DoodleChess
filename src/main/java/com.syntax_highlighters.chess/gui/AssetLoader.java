@@ -46,6 +46,7 @@ public class AssetLoader {
                 "tile_black.png",
                 "tile_highlight.png",
                 "button_template.png",
+                "selectBox.png",
                 "pixel.png",
                 "overlay.png",
                 "background2.png",
@@ -56,6 +57,7 @@ public class AssetLoader {
                 "pencils/wood3.png",
                 "mutebutton.png",
                 "soundbutton.png",
+                "cursor.png",
         };
 
         for(String path : textures)
@@ -84,6 +86,11 @@ public class AssetLoader {
         shaderProgramParameter.vertexFile = "shaders/id.vert";
         shaderProgramParameter.fragmentFile = "shaders/setColor.frag";
         manager.load("setColor.frag", ShaderProgram.class, shaderProgramParameter);
+
+        ShaderProgramLoader.ShaderProgramParameter wobbleParameters = new ShaderProgramLoader.ShaderProgramParameter();
+        wobbleParameters.vertexFile = "shaders/id.vert";
+        wobbleParameters.fragmentFile = "shaders/offset.frag";
+        manager.load("wobble.frag", ShaderProgram.class, wobbleParameters);
 
     }
 

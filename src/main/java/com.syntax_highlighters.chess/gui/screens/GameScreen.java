@@ -17,6 +17,7 @@ import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.Audio;
+import com.syntax_highlighters.chess.gui.WobbleDrawable;
 import com.syntax_highlighters.chess.gui.actors.BoardGroup;
 import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
@@ -104,7 +105,10 @@ public class GameScreen extends AbstractScreen {
         });
         stage.addActor(showResults);
 
-        mute = new Image(assetManager.get("soundbutton.png", Texture.class));
+        WobbleDrawable soundDrawable = new WobbleDrawable(assetManager.get("soundbutton.png", Texture.class), assetManager);
+        WobbleDrawable muteDrawable = new WobbleDrawable(assetManager.get("mutebutton.png", Texture.class), assetManager);
+
+        mute = new Image(soundDrawable);
         mute.setSize(100, 100);
         stage.addActor(mute);
 
@@ -113,9 +117,9 @@ public class GameScreen extends AbstractScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 if (paused)
-                    mute.setDrawable(new SpriteDrawable(new Sprite(assetManager.get("soundbutton.png", Texture.class))));
+                    mute.setDrawable(muteDrawable);
                 else
-                    mute.setDrawable(new SpriteDrawable(new Sprite(assetManager.get("mutebutton.png", Texture.class))));
+                    mute.setDrawable(soundDrawable);
                 Audio.themeMusic(assetManager, paused);
                 paused = !paused;
             }

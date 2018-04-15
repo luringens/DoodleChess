@@ -13,8 +13,12 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.syntax_highlighters.chess.gui.AssetLoader;
+import com.syntax_highlighters.chess.gui.WobbleDrawable;
 import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
 
 /**
@@ -49,6 +53,9 @@ public class ChessGame extends Game {
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("uiskin.atlas"));
 		skin = new Skin();
 		skin.add("default-font", AssetLoader.GetDefaultFont(assetManager), BitmapFont.class);
+
+		skin.add("wobbleButtonTemplate", new WobbleDrawable(assetManager.get("button_template.png"), assetManager), Drawable.class);
+		skin.add("wobbleSelect", new WobbleDrawable(assetManager.get("selectBox.png"), assetManager), Drawable.class);
 
 		skin.addRegions(atlas);
 		skin.load(Gdx.files.internal("uiskin.json"));

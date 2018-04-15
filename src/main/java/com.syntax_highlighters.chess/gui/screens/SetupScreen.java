@@ -158,7 +158,7 @@ public class SetupScreen extends AbstractScreen {
         box.setItems(accounts.stream().map(String::toString).toArray(String[]::new));
         box.setSelected("Player" + (player == -1 ? "1" : "2"));
         box.setAlignment(Align.center);
-        box.setSize(200,  45);
+        box.setSize(200,  buttonHeight);
         stage.addActor(box);
         if(player == -1)
             player1Title = box;

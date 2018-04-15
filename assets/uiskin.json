@@ -19,7 +19,7 @@
     },
     com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
         default: {
-            font: default-font, fontColor: black, background: default-select,
+            font: default-font, fontColor: black, background: wobbleSelect,
             scrollStyle: default,
             listStyle: { font: default-font, fontColorUnselected: black, fontColorSelected: white, selection: default-select-selection }
         }
