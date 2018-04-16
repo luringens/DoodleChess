@@ -21,6 +21,7 @@ import com.syntax_highlighters.chess.gui.WobbleDrawable;
 import com.syntax_highlighters.chess.gui.actors.BoardGroup;
 import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
+import com.syntax_highlighters.chess.gui.actors.ConfirmationOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
 
 /**
@@ -92,19 +93,19 @@ public class GameScreen extends AbstractScreen {
         turnText.setColor(0, 0, 0, 1);
         stage.addActor(turnText);
         turnText.setText(this.game.nextPlayerColor().isWhite() ? "White's turn" : "Black's turn");
+        
+        gameOverOverlay = new GameOverOverlay(chessGame);
+        gameOverOverlay.setVisible(false);
+        stage.addActor(gameOverOverlay);
 
         // display results button (initially invisible, but becomes visible when
         // game ends)
-        showResults = new Button("Show results", assetManager);
-        showResults.setSize(200, 75);
-        showResults.setVisible(false); // do not show initially
-        showResults.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                gameOverOverlay.setVisible(true);
-            }
-        });
-        stage.addActor(showResults);
+        showResults = new Button.Builder("Show results", assetManager)
+            .size(200, 75)
+            .callback(() -> gameOverOverlay.setVisible(true))
+            .stage(stage)
+            .visible(false)
+            .create();
 
         WobbleDrawable soundDrawable = new WobbleDrawable(assetManager.get("soundbutton.png", Texture.class), assetManager);
         WobbleDrawable muteDrawable = new WobbleDrawable(assetManager.get("mutebutton.png", Texture.class), assetManager);
@@ -127,31 +128,24 @@ public class GameScreen extends AbstractScreen {
         });
 
 
+        Button.Builder giveUpButtonBuilder;
         if (player1 == null && ai1 != null && player2 == null && ai2 != null)
-            giveUp = new Button("Leave match", assetManager);
+            giveUpButtonBuilder = new Button.Builder("Leave match", assetManager)
+                .callback(() -> chessGame.setScreen(new MainMenuScreen(chessGame)));
         else
-            giveUp = new Button("Give up", assetManager);
-        giveUp.setSize(200, 75);
-
-        giveUp.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                if (player1 == null && ai1 != null && player2 == null && ai2 != null) {
-                    isGameOver = true;
-                    chessGame.setScreen(new MainMenuScreen(chessGame));
-                    return;
-                }
-                gameOver(game.nextPlayerColor().isWhite() ? -1 : 1);
-            }
-        });
-        stage.addActor(giveUp);
+            giveUpButtonBuilder = new Button.Builder("Give up", assetManager)
+                .callback(() -> new ConfirmationOverlay.Builder(assetManager)
+                        .title("Are you sure you want to give up?")
+                        .confirmText("Give up")
+                        .cancelText("Keep playing")
+                        .visible(true)
+                        .confirmCallback(() -> gameOver(game.nextPlayerColor().isWhite() ? -1 : 1))
+                        .stage(stage)
+                        .create());
+        giveUp = giveUpButtonBuilder.size(200, 75).stage(stage).create();
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        gameOverOverlay = new GameOverOverlay(chessGame);
-        gameOverOverlay.setVisible(false);
-        stage.addActor(gameOverOverlay);
     }
 
     private void gameOver(int winner) {
