@@ -9,12 +9,12 @@ public class Audio {
 
     public static void menuSound(AssetManager manager){
         Sound sound = manager.get("tick.wav");
-        sound.play();
+        sound.play(0.1f);
     }
 
     public static void themeMusic(AssetManager manager, Boolean num){
         Music music = manager.get("chesstheme.wav");
-        music.setVolume(0.5f);
+        music.setVolume(1.0f);
         music.play();
         music.setLooping(true);
         if(num == false) music.setVolume(0.0f);

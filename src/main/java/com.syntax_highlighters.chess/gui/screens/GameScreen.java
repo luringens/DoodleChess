@@ -205,7 +205,6 @@ public class GameScreen extends AbstractScreen {
 
         // Has the board updated?
         if (game.nextPlayerColor() != nextPlayerColor) {
-            System.out.println("Board updated!");
             nextPlayerColor = game.nextPlayerColor();
             board.clearSuggestion();
 
@@ -226,7 +225,7 @@ public class GameScreen extends AbstractScreen {
 
             // Otherwise, suggest a simple move to the player.
             else {
-                System.out.println(nextPlayerColor.isWhite());
+                //System.out.println(nextPlayerColor.isWhite());
                 IAiPlayer ai = new MiniMaxAIPlayer(nextPlayerColor, AiDifficulty.Easy);
                 Move move = ai.GetMove(game.getBoard());
                 board.showSuggestion(move);
