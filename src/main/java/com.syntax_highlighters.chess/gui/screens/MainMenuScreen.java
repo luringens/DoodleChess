@@ -91,7 +91,7 @@ public class MainMenuScreen extends AbstractScreen {
         stage.getViewport().update(width, height, true);
 
         int min = Math.min(width, height);
-        background.setSize(min, min);
+        background.setSize(min,  min);
         float x = 0;
 
         if(width > height)
