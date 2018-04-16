@@ -174,5 +174,6 @@ public class ChessPieceActor extends Actor {
 
         addAction(new SequenceAction(scaleAction, scaleAction2));
         isAnimating = true;
+        Audio.makeMove(assetManager);
     }
 }
