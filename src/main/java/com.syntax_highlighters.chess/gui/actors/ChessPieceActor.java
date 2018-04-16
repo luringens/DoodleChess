@@ -15,6 +15,7 @@ import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Game;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.gui.Audio;
 
 /**
  * A drawable wrapper for a IChessPiece.
@@ -173,5 +174,6 @@ public class ChessPieceActor extends Actor {
 
         addAction(new SequenceAction(scaleAction, scaleAction2));
         isAnimating = true;
+        Audio.makeMove(assetManager);
     }
 }
