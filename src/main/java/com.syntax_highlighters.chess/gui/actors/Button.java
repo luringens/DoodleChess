@@ -69,6 +69,94 @@ public class Button extends Actor {
         });
     }
 
+    /**
+     * Button builder for easier, more declarative button creation.
+     */
+    public static class Builder {
+        private Button b;
+        public Builder(String text, AssetManager assetManager) {
+            b = new Button(text, assetManager);
+        }
+
+        /**
+         * Set the button's visibility.
+         *
+         * @param v Whether or not the button should be visible initially
+         * @return This Builder
+         */
+        public Builder visible(boolean v) {
+            b.setVisible(v);
+            return this;
+        }
+        
+        /**
+         * Set the callback as a click listener for this button.
+         *
+         * @param c The callback function
+         * 
+         * @return This Builder
+         */
+        public Builder callback(Callback c) {
+            if (c != null) {
+                b.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        super.clicked(event, x, y);
+                        c.callback();
+                    }
+                });
+            }
+            return this;
+        }
+        
+        /**
+         * Stage the button as an actor to the stage.
+         *
+         * @param s The stage this button should be added to
+         *
+         * @return This Builder
+         */
+        public Builder stage(Stage s) {
+            s.addActor(b);
+            return this;
+        }
+
+        /**
+         * Specify the size of this button.
+         * 
+         * @param width The width of the button
+         * @param height The height of the button
+         *
+         * @return This Builder
+         */
+        public Builder size(float width, float height) {
+            b.setSize(width, height);
+            return this;
+        }
+
+        /**
+         * Return the specified button.
+         *
+         * @return The newly created Button
+         */
+        public Button create() {
+            return b;
+        }
+    }
+
+    /**
+     * Callback interface for ease of adding listeners.
+     */
+    public static interface Callback {
+        /**
+         * The action to be performed when the button is clicked.
+         *
+         * Does not carry information about the event or the x/y location, only
+         * that the button *was* clicked.
+         */
+        void callback();
+    }
+
 
     private void renderTextures(int textureCount, Texture template, ShaderProgram shader) {
 
