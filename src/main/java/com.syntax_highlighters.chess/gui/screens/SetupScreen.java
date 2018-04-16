@@ -268,18 +268,12 @@ public class SetupScreen extends AbstractScreen {
      *
      * @return The newly created button
      */
-    private Button createButton(String text, Callback action) {
-        Button b = new Button(text, assetManager);
-        b.setSize(buttonWidth, buttonHeight);
-        stage.addActor(b);
-        b.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                action.perform();
-            }
-        });
-        return b;
+    private Button createButton(String text, Button.Callback action) {
+        return new Button.Builder(text, assetManager)
+            .stage(stage)
+            .callback(action)
+            .size(buttonWidth, buttonHeight)
+            .create();
     }
     
     /**
@@ -374,17 +368,6 @@ public class SetupScreen extends AbstractScreen {
 
         selectingPlayer = -1;
     }
-    
-    /**
-     * Callback on button click.
-     *
-     * NOTE: Not aware of button click parameters, but enough for buttons, which
-     * normally only need to know *that* a button was clicked, not anything
-     * else.
-     */
-    private interface Callback {
-        void perform();
-    };
 
     @Override
     public void render(float delta) {
