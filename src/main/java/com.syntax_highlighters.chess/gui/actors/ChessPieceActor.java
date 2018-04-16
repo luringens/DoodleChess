@@ -108,7 +108,7 @@ public class ChessPieceActor extends Actor {
         super.draw(batch, parentAlpha);
         batch.flush();
 
-        boolean amIAThreat = piece.getColor() == game.nextPlayerColor() &&
+        boolean amIAThreat = piece.getColor() == game.nextPlayerColor().opponentColor() &&
                 piece.threatens(game.getBoard().getKing(game.nextPlayerColor()).getPosition(), game.getBoard());
         ShaderProgram prev = batch.getShader();
         batch.setColor(1,1,1,1);
