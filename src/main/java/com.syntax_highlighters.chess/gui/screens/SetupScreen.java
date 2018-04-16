@@ -39,6 +39,8 @@ public class SetupScreen extends AbstractScreen {
     private final Text black;
     private final Text playerNote;
 
+    private final Text sameAccountErrorMsg;
+
     private AiDifficulty player1Difficulty;
     private AiDifficulty player2Difficulty;
     private final AssetManager assetManager;
@@ -72,6 +74,8 @@ public class SetupScreen extends AbstractScreen {
         white = createText("White pieces:", Color.BLACK);
         black = createText("Black pieces:", Color.BLACK);
         playerNote = createText("Note: Using the names Player 1 or Player 2 will not count to any score", Color.BLACK);
+        sameAccountErrorMsg = createText("Error: Cannot use same account on both sides", Color.RED);
+        sameAccountErrorMsg.setVisible(false); // display only if player tries to use same account on both sides
 
         addDifficultyList(game, -1);
         addDifficultyList(game, 1);
@@ -333,7 +337,8 @@ public class SetupScreen extends AbstractScreen {
 
         if(invalidAccountSelection(selected1, selected2))
         {
-            // TODO: create error message(?)
+            if (selected1 != null && selected1.equals(selected2))
+                sameAccountErrorMsg.setVisible(true);
             return;
         }
         AccountManager manager = game.getAccountManager();
@@ -416,6 +421,7 @@ public class SetupScreen extends AbstractScreen {
         mainMenu.setPosition(centerW - buttonWidth - 10, bottomBarY);
         createAccount.setPosition(centerW, bottomBarY);
         playerNote.setCenter(width / 2.f, bottomBarY - 10.f);
+        sameAccountErrorMsg.setCenter(width/2.f, bottomBarY - 40.f);
     }
 
 }
