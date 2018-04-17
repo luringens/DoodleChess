@@ -109,15 +109,11 @@ public class ChessPieceActor extends Actor {
         super.draw(batch, parentAlpha);
         batch.flush();
 
-        boolean amIAThreat = piece.getColor() == game.nextPlayerColor().opponentColor() &&
-                piece.threatens(game.getBoard().getKing(game.nextPlayerColor()).getPosition(), game.getBoard());
         ShaderProgram prev = batch.getShader();
         batch.setColor(1,1,1,1);
 
         batch.setShader(setColorShader);
-        if(amIAThreat)
-            setColorShader.setUniformf("u_tint", Color.RED);
-        else if(isSelected)
+        if(isSelected)
             setColorShader.setUniformf("u_tint", new Color(1,0.84f,0, 1.0f));
         else
             setColorShader.setUniformf("u_tint", this.color);

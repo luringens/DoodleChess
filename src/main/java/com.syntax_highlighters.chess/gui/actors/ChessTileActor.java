@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
+import com.syntax_highlighters.chess.entities.IChessPiece;
 
 import java.util.List;
 
@@ -57,6 +58,20 @@ public class ChessTileActor extends Actor {
         super.draw(batch, parentAlpha);
         batch.setColor(1,1,1,1);
         batch.draw(assetManager.get("tile.png", Texture.class), getX(), getY(), getWidth(), getHeight());
+
+        IChessPiece piece = boardGroup.getGame().getPieceAtPosition(this.position);
+        if(piece != null) {
+
+            boolean threat = piece.getColor() == boardGroup.getGame().nextPlayerColor().opponentColor() &&
+                    piece.threatens(boardGroup.getGame().getBoard().getKing(boardGroup.getGame().nextPlayerColor()).getPosition(), boardGroup.getGame().getBoard());
+
+            if (threat) {
+                batch.setColor(Color.FIREBRICK);
+                batch.draw(assetManager.get("tile_black.png", Texture.class), getX(), getY(), getWidth(), getHeight());
+                return;
+            }
+        }
+
 
         // If this piece is a potential target for the selected piece, draw with a golden tint.
         ChessPieceActor selected = boardGroup.getSelected();
