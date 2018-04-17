@@ -2,115 +2,100 @@ package com.syntax_highlighters.chess.gui.actors;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.actions.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.ArrayList;
 
-public class PencilSelector extends Actor {
+public class PencilSelector extends Group {
+    private final Image background;
     private ArrayList<Pencil> pencils = new ArrayList<>();
     private ArrayList<Float> pencilOffsets = new ArrayList<>();
-
-    private int hovered = -1;
+    ColorAction colorAction;
 
     private float myY = 0;
 
-    private boolean hidden = true;
 
     public PencilSelector(AssetManager manager) {
         super();
 
-        pencils.add(new Pencil(manager, Color.WHITE));
+        background = new Image(manager.get("pixel.png", Texture.class));
+        background.setPosition(-1000, -1000);
+        background.setSize(10000, 10000);
+        background.setColor(0,0,0,0.5f);
+        background.setName("Background");
+        PencilSelector self = this;
+        background.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                self.hide(1.0f);
+            }
+        });
+
+        addPencil(0, new Pencil(manager, Color.WHITE));
         pencilOffsets.add(48 * ((float)Math.random() * 2.0f-1.0f));
-        pencils.add(new Pencil(manager, Color.BLACK));
+        addPencil(1, new Pencil(manager, Color.BLACK));
         pencilOffsets.add(48 * ((float)Math.random() * 2.0f-1.0f));
-        for(float i = 0; i < 16; ++i)
+        for(int i = 0; i < 16; ++i)
         {
             Color test = new Color(1,1,1,1);
             float percentage = i / 16.f;
             float hue = percentage * 360.f;
-            pencils.add(new Pencil(manager, test.fromHsv(hue + 16.f, 1.0f, 1.0f)));
+
+            addPencil(i + 2, new Pencil(manager, test.fromHsv(hue + 16.f, 1.0f, 1.0f)));
             pencilOffsets.add(48 * ((float)Math.random() * 2.0f-1.0f));
         }
 
+        colorAction = new ColorAction();
+        colorAction.setDuration(0.2f);
+        colorAction.setInterpolation(Interpolation.linear);
+        colorAction.setColor(background.getColor());
+
         this.setWidth(32.f * pencils.size());
         this.setHeight(512.f + 48);
+    }
+
+    private void addPencil(int id, Pencil pencil)
+    {
+        addActor(pencil);
+        pencils.add(pencil);
+
+        pencil.setSize(32, 512);
 
         Actor self = this;
-
-        addListener(new ClickListener() {
+        pencil.addListener(new ClickListener() {
             @Override
-            public boolean mouseMoved(InputEvent event, float x, float y) {
-                int index = (int)(x / 32.f);
-                if(index != hovered && index >= 0 && index < pencils.size())
-                {
-
-                    if(hovered != -1)
-                    {
-                        Pencil hoveredP = pencils.get(hovered);
-                        MoveToAction action = new MoveToAction();
-                        action.setPosition(hoveredP.getX(), self.getY() + pencilOffsets.get(hovered));
-                        action.setDuration(0.1f);
-                        action.setInterpolation(Interpolation.pow2);
-                        hoveredP.addAction(action);
-                    }
-                    Pencil hoveredP = pencils.get(index);
-                    MoveToAction action = new MoveToAction();
-                    action.setPosition(hoveredP.getX(), self.getY() + 100);
-                    action.setDuration(0.1f);
-                    action.setInterpolation(Interpolation.pow2);
-                    hoveredP.addAction(action);
-
-                    hovered = index;
-                }
-
-                return super.mouseMoved(event, x, y);
-            }
-
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                int index = (int)(x / 32.f);
-                if(index >= 0 && index < pencils.size())
-                {
-                    Pencil selectedP = pencils.get(index);
-                    if (!selectedP.isSelected())
-                        self.fire(new ColorSelectEvent(pencils.get(index)));
-                }
-
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                super.enter(event, x, y, pointer, fromActor);
+                MoveToAction action = new MoveToAction();
+                action.setPosition(pencil.getX(), 100);
+                action.setDuration(0.1f);
+                action.setInterpolation(Interpolation.pow2);
+                pencil.addAction(action);
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 super.exit(event, x, y, pointer, toActor);
-                if(hovered != -1)
-                {
-                    Pencil hoveredP = pencils.get(hovered);
-                    MoveToAction action = new MoveToAction();
-                    action.setPosition(hoveredP.getX(), self.getY() + pencilOffsets.get(hovered));
-                    action.setDuration(0.1f);
-                    action.setInterpolation(Interpolation.pow2);
-                    hoveredP.addAction(action);
-                }
-                hovered = -1;
+                MoveToAction action = new MoveToAction();
+                action.setPosition(pencil.getX(), pencilOffsets.get(id));
+                action.setDuration(0.1f);
+                action.setInterpolation(Interpolation.pow2);
+                pencil.addAction(action);
+            }
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if (!pencil.isSelected())
+                    self.fire(new ColorSelectEvent(pencil));
             }
         });
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-        for (Pencil pencil : pencils) {
-            pencil.act(delta);
-        }
     }
 
     @Override
@@ -118,7 +103,11 @@ public class PencilSelector extends Actor {
         super.setPosition(x, y);
         int i = 0;
         for (Pencil pencil : pencils) {
-            pencil.setPosition(x + 32 * (i), y + pencilOffsets.get(i++));
+            MoveToAction action = new MoveToAction();
+            action.setPosition(32 * (i), pencilOffsets.get(i++));
+            action.setDuration(0.1f);
+            action.setInterpolation(Interpolation.pow2);
+            pencil.addAction(action);
         }
     }
 
@@ -127,40 +116,53 @@ public class PencilSelector extends Actor {
         super.setPosition(x, y, alignment);
         int i = 0;
         for (Pencil pencil : pencils) {
-            pencil.setPosition(x + 32 * (i), y + pencilOffsets.get(i++));
-        }
-    }
-
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-        for (Pencil pencil : pencils) {
-            if(pencil.isSelected()) continue;
-            pencil.draw(batch, parentAlpha);
+            MoveToAction action = new MoveToAction();
+            action.setPosition(32 * (i), pencilOffsets.get(i++));
+            action.setDuration(0.1f);
+            action.setInterpolation(Interpolation.pow2);
+            pencil.addAction(action);
         }
     }
 
     public void hide(float duration) {
-        hovered = -1;
-
-        hidden = false;
         myY = getY();
         MoveToAction action = new MoveToAction();
         action.setPosition(this.getX(), -600);
         action.setDuration(duration);
         action.setInterpolation(Interpolation.pow4);
         this.addAction(action);
+
+        background.setColor(0,0,0,0.5f);
+        colorAction.setColor(background.getColor());
+        colorAction.setEndColor(new Color(0,0,0,0.0f));
+        colorAction.reset();
+
+        RunnableAction callback = new RunnableAction();
+        callback.setRunnable(() -> this.removeActor(background));
+        if(this.findActor("Background") != null)
+            background.addAction(new SequenceAction(Actions.delay(duration/2.f), colorAction, callback));
     }
 
     public void show(float duration) {
-        hovered = -1;
-        hidden = true;
         MoveToAction action = new MoveToAction();
         action.setPosition(this.getX(), myY);
         action.setDuration(duration);
         action.setInterpolation(Interpolation.pow4);
         this.addAction(action);
+
+        background.setColor(0,0,0,0.0f);
+        addActorAt(0,background);
+        colorAction.setColor(background.getColor());
+        colorAction.setEndColor(new Color(0,0,0,0.5f));
+        colorAction.reset();
+        background.addAction(colorAction);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if(colorAction.getColor() != null)
+            background.setColor(colorAction.getColor());
     }
 
     public void releaseColor(Color color) {
@@ -192,10 +194,6 @@ public class PencilSelector extends Actor {
 
         public Color getColor() {
             return pencil.getColor();
-        }
-
-        public Pencil getPencil() {
-            return pencil;
         }
     }
 

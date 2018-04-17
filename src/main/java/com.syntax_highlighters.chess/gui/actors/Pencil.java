@@ -51,6 +51,7 @@ public class Pencil extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
+        if(isSelected) return;
 
         batch.setColor(1,1,1,1);
         ShaderProgram program = batch.getShader();

@@ -60,6 +60,8 @@ public class SetupScreen extends AbstractScreen {
     private final Button mainMenu;
     private final Button createAccount;
 
+    private final PencilSelector selector;
+
     final float buttonBigWidth = 200;
     final float buttonBigHeight = 60;
     final float buttonSmallWidth = 175;
@@ -102,15 +104,14 @@ public class SetupScreen extends AbstractScreen {
         // I wish I could simplify it more than this, but I can't justify
         // creating a createPencilSelector method or a separate
         // ColorChangeCallback interface.
-        PencilSelector selector= new PencilSelector(assetManager);
-        selector.setPosition(100, -150);
+        selector= new PencilSelector(assetManager);
+        selector.setPosition(100, -200);
         selector.addListener(new PencilSelector.ColorSelectListener(){
             @Override
             public void colorSelected(PencilSelector.ColorSelectEvent event, Color color) {
                 selectNewColor(selector, color);
             }
         });
-        stage.addActor(selector);
         selector.hide(0.0f);
         selector.selectColor(player1Color);
         selector.selectColor(player2Color);
@@ -123,6 +124,7 @@ public class SetupScreen extends AbstractScreen {
 
         // add this last
         stage.addActor(accountOverlay);
+        stage.addActor(selector);
     }
 
     public void updateAccountLists(ChessGame game)
@@ -318,12 +320,10 @@ public class SetupScreen extends AbstractScreen {
         if (selectingPlayer == 0) {
             ret = player1Color;
             player1Color = color;
-            whiteKing.setColor(color);
         }
         else if (selectingPlayer == 1) {
             ret = player2Color;
             player2Color = color;
-            blackKing.setColor(color);
         }
         return ret;
     }
@@ -380,6 +380,8 @@ public class SetupScreen extends AbstractScreen {
         runnable.setRunnable(() -> {
             selector.releaseColor(currentColor);
             selector.selectColor(player1Color);
+            whiteKing.setColor(player1Color);
+            blackKing.setColor(player2Color);
 
         });
         selector.addAction(new SequenceAction(delay, runnable));
@@ -401,6 +403,8 @@ public class SetupScreen extends AbstractScreen {
 
         float column1 = width/2.f - 800/4.f;
         float column2 = width/2.f + 800/4.f;
+
+        selector.setPosition(width/2.f - selector.getWidth()/2.f, selector.getY());
 
         float y = height / 2.f + 400 - buttonBigHeight * 1.5f - blackKing.getHeight();
         whiteKing.setPosition(column1 - whiteKing.getWidth() / 2.f, y);
