@@ -112,27 +112,37 @@ public class AccountManager {
      * @param filename The name of the file to save to
      */
     public void save(String filename){
-        StringBuilder filetext = new StringBuilder();
-        Account b = myAccounts.get(myAccounts.size());
-//        Connection conn = connect();
-        for(Account a: myAccounts){
-            InsertRecords appp = new InsertRecords();
-            appp.insert(a.getName(),(int)a.getScore(),a.getWinCount(),a.getLossCount());
-        }
+        try {
+            Connection conn = connect();
 
-//        try {
-//            if(Files.exists(Paths.get(filename)))
-//                Files.write(Paths.get(filename), filetext.toString().getBytes(), StandardOpenOption.WRITE);
-//            else {
-//                Files.createFile(Paths.get(filename));
-//                Files.write(Paths.get(filename), filetext.toString().getBytes(), StandardOpenOption.WRITE);
-//            }
-//
-//        }catch (IOException e) {
-//            System.out.println("Failed to save statistics: " + e.getMessage());
-//        }
+            // Horrible, I know.
+            // Sorry.
+            Statement deleteAll = conn.createStatement();
+            deleteAll.executeUpdate("DELETE FROM person");
+
+            for(Account a: myAccounts){
+                PreparedStatement stmt = conn.prepareStatement(a.insertStatement());
+                stmt.setString(1, a.getName());
+                stmt.setInt(2, (int)a.getScore());
+                stmt.setInt(3, a.getWinCount());
+                stmt.setInt(4, a.getLossCount());
+                stmt.executeUpdate();
+            }
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
     private Connection connect() throws SQLException {
+        // NOTE: for some reason it worked after I added this line. I don't
+        // really know why. Maybe it just ensures that it has the JDBC
+        // dependency loaded or something.
+        try {
+            Class.forName("org.sqlite.JDBC");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         // SQLite connection string
         String pathh = new File("sample.db").getAbsolutePath();
         String url = "jdbc:sqlite:"+pathh;
@@ -152,9 +162,6 @@ public class AccountManager {
         
         try {
             Connection conn = this.connect();
-            if (conn == null) {
-                throw new IllegalStateException("No connection");
-            }
             Statement stmt  = conn.createStatement();
             ResultSet rs    = stmt.executeQuery(sql);
 
@@ -169,22 +176,6 @@ public class AccountManager {
             }
         } catch (Exception e) {
             System.out.println(e);
-            System.out.println("abc");
         }
-        /* try{
-
-            for(String s: Files.readAllLines(Paths.get(filename))){
-                String[] stats = s.split(",");
-                String name = stats[0];
-
-                int wins = Integer.parseInt(stats[1]);
-                int losses = Integer.parseInt(stats[2]);
-                myAccounts.add(new Account(name, wins, losses));
-            }
-        }catch(IOException e){
-            // Skip if file doesn't exist
-        }*/
-        
-
     }
 }

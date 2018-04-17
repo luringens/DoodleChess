@@ -13,7 +13,7 @@ plugins {
 }
 
 // Define the main class for the application
-mainClassName = 'com.syntax_highlighters.chess.ShowRecords'
+mainClassName = 'com.syntax_highlighters.chess.Main'
 
 // Current logger type used by the gradle-test-logger
 testlogger {
