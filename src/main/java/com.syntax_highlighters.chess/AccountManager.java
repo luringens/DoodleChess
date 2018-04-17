@@ -158,7 +158,7 @@ public class AccountManager {
      */
     public void load(String filename){
         String sql = "SELECT * FROM person";
-
+        
         try {
             Connection conn = this.connect();
             Statement stmt  = conn.createStatement();
@@ -173,8 +173,8 @@ public class AccountManager {
                 System.out.println(score + " " + name + " " + wins + " " + losses);
                myAccounts.add(new Account(name,wins,losses));
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e);
             System.out.println("abc");
         }
         /* try{

@@ -58,6 +58,7 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+    compile 'org.xerial:sqlite-jdbc:3.7.2'
 
     //Defines dependencies for LibGdx, used in the fat-jar
     extraLibs "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -65,6 +66,7 @@ dependencies {
     extraLibs "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     extraLibs "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     extraLibs "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+    extraLibs 'org.xerial:sqlite-jdbc:3.7.2'
 }
 
 // Use gradle built in JUnit test platform

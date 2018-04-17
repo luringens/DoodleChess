@@ -21,7 +21,7 @@ public class CreateDB {
          *
          * @param fileName the database file name
          */
-        public static void createNewDatabase(String fileName) {
+        /*public static void createNewDatabase(String fileName) {
 
             String pathh = new File("accountsDatabase.db").getAbsolutePath();
             String url = "jdbc:sqlite:"+pathh;
@@ -37,12 +37,13 @@ public class CreateDB {
                 System.out.println(e.getMessage());
             }
         }
-
+*/
         /**
          * @param args the command line arguments
          */
-        public static void main(String[] args) {
+        /*/public static void main(String[] args) {
             createNewDatabase("test.db");
         }
+        */
     }
 }
