@@ -19,6 +19,7 @@ public class Game {
     private IAiPlayer blackAI = null;
     private Color nextPlayerColor = Color.WHITE;
     private List<Move> moveHistory = new ArrayList<Move>();
+    private boolean uiHasForceEndedGame = false;
 
     /**
      * Return a List of String containing all moves to date.
@@ -205,7 +206,8 @@ public class Game {
      * @return true if the game is over, false otherwise
      */
     public boolean isGameOver() {
-        return board.checkMate(Color.WHITE)
+        return uiHasForceEndedGame 
+                || board.checkMate(Color.WHITE)
                 || board.checkMate(Color.BLACK)
                 || insufficientMaterial()
                 || board.getAllPieces().stream()
@@ -277,6 +279,15 @@ public class Game {
         if (board.checkMate(Color.WHITE)) return -1;
         if (board.checkMate(Color.BLACK)) return 1;
         return 0;
+    }
+
+    /**
+     * Force the game to end.
+     *
+     * This is called by the UI when a player gives up.
+     */
+    public void forceGameEnd() {
+        uiHasForceEndedGame = true;
     }
 
 }

@@ -167,6 +167,10 @@ public class GameScreen extends AbstractScreen {
     private void gameOver(int winner) {
         this.winner = winner;
         isGameOver = true;
+        board.unselectSelected();
+        if (!game.isGameOver()) {
+            game.forceGameEnd();
+        }
 
         switch (winner) {
             case 1: // white player won

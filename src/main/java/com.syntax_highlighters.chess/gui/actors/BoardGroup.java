@@ -148,6 +148,15 @@ public class BoardGroup extends Group {
     }
 
     /**
+     * Set the selected piece to null.
+     */
+    public void unselectSelected() {
+        if (selected != null)
+            selected.setSelected(false);
+        selected = null;
+    }
+
+    /**
      * @return The game that this board is wrapped to
      */
     public Game getGame() {
@@ -209,6 +218,7 @@ public class BoardGroup extends Group {
     private boolean trySelect(ChessPieceActor chessPieceActor) {
         if(selected != null) selected.setSelected(false);
         selected = null;
+        if (game.isGameOver()) return false;
         if (chessPieceActor == null) return false;
         if (chessPieceActor.getPiece().getColor() != game.nextPlayerColor()) return false;
 
