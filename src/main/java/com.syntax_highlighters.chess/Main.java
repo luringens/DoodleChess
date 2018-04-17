@@ -3,8 +3,7 @@ package com.syntax_highlighters.chess;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.syntax_highlighters.chess.ChessGame;
-
+//import com.syntax_highlighters.chess.ChessGame;
 
 /**
  * Application entry point.
@@ -27,5 +26,6 @@ public class Main {
 		config.addIcon("icon32.png", Files.FileType.Internal);
 		config.addIcon("icon16.png", Files.FileType.Internal);
 		new LwjglApplication(new ChessGame(), config);
+
 	}
 }

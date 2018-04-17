@@ -1,8 +1,10 @@
 package com.syntax_highlighters.chess;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -44,7 +46,7 @@ public class AccountManager {
      * @return a properly sorted list of accounts
      */
     private List<Account> sort(List<Account> accounts){
-        accounts.sort(Comparator.comparing(Account::getRating));
+        accounts.sort(Comparator.comparing(Account::getWinCount));
         List<Account> reverseAccounts = new ArrayList<>();
         for(int i=accounts.size()-1; i>=0; i--)
             reverseAccounts.add(accounts.get(i));
@@ -111,16 +113,12 @@ public class AccountManager {
      */
     public void save(String filename){
         StringBuilder filetext = new StringBuilder();
+      /*  Account b = myAccounts.get(myAccounts.size());
         for(Account a: myAccounts){
-            filetext.append(a.getName())
-                    .append(",")
-                    .append(String.valueOf(a.getWinCount()))
-                    .append(",")
-                    .append(String.valueOf(a.getLossCount()))
-                    .append(",")
-                    .append(String.valueOf(a.getRating()))
-                    .append("\n");
-        }
+            InsertRecords appp = new InsertRecords();
+            appp.insert(a.getName(),(int)a.getScore(),a.getWinCount(),a.getLossCount());
+
+        }*/
         try {
             if(Files.exists(Paths.get(filename)))
                 Files.write(Paths.get(filename), filetext.toString().getBytes(), StandardOpenOption.WRITE);
@@ -133,7 +131,22 @@ public class AccountManager {
             System.out.println("Failed to save statistics: " + e.getMessage());
         }
     }
+    private Connection connect() {
+        // SQLite connection string
+        String pathh = new File("sample.db").getAbsolutePath();
+        String url = "jdbc:sqlite:"+pathh;
 
+        Connection conn = null;
+        try {
+          //  DriverManager.getConnection("jdbc:sqlite:"+pathh);
+           // DriverManager.registerDriver(new JDBC());
+
+            conn = DriverManager.getConnection(url);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return conn;
+    }
     /**
      * Load the accounts from a file with the given filename into this
      * AccountManager.
@@ -144,29 +157,40 @@ public class AccountManager {
      * @param filename The name of the file to load from
      */
     public void load(String filename){
-        try{
+        String sql = "SELECT * FROM person";
+
+        try {
+            Connection conn = this.connect();
+            Statement stmt  = conn.createStatement();
+            ResultSet rs    = stmt.executeQuery(sql);
+
+            // loop through the result set
+            while (rs.next()) {
+                int score = rs.getInt("score");
+                String name = rs.getString("name");
+                int wins = rs.getInt("wins");
+                int losses = rs.getInt("losses");
+                System.out.println(score + " " + name + " " + wins + " " + losses);
+               myAccounts.add(new Account(name,wins,losses));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            System.out.println("abc");
+        }
+        /* try{
+
             for(String s: Files.readAllLines(Paths.get(filename))){
                 String[] stats = s.split(",");
                 String name = stats[0];
+
                 int wins = Integer.parseInt(stats[1]);
                 int losses = Integer.parseInt(stats[2]);
-                int rating = Integer.parseInt(stats[3]);
-                myAccounts.add(new Account(name, wins, losses, rating));
+                myAccounts.add(new Account(name, wins, losses));
             }
         }catch(IOException e){
             // Skip if file doesn't exist
-        }
+        }*/
         
 
-    }
-
-    public void updateRating(Account winner, Account loser){
-        winner.addPoints(loser.getRating() + 400);
-        loser.addPoints(winner.getRating()- 400);
-        int winnerRating = winner.getPoints() / (winner.getLossCount() + winner.getWinCount()+1);
-        int loserRating = loser.getPoints() / (loser.getLossCount() + loser.getWinCount()+1);
-        winner.setRating(winnerRating);
-        loser.setRating(loserRating);
-        return;
     }
 }
