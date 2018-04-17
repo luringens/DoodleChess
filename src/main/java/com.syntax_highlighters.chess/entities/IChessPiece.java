@@ -113,6 +113,9 @@ public interface IChessPiece {
      */
     boolean hasMoved();
 
+
+    String toChessNotation();
+
     /**
      * Determine whether this piece threatens a given position.
      *
