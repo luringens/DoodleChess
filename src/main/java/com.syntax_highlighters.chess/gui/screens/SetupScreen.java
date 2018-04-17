@@ -2,10 +2,12 @@ package com.syntax_highlighters.chess.gui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
@@ -14,13 +16,11 @@ import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
+import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.Audio;
-import com.syntax_highlighters.chess.gui.actors.AccountOverlay;
-import com.syntax_highlighters.chess.gui.actors.Button;
-import com.syntax_highlighters.chess.gui.actors.PencilSelector;
-import com.syntax_highlighters.chess.gui.actors.Text;
+import com.syntax_highlighters.chess.gui.actors.*;
 import com.syntax_highlighters.chess.PlayerAttributes;
 
 import java.util.ArrayList;
@@ -35,9 +35,10 @@ import java.util.ArrayList;
 public class SetupScreen extends AbstractScreen {
 
     private final Text title;
-    private final Text white;
-    private final Text black;
     private final Text playerNote;
+
+    private final ChessPieceActor blackKing;
+    private final ChessPieceActor whiteKing;
 
     private final Text sameAccountErrorMsg;
 
@@ -59,8 +60,10 @@ public class SetupScreen extends AbstractScreen {
     private final Button mainMenu;
     private final Button createAccount;
 
-    final float buttonWidth = 200;
-    final float buttonHeight = 75;
+    final float buttonBigWidth = 200;
+    final float buttonBigHeight = 60;
+    final float buttonSmallWidth = 175;
+    final float buttonSmallHeight = 50;
 
     private Color player1Color = Color.WHITE;
     private Color player2Color = Color.BLACK;
@@ -70,12 +73,20 @@ public class SetupScreen extends AbstractScreen {
         super(game);
         this.assetManager = game.getAssetManager();
         
-        title = createText("Select AI level", Color.BLACK);
-        white = createText("White pieces:", Color.BLACK);
-        black = createText("Black pieces:", Color.BLACK);
-        playerNote = createText("Note: Using the names Player 1 or Player 2 will not count to any score", Color.BLACK);
-        sameAccountErrorMsg = createText("Error: Cannot use same account on both sides", Color.RED);
+        title = createText("Setup game", true, Color.BLACK);
+        playerNote = createText("Note: Using the names Player 1 or Player 2 will not count to any score", false, Color.BLACK);
+        sameAccountErrorMsg = createText("Error: Cannot use same account on both sides", false, Color.RED);
         sameAccountErrorMsg.setVisible(false); // display only if player tries to use same account on both sides
+
+        //blackKing = new Image(this.assetManager.get("king_white.png", Texture.class));
+        //whiteKing = new Image(this.assetManager.get("king_white.png", Texture.class));
+        whiteKing = new ChessPieceActor(new ChessPieceKing(null, null), player1Color, null, assetManager);
+        blackKing = new ChessPieceActor(new ChessPieceKing(null, null), player2Color, null, assetManager);
+        whiteKing.setSize(120, 120);
+        blackKing.setSize(120, 120);
+
+        stage.addActor(blackKing);
+        stage.addActor(whiteKing);
 
         addDifficultyList(game, -1);
         addDifficultyList(game, 1);
@@ -83,10 +94,10 @@ public class SetupScreen extends AbstractScreen {
         AccountOverlay accountOverlay = new AccountOverlay(game, this, assetManager);
         accountOverlay.setVisible(false);
         
-        playButton = createButton("Play", () -> startGame(game));
+        playButton = createButton("Play", true, () -> startGame(game));
 
-        mainMenu = createButton("Main menu", () -> game.setScreen(new MainMenuScreen(game)));
-        createAccount = createButton("Create account", () -> accountOverlay.setVisible(true));
+        mainMenu = createButton("Main menu", true, () -> game.setScreen(new MainMenuScreen(game)));
+        createAccount = createButton("Create account", true, () -> accountOverlay.setVisible(true));
 
         // I wish I could simplify it more than this, but I can't justify
         // creating a createPencilSelector method or a separate
@@ -104,8 +115,8 @@ public class SetupScreen extends AbstractScreen {
         selector.selectColor(player1Color);
         selector.selectColor(player2Color);
 
-        player1ColorShow = createButton("Choose color", () -> {selector.show(1.0f); selectingPlayer = 0;});
-        player2ColorShow = createButton("Choose color", () -> {selector.show(1.0f); selectingPlayer = 1;});
+        player1ColorShow = createButton("Choose color", false, () -> {selector.show(1.0f); selectingPlayer = 0;});
+        player2ColorShow = createButton("Choose color", false, () -> {selector.show(1.0f); selectingPlayer = 1;});
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.input.setInputProcessor(stage);
@@ -162,7 +173,7 @@ public class SetupScreen extends AbstractScreen {
         box.setItems(accounts.stream().map(String::toString).toArray(String[]::new));
         box.setSelected("Player" + (player == -1 ? "1" : "2"));
         box.setAlignment(Align.center);
-        box.setSize(200,  buttonHeight);
+        box.setSize(200,  buttonBigHeight);
         stage.addActor(box);
         if(player == -1)
             player1Title = box;
@@ -173,7 +184,7 @@ public class SetupScreen extends AbstractScreen {
         for(int i = 0; i < labels.length; ++i)
         {
             final int difficulty = i-1;
-            Button button = createButton(labels[i], () -> {
+            Button button = createButton(labels[i], false, () -> {
                 resetbuttonList(player);
                 getAIDifficultySettingButton(player, difficulty+1).setSelected(true);
                 if(difficulty >= -1 && difficulty < AiDifficulty.values().length)
@@ -252,8 +263,8 @@ public class SetupScreen extends AbstractScreen {
      *
      * @return The newly created object
      */
-    private Text createText(String text, Color color) {
-        Text t = new Text(AssetLoader.GetDefaultFont(assetManager));
+    private Text createText(String text, boolean big, Color color) {
+        Text t = new Text(AssetLoader.GetDefaultFont(assetManager, big));
         t.setText(text);
         t.setColor(color);
         stage.addActor(t);
@@ -272,11 +283,11 @@ public class SetupScreen extends AbstractScreen {
      *
      * @return The newly created button
      */
-    private Button createButton(String text, Button.Callback action) {
+    private Button createButton(String text, boolean big, Button.Callback action) {
         return new Button.Builder(text, assetManager)
             .stage(stage)
             .callback(action)
-            .size(buttonWidth, buttonHeight)
+            .size(big ? buttonBigWidth : buttonSmallWidth, big ? buttonBigHeight : buttonSmallHeight)
             .create();
     }
     
@@ -307,10 +318,12 @@ public class SetupScreen extends AbstractScreen {
         if (selectingPlayer == 0) {
             ret = player1Color;
             player1Color = color;
+            whiteKing.setColor(color);
         }
         else if (selectingPlayer == 1) {
             ret = player2Color;
             player2Color = color;
+            blackKing.setColor(color);
         }
         return ret;
     }
@@ -384,44 +397,51 @@ public class SetupScreen extends AbstractScreen {
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
 
-        float centerW = width / 2.f - buttonWidth / 2.f;
-        float centerH = height / 2.f - buttonHeight / 2.f;
+        title.setCenter(width / 2.f, height / 2.f + 400.f - buttonBigHeight*1.5f);
 
-        title.setCenter(width / 2.f, centerH + buttonHeight * 5);
+        float column1 = width/2.f - 800/4.f;
+        float column2 = width/2.f + 800/4.f;
 
-        white.setCenter(centerW - buttonWidth + player1Title.getWidth() / 2.f, centerH + buttonHeight * 4.75f);
-        black.setCenter(centerW + buttonWidth + player2Title.getWidth() / 2.f, centerH + buttonHeight * 4.75f);
+        float y = height / 2.f + 400 - buttonBigHeight * 1.5f - blackKing.getHeight();
+        whiteKing.setPosition(column1 - whiteKing.getWidth() / 2.f, y);
+        blackKing.setPosition(column2 - blackKing.getWidth() / 2.f, y);
 
+        y -= 80;
 
-        player1Title.setPosition(width / 2.f - buttonWidth - player1Title.getWidth() / 2.f,
-                height / 2.f + buttonHeight * 3.5f - player1Title.getHeight() / 2.f);
-        player2Title.setPosition(width / 2.f + buttonWidth - player2Title.getWidth() / 2.f,
-                height / 2.f + buttonHeight * 3.5f - player1Title.getHeight() / 2.f);
+        player1Title.setPosition(column1 - buttonBigWidth / 2.f, y);
+        player2Title.setPosition(column2 - buttonBigWidth / 2.f, y);
 
-        player1ColorShow.setPosition(width / 2.f - buttonWidth - player1Title.getWidth() / 2.f,
-                height / 2.f + buttonHeight * 2.25f - player1Title.getHeight() / 2.f);
-        player2ColorShow.setPosition(width / 2.f + buttonWidth - player2Title.getWidth() / 2.f,
-                height / 2.f + buttonHeight * 2.25f - player1Title.getHeight() / 2.f);
+        y -= buttonBigHeight;
 
+        player1ColorShow.setPosition(column1 - buttonSmallWidth / 2.f, y);
+        player2ColorShow.setPosition(column2 - buttonSmallWidth / 2.f, y);
+
+        y -= buttonBigHeight;
+        float tempY = y;
         for(int i = 0; i < player1Buttons.size(); ++i)
         {
             Button button = player1Buttons.get(i);
-            button.setPosition(centerW - buttonWidth, centerH - buttonHeight * (i-1.5f));
+            button.setPosition(column1 - buttonSmallWidth / 2.f, y);
+            y -= buttonSmallHeight;
         }
+        y = tempY;
         for(int i = 0; i < player2Buttons.size(); ++i)
         {
             Button button = player2Buttons.get(i);
-            button.setPosition(centerW + buttonWidth, centerH - buttonHeight * (i-1.5f));
+            button.setPosition(column2 - buttonSmallWidth / 2.f, y);
+            y -= buttonSmallHeight;
         }
 
-        float bottomBarY = centerH - buttonHeight * 3;
+        y -= buttonBigHeight / 2.f;
 
-        playButton.setPosition(centerW + buttonWidth + 10, bottomBarY);
+        float cw = width / 2.f - buttonBigWidth / 2.f;
 
-        mainMenu.setPosition(centerW - buttonWidth - 10, bottomBarY);
-        createAccount.setPosition(centerW, bottomBarY);
-        playerNote.setCenter(width / 2.f, bottomBarY - 10.f);
-        sameAccountErrorMsg.setCenter(width/2.f, bottomBarY - 40.f);
+        playButton.setPosition(column2 - buttonBigWidth/2.f, y);
+
+        mainMenu.setPosition(column1 - buttonBigWidth / 2.f, y);
+        createAccount.setPosition(cw, y);
+        playerNote.setCenter(width / 2.f, y - 20.f);
+        sameAccountErrorMsg.setCenter(width/2.f, y - 50.f);
     }
 
 }

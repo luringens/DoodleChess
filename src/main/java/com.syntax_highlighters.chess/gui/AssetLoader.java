@@ -1,6 +1,5 @@
 package com.syntax_highlighters.chess.gui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.ShaderProgramLoader;
 import com.badlogic.gdx.audio.Music;
@@ -9,7 +8,6 @@ import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
@@ -21,13 +19,15 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 public class AssetLoader {
     public static BitmapFont font;
 
-    public static BitmapFont GetDefaultFont(AssetManager assetManager)
-    {
+    public static BitmapFont GetDefaultFont(AssetManager assetManager) {
         return assetManager.get("font24.ttf");
     }
 
-    public static void LoadAssets(AssetManager manager)
-    {
+    public static BitmapFont GetDefaultFont(AssetManager assetManager, boolean big) {
+        return big ? assetManager.get("fontBig.ttf") : assetManager.get("font24.ttf");
+    }
+
+    public static void LoadAssets(AssetManager manager) {
         String[] textures = {
                 "pawn_white.png",
                 "bishop_white.png",
@@ -60,15 +60,14 @@ public class AssetLoader {
                 "cursor.png",
         };
 
-        for(String path : textures)
-        {
+        for (String path : textures) {
             manager.load(path, Texture.class);
         }
 
-        manager.load("tick.wav",Sound.class);
-        manager.load("kho.wav",Sound.class);
-        manager.load("chesstheme.wav",Music.class);
-        
+        manager.load("tick.wav", Sound.class);
+        manager.load("kho.wav", Sound.class);
+        manager.load("chesstheme.wav", Music.class);
+
         // set the loaders for the generator and the fonts themselves
         FileHandleResolver resolver = new InternalFileHandleResolver();
         manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
@@ -80,6 +79,11 @@ public class AssetLoader {
         sizeParams.fontParameters.size = 24;
 
         manager.load("font24.ttf", BitmapFont.class, sizeParams);
+
+        FreetypeFontLoader.FreeTypeFontLoaderParameter sizeParams2 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        sizeParams2.fontFileName = "Gaegu-Bold.ttf";
+        sizeParams2.fontParameters.size = 42;
+        manager.load("fontBig.ttf", BitmapFont.class, sizeParams2);
 
 
         ShaderProgramLoader.ShaderProgramParameter shaderProgramParameter = new ShaderProgramLoader.ShaderProgramParameter();

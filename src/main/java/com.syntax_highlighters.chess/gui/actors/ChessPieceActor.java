@@ -60,6 +60,11 @@ public class ChessPieceActor extends Actor {
         isSelected = selected;
     }
 
+    @Override
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     /**
      * Recalculate the bounds of the piece based on the size of it's parent
      */
@@ -82,6 +87,7 @@ public class ChessPieceActor extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
+        if(game == null) return;
         Position myPos = piece.getPosition();
         // Expected piece is not current piece, assume dead
         if(game.getPieceAtPosition(myPos) != piece)
