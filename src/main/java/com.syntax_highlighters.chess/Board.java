@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Holds the current state of the board.
@@ -115,6 +116,45 @@ public class    Board {
             IChessPiece piece = AbstractChessPiece.fromChessNotation(p, Color.BLACK);
             putAtPosition(piece.getPosition(), piece);
         }
+    }
+
+    /** A function for returning a board that is in a later state. The board still follows chess rules for game.
+     *
+     * @param board 
+     * @param Rounds How many rounds into the game the board is returned
+     * @return
+     */
+    public Board setupPracticeGame(Board board, int Rounds) {
+        final int temp = Rounds;
+        Boolean rdyBoard;
+        Random rng = new Random();
+        do {
+            rdyBoard = true;
+            for (int i = 0; i < Rounds; i++) {
+                List<Move> whitemoves = board.getAllPieces().stream()
+                        .filter(p -> p.getColor() == Color.WHITE)
+                        .flatMap(p -> p.allPossibleMoves(board).stream())
+                        .collect(Collectors.toList());
+                if (whitemoves.size() == 0) break;
+                Move whitemove = whitemoves.get(rng.nextInt(whitemoves.size()));
+                whitemove.DoMove(board);
+
+                List<Move> blackmoves = board.getAllPieces().stream()
+                        .filter(p -> p.getColor() == Color.BLACK)
+                        .flatMap(p -> p.allPossibleMoves(board).stream())
+                        .collect(Collectors.toList());
+                if (blackmoves.size() == 0) break;
+                Move blackmove = blackmoves.get(rng.nextInt(blackmoves.size()));
+                blackmove.DoMove(board);
+            }
+            if (board.checkMate(Color.BLACK)|| board.checkMate(Color.WHITE)){ //If checkmate then start over.
+                rdyBoard = false;
+                Rounds = temp;
+                board.setupNewGame();
+            }
+        } while(!(rdyBoard));
+
+        return board;
     }
 
     /** Sets up a random state of the game based on handicap and number of bonus pieces.
@@ -242,8 +282,6 @@ public class    Board {
         }
         return N;
     }
-
-
     /**
      * Put a piece at a position on the board.
      *
