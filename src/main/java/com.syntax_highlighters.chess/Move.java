@@ -81,6 +81,17 @@ public class Move {
     }
 
     /**
+     * Get the piece first Letter
+     *
+     * @param board The board to get the piece from
+     * @return The pieces first char
+     */
+    public String getPieceString(Board board) {
+        Position p = hasDoneMove ? newPos : oldPos;
+        return board.getAtPosition(p).toChessNotation();
+    }
+
+    /**
      * Get the color of the moved piece.
      *
      * @param board The board to get the piece from

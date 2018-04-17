@@ -21,6 +21,11 @@ public abstract class AbstractChessPiece implements IChessPiece {
     protected Position position;
     protected boolean hasMoved = false;
 
+
+    public String toChessNotation(){
+        return "A";
+    }
+
     /**
      * Chess piece at given position with given color.
      *

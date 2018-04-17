@@ -18,6 +18,23 @@ public class Game {
     private IAiPlayer whiteAI = null;
     private IAiPlayer blackAI = null;
     private Color nextPlayerColor = Color.WHITE;
+    private List<Move> moveHistory = new ArrayList<Move>();
+
+    /**
+     * Return a List of String containing all moves to date.
+     *
+     * @return List<String> containing all moves.
+     */
+    public List<String> getMoveHistory(){
+        List<String> moves = new ArrayList<>();
+        for(Move m: moveHistory){
+            String piece = m.getPieceString(board);
+            piece += ", " + m.getOldPosition().toString();
+            piece += ", " + m.getPosition().toString() + "\n";
+            moves.add(piece);
+        }
+        return moves;
+    }
 
     /**
      * Creates a new, blank game and sets up the board.
@@ -89,6 +106,7 @@ public class Game {
             throw new IllegalArgumentException("m != null");
         }
         m.DoMove(board);
+        moveHistory.add(m);
         nextPlayerColor = nextPlayerColor.opponentColor();
     }
 
@@ -111,6 +129,7 @@ public class Game {
             }
             nextPlayerColor = nextPlayerColor.opponentColor();
             move.DoMove(board);
+            moveHistory.add(move);
             return move;
         }
         return null;
