@@ -23,7 +23,7 @@ public abstract class AbstractChessPiece implements IChessPiece {
 
 
     public String toChessNotation(){
-        return "A";
+        return "AAAAAAAAAA";
     }
 
     /**
