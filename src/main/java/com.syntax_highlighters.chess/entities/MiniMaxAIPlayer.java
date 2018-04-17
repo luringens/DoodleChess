@@ -27,6 +27,7 @@ public class MiniMaxAIPlayer implements IAiPlayer {
     private static final int EASY_DEPTH = 3;
     private static final int MED_DEPTH = 4;
     private static final int HARD_DEPTH = 4;
+    private static final int SHORTSIGHTED_DEPTH = 3;
     private final Color color;
     private int diff;
     private final Random rand;
@@ -74,6 +75,7 @@ public class MiniMaxAIPlayer implements IAiPlayer {
             case Easy: this.diff = EASY_DEPTH; chanceOfMistake = 0.2; break;
             case Medium: this.diff = MED_DEPTH; chanceOfMistake = 0.1; break;
             case Hard: this.diff = HARD_DEPTH; break;
+            case ShortSighted: this.diff = SHORTSIGHTED_DEPTH; break;
             default: throw new IllegalArgumentException("Invalid enum.");
         }
     }

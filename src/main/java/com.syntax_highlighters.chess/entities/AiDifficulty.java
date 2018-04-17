@@ -6,7 +6,12 @@ package com.syntax_highlighters.chess.entities;
  * Supports three different degrees of difficulty: Easy, Medium and Hard.
  */
 public enum AiDifficulty {
+    // Doesn't see far, makes a lot of mistakes
     Easy,
+    // Makes some mistakes
     Medium,
-    Hard
+    // Does not make mistakes
+    Hard,
+    // Doesn't see far, but does not make mistakes either
+    ShortSighted
 }
