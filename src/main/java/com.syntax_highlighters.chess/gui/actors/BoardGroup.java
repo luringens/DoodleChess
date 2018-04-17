@@ -57,6 +57,7 @@ public class BoardGroup extends Group {
                 actor.addListener(new ClickListener() {
                     @Override
                     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                        super.touchUp(event, x, y, pointer, button);
                         Vector2 parentCoords = actor.localToParentCoordinates(new Vector2(x, y));
                         if (tryMove(parentCoords.x, parentCoords.y)) return;
                         trySelect(null);
@@ -65,6 +66,7 @@ public class BoardGroup extends Group {
                 pieceGroup.addActor(actor);
             }
         }
+
 
         // Add chess pieces
         for (IChessPiece piece : game.getPieces()) {
