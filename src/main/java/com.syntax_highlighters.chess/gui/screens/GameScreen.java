@@ -35,6 +35,7 @@ public class GameScreen extends AbstractScreen {
     private final BoardGroup board;
     private final Text turnText;
     private final Button giveUp;
+    private final Button getHelp;
     private final Button showResults;
     private final Image mute;
 
@@ -127,6 +128,21 @@ public class GameScreen extends AbstractScreen {
             }
         });
 
+        getHelp = new Button("Get hint", assetManager);
+        getHelp.setSize(200, 75);
+        getHelp.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if (!isGameOver && !game.nextPlayerIsAI()) {
+                    // Suggest a simple move to the player.
+                    IAiPlayer ai = new MiniMaxAIPlayer(nextPlayerColor, AiDifficulty.ShortSighted);
+                    Move move = ai.GetMove(game.getBoard());
+                    board.showSuggestion(move);
+                }
+            }
+        });
+        stage.addActor(getHelp);
 
         Button.Builder giveUpButtonBuilder;
         if (player1 == null && ai1 != null && player2 == null && ai2 != null)
@@ -216,14 +232,6 @@ public class GameScreen extends AbstractScreen {
             if (game.nextPlayerIsAI()) {
                 game.PerformAIMove();
             }
-
-            // Otherwise, suggest a simple move to the player.
-            else {
-                //System.out.println(nextPlayerColor.isWhite());
-                IAiPlayer ai = new MiniMaxAIPlayer(nextPlayerColor, AiDifficulty.Easy);
-                Move move = ai.GetMove(game.getBoard());
-                board.showSuggestion(move);
-            }
         }
 
         setTurnText();
@@ -274,6 +282,9 @@ public class GameScreen extends AbstractScreen {
         board.setSize(size, size);
         board.setPosition(width / 2.f - size / 2.f, height / 2.f - size / 2.f + 25);
         turnText.setCenter(width / 2.f, height / 2.f - size / 2.f - 10.f);
+
+        getHelp.setPosition(width / 2.f - size / 2.f - 30.f + getHelp.getWidth()/2.f,
+                height / 2.f - size / 2.f - getHelp.getHeight() / 1.5f);
 
         giveUp.setPosition(width / 2.f + size / 2.f + 20.f - giveUp.getWidth(),
                 height / 2.f - size / 2.f - giveUp.getHeight() / 1.5f);

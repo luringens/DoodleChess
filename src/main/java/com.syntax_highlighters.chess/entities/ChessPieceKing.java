@@ -23,6 +23,11 @@ public class ChessPieceKing extends AbstractChessPiece {
         super(pos, color);
     }
 
+    @Override
+    public String toChessNotation() {
+        return "K";
+    }
+
     /**
      * {@inheritDoc}
      */
