@@ -113,39 +113,30 @@ public class AccountManager {
      */
     public void save(String filename){
         StringBuilder filetext = new StringBuilder();
-      /*  Account b = myAccounts.get(myAccounts.size());
+        Account b = myAccounts.get(myAccounts.size());
+//        Connection conn = connect();
         for(Account a: myAccounts){
             InsertRecords appp = new InsertRecords();
             appp.insert(a.getName(),(int)a.getScore(),a.getWinCount(),a.getLossCount());
-
-        }*/
-        try {
-            if(Files.exists(Paths.get(filename)))
-                Files.write(Paths.get(filename), filetext.toString().getBytes(), StandardOpenOption.WRITE);
-            else {
-                Files.createFile(Paths.get(filename));
-                Files.write(Paths.get(filename), filetext.toString().getBytes(), StandardOpenOption.WRITE);
-            }
-
-        }catch (IOException e) {
-            System.out.println("Failed to save statistics: " + e.getMessage());
         }
+
+//        try {
+//            if(Files.exists(Paths.get(filename)))
+//                Files.write(Paths.get(filename), filetext.toString().getBytes(), StandardOpenOption.WRITE);
+//            else {
+//                Files.createFile(Paths.get(filename));
+//                Files.write(Paths.get(filename), filetext.toString().getBytes(), StandardOpenOption.WRITE);
+//            }
+//
+//        }catch (IOException e) {
+//            System.out.println("Failed to save statistics: " + e.getMessage());
+//        }
     }
-    private Connection connect() {
+    private Connection connect() throws SQLException {
         // SQLite connection string
         String pathh = new File("sample.db").getAbsolutePath();
         String url = "jdbc:sqlite:"+pathh;
-
-        Connection conn = null;
-        try {
-          //  DriverManager.getConnection("jdbc:sqlite:"+pathh);
-           // DriverManager.registerDriver(new JDBC());
-
-            conn = DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return conn;
+        return DriverManager.getConnection(url);
     }
     /**
      * Load the accounts from a file with the given filename into this
@@ -161,6 +152,9 @@ public class AccountManager {
         
         try {
             Connection conn = this.connect();
+            if (conn == null) {
+                throw new IllegalStateException("No connection");
+            }
             Statement stmt  = conn.createStatement();
             ResultSet rs    = stmt.executeQuery(sql);
 

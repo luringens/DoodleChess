@@ -9,17 +9,17 @@ import java.sql.Statement;
 
 public class ShowRecords {
 
-    private Connection connect() {
+    private Connection connect() throws SQLException {
         // SQLite connection string
+        try {
+            Class.forName("org.sqlite.JDBC");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         String pathh = new File("sample.db").getAbsolutePath();
         String url = "jdbc:sqlite:"+pathh;
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return conn;
+        return DriverManager.getConnection(url);
     }
 
 
