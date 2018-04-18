@@ -19,23 +19,7 @@ class AiSpeedTest {
                 time < allowedTime);
     }
 
-    @Test
-    void mediumAICompletesWithinThreeSecondsFromStartingPosition() {
-        final long allowedTime = 3000;
-        IAiPlayer ai = new MiniMaxAIPlayer(Color.WHITE, AiDifficulty.Medium);
-        long time = speedTest(ai);
-        assertTrue("The medium AI is too slow (" + time + " >= " + allowedTime + ")",
-                time < allowedTime);
-    }
-    
-    @Test
-    void hardAICompletesWithinThreeSecondsFromStartingPosition() {
-        final long allowedTime = 3000;
-        IAiPlayer ai = new MiniMaxAIPlayer(Color.WHITE, AiDifficulty.Hard);
-        long time = speedTest(ai);
-        assertTrue("The hard AI is too slow (" + time + " >= " + allowedTime + ")",
-                time < allowedTime);
-    }
+
 
     /** Measures how long an AI spends deciding a move on a fresh chess board.
      * @param ai The AI to measure.

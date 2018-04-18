@@ -172,8 +172,6 @@ class ChessRulesTest {
 
     @Test
     void blackPawnCanPerformEnPassant() {
-        setUp(); // I really need to figure out that @Before bug...
-
         // setup board:
         //  A B C D E F G H 
         // _________________
@@ -351,6 +349,43 @@ class ChessRulesTest {
 
         noAvailableMoveLeadsTo(threatenedPos1, king);
         noAvailableMoveLeadsTo(threatenedPos2, king);
+    }
+
+    @Test
+    void cantEndTurnInCheck() {
+        setUp();
+
+        //  A B C D E F G H
+        // _________________
+        // |. . . . . . . .| 8
+        // |. . . . K . . .| 7 Black king
+        // |. . . . . . . .| 6
+        // |. R . . . . . .| 5 Black rook
+        // |. . . . . . . .| 4
+        // |. . . . . . . .| 3
+        // |. . . R R R . .| 2 White rooks
+        // |._._._._._._._K| 1 White king
+
+        // In this situation, the only valid move for black should be to
+        // move the rook to block the enemy rook from taking the king.
+
+        List<IChessPiece> pieces = new ArrayList<>();
+        pieces.add(new ChessPieceKing(new Position(5, 7), Color.BLACK));
+        pieces.add(new ChessPieceRook(new Position(2, 5), Color.BLACK));
+        pieces.add(new ChessPieceRook(new Position(4, 2), Color.WHITE));
+        pieces.add(new ChessPieceRook(new Position(5, 2), Color.WHITE));
+        pieces.add(new ChessPieceRook(new Position(6, 2), Color.WHITE));
+        pieces.add(new ChessPieceKing(new Position(8, 1), Color.WHITE));
+        Board b = new Board(pieces);
+        System.out.println(b);
+
+        long validMoves = b.getAllPieces()
+                           .stream()
+                           .filter(p -> p.getColor().isBlack())
+                           .mapToLong(p -> p.allPossibleMoves(b).size())
+                           .sum();
+
+        assertEquals(1, validMoves);
     }
     
     /**
