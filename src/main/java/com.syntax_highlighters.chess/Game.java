@@ -18,7 +18,7 @@ public class Game {
     private IAiPlayer whiteAI = null;
     private IAiPlayer blackAI = null;
     private Color nextPlayerColor = Color.WHITE;
-    private List<Move> moveHistory = new ArrayList<Move>();
+    private List<String> moveHistory = new ArrayList<>();
     private boolean uiHasForceEndedGame = false;
 
     /**
@@ -27,14 +27,15 @@ public class Game {
      * @return List<String> containing all moves.
      */
     public List<String> getMoveHistory(){
-        List<String> moves = new ArrayList<>();
-        for(Move m: moveHistory){
-            String piece = m.getPieceString(board);
-            piece += ", " + m.getOldPosition().toString();
-            piece += ", " + m.getPosition().toString() + "\n";
-            moves.add(piece);
-        }
-        return moves;
+        return moveHistory;
+    }
+
+    private void addMoveToHistory(Move m)
+    {
+        String piece = m.getPieceString(board);
+        piece += ", " + m.getOldPosition().toString();
+        piece += ", " + m.getPosition().toString() + "\n";
+        moveHistory.add(piece);
     }
 
     /**
@@ -88,6 +89,7 @@ public class Game {
         List<Move> result = board.movePiece(piece, to);
         if (result.size() == 1) {
             nextPlayerColor = nextPlayerColor.opponentColor();
+            addMoveToHistory(result.get(0));
         }
         return result;
     }
@@ -107,7 +109,7 @@ public class Game {
             throw new IllegalArgumentException("m != null");
         }
         m.DoMove(board);
-        moveHistory.add(m);
+        addMoveToHistory(m);
         nextPlayerColor = nextPlayerColor.opponentColor();
     }
 
@@ -130,7 +132,7 @@ public class Game {
             }
             nextPlayerColor = nextPlayerColor.opponentColor();
             move.DoMove(board);
-            moveHistory.add(move);
+            addMoveToHistory(move);
             return move;
         }
         return null;
