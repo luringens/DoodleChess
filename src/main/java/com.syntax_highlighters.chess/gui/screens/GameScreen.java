@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.syntax_highlighters.chess.*;
@@ -24,6 +26,8 @@ import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
 import com.syntax_highlighters.chess.gui.actors.ConfirmationOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
 
+import java.util.Arrays;
+
 /**
  * Game main screen.
  */
@@ -38,6 +42,8 @@ public class GameScreen extends AbstractScreen {
     private final Button getHelp;
     private final Button showResults;
     private final Image mute;
+    private final List<String> history;
+    private final ScrollPane historyList;
 
     private boolean isGameOver = false;
     private int winner = 0; // NOTE: do not consider this valid until isGameOver
@@ -50,7 +56,6 @@ public class GameScreen extends AbstractScreen {
     private final Color player1Color;
     private final Color player2Color;
     private Boolean paused = false;
-    private int xx = 1;
 
     private final ChessGame chessGame;
     private com.syntax_highlighters.chess.entities.Color nextPlayerColor;
@@ -87,9 +92,23 @@ public class GameScreen extends AbstractScreen {
         Gdx.input.setInputProcessor(stage);
 
         board = new BoardGroup(this.game, this.player2Color, this.player1Color, assetManager);
-        float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 50;
+        float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 50 - 200;
         board.setSize(size, size);
         stage.addActor(board);
+
+        // TODO: Move style stuff to a separate class
+        // TODO: Fix clipping by creating custom list object
+        List.ListStyle style = new List.ListStyle();
+        style.font = AssetLoader.GetDefaultFont(assetManager, 16);
+        style.fontColorUnselected = Color.BLACK;
+        style.fontColorSelected = Color.BLACK;
+        style.selection = new SpriteDrawable(new Sprite(assetManager.get("pixel.png", Texture.class)));
+        history = new List<>(style);
+        history.setItems(game.getMoveHistory().toArray(new String[game.getMoveHistory().size()]));
+        ScrollPane.ScrollPaneStyle sStyle = new ScrollPane.ScrollPaneStyle();
+        //sStyle.background = new WobbleDrawable(assetManager.get("button_template.png"), assetManager, Color.BLACK);
+        historyList = new ScrollPane(history, sStyle);
+        stage.addActor(historyList);
 
         BitmapFont font = AssetLoader.GetDefaultFont(assetManager);
 
@@ -220,6 +239,14 @@ public class GameScreen extends AbstractScreen {
                 (!game.nextPlayerIsAI() || (player1 == null && player2 == null)));
         showResults.setVisible(isGameOver);
 
+        java.util.List<String> moves = game.getMoveHistory();
+        if(moves.size() > history.getItems().size)
+        {
+            history.setItems(moves.toArray(new String[moves.size()]));
+            historyList.layout();
+            historyList.setScrollPercentY(100);
+        }
+
         // Has the board updated?
         if (game.nextPlayerColor() != nextPlayerColor) {
             nextPlayerColor = game.nextPlayerColor();
@@ -268,8 +295,8 @@ public class GameScreen extends AbstractScreen {
         // below
         int width = Gdx.graphics.getWidth();  // I think this is right
         int height = Gdx.graphics.getHeight();
-        float size = Math.min(width, height) - 100;
-        size = Math.min(size, 1000);
+        float size = Math.min(width, height) - 150;
+        size = Math.min(size, 1000) - 150;
         turnText.setCenter(width / 2.f, height / 2.f - size / 2.f - 10.f);
     }
 
@@ -285,9 +312,11 @@ public class GameScreen extends AbstractScreen {
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
         float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 100;
-        size = Math.min(size, 1000);
+        size = Math.min(size, 1000) - 150;
         board.setSize(size, size);
-        board.setPosition(width / 2.f - size / 2.f, height / 2.f - size / 2.f + 25);
+        board.setPosition(width / 2.f - size / 2.f - 120, height / 2.f - size / 2.f + 25);
+        historyList.setHeight(size - 100);
+        historyList.setPosition(width / 2.f + size / 2.f - 60,height / 2.f  - historyList.getHeight() / 2.f + 50);
         turnText.setCenter(width / 2.f, height / 2.f - size / 2.f - 10.f);
 
         getHelp.setPosition(width / 2.f - size / 2.f - 30.f + getHelp.getWidth()/2.f,
