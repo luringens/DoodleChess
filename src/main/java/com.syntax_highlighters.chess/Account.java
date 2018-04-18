@@ -114,8 +114,6 @@ public class Account {
 
     /**
      * Set the points of the player.
-     *
-     * @return void
      */
     public void addPoints(int n) {
         this.points += n;
@@ -123,8 +121,6 @@ public class Account {
 
     /**
      * Set the rating of the player.
-     *
-     * @return void
      */
     public void setRating(int rating) {
         this.rating = rating;
