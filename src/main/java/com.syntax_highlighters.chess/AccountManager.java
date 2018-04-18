@@ -144,7 +144,7 @@ public class AccountManager {
             e.printStackTrace();
         }
         // SQLite connection string
-        String pathh = new File("sample.db").getAbsolutePath();
+        String pathh = new File("Scorecard.db").getAbsolutePath();
         String url = "jdbc:sqlite:"+pathh;
         return DriverManager.getConnection(url);
     }

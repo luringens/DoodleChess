@@ -12,7 +12,7 @@ public class CreateTable {
         String url = "jdbc:sqlite:C://sqlite/db/tests.db";
 
         // SQL statement for creating a new table
-        String sql = "CREATE TABLE IF NOT EXISTS personDB (\n"
+        String sql = "CREATE TABLE IF NOT EXISTS person (\n"
                 + "	id integer PRIMARY KEY,\n"
                 + "	name text NOT NULL,\n"
                 + "	capacity real\n"
