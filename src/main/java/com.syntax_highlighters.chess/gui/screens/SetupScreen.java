@@ -70,6 +70,8 @@ public class SetupScreen extends AbstractScreen {
     private Color player1Color = Color.WHITE;
     private Color player2Color = Color.BLACK;
 
+    private boolean randomBoard = false;
+
     public SetupScreen(ChessGame game)
     {
         super(game);
@@ -125,6 +127,11 @@ public class SetupScreen extends AbstractScreen {
         // add this last
         stage.addActor(accountOverlay);
         stage.addActor(selector);
+    }
+
+    public SetupScreen(ChessGame game, boolean randomBoard) {
+        this(game);
+        this.randomBoard = randomBoard;
     }
 
     public void updateAccountLists(ChessGame game)
@@ -361,7 +368,7 @@ public class SetupScreen extends AbstractScreen {
         // Create player attribute objects
         PlayerAttributes attrib1 = createAttributes(player1, player1Difficulty, player1Color);
         PlayerAttributes attrib2 = createAttributes(player2, player2Difficulty, player2Color);
-        game.setScreen(new GameScreen(game, attrib1, attrib2));
+        game.setScreen(new GameScreen(game, attrib1, attrib2, randomBoard));
     }
 
     /**

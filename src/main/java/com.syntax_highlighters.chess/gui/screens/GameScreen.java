@@ -59,14 +59,13 @@ public class GameScreen extends AbstractScreen {
      * Constructor.
      * <p>
      * We have put the AI on a separate thread to stop the window from becoming unresponsive while the AI is thinking.
-     *
-     * @param chessGame current ChessGame
+     *  @param chessGame current ChessGame
      * @param attrib1   Attributes for player 1 (account info, AI difficulty,
      *                  piece color)
      * @param attrib2   Attributes for player 2 (account info, AI difficulty,
-     *                  piece color)
+     * @param randomBoard
      */
-    public GameScreen(ChessGame chessGame, PlayerAttributes attrib1, PlayerAttributes attrib2) {
+    public GameScreen(ChessGame chessGame, PlayerAttributes attrib1, PlayerAttributes attrib2, boolean randomBoard) {
         super(chessGame);
 
         assetManager = chessGame.getAssetManager();
@@ -79,6 +78,10 @@ public class GameScreen extends AbstractScreen {
         this.chessGame = chessGame;
 
         this.game = new Game(ai1, ai2);
+        if(randomBoard)
+            // Do 5-20 random moves
+            this.game.getBoard().setupPracticeGame((int)(Math.random() * 15) + 5);
+
         this.nextPlayerColor = this.game.nextPlayerColor().opponentColor();
 
         Gdx.input.setInputProcessor(stage);
