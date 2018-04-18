@@ -27,6 +27,18 @@ public class AssetLoader {
         return big ? assetManager.get("fontBig.ttf") : assetManager.get("font24.ttf");
     }
 
+    public static BitmapFont GetDefaultFont(AssetManager assetManager, int size) {
+        if(!assetManager.isLoaded("font" + size + ".ttf"))
+        {
+            FreetypeFontLoader.FreeTypeFontLoaderParameter sizeParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+            sizeParams.fontFileName = "Gaegu-Bold.ttf";
+            sizeParams.fontParameters.size = size;
+            assetManager.load("font" + size + ".ttf", BitmapFont.class, sizeParams);
+            assetManager.finishLoading();
+        }
+        return assetManager.get("font" + size + ".ttf");
+    }
+
     public static void LoadAssets(AssetManager manager) {
         String[] textures = {
                 "pawn_white.png",
@@ -77,7 +89,6 @@ public class AssetLoader {
         FreetypeFontLoader.FreeTypeFontLoaderParameter sizeParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         sizeParams.fontFileName = "Gaegu-Bold.ttf";
         sizeParams.fontParameters.size = 24;
-
         manager.load("font24.ttf", BitmapFont.class, sizeParams);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter sizeParams2 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
