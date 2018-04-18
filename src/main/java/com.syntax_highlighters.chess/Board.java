@@ -124,36 +124,36 @@ public class    Board {
      * @param Rounds How many rounds into the game the board is returned
      * @return
      */
-    public Board setupPracticeGame(Board board, int Rounds) {
+    public Board setupPracticeGame(int Rounds) {
         final int temp = Rounds;
         Boolean rdyBoard;
         Random rng = new Random();
         do { rdyBoard = true;
             for (int i = 0; i < Rounds; i++) {
-                List<Move> whitemoves = board.getAllPieces().stream()
+                List<Move> whitemoves = getAllPieces().stream()
                         .filter(p -> p.getColor() == Color.WHITE)
-                        .flatMap(p -> p.allPossibleMoves(board).stream())
+                        .flatMap(p -> p.allPossibleMoves(this).stream())
                         .collect(Collectors.toList());
                 if (whitemoves.size() == 0) break;
                 Move whitemove = whitemoves.get(rng.nextInt(whitemoves.size()));
-                whitemove.DoMove(board);
+                whitemove.DoMove(this);
 
-                List<Move> blackmoves = board.getAllPieces().stream()
+                List<Move> blackmoves = getAllPieces().stream()
                         .filter(p -> p.getColor() == Color.BLACK)
-                        .flatMap(p -> p.allPossibleMoves(board).stream())
+                        .flatMap(p -> p.allPossibleMoves(this).stream())
                         .collect(Collectors.toList());
                 if (blackmoves.size() == 0) break;
                 Move blackmove = blackmoves.get(rng.nextInt(blackmoves.size()));
-                blackmove.DoMove(board);
+                blackmove.DoMove(this);
             }
-            if (board.checkMate(Color.BLACK)|| board.checkMate(Color.WHITE)){ //If checkmate then start over.
+            if (checkMate(Color.BLACK)|| checkMate(Color.WHITE)){ //If checkmate then start over.
                 rdyBoard = false;
                 Rounds = temp;
-                board.setupNewGame();
+                setupNewGame();
             }
         } while(!(rdyBoard));
 
-        return board;
+        return this;
     }
 
     /** Sets up a random state of the game based on handicap and number of bonus pieces.

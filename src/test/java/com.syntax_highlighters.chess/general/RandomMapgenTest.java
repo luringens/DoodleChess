@@ -58,7 +58,7 @@ class RandomMapgenTest{
     @Test
     void SetupPracGamehasKingsTest(){
         board.setupNewGame();
-        board.setupPracticeGame(board,rdm.nextInt(20));
+        board.setupPracticeGame(rdm.nextInt(20));
 
         long kings = board.getAllPieces().stream().filter(p -> p instanceof ChessPieceKing).count();
         assertEquals(2,kings);
