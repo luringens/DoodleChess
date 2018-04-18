@@ -24,6 +24,9 @@ public class ChessPiecePawn extends AbstractChessPiece {
         super(pos, color);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toChessNotation() {
         return "P";

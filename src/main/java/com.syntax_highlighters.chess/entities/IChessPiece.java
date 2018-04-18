@@ -113,7 +113,10 @@ public interface IChessPiece {
      */
     boolean hasMoved();
 
-
+    /**
+     * Returns the chess notation form of the piece.
+     * @return The chess notation form of the piece.
+     */
     String toChessNotation();
 
     /**

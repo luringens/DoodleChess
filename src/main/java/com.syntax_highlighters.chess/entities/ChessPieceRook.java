@@ -23,6 +23,9 @@ public class ChessPieceRook extends AbstractChessPiece {
         super(pos, color);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toChessNotation() {
         return "R"; 

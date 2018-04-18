@@ -160,10 +160,10 @@ public class    Board {
     /** Sets up a random state of the game based on handicap and number of bonus pieces.
      * TODO: Fix score generator.
      *
-     * @param hcpW White pieces handicap
-     * @param hcpB Black pieces handicap
-     * @param bonusW White bonus pieces
-     * @param bonusB Black bonus pieces
+     * @param hcpW White pieces handicap. Must be 0 < hcp < 100.
+     * @param hcpB Black pieces handicap. Must be 0 < hcp < 100.
+     * @param bonusW White bonus pieces. Must be -15 < Bonus < 16.
+     * @param bonusB Black bonus pieces. Must be -15 < Bonus < 16.
      */
     public void setupRandomGame(int hcpW, int hcpB,int bonusW, int bonusB) {
         if (bonusW > 16 || bonusB > 16 || bonusW < -15 || bonusB < -15) {

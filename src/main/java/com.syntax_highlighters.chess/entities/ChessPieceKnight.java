@@ -22,6 +22,9 @@ public class ChessPieceKnight extends AbstractChessPiece {
         super(pos, color);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toChessNotation() {
         return "N";
