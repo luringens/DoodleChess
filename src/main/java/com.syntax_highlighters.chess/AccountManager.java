@@ -123,7 +123,7 @@ public class AccountManager {
             for (Account a : myAccounts) {
                 PreparedStatement stmt = conn.prepareStatement(a.insertStatement());
                 stmt.setString(1, a.getName());
-                stmt.setInt(2, (int) a.getScore());
+                stmt.setInt(2, a.getRating());
                 stmt.setInt(3, a.getWinCount());
                 stmt.setInt(4, a.getLossCount());
                 stmt.executeUpdate();
@@ -143,7 +143,7 @@ public class AccountManager {
             e.printStackTrace();
         }
         // SQLite connection string
-        String pathh = new File("Scorecard.db").getAbsolutePath();
+        String pathh = new File(filename).getAbsolutePath();
         String url = "jdbc:sqlite:" + pathh;
         return DriverManager.getConnection(url);
     }
@@ -203,6 +203,8 @@ public class AccountManager {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
+            myAccounts.clear(); // ensure there are no accounts in the list before loading
+
             // loop through the result set
             while (rs.next()) {
                 int score = rs.getInt("score");
@@ -210,7 +212,7 @@ public class AccountManager {
                 int wins = rs.getInt("wins");
                 int losses = rs.getInt("losses");
                 System.out.println(score + " " + name + " " + wins + " " + losses);
-                myAccounts.add(new Account(name, wins, losses));
+                myAccounts.add(new Account(name, wins, losses, score));
             }
         } catch (Exception e) {
             System.out.println(e);
