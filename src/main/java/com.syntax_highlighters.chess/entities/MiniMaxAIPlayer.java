@@ -118,18 +118,24 @@ public class MiniMaxAIPlayer implements IAiPlayer {
                 .collect(Collectors.toList());
 
         // Parallel processing. Do all moves, keep the one with the highest score.
-        Optional<result> optionalMove = moves.parallelStream().map(move -> {
+        List<result> movess = moves.parallelStream().map(move -> {
             // Make a copy of the board so the threads don't share state.
             Board boardCopy = board.copy();
 
             // Perform the move, then recursively check possible outcomes.
             move.DoMove(boardCopy);
-            int score = MiniMaxScore(finalDepth - 1, boardCopy, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+            int score;
+            if (boardCopy.checkMate(color.opponentColor()))
+                score = Integer.MAX_VALUE;
+            else
+                score = MiniMaxScore(finalDepth - 1, boardCopy, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
             // Undo the move to keep it valid
             move.UndoMove(boardCopy);
             return new result(move, score);
-        }).max(Comparator.comparing(result -> result.score));
+        }).collect(Collectors.toList());
+        Optional<result> optionalMove = movess.stream().max(Comparator.comparing(result -> result.score));
 
         return optionalMove.isPresent() ? optionalMove.get().move : null;
     }
@@ -161,6 +167,8 @@ public class MiniMaxAIPlayer implements IAiPlayer {
             .flatMap(p -> p.allPossibleMoves(board).stream())
             .collect(Collectors.toList());
 
+        if (moves.size() == 0) return evaluateScore(board, color);
+
         // NOTE: code duplication; consider refactoring
         if (isMaximizing) {
             for (Move move : moves) {
@@ -171,7 +179,7 @@ public class MiniMaxAIPlayer implements IAiPlayer {
                 // Check if the move puts the opponent in checkmate.
                 if (board.checkMate(pieceColor.opponentColor())) {
                     move.UndoMove(board);
-                    return 100000;
+                    return 100000 * depth;
                 }
                 int score = MiniMaxScore(depth - 1, board, false, alpha, beta);
                 move.UndoMove(board);
@@ -191,7 +199,7 @@ public class MiniMaxAIPlayer implements IAiPlayer {
                 // Check if the move puts the opponent in checkmate.
                 if (board.checkMate(pieceColor.opponentColor())) {
                     move.UndoMove(board);
-                    return -100000;
+                    return -100000 * depth;
                 }
                 int score = MiniMaxScore(depth - 1, board, true, alpha, beta);
                 move.UndoMove(board);
