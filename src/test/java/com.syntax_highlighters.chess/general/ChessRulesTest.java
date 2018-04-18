@@ -172,6 +172,8 @@ class ChessRulesTest {
 
     @Test
     void blackPawnCanPerformEnPassant() {
+        setUp();
+        
         // setup board:
         //  A B C D E F G H 
         // _________________
