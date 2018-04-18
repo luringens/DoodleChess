@@ -22,6 +22,7 @@ public class Main {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 800;
 		config.height = 800;
+		config.forceExit = false;
 		config.title = "Doodle chess";
 		config.addIcon("icon256.png", Files.FileType.Internal);
 		config.addIcon("icon32.png", Files.FileType.Internal);
