@@ -113,7 +113,7 @@ public class AccountManager {
      */
     public void save (String filename) {
         try {
-            Connection conn = connect();
+            Connection conn = connect(filename);
 
             // Horrible, I know.
             // Sorry.
@@ -133,7 +133,7 @@ public class AccountManager {
         }
     }
 
-    private Connection connect () throws SQLException {
+    private Connection connect (String filename) throws SQLException {
         // NOTE: for some reason it worked after I added this line. I don't
         // really know why. Maybe it just ensures that it has the JDBC
         // dependency loaded or something.
@@ -199,7 +199,7 @@ public class AccountManager {
         String sql = "SELECT * FROM person";
 
         try {
-            Connection conn = this.connect();
+            Connection conn = this.connect(filename);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
