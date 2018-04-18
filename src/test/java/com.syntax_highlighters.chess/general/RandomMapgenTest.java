@@ -14,10 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RandomMapgenTest{
     Random rdm = new Random();
+    Board board = new Board();
 
     @Test
     void genTileMapTest() {
-        Board board = new Board();
         int testBonus = rdm.nextInt(10);
         int[][] testMap = board.generateTileMap(testBonus);
         int n = 0;
@@ -33,7 +33,6 @@ class RandomMapgenTest{
 
     @Test
     void BonusPiecesisCorrectTest(){
-        Board board = new Board();
         int rdmBonus1 = rdm.nextInt(16 + 15 +1) - 15;
         int rdmBonus2 = rdm.nextInt(16 + 15 +1) - 15;
         int rdmHcp1 = rdm.nextInt(100 + 1);
@@ -46,18 +45,23 @@ class RandomMapgenTest{
 
     @Test
     void setupRandomGamehasKingsTest(){
-        Board testBoard = new Board();
         int rdmBonus1 = 15;
         int rdmBonus2 = rdm.nextInt(16 + 15 +1) - 15;
         int rdmHcp1 = rdm.nextInt(100 + 1);
         int rdmHcp2 = rdm.nextInt(100 + 1);
-        testBoard.setupRandomGame(rdmHcp1,rdmHcp2,rdmBonus1,rdmBonus2);
+        board.setupRandomGame(rdmHcp1,rdmHcp2,rdmBonus1,rdmBonus2);
 
-        System.out.println(testBoard);
-        System.out.println("Whcp: " + rdmHcp1 + " Bhcp: " + rdmHcp2 +
-                " W Bonus: " + rdmBonus1 + " B bonus: " + rdmBonus2);
-
-        long kings = testBoard.getAllPieces().stream().filter(p -> p instanceof ChessPieceKing).count();
+        long kings = board.getAllPieces().stream().filter(p -> p instanceof ChessPieceKing).count();
         assertEquals(2, kings);
+    }
+
+    @Test
+    void SetupPracGamehasKingsTest(){
+        board.setupNewGame();
+        board.setupPracticeGame(board,rdm.nextInt(20));
+
+        long kings = board.getAllPieces().stream().filter(p -> p instanceof ChessPieceKing).count();
+        assertEquals(2,kings);
+
     }
 }

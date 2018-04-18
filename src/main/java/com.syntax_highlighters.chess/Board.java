@@ -128,8 +128,7 @@ public class    Board {
         final int temp = Rounds;
         Boolean rdyBoard;
         Random rng = new Random();
-        do {
-            rdyBoard = true;
+        do { rdyBoard = true;
             for (int i = 0; i < Rounds; i++) {
                 List<Move> whitemoves = board.getAllPieces().stream()
                         .filter(p -> p.getColor() == Color.WHITE)
@@ -158,10 +157,11 @@ public class    Board {
     }
 
     /** Sets up a random state of the game based on handicap and number of bonus pieces.
-     * TODO: Fix score generator.
      *
-     * @param hcpW White pieces handicap. Must be 0 < hcp < 100.
-     * @param hcpB Black pieces handicap. Must be 0 < hcp < 100.
+     * @param hcpW White pieces handicap. Determines the tier of pieces generated, with 50 being around the same Must be 0 < hcp < 100.
+     *             as in a normal game.
+     * @param hcpB Black pieces handicap.Determines the tier of pieces generated, with 50 being around the same Must be 0 < hcp < 100.
+     *             as in a normal game. Must be 0 < hcp < 100.
      * @param bonusW White bonus pieces. Must be -15 < Bonus < 16.
      * @param bonusB Black bonus pieces. Must be -15 < Bonus < 16.
      */
@@ -209,7 +209,7 @@ public class    Board {
     /**
      * Generates a tilemap to be used when placing the pieces. The tiles are randomly placed.
      *
-     * @param bonus
+     * @param bonus Number of 1s in the matrix made.
      * @return
      */
     public int[][] generateTileMap(int bonus){
@@ -232,10 +232,9 @@ public class    Board {
      * Generates a list of scores to be used in the random generator. The function
      * uses Random to randomize the scores.
      *
-     * TODO: Make sure it cannot end up in an infinite loop when hcp is high and bonus is low.
-     *
-     * @param hcp Handicap for each player
-     * @param bonus Bonus pieces assigned to a player.
+     * @param hcp Handicap for each player. Determines the probability of getting a certain tier of pieces. A hcp of 50 generates about the same
+     *            pieces as in a normal game, higher generates better pieces, and below 50 reduces the tier.
+     * @param bonus Number of bonus pieces assigned to a player.
      * @return
      */
     public int[] generateTileScores(int hcp, int bonus){

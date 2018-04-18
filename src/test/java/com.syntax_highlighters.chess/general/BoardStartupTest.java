@@ -156,7 +156,6 @@ class BoardStartupTest {
 
     @Test
     void BlackCannotMoveFirst(){
-
         Game game = new Game(null,null);
         board = game.getBoard();
 
