@@ -1,4 +1,5 @@
 package com.syntax_highlighters.chess;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,7 +16,8 @@ import java.util.List;
  */
 public class AccountManager {
     List<Account> myAccounts = new ArrayList<>();
-    public int accountSize(){
+
+    public int accountSize () {
         return myAccounts.size();
     }
 
@@ -23,32 +25,30 @@ public class AccountManager {
      * Get the account with the given name.
      *
      * @param name The account name
-     *
      * @return The account whose name equals the parameter, or null if no such
      * account exists
      */
 
-    public Account getAccount(String name){
-        for(Account a: myAccounts)
-            if(a.getName().equals(name))
+    public Account getAccount (String name) {
+        for (Account a : myAccounts)
+            if (a.getName().equals(name))
                 return a;
         return null;
     }
 
     /**
      * Helper method: return a list of accounts sorted by their win counts.
-     *
+     * <p>
      * SUGGESTION: Make use of Comparator object which from the beginning
      * sorts list in reversed order.
      *
      * @param accounts The list of accounts to sort
-     *
      * @return a properly sorted list of accounts
      */
-    private List<Account> sort(List<Account> accounts){
+    private List<Account> sort (List<Account> accounts) {
         accounts.sort(Comparator.comparing(Account::getWinCount));
         List<Account> reverseAccounts = new ArrayList<>();
-        for(int i=accounts.size()-1; i>=0; i--)
+        for (int i = accounts.size() - 1; i >= 0; i--)
             reverseAccounts.add(accounts.get(i));
         return reverseAccounts;
     }
@@ -60,16 +60,16 @@ public class AccountManager {
      * @return true if the account was added, false if it already existed in the
      * account list
      */
-    public boolean addAccount(Account acc){
+    public boolean addAccount (Account acc) {
         boolean canAdd = true;
-        if(myAccounts.isEmpty())
+        if (myAccounts.isEmpty())
             canAdd = true;
-        else{
-            for(Account a: myAccounts)
-                if(a.getName().equals(acc.getName()))
+        else {
+            for (Account a : myAccounts)
+                if (a.getName().equals(acc.getName()))
                     canAdd = false;
         }
-        if(canAdd)
+        if (canAdd)
             myAccounts.add(acc);
         return canAdd;
     }
@@ -80,12 +80,12 @@ public class AccountManager {
      * @param n Number of accounts to return
      * @return A correctly ordered list of n accounts
      */
-    public List<Account> getTop(int n){
+    public List<Account> getTop (int n) {
         myAccounts = sort(myAccounts);
-        if(myAccounts.size() <= n)
-            return(myAccounts);
+        if (myAccounts.size() <= n)
+            return (myAccounts);
         List<Account> returnAccounts = new ArrayList<>();
-        for(int i=0; i<n; i++)
+        for (int i = 0; i < n; i++)
             returnAccounts.add(myAccounts.get(i));
         return returnAccounts;
     }
@@ -95,23 +95,23 @@ public class AccountManager {
      *
      * @return A correctly ordered list containing all the accounts
      */
-    public List<Account> getAll(){
+    public List<Account> getAll () {
         myAccounts = sort(myAccounts);
         return myAccounts;
     }
 
     /**
      * Save the account list to a file with the given filename.
-     *
+     * <p>
      * Overwrites the file in question, or creates it if it doesn't already
      * exist.
-     *
+     * <p>
      * SUGGESTION: Return boolean value indicating whether or not saving the
      * file succeeded.
      *
      * @param filename The name of the file to save to
      */
-    public void save(String filename){
+    public void save (String filename) {
         try {
             Connection conn = connect();
 
@@ -120,50 +120,88 @@ public class AccountManager {
             Statement deleteAll = conn.createStatement();
             deleteAll.executeUpdate("DELETE FROM person");
 
-            for(Account a: myAccounts){
+            for (Account a : myAccounts) {
                 PreparedStatement stmt = conn.prepareStatement(a.insertStatement());
                 stmt.setString(1, a.getName());
-                stmt.setInt(2, (int)a.getScore());
+                stmt.setInt(2, (int) a.getScore());
                 stmt.setInt(3, a.getWinCount());
                 stmt.setInt(4, a.getLossCount());
                 stmt.executeUpdate();
             }
-        }
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
-    private Connection connect() throws SQLException {
+
+    private Connection connect () throws SQLException {
         // NOTE: for some reason it worked after I added this line. I don't
         // really know why. Maybe it just ensures that it has the JDBC
         // dependency loaded or something.
         try {
             Class.forName("org.sqlite.JDBC");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         // SQLite connection string
         String pathh = new File("Scorecard.db").getAbsolutePath();
-        String url = "jdbc:sqlite:"+pathh;
+        String url = "jdbc:sqlite:" + pathh;
         return DriverManager.getConnection(url);
     }
+
+    public static void createDatabase (String fileName) {
+        String pathh = new File(fileName).getAbsolutePath();
+        String url = "jdbc:sqlite:" + pathh;
+
+
+        try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) {
+                DatabaseMetaData meta = conn.getMetaData();
+                System.out.println("The driver name is " + meta.getDriverName());
+                System.out.println("A new database has been created.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void createTable (String filename) {
+        String pathh = new File(filename).getAbsolutePath();
+        String url = "jdbc:sqlite:" + pathh;
+
+        String sql = "CREATE TABLE IF NOT EXISTS person (\n"
+                + "	name text PRIMARY KEY,\n"
+                + "	score integer ,\n"
+                + "	wins integer,\n"
+                + "	losses integer\n"
+
+                + ");";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement()) {
+            // create a new table
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     /**
      * Load the accounts from a file with the given filename into this
      * AccountManager.
-     *
+     * <p>
      * SUGGESTION: Return boolean value indicating whether or not loading the
      * file succeeded.
      *
      * @param filename The name of the file to load from
      */
-    public void load(String filename){
+    public void load (String filename) {
         String sql = "SELECT * FROM person";
-        
+
         try {
             Connection conn = this.connect();
-            Statement stmt  = conn.createStatement();
-            ResultSet rs    = stmt.executeQuery(sql);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
 
             // loop through the result set
             while (rs.next()) {
@@ -172,10 +210,13 @@ public class AccountManager {
                 int wins = rs.getInt("wins");
                 int losses = rs.getInt("losses");
                 System.out.println(score + " " + name + " " + wins + " " + losses);
-               myAccounts.add(new Account(name,wins,losses));
+                myAccounts.add(new Account(name, wins, losses));
             }
         } catch (Exception e) {
             System.out.println(e);
         }
+        String pathh = new File(filename).getAbsolutePath();
+      if(!new File(pathh).isFile()){createDatabase(filename); createTable(filename);}
+
     }
 }
