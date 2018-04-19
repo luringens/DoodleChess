@@ -17,6 +17,7 @@ import com.syntax_highlighters.chess.*;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.entities.IAiPlayer;
 import com.syntax_highlighters.chess.entities.MiniMaxAIPlayer;
+import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.Audio;
@@ -279,6 +280,14 @@ public class GameScreen extends AbstractScreen {
             // Do an AI turn if needed
             if (game.nextPlayerIsAI()) {
                 game.PerformAIMove();
+                // If the AI performed a promotion move, we need to add the
+                // piece that was promoted to as an actor to the BoardGroup.
+                Board b = game.getBoard();
+                Move m = b.getLastMove();
+                if (m instanceof PromotionMove) {
+                    IChessPiece promoted = b.getAtPosition(m.getPosition());
+                    board.addPiece(promoted);
+                }
             }
         }
 

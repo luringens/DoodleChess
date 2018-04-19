@@ -70,7 +70,7 @@ public class BoardGroup extends Group {
 
         // Add chess pieces
         for (IChessPiece piece : game.getPieces()) {
-            pieceGroup.addActor(newPiece(piece));
+            addPiece(piece);
         }
         addActor(pieceGroup);
 
@@ -110,6 +110,10 @@ public class BoardGroup extends Group {
             }
         });
         return chessPieceActor;
+    }
+
+    public void addPiece(IChessPiece piece) {
+        pieceGroup.addActor(newPiece(piece));
     }
 
     /**
@@ -194,7 +198,8 @@ public class BoardGroup extends Group {
                         game.performMove(m);
                         trySelect(null);
                         promotionSelection.setVisible(false);
-                        pieceGroup.addActor(newPiece(m.getPiece(game.getBoard())));
+                        addPiece(m.getPiece(game.getBoard()));
+//                        pieceGroup.addActor(newPiece(m.getPiece(game.getBoard())));
                         setTouchable(Touchable.enabled);
                     }
                 });
