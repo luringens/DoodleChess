@@ -88,10 +88,11 @@ public class Game {
         if (piece.getColor() != nextPlayerColor) return new ArrayList<>(); // wrong color of piece
         
         // Performs move if valid, returns whether move was performed
-        List<Move> result = board.movePiece(piece, to);
+        List<Move> result = board.getMove(piece, to);
         if (result.size() == 1) {
+            Move move = result.get(0);
+            performMove(move);
             nextPlayerColor = nextPlayerColor.opponentColor();
-            addMoveToHistory(result.get(0));
         }
         return result;
     }
@@ -107,10 +108,9 @@ public class Game {
      * @param m The move to be performed
      */
     public void performMove(Move m) {
-        if (!(m != null)) {
-            throw new IllegalArgumentException("m != null");
-        }
+        assert m != null;
         m.DoMove(board);
+        board.setLastMove(m);
         addMoveToHistory(m);
         nextPlayerColor = nextPlayerColor.opponentColor();
     }
@@ -133,8 +133,7 @@ public class Game {
                 move = blackAI.GetMove(board);
             }
             nextPlayerColor = nextPlayerColor.opponentColor();
-            move.DoMove(board);
-            addMoveToHistory(move);
+            this.performMove(move);
             return move;
         }
         return null;

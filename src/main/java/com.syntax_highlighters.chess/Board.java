@@ -293,26 +293,30 @@ public class    Board {
     }
 
     /**
-     * Move a piece to a position, if there is one move to that position.
+     * Gets a move for a piece to a position if there is one, then executes it.
      *
-     * NOTE: Implicitly performs the move if it has enough information to
-     * identify the given move uniquely. If not, leaves this up to the caller.
+     * @param piece The piece to move
+     * @param toPosition The position to move to
+     */
+    public void movePiece(IChessPiece piece, Position toPosition) {
+        List<Move> moves = getMove(piece, toPosition);
+        if (moves.size() == 1) {
+            this.lastMove = moves.get(0);
+            lastMove.DoMove(this);
+        }
+    }
+
+    /**
+     * Get a move for a piece to a position if there is one.
      *
      * @param piece The piece to move
      * @param toPosition The position to move to
      *
      * @return A list of all the moves to the given position, if any
      */
-    public List<Move> movePiece(IChessPiece piece, Position toPosition) {
+    public List<Move> getMove(IChessPiece piece, Position toPosition) {
         assert isOnBoard(toPosition);
-
-        List<Move> moves = piece.getMovesTo(toPosition, this);
-        // Perform the move, if there is just one move.
-        if (moves.size() == 1) {
-            this.lastMove = moves.get(0);
-            lastMove.DoMove(this);
-        }
-        return moves;
+        return piece.getMovesTo(toPosition, this);
     }
 
     /**
@@ -474,5 +478,13 @@ public class    Board {
             }
             return blackKing;
         }
+    }
+
+    /**
+     * Sets the last performed move.
+     * @param m The move to set.
+     */
+    public void setLastMove(Move m) {
+        this.lastMove = m;
     }
 }
