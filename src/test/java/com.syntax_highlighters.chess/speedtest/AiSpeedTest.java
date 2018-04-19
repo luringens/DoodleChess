@@ -22,7 +22,7 @@ class AiSpeedTest {
     }
 
     @Test
-    void mediumAICompletesWithinOneSecond() {
+    void mediumAICompletesWithinThreeSeconds() {
         final long allowedTime = 3000; // Milliseconds.
         long time = aiSpeedTest(AiDifficulty.Medium);
         System.out.println("Longest move took " + time + "ms.");
@@ -31,7 +31,7 @@ class AiSpeedTest {
     }
 
     @Test
-    void hardAICompletesWithinOneSecond() {
+    void hardAICompletesWithinThreeSeconds() {
         final long allowedTime = 3000; // Milliseconds.
         long time = aiSpeedTest(AiDifficulty.Hard);
         System.out.println("Longest move took " + time + "ms.");
@@ -58,6 +58,7 @@ class AiSpeedTest {
             long end = System.nanoTime();
             long duration = (end - start) / 1_000_000;
             time = Math.max(time, duration);
+            color = color.opponentColor();
         }
         return time;
     }
