@@ -61,10 +61,10 @@ public class AccountOverlay extends AbstractOverlay {
                 username.setText("");
             }
         });
-        mainMenu.setSize(200, 75);
+        mainMenu.setSize(200, 60);
 
         createAccount = new Button("Create", assetManager);
-        createAccount.setSize(200, 75);
+        createAccount.setSize(200, 60);
         createAccount.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -107,7 +107,7 @@ public class AccountOverlay extends AbstractOverlay {
         style.cursor = new SpriteDrawable(new Sprite(assetManager.get("cursor.png", Texture.class)));
 
         username = new TextField("", style);
-        username.setSize(200, 75);
+        username.setSize(200, 60);
 
     }
 
@@ -138,7 +138,7 @@ public class AccountOverlay extends AbstractOverlay {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        usernameLabel.setCenter(0, getY() + getHeight() /2.f+ 75.f);
+        usernameLabel.setCenter(0, getY() + getHeight() /2.f+ 60.f);
         usernameLabel.setX(getX() + getWidth()/2.f - 150.f);
         usernameLabel.draw(batch, parentAlpha);
 
