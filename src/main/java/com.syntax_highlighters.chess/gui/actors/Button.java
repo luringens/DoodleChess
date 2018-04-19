@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -174,6 +175,7 @@ public class Button extends Actor {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             Gdx.gl.glClearColor(0,0,0,0);
             shader.setUniformf("u_time", (float)Math.random() * 10000.f);
+            shader.setUniformf("u_resolution", new Vector2(template.getWidth(), template.getHeight()));
 
             batch.draw(template, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 

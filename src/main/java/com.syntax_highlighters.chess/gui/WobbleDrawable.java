@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 
 import java.util.ArrayList;
@@ -62,6 +63,7 @@ public class WobbleDrawable extends BaseDrawable {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0, 0, 0, 0);
         wobble.setUniformf("u_time", (float) Math.random() * 10000.f);
+        wobble.setUniformf("u_resolution", new Vector2(texture.getWidth(), texture.getHeight()));
 
         batch.draw(texture, 0, 0, (int)(800 * 1.6), 800);
         batch.end();

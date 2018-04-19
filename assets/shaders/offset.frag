@@ -5,6 +5,7 @@ precision mediump float;
 
 uniform sampler2D u_texture;
 uniform float u_time;
+uniform vec2 u_resolution;
 
 varying vec2 v_texCoords;
 
@@ -44,14 +45,14 @@ float snoise(vec2 v){
 void main()
 {
     // Normalized pixel coordinates (from 0 to 1)
+    float biggest = max(u_resolution.x, u_resolution.y);
     vec2 uv = v_texCoords;
-    
-    vec2 uvc = uv - 0.5f;
+    vec2 nosieCoord = v_texCoords * u_resolution / vec2(biggest, biggest);
     
     float dx = 1.0f - abs(uv.x - 0.5f);
     float dy = 1.0f - abs(uv.y - 0.5f);
 
-    vec2 noisePos = uv * vec2(2.f, 1.f) * 3.f + floor(u_time * 2.f);
+    vec2 noisePos = nosieCoord * vec2(2.f, 1.f) * 3.f + floor(u_time * 2.f);
     float noise = snoise(noisePos);
 	
     vec2 uvp = uv  + noise / 175.0f;

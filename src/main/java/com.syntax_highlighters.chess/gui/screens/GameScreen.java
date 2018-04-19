@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.syntax_highlighters.chess.*;
@@ -26,6 +27,7 @@ import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
 import com.syntax_highlighters.chess.gui.actors.ConfirmationOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -43,7 +45,8 @@ public class GameScreen extends AbstractScreen {
     private final Button showResults;
     private final Image mute;
     private final List<String> history;
-    private final ScrollPane historyList;
+    private final ScrollPane historyPane;
+    private final Table historyList;
 
     private boolean isGameOver = false;
     private int winner = 0; // NOTE: do not consider this valid until isGameOver
@@ -102,15 +105,30 @@ public class GameScreen extends AbstractScreen {
         style.font = AssetLoader.GetDefaultFont(assetManager, 16);
         style.fontColorUnselected = Color.BLACK;
         style.fontColorSelected = Color.BLACK;
-        style.selection = new SpriteDrawable(new Sprite(assetManager.get("pixel.png", Texture.class)));
+        style.selection = new SpriteDrawable(new Sprite(assetManager.get("transparent.png", Texture.class)));
         history = new List<>(style);
         history.setItems(game.getMoveHistory().toArray(new String[game.getMoveHistory().size()]));
         ScrollPane.ScrollPaneStyle sStyle = new ScrollPane.ScrollPaneStyle();
+
         //sStyle.background = new WobbleDrawable(assetManager.get("button_template.png"), assetManager, Color.BLACK);
-        historyList = new ScrollPane(history, sStyle);
+        historyPane = new ScrollPane(history, sStyle);
+        historyPane.setSize(200, 600);
+        BitmapFont font = AssetLoader.GetDefaultFont(assetManager);
+
+        Text text = new Text(font);
+        text.setColor(0,0,0,1);
+        text.setText("History:");
+
+        historyList = new Table();
+        historyList.pad(20).padTop(30);
+        historyList.add(text);
+        historyList.row().spaceTop(15);
+        historyList.background(new WobbleDrawable(assetManager.get("listBackground.png"), assetManager));
+        historyList.setSize(200, 600);
+        historyList.add(historyPane).expand().top();
         stage.addActor(historyList);
 
-        BitmapFont font = AssetLoader.GetDefaultFont(assetManager);
+
 
         turnText = new Text(font);
         turnText.setColor(0, 0, 0, 1);
@@ -239,12 +257,12 @@ public class GameScreen extends AbstractScreen {
                 (!game.nextPlayerIsAI() || (player1 == null && player2 == null)));
         showResults.setVisible(isGameOver);
 
-        java.util.List<String> moves = game.getMoveHistory();
+        java.util.List<String> moves = new ArrayList<>(game.getMoveHistory());
         if(moves.size() > history.getItems().size)
         {
             history.setItems(moves.toArray(new String[moves.size()]));
             historyList.layout();
-            historyList.setScrollPercentY(100);
+            historyPane.setScrollPercentY(100);
         }
 
         // Has the board updated?
@@ -315,8 +333,7 @@ public class GameScreen extends AbstractScreen {
         size = Math.min(size, 1000);
         board.setSize(size, size);
         board.setPosition(width / 2.f - size / 2.f - 40, height / 2.f - size / 2.f + 25);
-        historyList.setHeight(size - 100);
-        historyList.setPosition(width / 2.f + size / 2.f + 60,height / 2.f  - historyList.getHeight() / 2.f + 50);
+        historyList.setPosition(width / 2.f + size / 2.f + 35,height / 2.f  - historyList.getHeight() / 2.f + 50);
         turnText.setCenter(width / 2.f, height / 2.f - size / 2.f - 10.f);
 
         getHelp.setPosition(width / 2.f - getHelp.getWidth()*1.5f - getHelp.getWidth() / 2.f,

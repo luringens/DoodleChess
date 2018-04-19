@@ -70,6 +70,8 @@ public class AssetLoader {
                 "mutebutton.png",
                 "soundbutton.png",
                 "cursor.png",
+                "listBackground.png",
+                "transparent.png",
         };
 
         for (String path : textures) {
