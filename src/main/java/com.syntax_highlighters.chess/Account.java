@@ -139,4 +139,8 @@ public class Account {
     public double getScore(){
         return (wins / (double)(wins+losses));
     }
+
+    public String insertStatement() {
+        return "INSERT INTO person(name, score, wins, losses) VALUES (?, ?, ?, ?)";
+    }
 }

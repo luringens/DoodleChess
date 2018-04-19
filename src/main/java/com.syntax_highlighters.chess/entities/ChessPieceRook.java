@@ -28,7 +28,7 @@ public class ChessPieceRook extends AbstractChessPiece {
      */
     @Override
     public String toChessNotation() {
-        return "R"; 
+        return "R";
     }
 
     /**
