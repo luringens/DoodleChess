@@ -9,9 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.assets.AssetManager;
 import com.syntax_highlighters.chess.gui.actors.DoodleActor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Abstract screen implementing common functionality among different screens.
  */
@@ -76,23 +73,14 @@ public abstract class AbstractScreen implements Screen {
     private void addDoodles() {
         AssetManager assetManager = game.getAssetManager();
 
-        List<Float> previousAngles = new ArrayList<>();
         // Draw some random doodles
         for (int i = 0; i < N_DOODLES_PER_SCREEN; i++) {
             // select a random doodle
             int index = (int)(Math.random()*DOODLES.length);
             Texture doodle = assetManager.get(DOODLES[index], Texture.class);
-            float angle = 0.0f;
-            boolean whileLoop = true;
-            while(whileLoop)
-            {
-                angle = (float)(2 * Math.PI * Math.random());
-                final float finalAngle = angle;
-                whileLoop = angle > Math.PI / 3.f && angle < Math.PI / 3.f * 2.f ||
-                        angle > Math.PI / 3.f+ Math.PI && angle < Math.PI / 3.f * 2.f + Math.PI ||
-                        previousAngles.stream().anyMatch(x -> Math.abs(x - finalAngle) < 0.25f);
-            }
-            previousAngles.add(angle);
+            float angle = (float)(Math.PI * i / N_DOODLES_PER_SCREEN);
+            if(angle > Math.PI / 4.f) angle += Math.PI / 2.f;
+            if(angle > Math.PI / 4.f + Math.PI) angle += Math.PI / 2.f;
             stage.addActor(new DoodleActor(doodle, angle));
         }
     }

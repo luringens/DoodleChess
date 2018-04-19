@@ -8,8 +8,8 @@ import com.badlogic.gdx.Gdx;
 public class DoodleActor extends Actor {
     private Texture tex;
     private float angle;
-    private final static float CENTER_DISTANCE = 700.f;
-    private final static float CENTER_OFFSET_BOUND = 400.f;
+    private final static float CENTER_DISTANCE = 650.f;
+    private final static float CENTER_OFFSET_BOUND = 200.f;
     private final static float SIZE = 150.f;
 
     private final float center_offset;
