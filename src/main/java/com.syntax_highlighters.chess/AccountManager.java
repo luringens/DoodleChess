@@ -137,27 +137,28 @@ public class AccountManager {
         // NOTE: for some reason it worked after I added this line. I don't
         // really know why. Maybe it just ensures that it has the JDBC
         // dependency loaded or something.
+
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (Exception e) {
             e.printStackTrace();
         }
         // SQLite connection string
-        String pathh = new File(filename).getAbsolutePath();
+        String pathh = new File("UserAccounts.db").getAbsolutePath();
         String url = "jdbc:sqlite:" + pathh;
         return DriverManager.getConnection(url);
     }
 
     public static void createDatabase (String fileName) {
-        String pathh = new File(fileName).getAbsolutePath();
+       String pathh = new File(fileName).getAbsolutePath();
         String url = "jdbc:sqlite:" + pathh;
 
 
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
-                System.out.println("The driver name is " + meta.getDriverName());
-                System.out.println("A new database has been created.");
+               // System.out.println("The driver name is " + meta.getDriverName());
+                //System.out.println("A new database has been created.");
             }
 
         } catch (SQLException e) {
@@ -166,7 +167,7 @@ public class AccountManager {
     }
 
     public static void createTable (String filename) {
-        String pathh = new File(filename).getAbsolutePath();
+        String pathh = new File("UserAccounts.db").getAbsolutePath();
         String url = "jdbc:sqlite:" + pathh;
 
         String sql = "CREATE TABLE IF NOT EXISTS person (\n"
@@ -200,8 +201,12 @@ public class AccountManager {
 
         try {
             Connection conn = this.connect(filename);
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+            Statement stmt  = conn.createStatement();
+            String pathh = new File(filename).getAbsolutePath();
+            try{createDatabase(filename); createTable(filename);}
+            catch(Exception e){}
+
+            ResultSet rs    = stmt.executeQuery(sql);
 
             myAccounts.clear(); // ensure there are no accounts in the list before loading
 
@@ -211,14 +216,13 @@ public class AccountManager {
                 String name = rs.getString("name");
                 int wins = rs.getInt("wins");
                 int losses = rs.getInt("losses");
-                System.out.println(score + " " + name + " " + wins + " " + losses);
+             //   System.out.println(score + " " + name + " " + wins + " " + losses);
                 myAccounts.add(new Account(name, wins, losses, score));
             }
         } catch (Exception e) {
             System.out.println(e);
         }
-        String pathh = new File(filename).getAbsolutePath();
-      if(!new File(pathh).isFile()){createDatabase(filename); createTable(filename);}
+
 
     }
 
