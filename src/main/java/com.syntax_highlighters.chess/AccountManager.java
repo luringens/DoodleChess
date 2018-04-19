@@ -216,7 +216,6 @@ public class AccountManager {
                 String name = rs.getString("name");
                 int wins = rs.getInt("wins");
                 int losses = rs.getInt("losses");
-             //   System.out.println(score + " " + name + " " + wins + " " + losses);
                 myAccounts.add(new Account(name, wins, losses, score));
             }
         } catch (Exception e) {

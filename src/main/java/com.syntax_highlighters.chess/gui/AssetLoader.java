@@ -139,6 +139,6 @@ public class AssetLoader {
     }
 
     public static String getAccountPath() {
-        return "accounts.data";
+        return "UserAccounts.db";
     }
 }
