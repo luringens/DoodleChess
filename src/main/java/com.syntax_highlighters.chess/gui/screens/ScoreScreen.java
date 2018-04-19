@@ -76,7 +76,7 @@ public class ScoreScreen extends AbstractScreen {
             accName.setText(acc.getName());
             accName.setColor(0,0,0,1);
             Text accScore = new Text(font);
-            accScore.setText("" + acc.getPoints());
+            accScore.setText("" + acc.getRating());
             accScore.setColor(0,0,0,1);
             Text accWins = new Text(font);
             accWins.setText("" + acc.getWinCount());

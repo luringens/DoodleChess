@@ -218,13 +218,9 @@ public class GameScreen extends AbstractScreen {
 
             switch (winner) {
                 case 1: // white player won
-                    player1.win();
-                    player2.loss();
                     chessGame.getAccountManager().updateRating(player1, player2);
                     break;
                 case -1: // black player won
-                    player1.loss();
-                    player2.win();
                     chessGame.getAccountManager().updateRating(player2, player1);
                     break;
                 default:

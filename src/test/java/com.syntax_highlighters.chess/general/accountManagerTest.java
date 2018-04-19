@@ -2,13 +2,9 @@ package com.syntax_highlighters.chess.general;
 
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -60,14 +56,12 @@ class accountManagerTest {
         String name = "Alice";
         int wins = 10;
         int losses = 20;
-        int rating = 1250;
         {
             AccountManager am = new AccountManager(file);
-            Account ac = new Account(name, wins, losses, rating);
+            Account ac = new Account(name, wins, losses);
             assertEquals(name, ac.getName());
             assertEquals(wins, ac.getWinCount());
             assertEquals(losses, ac.getLossCount());
-            assertEquals(rating, ac.getRating());
             am.addAccount(ac);
             am.save();
         }
@@ -77,13 +71,12 @@ class accountManagerTest {
             assertEquals(name, ac.getName());
             assertEquals(wins, ac.getWinCount());
             assertEquals(losses, ac.getLossCount());
-            assertEquals(rating, ac.getRating());
         }
     }
 
     @Test
     void accountManagerUpdatesScoreCorrectlyForSamePlayerWinningTwice() {
-        String file = "savedAccountStoresCorrectData.db";
+        String file = "accountManagerUpdatesScoreCorrectlyForSamePlayerWinningTwice.db";
         new File(file).deleteOnExit();
         AccountManager am = new AccountManager(file);
         Account a = new Account("Alice"); // initial rating: 1000
@@ -104,7 +97,4 @@ class accountManagerTest {
         // rating = (<sum of opponent ratings> + 400*(wins - losses)) / <games played>
         // https://en.wikipedia.org/wiki/Elo_rating_system#Performance_rating
     }
-
-    // TODO: add test to ensure draws don't affect the score wrong
-    // TODO: add tests to ensure unrated wins/losses don't affect the score wrong
 }

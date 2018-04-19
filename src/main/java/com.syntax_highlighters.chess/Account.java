@@ -9,8 +9,7 @@ public class Account {
     private final String name;
     private int wins;
     private int losses;
-    private int rating;
-    private int points;
+    private int opponentRatingSum;
 
     /**
      * Construct a new account with the given name.
@@ -21,7 +20,7 @@ public class Account {
         this.name = name;
         this.wins = 0;
         this.losses = 0;
-        this.rating = 1000;
+        this.opponentRatingSum = 0;
     }
 
     /**
@@ -35,7 +34,7 @@ public class Account {
         this.name = name;
         this.wins = wins;
         this.losses = losses;
-        this.rating = 1000;
+        this.opponentRatingSum = 0;
     }
     /**
      * Construct a new account with a given name and the given win/loss numbers.
@@ -43,13 +42,13 @@ public class Account {
      * @param name The account username
      * @param wins The number of wins
      * @param losses The number of losses
-     * @param rating The rating of player
+     * @param opponentRatingSum The sum of the rating of the players opponents.
      */
-    public Account(String name, int wins, int losses, int rating){
+    public Account(String name, int wins, int losses, int opponentRatingSum){
         this.name = name;
         this.wins = wins;
         this.losses = losses;
-        this.rating = rating;
+        this.opponentRatingSum = 0;
     }
 
 
@@ -65,15 +64,17 @@ public class Account {
     /**
      * Increase win count by one.
      */
-    public void win(){
+    public void win(int opponentRating) {
         this.wins++;
+        opponentRatingSum += opponentRating;
     }
 
     /**
      * Increase loss count by one.
      */
-    public void loss(){
+    public void loss(int opponentRating) {
         this.losses++;
+        opponentRatingSum += opponentRating;
     }
 
     /**
@@ -100,34 +101,7 @@ public class Account {
      * @return The rating for this account
      */
     public int getRating() {
-        return this.rating;
-    }
-
-    /**
-     * Get the points of the player.
-     *
-     * @return The points for this account
-     */
-    public int getPoints() {
-        return this.points;
-    }
-
-    /**
-     * Set the points of the player.
-     *
-     * @param n The number if points to add.
-     */
-    public void addPoints(int n) {
-        this.points += n;
-    }
-
-    /**
-     * Set the rating of the player.
-     *
-     * @param rating The rating to set.
-     */
-    public void setRating(int rating) {
-        this.rating = rating;
+        return wins + losses == 0 ? 1000 : (opponentRatingSum + 400 * (wins - losses)) / (wins + losses);
     }
 
     /**

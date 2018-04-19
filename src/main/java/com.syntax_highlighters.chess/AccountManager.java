@@ -226,12 +226,10 @@ public class AccountManager {
      * @param loser The losers. account.
      */
     public void updateRating(Account winner, Account loser){
-        winner.addPoints(loser.getRating()+400);
-        loser.addPoints(winner.getRating()+400);
-        int winnerRating = winner.getPoints() / (winner.getLossCount() + winner.getWinCount()+1);
-        int loserRating = loser.getPoints() / (loser.getLossCount() + loser.getWinCount()+1);
-        winner.setRating(winnerRating);
-        loser.setRating(loserRating);
+        int loserRating = loser.getRating();
+        int winnerRating = winner.getRating();
+        winner.win(loserRating);
+        loser.loss(winnerRating);
         save();
     }
 
@@ -241,12 +239,7 @@ public class AccountManager {
      * @param acc2 The second account.
      */
     public void updateRatingDraw(Account acc1, Account acc2){
-        acc1.addPoints(acc2.getRating()+400);
-        acc2.addPoints(acc1.getRating()+400);
-        int winnerRating = acc1.getPoints() / (acc1.getLossCount() + acc1.getWinCount()+1);
-        int loserRating = acc2.getPoints() / (acc2.getLossCount() + acc2.getWinCount()+1);
-        acc1.setRating(winnerRating);
-        acc2.setRating(loserRating);
-        save();
+        // This function does nothing at the moment,
+        // but is reserved for possible future use.
     }
 }
