@@ -107,16 +107,17 @@ public class SetupScreen extends AbstractScreen {
         // creating a createPencilSelector method or a separate
         // ColorChangeCallback interface.
         selector= new PencilSelector(assetManager);
-        selector.setPosition(100, -200);
+        selector.setPosition(0, -200);
         selector.addListener(new PencilSelector.ColorSelectListener(){
             @Override
             public void colorSelected(PencilSelector.ColorSelectEvent event, Color color) {
                 selectNewColor(selector, color);
             }
         });
-        selector.hide(0.0f);
         selector.selectColor(player1Color);
         selector.selectColor(player2Color);
+        selector.setPosition(Gdx.graphics.getWidth()/2.f - selector.getWidth()/2.f, selector.getY());
+        selector.hide(0.0f);
 
         player1ColorShow = createButton("Choose color", false, () -> {selector.show(1.0f); selectingPlayer = 0;});
         player2ColorShow = createButton("Choose color", false, () -> {selector.show(1.0f); selectingPlayer = 1;});
@@ -127,6 +128,7 @@ public class SetupScreen extends AbstractScreen {
         // add this last
         stage.addActor(accountOverlay);
         stage.addActor(selector);
+
     }
 
     public SetupScreen(ChessGame game, boolean randomBoard) {

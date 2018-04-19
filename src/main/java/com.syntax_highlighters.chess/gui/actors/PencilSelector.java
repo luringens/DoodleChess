@@ -103,6 +103,7 @@ public class PencilSelector extends Group {
         super.setPosition(x, y);
         int i = 0;
         for (Pencil pencil : pencils) {
+            pencil.setX(32 * (i));
             MoveToAction action = new MoveToAction();
             action.setPosition(32 * (i), pencilOffsets.get(i++));
             action.setDuration(0.1f);
