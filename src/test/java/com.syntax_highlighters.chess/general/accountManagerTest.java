@@ -61,5 +61,5 @@ class accountManagerTest {
         assertEquals(a1.getLossCount(), a2.getLossCount());
         assertEquals(a1.getRating(), a2.getRating());
     }
-    
+
 }
