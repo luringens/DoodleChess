@@ -10,29 +10,55 @@ import static org.junit.Assert.assertTrue;
  * Tests pertaining to the behavior of the AI.
  */
 class AiSpeedTest {
+    private static final int MOVES_TO_TEST = 20;
+
     @Test
-    void easyAICompletesWithinOneSecondFromStartingPosition() {
-        final long allowedTime = 1000;
-        IAiPlayer ai = new MiniMaxAIPlayer(Color.WHITE, AiDifficulty.Easy);
-        long time = speedTest(ai);
+    void easyAICompletesWithinOneSecond() {
+        final long allowedTime = 1000; // Milliseconds.
+        long time = aiSpeedTest(AiDifficulty.Easy);
+        System.out.println("Longest move took " + time + "ms.");
         assertTrue("The easy AI is too slow (" + time + " >= " + allowedTime + ")",
                 time < allowedTime);
     }
 
+    @Test
+    void mediumAICompletesWithinOneSecond() {
+        final long allowedTime = 3000; // Milliseconds.
+        long time = aiSpeedTest(AiDifficulty.Medium);
+        System.out.println("Longest move took " + time + "ms.");
+        assertTrue("The medium AI is too slow (" + time + " >= " + allowedTime + ")",
+                time < allowedTime);
+    }
 
+    @Test
+    void hardAICompletesWithinOneSecond() {
+        final long allowedTime = 3000; // Milliseconds.
+        long time = aiSpeedTest(AiDifficulty.Hard);
+        System.out.println("Longest move took " + time + "ms.");
+        assertTrue("The hard AI is too slow (" + time + " >= " + allowedTime + ")",
+                time < allowedTime);
+    }
 
-    /** Measures how long an AI spends deciding a move on a fresh chess board.
-     * @param ai The AI to measure.
-     * @return The number of millseconds spent.
+    /**
+     * Tests an ai and returns the slowest move.
+     * @param ai The AI difficulty to test with.
+     * @return The longest time spent on a move in milliseconds.
      */
-    private long speedTest(IAiPlayer ai) {
+    private long aiSpeedTest(AiDifficulty ai) {
+        long time = 0;
+        Color color = Color.WHITE;
         Board board = new Board();
         board.setupNewGame();
-
-        long start = System.nanoTime();
-        ai.PerformMove(board);
-        long end = System.nanoTime();
-
-        return (end - start) / 1_000_000;
+        IAiPlayer white = new MiniMaxAIPlayer(Color.WHITE, ai);
+        IAiPlayer black = new MiniMaxAIPlayer(Color.BLACK, ai);
+        for (int i = 0; i < MOVES_TO_TEST; i++) {
+            long start = System.nanoTime();
+            if (color.isWhite()) white.PerformMove(board);
+            else black.PerformMove(board);
+            long end = System.nanoTime();
+            long duration = (end - start) / 1_000_000;
+            time = Math.max(time, duration);
+        }
+        return time;
     }
 }
