@@ -92,7 +92,6 @@ public class Game {
         if (result.size() == 1) {
             Move move = result.get(0);
             performMove(move);
-            nextPlayerColor = nextPlayerColor.opponentColor();
         }
         return result;
     }
