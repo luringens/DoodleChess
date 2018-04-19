@@ -131,7 +131,6 @@ public class Game {
             else {
                 move = blackAI.GetMove(board);
             }
-            nextPlayerColor = nextPlayerColor.opponentColor();
             this.performMove(move);
             return move;
         }
