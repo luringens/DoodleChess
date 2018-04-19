@@ -175,7 +175,7 @@ public class Button extends Actor {
             Gdx.gl.glClearColor(0,0,0,0);
             shader.setUniformf("u_time", (float)Math.random() * 10000.f);
 
-            batch.draw(template, 0, 0, (int)(800 * 1.6f), 800);
+            batch.draw(template, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
             batch.end();
             buffer.end();
