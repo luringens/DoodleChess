@@ -224,7 +224,7 @@ public class AccountManager {
 
     public void updateRating(Account winner, Account loser){
         winner.addPoints(loser.getRating()+400);
-        loser.addPoints(winner.getRating()+400);
+        loser.addPoints(winner.getRating()-400);
         int winnerRating = winner.getPoints() / (winner.getLossCount() + winner.getWinCount()+1);
         int loserRating = loser.getPoints() / (loser.getLossCount() + loser.getWinCount()+1);
         winner.setRating(winnerRating);
