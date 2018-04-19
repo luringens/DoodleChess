@@ -1,6 +1,7 @@
 package com.syntax_highlighters.chess.gui.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -9,6 +10,7 @@ import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
+import com.syntax_highlighters.chess.gui.WobbleDrawable;
 import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.Text;
 
@@ -29,7 +31,7 @@ public class ScoreScreen extends AbstractScreen {
 
         BitmapFont font = AssetLoader.GetDefaultFont(game.getAssetManager());
 
-        title = new Text(font);
+        title = new Text(AssetLoader.GetDefaultFont(game.getAssetManager(), true));
         title.setText("Leaderboard:");
         title.setColor(0,0,0,1);
 
@@ -49,7 +51,10 @@ public class ScoreScreen extends AbstractScreen {
         losses.setColor(0,0,0,1);
 
         scoreList = new Table();
-        scoreList.row().height(40.f);
+        scoreList.pad(30).padTop(40);
+        scoreList.setBackground(new WobbleDrawable(game.getAssetManager().get("leaderboardsBackground.png"), game.getAssetManager()));
+        scoreList.top();
+        scoreList.row().height(40.f).padBottom(20);
         scoreList.add(rank).width(100).center();
         scoreList.add(name).expandX().left();
         scoreList.add(wins).width(100).center();
@@ -119,11 +124,9 @@ public class ScoreScreen extends AbstractScreen {
         stage.getViewport().update(width, height, true);
         title.setCenter(width / 2.f, height/2.f + 400.f - 50.f);
 
-        scoreList.setPosition(width/2.f - 750.f/2.f, height / 2.f - 750.f/2.f);
-        scoreList.setWidth(width / 2.f + 400.f);
-        scoreList.moveBy(-width/4.f + 200.f, 0);
-        scoreList.setHeight(750.f);
+        scoreList.setSize(850, 600);
+        scoreList.setPosition(width/2.f - scoreList.getWidth() / 2.f, height / 2.f - scoreList.getHeight()/2.f);
 
-        mainMenuButton.setPosition(width / 2.f - mainMenuButton.getWidth() / 2.f, height / 2.f - 400.f + mainMenuButton.getHeight());
+        mainMenuButton.setPosition(width / 2.f - mainMenuButton.getWidth() / 2.f, height / 2.f - 400.f + 25.f);
     }
 }

@@ -55,7 +55,7 @@ void main()
     vec2 noisePos = nosieCoord * vec2(2.f, 1.f) * 3.f + floor(u_time * 2.f);
     float noise = snoise(noisePos);
 	
-    vec2 uvp = uv  + noise / 175.0f;
+    vec2 uvp = uv  + noise / sqrt(u_resolution.x * u_resolution.x + u_resolution.y * u_resolution.y) * 6.f;
     
     vec4 color = texture2D(u_texture, uvp);
     

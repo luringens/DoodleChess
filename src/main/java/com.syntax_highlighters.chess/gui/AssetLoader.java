@@ -72,6 +72,7 @@ public class AssetLoader {
                 "cursor.png",
                 "listBackground.png",
                 "transparent.png",
+                "leaderboardsBackground.png"
         };
 
         for (String path : textures) {
