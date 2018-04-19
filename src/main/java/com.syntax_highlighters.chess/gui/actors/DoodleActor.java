@@ -36,6 +36,7 @@ public class DoodleActor extends Actor {
         if(y < 0) y = 0;
         if(x > Gdx.graphics.getWidth() - random_size) x = Gdx.graphics.getWidth() - random_size;
         if(y > Gdx.graphics.getHeight() - random_size) y = Gdx.graphics.getHeight() - random_size;
+        batch.setColor(1,1,1,1);
         batch.draw(tex, x, y, random_size, random_size);
     }
 }
