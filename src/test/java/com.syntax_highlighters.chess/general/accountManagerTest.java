@@ -42,22 +42,6 @@ class accountManagerTest {
     }
 
     @Test
-    void loadingSavedFileGivesCorrectNumberOfAccountsInAccountManager(){
-        AccountManager am = new AccountManager();
-
-        for(int i =1; i<=4; i++) {
-            am.addAccount(new Account("a"+i));
-        }
-
-        am.save("test.db");
-        AccountManager am2 = new AccountManager();
-
-        am2.load("test.db");
-
-        assertEquals(4, am2.accountSize());
-    }
-
-    @Test
     void savedAccountStoresCorrectData() {
         AccountManager am = new AccountManager();
         Account a1 = new Account("Alice", 10, 20, 1250);
@@ -77,18 +61,5 @@ class accountManagerTest {
         assertEquals(a1.getLossCount(), a2.getLossCount());
         assertEquals(a1.getRating(), a2.getRating());
     }
-
-    @Test
-    void loadingOverwritesChangesNotSavedToFile() {
-        AccountManager am = new AccountManager();
-        Account a = new Account("Alice");
-        Account b = new Account("Bob");
-
-        am.addAccount(a);
-        am.save("test.db");
-        am.addAccount(b);
-        am.load("test.db"); // Bob was not saved, so should not be in list of accounts
-
-        assertNull(am.getAccount(b.getName()));
-    }
+    
 }
