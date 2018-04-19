@@ -16,6 +16,7 @@ accounts.txt
 out/*
 *.ipr
 db/
+*.db
 
 # Build output
 *target*
