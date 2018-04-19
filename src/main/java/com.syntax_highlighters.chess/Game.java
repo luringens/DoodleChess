@@ -32,9 +32,46 @@ public class Game {
 
     private void addMoveToHistory(Move m)
     {
-        String piece = m.getPieceString(board);
-        piece += ", " + m.getOldPosition().toString();
-        piece += ", " + m.getPosition().toString() + "\n";
+
+        String piece = String.valueOf((moveHistory.size()/2)+1) + ". ";
+        if(board.getAtPosition(m.newPos).getColor().isWhite()){
+            piece += "WHITE ";
+        }
+        else{
+            piece += "BLACK ";
+        }
+        piece += m.getPieceString(board) + ": ";
+        int a = m.getPosition().getX();
+        switch(a){
+            case 1:
+                piece += "A";
+                break;
+            case 2:
+                piece += "B";
+                break;
+            case 3:
+                piece += "C";
+                break;
+            case 4:
+                piece += "D";
+                break;
+            case 5:
+                piece += "E";
+                break;
+            case 6:
+                piece += "F";
+                break;
+            case 7:
+                piece += "G";
+                break;
+            case 8:
+                piece += "H";
+                break;
+            default:
+                piece += "ERROR";
+                break;
+        }
+        piece += String.valueOf(m.getPosition().getY());
         moveHistory.add(piece);
     }
 
