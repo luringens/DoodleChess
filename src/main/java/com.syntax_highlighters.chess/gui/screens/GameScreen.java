@@ -68,7 +68,7 @@ public class GameScreen extends AbstractScreen {
      * @param attrib1   Attributes for player 1 (account info, AI difficulty,
      *                  piece color)
      * @param attrib2   Attributes for player 2 (account info, AI difficulty,
-     * @param randomBoard
+     * @param randomBoard Whether or not to generate a random board or a regular one.
      */
     public GameScreen(ChessGame chessGame, PlayerAttributes attrib1, PlayerAttributes attrib2, boolean randomBoard) {
         super(chessGame);

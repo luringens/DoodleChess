@@ -209,10 +209,11 @@ public abstract class AbstractChessPiece implements IChessPiece {
      *
      * @param dx 0 for no horizontal movement, -1 or 1 for movement
      * @param dy 0 for no vertical movement, -1 or 1 for movement
+     * @param target The target to see if it threatens.
      * @param board The board to look at
      * @return true if this piece threatens the target position, false otherwise
      */
-    protected boolean threatenDirection(int dx, int dy, Position target, Board board) {
+    boolean threatenDirection(int dx, int dy, Position target, Board board) {
         Position nextPos = new Position(position.getX() + dx, position.getY() + dy);
         while (board.isOnBoard(nextPos)) {
             if (board.isFriendly(this, nextPos)) return false;

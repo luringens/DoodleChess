@@ -26,6 +26,7 @@ public class Color {
 
     /**
      * Whether or not the color is white.
+     * @return Whether or not the color is white.
      */
     public Boolean isWhite() {
         return color == WHITE_B;
@@ -33,6 +34,7 @@ public class Color {
 
     /**
      * Whether or not the color is black.
+     * @return Whether or not the color is white.
      */
     public Boolean isBlack() {
         return color == BLACK_B;
@@ -40,6 +42,7 @@ public class Color {
 
     /**
      * The opposite color of this.
+     * @return The opposite color of this.
      */
     public Color opponentColor() {
         if (this == WHITE) return BLACK;

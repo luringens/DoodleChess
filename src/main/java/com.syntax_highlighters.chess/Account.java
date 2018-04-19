@@ -114,6 +114,8 @@ public class Account {
 
     /**
      * Set the points of the player.
+     *
+     * @param n The number if points to add.
      */
     public void addPoints(int n) {
         this.points += n;
@@ -121,6 +123,8 @@ public class Account {
 
     /**
      * Set the rating of the player.
+     *
+     * @param rating The rating to set.
      */
     public void setRating(int rating) {
         this.rating = rating;

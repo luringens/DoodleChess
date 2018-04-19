@@ -22,7 +22,6 @@ public interface IAiPlayer {
      * Modifies the state of the board.
      *
      * @param board The current board state
-     * @return The suggested best move.
      */
     void PerformMove(Board board);
 
@@ -30,6 +29,7 @@ public interface IAiPlayer {
      * Choose a move and return it without performing it on the board.
      *
      * @param board The current board state
+     * @return The suggested best move.
      */
     Move GetMove(Board board);
 }

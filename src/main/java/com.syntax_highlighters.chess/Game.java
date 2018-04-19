@@ -24,7 +24,7 @@ public class Game {
     /**
      * Return a List of String containing all moves to date.
      *
-     * @return List<String> containing all moves.
+     * @return A list of strings containing all moves.
      */
     public List<String> getMoveHistory(){
         return moveHistory;
@@ -63,8 +63,10 @@ public class Game {
 
     /**
      * Set up a game with a board for testing purposes.
-     * DO NOT USE FOR ACTUAL GAMES.
+     * **DO NOT USE FOR ACTUAL GAMES**.
      * @param board The board to use
+     * @param nextPlayerColor The next player that will make a move.
+     * @return An instance of the board in a blank state with nextplayercolor set.
      */
     public static Game setupTestBoard(Board board, Color nextPlayerColor) {
         return new Game(board, nextPlayerColor);
@@ -263,6 +265,8 @@ public class Game {
     /**
      * Determine whether two squares are the same color.
      *
+     * @param p1 A position to compare.
+     * @param p2 A position to compare.
      * @return true if the squares are the same color, false otherwise
      */
     public boolean sameColoredSquare(Position p1, Position p2) {

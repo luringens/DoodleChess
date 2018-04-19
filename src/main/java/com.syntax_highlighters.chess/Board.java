@@ -41,6 +41,7 @@ public class    Board {
 
     /**
      * Create a board from a list of pieces.
+     * @param pieces The pieces that belong to the board.
      */
     public Board(List<IChessPiece> pieces) {
         this.pieces.addAll(pieces);
@@ -69,6 +70,8 @@ public class    Board {
      * Helper method: update the lookup table's index based on the position.
      *
      * Modifies positionsLookupTable. No bounds checks.
+     * @param pos The position to update.
+     * @param index The index to save.
      */
     private void updatePositionIndex(Position pos, int index) {
         positionsLookupTable[pos.getY()-1][pos.getX()-1] = index;
@@ -80,6 +83,7 @@ public class    Board {
      *
      * No bounds checks.
      *
+     * @param pos The position to look up.
      * @return The index of the piece occupying the position in the pieces list,
      * if the position is occupied, or -1 otherwise
      */
@@ -215,6 +219,7 @@ public class    Board {
     /**
      * Check if a given position is Enemy.
      *
+     * @param piece The piece to compare *friendlyness* to.
      * @param pos The position to check
      * @return true if the position is Enemy piece, false otherwise
      */
@@ -226,6 +231,7 @@ public class    Board {
     /**
      * Check if a given position is friendly.
      *
+     * @param piece The piece to compare *friendlyness* to.
      * @param pos The position to check
      * @return true if the position is friendly piece, false otherwise
      */
@@ -323,6 +329,7 @@ public class    Board {
     /**
      * Test if a Position is on this board.
      *
+     * @param pos The position to check.
      * @return true if the Position is on the board, false otherwise
      */
     public boolean isOnBoard(Position pos) {

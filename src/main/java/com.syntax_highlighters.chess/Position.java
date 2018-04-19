@@ -47,6 +47,7 @@ public class Position {
     /**
      * The position n steps up on the board.
      *
+     * @param nSteps the number of steps to take.
      * @return A new position n steps above this position
      */
     public Position north(int nSteps) {
@@ -56,6 +57,7 @@ public class Position {
     /**
      * The position n steps down on the board.
      *
+     * @param nSteps the number of steps to take.
      * @return A new position n steps below this position
      */
     public Position south(int nSteps) {
@@ -65,6 +67,7 @@ public class Position {
     /**
      * The position n steps left on the board.
      *
+     * @param nSteps the number of steps to take.
      * @return A new position n steps to the left of this position
      */
     public Position west(int nSteps) {
@@ -74,6 +77,7 @@ public class Position {
     /**
      * The position n steps right on the board.
      *
+     * @param nSteps the number of steps to take.
      * @return A new position n steps to the right of this position
      */
     public Position east(int nSteps) {
@@ -83,6 +87,7 @@ public class Position {
     /**
      * The position n steps diagonally up and left on the board.
      *
+     * @param nSteps the number of steps to take.
      * @return A new position n steps above and to the left of this position
      */
     public Position northwest(int nSteps) {
@@ -92,6 +97,7 @@ public class Position {
     /**
      * The position n steps diagonally up and right on the board.
      *
+     * @param nSteps the number of steps to take.
      * @return A new position n steps above and to the right of this position
      */
     public Position northeast(int nSteps) {
@@ -101,6 +107,7 @@ public class Position {
     /**
      * The position n steps down and left on the board.
      *
+     * @param nSteps the number of steps to take.
      * @return A new position n steps below and to the left of this position
      */
     public Position southwest(int nSteps) {
@@ -110,6 +117,7 @@ public class Position {
     /**
      * The position n steps down and right on the board.
      *
+     * @param nSteps the number of steps to take.
      * @return A new position n steps below and to the right of this position
      */
     public Position southeast(int nSteps) {
