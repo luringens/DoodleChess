@@ -30,7 +30,7 @@ public class    Board {
     // for performance
     private final int[][] positionsLookupTable = new int[BOARD_HEIGHT][BOARD_WIDTH];
 
-    List<IChessPiece> pieces = new ArrayList<>();
+    private List<IChessPiece> pieces = new ArrayList<>();
 
     /**
      * Create an empty board.
@@ -118,169 +118,49 @@ public class    Board {
         }
     }
 
-    /** A function for returning a board that is in a later state. The board still follows chess rules for game.
+    /**
+     * Performs x random moves on the board, starting with white.
      *
-     * @param board 
-     * @param Rounds How many rounds into the game the board is returned
-     * @return
+     * @param numMoves How many random moves to do.
      */
-    public Board setupPracticeGame(int Rounds) {
-        final int temp = Rounds;
-        Boolean rdyBoard;
-        Random rng = new Random();
-        do { rdyBoard = true;
-            for (int i = 0; i < Rounds; i++) {
-                List<Move> whitemoves = getAllPieces().stream()
-                        .filter(p -> p.getColor() == Color.WHITE)
-                        .flatMap(p -> p.allPossibleMoves(this).stream())
-                        .collect(Collectors.toList());
-                if (whitemoves.size() == 0) break;
-                Move whitemove = whitemoves.get(rng.nextInt(whitemoves.size()));
-                whitemove.DoMove(this);
+    public void setupPracticeGame(int numMoves) {
+        // Try three times to set up a valid game.
+        // Otherwise keep it as-is.
+        final int attempts = 3;
+        for (int attempt = 0; attempt < attempts; attempt++) {
+            setupNewGame();
+            Color nextColor = Color.WHITE;
+            for (int i = 0; i < numMoves; i++) {
+                boolean didMove = doRandomMove(nextColor);
+                nextColor = nextColor.opponentColor();
 
-                List<Move> blackmoves = getAllPieces().stream()
-                        .filter(p -> p.getColor() == Color.BLACK)
-                        .flatMap(p -> p.allPossibleMoves(this).stream())
-                        .collect(Collectors.toList());
-                if (blackmoves.size() == 0) break;
-                Move blackmove = blackmoves.get(rng.nextInt(blackmoves.size()));
-                blackmove.DoMove(this);
+                // If a move was not performed, the game is likely in checkmate. Oops.
+                if (!didMove) break;
             }
-            if (checkMate(Color.BLACK)|| checkMate(Color.WHITE)){ //If checkmate then start over.
-                rdyBoard = false;
-                Rounds = temp;
-                setupNewGame();
-            }
-        } while(!(rdyBoard));
 
-        return this;
-    }
-
-    /** Sets up a random state of the game based on handicap and number of bonus pieces.
-     *
-     * @param hcpW White pieces handicap. Determines the tier of pieces generated, with 50 being around the same Must be 0 < hcp < 100.
-     *             as in a normal game.
-     * @param hcpB Black pieces handicap.Determines the tier of pieces generated, with 50 being around the same Must be 0 < hcp < 100.
-     *             as in a normal game. Must be 0 < hcp < 100.
-     * @param bonusW White bonus pieces. Must be -15 < Bonus < 16.
-     * @param bonusB Black bonus pieces. Must be -15 < Bonus < 16.
-     */
-    public void setupRandomGame(int hcpW, int hcpB,int bonusW, int bonusB) {
-        if (bonusW > 16 || bonusB > 16 || bonusW < -15 || bonusB < -15) {
-            throw new IllegalArgumentException("Invalid bonus value. Must be -15 < Bonus < 16. ");
+            // If both kings are still alive, don't try again.
+            long kings = getAllPieces().stream().filter(p -> p instanceof ChessPieceKing).count();
+            if (kings == 2) break;
         }
-        if (hcpB < 0 || hcpW < 0 || hcpB > 100 || hcpW > 100){
-            throw new IllegalArgumentException("Invalid handicap value. Must be 0 < hcp < 100. ");
-        }
-
-        int[] WhiteTiles = generateTileScores(hcpW, bonusW);
-        int[] BlackTiles = generateTileScores(hcpB,bonusB);
-        int[][] Bmap = generateTileMap(bonusB);
-        int[][] Wmap = generateTileMap(bonusW);
-        int N = 0;
-
-        IChessPiece Wking = new ChessPieceKing(new Position(4,1), Color.WHITE);
-        IChessPiece Bking = new ChessPieceKing(new Position(4,8), Color.BLACK);
-
-        for (int x = 0; x < Bmap.length; x++) {
-            for (int y = 0; y < Bmap[x].length; y++) {
-                if( Bmap[x][y] == 1){
-                    IChessPiece piece = AbstractChessPiece.GetPiecefromScore(x+1,7-y+1,BlackTiles[N], Color.BLACK);
-                    putAtPosition(piece.getPosition(),piece);
-                    N = N + 1;
-                }
-            }
-        }
-        N = 0;
-        for (int x = 0; x < Wmap.length; x++) {
-            for (int y = 0; y < Wmap[x].length; y++) {
-                if( Wmap[x][y] == 1){
-                    IChessPiece piece = AbstractChessPiece.GetPiecefromScore(x+1,y+1,WhiteTiles[N], Color.WHITE);
-                    putAtPosition(piece.getPosition(),piece);
-                    N = N + 1;
-                }
-            }
-        }
-        putAtPosition(Wking.getPosition(),Wking);
-        putAtPosition(Bking.getPosition(),Bking);
-
     }
 
     /**
-     * Generates a tilemap to be used when placing the pieces. The tiles are randomly placed.
-     *
-     * @param bonus Number of 1s in the matrix made.
-     * @return
+     * Performs a random move for a color.
+     * @param color The color to do a move for.
+     * @return True if a move was performed, False if there were no legal moves.
      */
-    public int[][] generateTileMap(int bonus){
-        int[][] map = new int[8][4];
-        Random rand = new Random();
-        map[3][0] = 2;
-        //For each iteration, has a probability of spawning a 1 in a random slot in the matrix 'map'.
-        while (bonus  + 15 > 0){
-            int x = rand.nextInt(8);
-            int y = rand.nextInt(4);
-            if (map[x][y] == 0){
-                map[x][y] = 1;
-                bonus--;
-            }
-        }
-        return map;
+    private boolean doRandomMove(Color color) {
+        List<Move> moves = getAllPieces().stream()
+                .filter(p -> p.getColor() == color)
+                .flatMap(p -> p.allPossibleMoves(this).stream())
+                .collect(Collectors.toList());
+        if (moves.size() == 0) return false;
+
+        Move move = moves.get(new Random().nextInt(moves.size()));
+        move.DoMove(this);
+        return true;
     }
 
-    /**
-     * Generates a list of scores to be used in the random generator. The function
-     * uses Random to randomize the scores.
-     *
-     * @param hcp Handicap for each player. Determines the probability of getting a certain tier of pieces. A hcp of 50 generates about the same
-     *            pieces as in a normal game, higher generates better pieces, and below 50 reduces the tier.
-     * @param bonus Number of bonus pieces assigned to a player.
-     * @return
-     */
-    public int[] generateTileScores(int hcp, int bonus){
-
-        Random rdm = new Random();
-        int[] N = new int[15 +  bonus];
-        int[] values = new int[]{100,320,330,500,900};
-        int score = hcp*80;
-
-        while (score > 1 && N.length > 0){
-            int chng = 0;
-            int temp = 0;
-            int x = rdm.nextInt(N.length );
-
-            if (N[x] < 100 ){
-                chng = values[rdm.nextInt(4)+1];//cannot upgrade to queen immediately from pawn.
-                N[x] = chng;
-                score = score - chng;
-            }if (N[x] < 320 && N[x] > 100){
-                if (rdm.nextInt(2) == 2) { //Rolls a "dice" to reduce probability.
-                    chng = values[rdm.nextInt(4) + 1]; //Decreasing bounds so that it does not "upgrade down".
-                    temp = N[x];
-                    N[x] = chng;
-                    score = score -(chng-temp);
-                }
-            }else if (N[x] < 330 && N[x] > 320){
-                if (rdm.nextInt(2) == 2);{
-                    chng = values[rdm.nextInt(3) + 2];
-                    temp = N[x];
-                    N[x] = chng;
-                    score = score -(chng-temp);
-                }
-            }else if (N[x] < 500){
-                if (rdm.nextInt(2) == 2) { //This corresponds to a probability of around 12.5%
-                    chng = values[rdm.nextInt(2) + 3];
-                    N[x] = chng;
-                    score = score -(chng-temp);
-                }
-            }
-            score = score + 10;
-        }
-        for (int i = 0; i < N.length; i++){
-            if (N[i] == 0){N[i] = 100;}
-        }
-        return N;
-    }
     /**
      * Put a piece at a position on the board.
      *
