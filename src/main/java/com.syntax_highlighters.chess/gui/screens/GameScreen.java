@@ -74,7 +74,7 @@ public class GameScreen extends AbstractScreen {
      * @param randomBoard Whether or not to generate a random board or a regular one.
      */
     public GameScreen(ChessGame chessGame, PlayerAttributes attrib1, PlayerAttributes attrib2, boolean randomBoard) {
-        super(chessGame);
+        super(chessGame, false);
 
         assetManager = chessGame.getAssetManager();
         this.player1 = attrib1.getAccount();
@@ -214,27 +214,26 @@ public class GameScreen extends AbstractScreen {
             game.forceGameEnd();
         }
 
-        switch (winner) {
-            case 1: // white player won
-                if (player1 != null)
+        if(player1 != null && player2 != null) {
+
+            switch (winner) {
+                case 1: // white player won
                     player1.win();
-                if (player2 != null)
                     player2.loss();
-                break;
-            case -1: // black player won
-                if (player1 != null)
+                    chessGame.getAccountManager().updateRating(player1, player2);
+                    break;
+                case -1: // black player won
                     player1.loss();
-                if (player2 != null)
                     player2.win();
-                break;
-            default:
-                if (player1 != null)
-                    player1.win();
-                if (player2 != null)
-                    player2.win();
-                break;
+                    chessGame.getAccountManager().updateRating(player2, player1);
+                    break;
+                default:
+                    chessGame.getAccountManager().updateRatingDraw(player1, player2);
+                    break;
+            }
+
+            chessGame.getAccountManager().save(AssetLoader.getAccountPath());
         }
-        chessGame.getAccountManager().save(AssetLoader.getAccountPath());
 
         gameOverOverlay.updateText(winner, player1, player2, ai1, ai2);
         gameOverOverlay.setVisible(true);

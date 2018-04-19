@@ -43,6 +43,9 @@ public class ScoreScreen extends AbstractScreen {
         Text name = new Text(font);
         name.setText("Name");
         name.setColor(0,0,0,1);
+        Text score = new Text(font);
+        score.setText("Score");
+        score.setColor(0,0,0,1);
         Text wins = new Text(font);
         wins.setText("Wins");
         wins.setColor(0,0,0,1);
@@ -57,6 +60,7 @@ public class ScoreScreen extends AbstractScreen {
         scoreList.row().height(40.f).padBottom(20);
         scoreList.add(rank).width(100).center();
         scoreList.add(name).expandX().left();
+        scoreList.add(score).width(100).center();
         scoreList.add(wins).width(100).center();
         scoreList.add(losses).width(100).center();
 
@@ -71,6 +75,9 @@ public class ScoreScreen extends AbstractScreen {
             Text accName = new Text(font);
             accName.setText(acc.getName());
             accName.setColor(0,0,0,1);
+            Text accScore = new Text(font);
+            accScore.setText("" + acc.getPoints());
+            accScore.setColor(0,0,0,1);
             Text accWins = new Text(font);
             accWins.setText("" + acc.getWinCount());
             accWins.setColor(0,0,0,1);
@@ -81,6 +88,7 @@ public class ScoreScreen extends AbstractScreen {
             scoreList.row().height(30.f);
             scoreList.add(accRank).width(100).center();
             scoreList.add(accName).expandX().left();
+            scoreList.add(accScore).width(100).center();
             scoreList.add(accWins).width(100).center();
             scoreList.add(accLosses).width(100).center();
         }
