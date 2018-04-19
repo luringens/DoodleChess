@@ -74,7 +74,7 @@ public class GameScreen extends AbstractScreen {
      * @param randomBoard Whether or not to generate a random board or a regular one.
      */
     public GameScreen(ChessGame chessGame, PlayerAttributes attrib1, PlayerAttributes attrib2, boolean randomBoard) {
-        super(chessGame);
+        super(chessGame, false);
 
         assetManager = chessGame.getAssetManager();
         this.player1 = attrib1.getAccount();

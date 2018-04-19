@@ -54,6 +54,23 @@ public abstract class AbstractScreen implements Screen {
     {
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
+        addDoodles();
+    }
+
+    /**
+     * Create an AbstractScreen and also specify if doodles exist.
+     *
+     * @param game The ChessGame instance of the gui
+     * @param createDoodles Whether or not to create doodles
+     */
+    protected AbstractScreen(ChessGame game, boolean createDoodles) {
+        this.game = game;
+        this.stage = new Stage(new ScreenViewport());
+        if (createDoodles)
+            addDoodles();
+    }
+
+    private void addDoodles() {
         AssetManager assetManager = game.getAssetManager();
 
         // Draw some random doodles
