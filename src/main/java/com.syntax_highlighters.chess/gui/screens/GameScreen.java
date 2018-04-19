@@ -134,19 +134,7 @@ public class GameScreen extends AbstractScreen {
         turnText.setColor(0, 0, 0, 1);
         stage.addActor(turnText);
         turnText.setText(this.game.nextPlayerColor().isWhite() ? "White's turn" : "Black's turn");
-        
-        gameOverOverlay = new GameOverOverlay(chessGame);
-        gameOverOverlay.setVisible(false);
-        stage.addActor(gameOverOverlay);
 
-        // display results button (initially invisible, but becomes visible when
-        // game ends)
-        showResults = new Button.Builder("Show results", assetManager)
-            .size(200, 75)
-            .callback(() -> gameOverOverlay.setVisible(true))
-            .stage(stage)
-            .visible(false)
-            .create();
 
         WobbleDrawable soundDrawable = new WobbleDrawable(assetManager.get("soundbutton.png", Texture.class), assetManager);
         WobbleDrawable muteDrawable = new WobbleDrawable(assetManager.get("mutebutton.png", Texture.class), assetManager);
@@ -199,6 +187,20 @@ public class GameScreen extends AbstractScreen {
                         .stage(stage)
                         .create());
         giveUp = giveUpButtonBuilder.size(200, 75).stage(stage).create();
+
+        // Always added last!!!
+        gameOverOverlay = new GameOverOverlay(chessGame);
+        gameOverOverlay.setVisible(false);
+        stage.addActor(gameOverOverlay);
+
+        // display results button (initially invisible, but becomes visible when
+        // game ends)
+        showResults = new Button.Builder("Show results", assetManager)
+                .size(200, 75)
+                .callback(() -> gameOverOverlay.setVisible(true))
+                .stage(stage)
+                .visible(false)
+                .create();
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
