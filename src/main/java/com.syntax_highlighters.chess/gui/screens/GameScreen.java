@@ -84,8 +84,8 @@ public class GameScreen extends AbstractScreen {
 
         this.game = new Game(ai1, ai2);
         if(randomBoard)
-            // Do 5-20 random moves
-            this.game.getBoard().setupPracticeGame((int)(Math.random() * 15) + 5);
+            // Do 15-25 random moves
+            this.game.getBoard().setupPracticeGame((int)(Math.random() * 5) + 20);
 
         this.nextPlayerColor = this.game.nextPlayerColor().opponentColor();
 

@@ -108,6 +108,10 @@ public class    Board {
 
         // reset board
         this.pieces = new ArrayList<>();
+        this.lastMove = null;
+        this.whiteKing = null; // For caching purposes.
+        this.blackKing = null; // For caching purposes.
+        initBoard();
 
         // add all white pieces
         for (String p : whitePieces) {
