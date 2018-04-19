@@ -5,6 +5,7 @@ import com.syntax_highlighters.chess.AccountManager;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -14,27 +15,20 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests concerning the behavior of the AccountManager class.
  */
 class accountManagerTest {
-    private final static String dbname = "test.db";
-
-    @Before
-    void cleanup() {
-        try {
-            Files.deleteIfExists(Paths.get(dbname));
-        }
-        catch (Exception ex) {
-            throw new RuntimeException("Failed to clean up.");
-        }
-    }
 
     @Test
     void newAccountManagerHasNoAccounts() {
-        AccountManager am = new AccountManager(dbname);
+        String file = "newAccountManagerHasNoAccounts.db";
+        new File(file).deleteOnExit();
+        AccountManager am = new AccountManager(file);
         assertEquals(0, am.accountSize());
     }
 
     @Test
     void accountManagerCanRetrieveAccountByName() {
-        AccountManager am = new AccountManager(dbname);
+        String file = "accountManagerCanRetrieveAccountByName.db";
+        new File(file).deleteOnExit();
+        AccountManager am = new AccountManager(file);
         Account a = new Account("Alice");
         Account b = new Account("Bob");
         
@@ -47,7 +41,9 @@ class accountManagerTest {
 
     @Test
     void accountManagerDoesNotAddAccountWithSameNameTwice() {
-        AccountManager am = new AccountManager(dbname);
+        String file = "accountManagerDoesNotAddAccountWithSameNameTwice.db";
+        new File(file).deleteOnExit();
+        AccountManager am = new AccountManager(file);
         Account a1 = new Account("Alice");
         Account a2 = new Account("Alice");
 
@@ -59,13 +55,14 @@ class accountManagerTest {
 
     @Test
     void savedAccountStoresCorrectData() {
-        cleanup(); // Since @before doesn't work.
+        String file = "savedAccountStoresCorrectData.db";
+        new File(file).deleteOnExit();
         String name = "Alice";
         int wins = 10;
         int losses = 20;
         int rating = 1250;
         {
-            AccountManager am = new AccountManager(dbname);
+            AccountManager am = new AccountManager(file);
             Account ac = new Account(name, wins, losses, rating);
             assertEquals(name, ac.getName());
             assertEquals(wins, ac.getWinCount());
@@ -75,7 +72,7 @@ class accountManagerTest {
             am.save();
         }
         {
-            AccountManager am = new AccountManager(dbname);
+            AccountManager am = new AccountManager(file);
             Account ac = am.getAccount(name);
             assertEquals(name, ac.getName());
             assertEquals(wins, ac.getWinCount());
@@ -86,7 +83,9 @@ class accountManagerTest {
 
     @Test
     void accountManagerUpdatesScoreCorrectlyForSamePlayerWinningTwice() {
-        AccountManager am = new AccountManager();
+        String file = "savedAccountStoresCorrectData.db";
+        new File(file).deleteOnExit();
+        AccountManager am = new AccountManager(file);
         Account a = new Account("Alice"); // initial rating: 1000
         Account b = new Account("Bob");   // initial rating: 1000
         am.addAccount(a);
