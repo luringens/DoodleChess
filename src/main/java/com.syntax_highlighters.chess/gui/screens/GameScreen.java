@@ -231,9 +231,8 @@ public class GameScreen extends AbstractScreen {
                     chessGame.getAccountManager().updateRatingDraw(player1, player2);
                     break;
             }
-
-            chessGame.getAccountManager().save(AssetLoader.getAccountPath());
         }
+        chessGame.getAccountManager().save();
 
         gameOverOverlay.updateText(winner, player1, player2, ai1, ai2);
         gameOverOverlay.setVisible(true);

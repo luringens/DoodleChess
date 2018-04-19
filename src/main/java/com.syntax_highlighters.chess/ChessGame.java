@@ -47,8 +47,7 @@ public class ChessGame extends Game {
 		// TODO: Loading screen to prevent the black frames before load
 		assetManager.finishLoading();
 
-		accountManager = new AccountManager();
-		accountManager.load(AssetLoader.getAccountPath());
+		accountManager = new AccountManager(AssetLoader.getAccountPath());
 
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("uiskin.atlas"));
 		skin = new Skin();

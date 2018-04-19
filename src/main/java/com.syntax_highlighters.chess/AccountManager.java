@@ -1,10 +1,7 @@
 package com.syntax_highlighters.chess;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,7 +12,26 @@ import java.util.List;
  * them, such as fetching a given account or return a sorted list of accounts.
  */
 public class AccountManager {
-    List<Account> myAccounts = new ArrayList<>();
+    private List<Account> myAccounts = new ArrayList<>();
+    private final String filename;
+
+    public AccountManager(String filename) {
+        this.filename = filename;
+
+        // Hack to register the SQLite class
+        try {
+            Class.forName("org.sqlite.JDBC");
+        }
+        catch(ClassNotFoundException e) {
+            throw new RuntimeException("Failed to create database.");
+        }
+
+        if (!Files.exists(Paths.get(filename))) {
+            createDatabase();
+            createTable();
+        }
+        else load();
+    }
 
     public int accountSize () {
         return myAccounts.size();
@@ -45,7 +61,7 @@ public class AccountManager {
      * @param accounts The list of accounts to sort
      * @return a properly sorted list of accounts
      */
-    private List<Account> sort (List<Account> accounts) {
+    private List<Account> sort(List<Account> accounts) {
         accounts.sort(Comparator.comparing(Account::getWinCount));
         List<Account> reverseAccounts = new ArrayList<>();
         for (int i = accounts.size() - 1; i >= 0; i--)
@@ -60,7 +76,7 @@ public class AccountManager {
      * @return true if the account was added, false if it already existed in the
      * account list
      */
-    public boolean addAccount (Account acc) {
+    public boolean addAccount(Account acc) {
         boolean canAdd = true;
         if (myAccounts.isEmpty())
             canAdd = true;
@@ -71,6 +87,7 @@ public class AccountManager {
         }
         if (canAdd)
             myAccounts.add(acc);
+        save();
         return canAdd;
     }
 
@@ -95,25 +112,25 @@ public class AccountManager {
      *
      * @return A correctly ordered list containing all the accounts
      */
-    public List<Account> getAll () {
+    public List<Account> getAll() {
         myAccounts = sort(myAccounts);
         return myAccounts;
     }
 
     /**
-     * Save the account list to a file with the given filename.
+     * Save the account list to disk.
+     * This is done automatically in all accountmanager functions that edit
+     * the account list.
      * <p>
      * Overwrites the file in question, or creates it if it doesn't already
      * exist.
      * <p>
      * SUGGESTION: Return boolean value indicating whether or not saving the
      * file succeeded.
-     *
-     * @param filename The name of the file to save to
      */
-    public void save (String filename) {
+    public void save() {
         try {
-            Connection conn = connect(filename);
+            Connection conn = connect();
 
             // Horrible, I know.
             // Sorry.
@@ -128,54 +145,40 @@ public class AccountManager {
                 stmt.setInt(4, a.getLossCount());
                 stmt.executeUpdate();
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 
-    private Connection connect (String filename) throws SQLException {
-        // NOTE: for some reason it worked after I added this line. I don't
-        // really know why. Maybe it just ensures that it has the JDBC
-        // dependency loaded or something.
-
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private Connection connect() throws SQLException {
         // SQLite connection string
-        String pathh = new File("UserAccounts.db").getAbsolutePath();
+        String pathh = Paths.get(filename).toAbsolutePath().toString();
         String url = "jdbc:sqlite:" + pathh;
         return DriverManager.getConnection(url);
     }
 
-    public static void createDatabase (String fileName) {
-       String pathh = new File(fileName).getAbsolutePath();
+    private void createDatabase() {
+        String pathh = Paths.get(filename).toAbsolutePath().toString();
         String url = "jdbc:sqlite:" + pathh;
 
-
         try (Connection conn = DriverManager.getConnection(url)) {
-            if (conn != null) {
-                DatabaseMetaData meta = conn.getMetaData();
-               // System.out.println("The driver name is " + meta.getDriverName());
-                //System.out.println("A new database has been created.");
+            if (conn == null) {
+                throw new RuntimeException("Failed to establish a conenction to the new db");
             }
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 
-    public static void createTable (String filename) {
-        String pathh = new File("UserAccounts.db").getAbsolutePath();
+    private void createTable() {
+        String pathh = Paths.get(filename).toAbsolutePath().toString();
         String url = "jdbc:sqlite:" + pathh;
 
-        String sql = "CREATE TABLE IF NOT EXISTS person (\n"
+        String sql = "CREATE TABLE person (\n"
                 + "	name text PRIMARY KEY,\n"
                 + "	score integer ,\n"
                 + "	wins integer,\n"
                 + "	losses integer\n"
-
                 + ");";
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -183,7 +186,7 @@ public class AccountManager {
             // create a new table
             stmt.execute(sql);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -193,20 +196,14 @@ public class AccountManager {
      * <p>
      * SUGGESTION: Return boolean value indicating whether or not loading the
      * file succeeded.
-     *
-     * @param filename The name of the file to load from
      */
-    public void load (String filename) {
+    private void load () {
         String sql = "SELECT * FROM person";
 
         try {
-            Connection conn = this.connect(filename);
-            Statement stmt  = conn.createStatement();
-            String pathh = new File(filename).getAbsolutePath();
-            try{createDatabase(filename); createTable(filename);}
-            catch(Exception e){}
-
-            ResultSet rs    = stmt.executeQuery(sql);
+            Connection conn = this.connect();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
 
             myAccounts.clear(); // ensure there are no accounts in the list before loading
 
@@ -219,12 +216,15 @@ public class AccountManager {
                 myAccounts.add(new Account(name, wins, losses, score));
             }
         } catch (Exception e) {
-            System.out.println(e);
+            throw new RuntimeException(e.getMessage());
         }
-
-
     }
 
+    /**
+     * Updates the rating for two accountswith the results of a game.
+     * @param winner The winner's account.
+     * @param loser The losers. account.
+     */
     public void updateRating(Account winner, Account loser){
         winner.addPoints(loser.getRating()+400);
         loser.addPoints(winner.getRating()+400);
@@ -232,16 +232,21 @@ public class AccountManager {
         int loserRating = loser.getPoints() / (loser.getLossCount() + loser.getWinCount()+1);
         winner.setRating(winnerRating);
         loser.setRating(loserRating);
-        return;
+        save();
     }
 
-    public void updateRatingDraw(Account winner, Account loser){
-        winner.addPoints(loser.getRating());
-        loser.addPoints(winner.getRating());
-        int winnerRating = winner.getPoints() / (winner.getLossCount() + winner.getWinCount()+1);
-        int loserRating = loser.getPoints() / (loser.getLossCount() + loser.getWinCount()+1);
-        winner.setRating(winnerRating);
-        loser.setRating(loserRating);
-        return;
+    /**
+     * Updates the rating for two accountswith the results of a game.
+     * @param acc1 The first account.
+     * @param acc2 The second account.
+     */
+    public void updateRatingDraw(Account acc1, Account acc2){
+        acc1.addPoints(acc2.getRating()+400);
+        acc2.addPoints(acc1.getRating()+400);
+        int winnerRating = acc1.getPoints() / (acc1.getLossCount() + acc1.getWinCount()+1);
+        int loserRating = acc2.getPoints() / (acc2.getLossCount() + acc2.getWinCount()+1);
+        acc1.setRating(winnerRating);
+        acc2.setRating(loserRating);
+        save();
     }
 }

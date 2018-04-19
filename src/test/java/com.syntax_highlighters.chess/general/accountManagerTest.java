@@ -2,23 +2,39 @@ package com.syntax_highlighters.chess.general;
 
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests concerning the behavior of the AccountManager class.
  */
 class accountManagerTest {
+    private final static String dbname = "test.db";
+
+    @Before
+    void cleanup() {
+        try {
+            Files.deleteIfExists(Paths.get(dbname));
+        }
+        catch (Exception ex) {
+            throw new RuntimeException("Failed to clean up.");
+        }
+    }
 
     @Test
     void newAccountManagerHasNoAccounts() {
-        AccountManager am = new AccountManager();
+        AccountManager am = new AccountManager(dbname);
         assertEquals(0, am.accountSize());
     }
 
     @Test
     void accountManagerCanRetrieveAccountByName() {
-        AccountManager am = new AccountManager();
+        AccountManager am = new AccountManager(dbname);
         Account a = new Account("Alice");
         Account b = new Account("Bob");
         
@@ -31,7 +47,7 @@ class accountManagerTest {
 
     @Test
     void accountManagerDoesNotAddAccountWithSameNameTwice() {
-        AccountManager am = new AccountManager();
+        AccountManager am = new AccountManager(dbname);
         Account a1 = new Account("Alice");
         Account a2 = new Account("Alice");
 
@@ -43,23 +59,29 @@ class accountManagerTest {
 
     @Test
     void savedAccountStoresCorrectData() {
-        AccountManager am = new AccountManager();
-        Account a1 = new Account("Alice", 10, 20, 1250);
-        assertEquals("Alice", a1.getName());
-        assertEquals(10, a1.getWinCount());
-        assertEquals(20, a1.getLossCount());
-        assertEquals(1250, a1.getRating());
-
-        am.addAccount(a1);
-
-        am.save("test.db");
-        am.load("test.db");
-
-        Account a2 = am.getAccount(a1.getName());
-        assertEquals(a1.getName(), a2.getName());
-        assertEquals(a1.getWinCount(), a2.getWinCount());
-        assertEquals(a1.getLossCount(), a2.getLossCount());
-        assertEquals(a1.getRating(), a2.getRating());
+        cleanup(); // Since @before doesn't work.
+        String name = "Alice";
+        int wins = 10;
+        int losses = 20;
+        int rating = 1250;
+        {
+            AccountManager am = new AccountManager(dbname);
+            Account ac = new Account(name, wins, losses, rating);
+            assertEquals(name, ac.getName());
+            assertEquals(wins, ac.getWinCount());
+            assertEquals(losses, ac.getLossCount());
+            assertEquals(rating, ac.getRating());
+            am.addAccount(ac);
+            am.save();
+        }
+        {
+            AccountManager am = new AccountManager(dbname);
+            Account ac = am.getAccount(name);
+            assertEquals(name, ac.getName());
+            assertEquals(wins, ac.getWinCount());
+            assertEquals(losses, ac.getLossCount());
+            assertEquals(rating, ac.getRating());
+        }
     }
 
     @Test
