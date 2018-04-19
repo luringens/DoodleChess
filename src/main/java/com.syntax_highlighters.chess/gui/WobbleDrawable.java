@@ -63,7 +63,7 @@ public class WobbleDrawable extends BaseDrawable {
         Gdx.gl.glClearColor(0, 0, 0, 0);
         wobble.setUniformf("u_time", (float) Math.random() * 10000.f);
 
-        batch.draw(texture, 0, 0, 800, 800);
+        batch.draw(texture, 0, 0, (int)(800 * 1.6), 800);
         batch.end();
 
         buffer.end();

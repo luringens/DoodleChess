@@ -20,7 +20,7 @@ public class Main {
      */
 	public static void main (String[] args) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 800;
+		config.width = (int)(800 * 1.6);
 		config.height = 800;
 		config.forceExit = false;
 		config.title = "Doodle chess";

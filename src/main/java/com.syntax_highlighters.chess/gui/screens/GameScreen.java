@@ -92,7 +92,7 @@ public class GameScreen extends AbstractScreen {
         Gdx.input.setInputProcessor(stage);
 
         board = new BoardGroup(this.game, this.player2Color, this.player1Color, assetManager);
-        float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 50 - 200;
+        float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 50;
         board.setSize(size, size);
         stage.addActor(board);
 
@@ -295,9 +295,9 @@ public class GameScreen extends AbstractScreen {
         // below
         int width = Gdx.graphics.getWidth();  // I think this is right
         int height = Gdx.graphics.getHeight();
-        float size = Math.min(width, height) - 150;
-        size = Math.min(size, 1000) - 150;
-        turnText.setCenter(width / 2.f, height / 2.f - size / 2.f - 10.f);
+        float size = Math.min(width, height);
+        size = Math.min(size, 1000);
+        turnText.setCenter(width / 2.f, height / 2.f - size / 2.f + 40.f);
     }
 
     /**
@@ -312,20 +312,20 @@ public class GameScreen extends AbstractScreen {
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
         float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 100;
-        size = Math.min(size, 1000) - 150;
+        size = Math.min(size, 1000);
         board.setSize(size, size);
-        board.setPosition(width / 2.f - size / 2.f - 120, height / 2.f - size / 2.f + 25);
+        board.setPosition(width / 2.f - size / 2.f - 40, height / 2.f - size / 2.f + 25);
         historyList.setHeight(size - 100);
-        historyList.setPosition(width / 2.f + size / 2.f - 60,height / 2.f  - historyList.getHeight() / 2.f + 50);
+        historyList.setPosition(width / 2.f + size / 2.f + 60,height / 2.f  - historyList.getHeight() / 2.f + 50);
         turnText.setCenter(width / 2.f, height / 2.f - size / 2.f - 10.f);
 
-        getHelp.setPosition(width / 2.f - size / 2.f - 30.f + getHelp.getWidth()/2.f,
+        getHelp.setPosition(width / 2.f - getHelp.getWidth()*1.5f - getHelp.getWidth() / 2.f,
                 height / 2.f - size / 2.f - getHelp.getHeight() / 1.5f);
 
-        giveUp.setPosition(width / 2.f + size / 2.f + 20.f - giveUp.getWidth(),
+        giveUp.setPosition(width / 2.f + giveUp.getWidth() * 1.5f - getHelp.getWidth() / 2.f,
                 height / 2.f - size / 2.f - giveUp.getHeight() / 1.5f);
 
-        showResults.setPosition(width / 2.f + size / 2.f + 20.f - showResults.getWidth(),
+        showResults.setPosition(width / 2.f + getHelp.getWidth()*1.5f - getHelp.getWidth() / 2.f,
                 height / 2.f - size / 2.f - showResults.getHeight() / 1.5f);
     }
 }
