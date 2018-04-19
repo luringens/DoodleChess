@@ -15,6 +15,7 @@ accounts.txt
 .idea/*
 out/*
 *.ipr
+db/
 
 # Build output
 *target*
