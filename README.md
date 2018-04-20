@@ -15,9 +15,9 @@ course in Spring 2018.
 
 ### Installing
 
-```
-$ git clone https://gitlab.uib.no/inf112-v2018/gruppe-6.git chess-syntax-highlighters
-$ cd chess-syntax-highlighters
+```sh
+git clone https://gitlab.uib.no/inf112-v2018/gruppe-6.git chess-syntax-highlighters
+cd chess-syntax-highlighters
 ```
 
 Note: if you are using linux or mac, then you might have to do `chmod +x gradlew` first in order to be able to run the gradlew script
@@ -26,8 +26,8 @@ Note: if you are using linux or mac, then you might have to do `chmod +x gradlew
 
 We can play the game running the following command:
 
-```
-$ ./gradlew run
+```sh
+./gradlew run
 ```
 
 There is now a tar and zip file available in `build/distributions/` that contains a bin folder with a run file for running the game.
@@ -38,8 +38,8 @@ Note: This will not run the tests
 
 A fat-jar is a jar file with all the dependencies aswell
 
-```
-$ ./gradlew fatjar
+```sh
+./gradlew fatjar
 ```
 
 the jar should now be available in `build/libs/DoodleChess-fat.jar` and can be run using `java -jar build/libs/DoodleChess-fat.jar`
@@ -48,14 +48,14 @@ Note: This will not run the tests
 
 ### Running tests
 
-```
-$ ./gradlew test
+```sh
+./gradlew test
 ```
 
 ### Building javadoc
 
-```
-$ ./gradlew javadoc
+```sh
+./gradlew javadoc
 ```
 
 The javadoc should now be available in `docs/api`
@@ -66,8 +66,8 @@ The javadoc should now be available in `docs/api`
 
 First run:
 
-```
-$ ./gradlew idea
+```sh
+./gradlew idea
 ```
 
 then open the .ipr file and you should be good to go
@@ -103,18 +103,20 @@ The program's UI is built on LibGDX, which is licensed under
 [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 A copy of the license can be found at `assets/LICENSE.txt`.
 
-The program also uses the Indie Flower font, licensed under the Open Font
-License that can be found at `assets/OFL.txt`.
+The program also uses the Gaegu font, licensed under the Open Font License
+that can be found at `assets/OFL.txt`.
+
+The statistics are stored in a SQLite database, which is released into
+public domain. See [SQLite's homepage](https://www.sqlite.org/index.html)
+for more information.
 
 The chess AI is based on the examples from the Chess Programming Wiki.
-It is a common MiniMax implementation with alpha/beta pruning.
-See the [Chess Programming Wiki](https://chessprogramming.wikispaces.com/Minimax)),
-including pages for A/B pruning, for the resources used during
-the development of the AI.
-The scores used for evaluating the score of a given chess position is
-also from the [Chess Programming Wiki](https://chessprogramming.wikispaces.com/Simplified+evaluation+function),
-which are shared by default under the Creative
-Commons Attribution-ShareAlike 3.0. However, it is taken from an email
-from Tomasz Michniewski sent to a Polish chess programming wiki without
-linking to the source, so whether or not the wiki can claim copyright
-on the content in the first place is unknown.
+It is a common MiniMax implementation with alpha/beta pruning. See the
+[Chess Programming Wiki](https://chessprogramming.wikispaces.com/Minimax)),
+including pages for A/B pruning, for the resources used during the development
+of the AI. The scores used for evaluating the score of a given chess position is also from the
+[Chess Programming Wiki](https://chessprogramming.wikispaces.com/Simplified+evaluation+function)
+which are shared by default under the Creative Commons Attribution-ShareAlike
+3.0. However, it is taken from an email from Tomasz Michniewski sent to a
+Polish chess programming wiki without linking to the source, so whether or not
+the wiki can claim copyright on the content in the first place is unknown.
