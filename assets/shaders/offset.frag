@@ -5,6 +5,7 @@ precision mediump float;
 
 uniform sampler2D u_texture;
 uniform float u_time;
+uniform vec2 u_resolution;
 
 varying vec2 v_texCoords;
 
@@ -44,22 +45,21 @@ float snoise(vec2 v){
 void main()
 {
     // Normalized pixel coordinates (from 0 to 1)
+    float biggest = max(u_resolution.x, u_resolution.y);
     vec2 uv = v_texCoords;
+    vec2 nosieCoord = v_texCoords * u_resolution / vec2(biggest, biggest);
     
-    vec2 uvc = uv - 0.5f;
-    
-    float square = 1.f - (uvc.x * uvc.x + uvc.y * uvc.y) * 4.f;
-    
-    
-    vec2 noisePos = uv * 3.f + floor(u_time * 2.f);
+    float dx = 1.0f - abs(uv.x - 0.5f);
+    float dy = 1.0f - abs(uv.y - 0.5f);
+
+    vec2 noisePos = nosieCoord * vec2(2.f, 1.f) * 3.f + floor(u_time * 2.f);
     float noise = snoise(noisePos);
 	
-    vec2 uvp = uv  + noise / 25.f * square;
+    vec2 uvp = uv  + noise / sqrt(u_resolution.x * u_resolution.x + u_resolution.y * u_resolution.y) * 6.f;
     
     vec4 color = texture2D(u_texture, uvp);
     
-    gl_FragColor = vec4(1,1,1,0);
-    gl_FragColor.a = color.a;
-
-    //gl_FragColor = vec4(noise, noise, noise, 1.0f);
+    noise = noise / 2.f + 0.5f;
+    gl_FragColor = vec4(noise, noise, noise, 1.0f);
+    gl_FragColor = color;
 }

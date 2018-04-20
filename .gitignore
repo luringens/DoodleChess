@@ -6,6 +6,17 @@ docs/classdiagram.xml
 *.DS_Store
 .vscode
 accounts.data
+.gradle/*
+build/*
+docs/api/*
+*.iws
+*.iml
+accounts.txt
+.idea/*
+out/*
+*.ipr
+db/
+*.db
 
 # Build output
 *target*
@@ -23,4 +34,5 @@ accounts.data
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/libraries/
+
 

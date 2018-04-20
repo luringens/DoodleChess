@@ -1,5 +1,4 @@
 {
-    com.badlogic.gdx.graphics.g2d.BitmapFont: { default-font: { file: IndieFlower.fnt } },
     com.badlogic.gdx.graphics.Color: {
         green: { a: 1, b: 0, g: 1, r: 0 },
         white: { a: 1, b: 1, g: 1, r: 1 },
@@ -20,7 +19,7 @@
     },
     com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
         default: {
-            font: default-font, fontColor: black, background: default-select,
+            font: default-font, fontColor: black, background: wobbleSelect,
             scrollStyle: default,
             listStyle: { font: default-font, fontColorUnselected: black, fontColorSelected: white, selection: default-select-selection }
         }
