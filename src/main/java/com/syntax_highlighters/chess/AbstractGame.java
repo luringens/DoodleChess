@@ -2,7 +2,6 @@ package com.syntax_highlighters.chess;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import com.syntax_highlighters.chess.entities.*;
 
@@ -13,100 +12,69 @@ import com.syntax_highlighters.chess.entities.*;
  * which player's turn it is. The UI uses the API of this class to interact with
  * the game.
  */
-public class Game {
-    private final Board board;
-    private IAiPlayer whiteAI = null;
-    private IAiPlayer blackAI = null;
-    private Color nextPlayerColor = Color.WHITE;
-    private List<String> moveHistory = new ArrayList<>();
-    private boolean uiHasForceEndedGame = false;
+public abstract class AbstractGame {
+    protected Board board;
+    protected IAiPlayer whiteAI = null;
+    protected IAiPlayer blackAI = null;
+    protected Color nextPlayerColor = Color.WHITE;
+    protected List<Move> moveHistory = new ArrayList<>();
+    private boolean gameOver = false;
 
     /**
      * Return a List of String containing all moves to date.
      *
      * @return A list of strings containing all moves.
      */
-    public List<String> getMoveHistory(){
-        return moveHistory;
+    public List<String> getMoveHistory() {
+        List<String> moves = new ArrayList<>();
+        for (Move m : moveHistory) {
+            String piece = String.valueOf((moveHistory.size()/2)+1) + ". ";
+            if(board.getAtPosition(m.newPos).getColor().isWhite()) {
+                piece += "WHITE ";
+            }
+            else{
+                piece += "BLACK ";
+            }
+            piece += m.getPieceString(board) + ": ";
+            int a = m.getPosition().getX();
+            switch(a){
+                case 1:
+                    piece += "A";
+                    break;
+                case 2:
+                    piece += "B";
+                    break;
+                case 3:
+                    piece += "C";
+                    break;
+                case 4:
+                    piece += "D";
+                    break;
+                case 5:
+                    piece += "E";
+                    break;
+                case 6:
+                    piece += "F";
+                    break;
+                case 7:
+                    piece += "G";
+                    break;
+                case 8:
+                    piece += "H";
+                    break;
+                default:
+                    piece += "ERROR";
+                    break;
+            }
+            piece += String.valueOf(m.getPosition().getY());
+            moves.add(piece);
+        }
+        return moves;
     }
 
     private void addMoveToHistory(Move m)
     {
-
-        String piece = String.valueOf((moveHistory.size()/2)+1) + ". ";
-        if(board.getAtPosition(m.newPos).getColor().isWhite()){
-            piece += "WHITE ";
-        }
-        else{
-            piece += "BLACK ";
-        }
-        piece += m.getPieceString(board) + ": ";
-        int a = m.getPosition().getX();
-        switch(a){
-            case 1:
-                piece += "A";
-                break;
-            case 2:
-                piece += "B";
-                break;
-            case 3:
-                piece += "C";
-                break;
-            case 4:
-                piece += "D";
-                break;
-            case 5:
-                piece += "E";
-                break;
-            case 6:
-                piece += "F";
-                break;
-            case 7:
-                piece += "G";
-                break;
-            case 8:
-                piece += "H";
-                break;
-            default:
-                piece += "ERROR";
-                break;
-        }
-        piece += String.valueOf(m.getPosition().getY());
-        moveHistory.add(piece);
-    }
-
-    /**
-     * Creates a new, blank game and sets up the board.
-     *
-     * @param whiteAi The difficulty for the white AI, or `null` for no AI
-     * @param blackAi The difficulty for the black AI, or `null` for no AI
-     */
-    public Game(AiDifficulty whiteAi, AiDifficulty blackAi) {
-        if (whiteAi != null) {
-            this.whiteAI = new MiniMaxAIPlayer(Color.WHITE, whiteAi);
-        }
-        if (blackAi != null) {
-            this.blackAI = new MiniMaxAIPlayer(Color.BLACK, blackAi);
-        }
-
-        this.board = new Board();
-        this.board.setupNewGame();
-    }
-
-    private Game(Board board, Color nextPlayerColor) {
-        this.board = board;
-        this.nextPlayerColor = nextPlayerColor;
-    }
-
-    /**
-     * Set up a game with a board for testing purposes.
-     * **DO NOT USE FOR ACTUAL GAMES**.
-     * @param board The board to use
-     * @param nextPlayerColor The next player that will make a move.
-     * @return An instance of the board in a blank state with nextplayercolor set.
-     */
-    public static Game setupTestBoard(Board board, Color nextPlayerColor) {
-        return new Game(board, nextPlayerColor);
+        moveHistory.add(m);
     }
 
     /**
@@ -244,56 +212,7 @@ public class Game {
      * @return true if the game is over, false otherwise
      */
     public boolean isGameOver() {
-        return uiHasForceEndedGame 
-                || board.checkMate(Color.WHITE)
-                || board.checkMate(Color.BLACK)
-                || insufficientMaterial()
-                || board.getAllPieces().stream()
-                .filter(p -> p.getColor() == nextPlayerColor)
-                .noneMatch(p -> p.allPossibleMoves(board).size() > 0);
-    }
-
-    /**
-     * Check whether the board contains insufficient material (automatic draw).
-     *
-     * Insufficient material is true if any of these conditions hold:
-     *  - king vs king
-     *  - king vs king and bishop
-     *  - king vs king and knight
-     *  - king and bishop vs king and bishop, bishops are on same colored square
-     *
-     * For the purpose of this method, we'll also say that a game with less than
-     * two kings contains insufficient material, for obvious reasons.
-     *
-     * NOTE: Could be more efficient with early return, but I did it like this
-     * to increase readability.
-     *
-     * @return true if the game should be drawn due to insufficient material,
-     * false otherwise
-     */
-    public boolean insufficientMaterial() {
-        List<IChessPiece> pieces = board.getAllPieces();
-
-        List<IChessPiece> kings = pieces.stream()
-                .filter(p -> p instanceof ChessPieceKing)
-                .collect(Collectors.toList());
-
-        List<IChessPiece> knights = pieces.stream()
-                .filter(p -> p instanceof ChessPieceKnight)
-                .collect(Collectors.toList());
-
-        List<IChessPiece> bishops = pieces.stream()
-                .filter(p -> p instanceof ChessPieceBishop)
-                .collect(Collectors.toList());
-
-        // obviously
-        return kings.size() < 2
-            || pieces.size() == kings.size()
-            || pieces.size() == 3 && bishops.size() == 1
-            || pieces.size() == 3 && knights.size() == 1
-            || pieces.size() == 4 && bishops.size() == 2
-                && sameColoredSquare(bishops.get(0).getPosition(), bishops.get(1).getPosition());
-
+        return gameOver;
     }
 
     /**
@@ -315,11 +234,7 @@ public class Game {
      * @return 1 if white wins, -1 if black wins, or 0 if the game is not over
      * or a draw
      */
-    public int getWinner() {
-        if (board.checkMate(Color.WHITE)) return -1;
-        if (board.checkMate(Color.BLACK)) return 1;
-        return 0;
-    }
+    public abstract int getWinner();
 
     /**
      * Force the game to end.
@@ -327,7 +242,6 @@ public class Game {
      * This is called by the UI when a player gives up.
      */
     public void forceGameEnd() {
-        uiHasForceEndedGame = true;
+        gameOver = true;
     }
-
 }

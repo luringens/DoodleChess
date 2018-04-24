@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.syntax_highlighters.chess.Account;
-import com.syntax_highlighters.chess.ChessGame;
+import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
@@ -33,9 +33,9 @@ public class GameOverOverlay extends AbstractOverlay {
     private final Button mainMenuButton;
     private final Button dismissOverlayButton;
 
-    private ChessGame game;
+    private LibgdxChessGame game;
 
-    public GameOverOverlay(ChessGame game) {
+    public GameOverOverlay(LibgdxChessGame game) {
         super("Game over", game.getAssetManager());
         AssetManager assetManager = game.getAssetManager();
 

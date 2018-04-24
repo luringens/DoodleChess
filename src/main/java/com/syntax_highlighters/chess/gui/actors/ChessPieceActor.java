@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.Game;
+import com.syntax_highlighters.chess.AbstractGame;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.gui.Audio;
@@ -22,7 +22,7 @@ import com.syntax_highlighters.chess.gui.Audio;
  */
 public class ChessPieceActor extends Actor {
     private IChessPiece piece;
-    private Game game;
+    private AbstractGame game;
     private AssetManager assetManager;
     private ShaderProgram setColorShader;
     private boolean isAnimating = false;
@@ -36,7 +36,7 @@ public class ChessPieceActor extends Actor {
      * @param game The game that the piece is tied to
      * @param assetManager The assetmanager
      */
-    public ChessPieceActor(IChessPiece piece, Color color, Game game, AssetManager assetManager) {
+    public ChessPieceActor(IChessPiece piece, Color color, AbstractGame game, AssetManager assetManager) {
         this.piece = piece;
         this.game = game;
         this.assetManager = assetManager;

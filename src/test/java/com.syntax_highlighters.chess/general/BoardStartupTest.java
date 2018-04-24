@@ -1,7 +1,7 @@
 package com.syntax_highlighters.chess.general;
 
 import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.Game;
+import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.*;
 import org.junit.Before;
@@ -156,7 +156,7 @@ class BoardStartupTest {
 
     @Test
     void BlackCannotMoveFirst(){
-        Game game = new Game(null,null);
+        ChessGame game = new ChessGame(null,null);
         board = game.getBoard();
 
         IChessPiece testPawn = board.getAtPosition(new Position(1,7));

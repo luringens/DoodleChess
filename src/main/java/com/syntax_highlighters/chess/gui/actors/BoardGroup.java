@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.Game;
+import com.syntax_highlighters.chess.AbstractGame;
 import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.IChessPiece;
@@ -23,7 +23,7 @@ import java.util.List;
  * An actor representing the board in the chess game
  */
 public class BoardGroup extends Group {
-    private Game game;
+    private AbstractGame game;
     private AssetManager assetManager;
     private ChessPieceActor selected;
     private Color blackColor;
@@ -41,7 +41,7 @@ public class BoardGroup extends Group {
      * @param whiteColor The white color
      * @param assetManager The assetmanager
      */
-    public BoardGroup(Game game, Color blackColor, Color whiteColor, AssetManager assetManager) {
+    public BoardGroup(AbstractGame game, Color blackColor, Color whiteColor, AssetManager assetManager) {
         this.game = game;
         this.assetManager = assetManager;
         this.blackColor = blackColor;
@@ -163,7 +163,7 @@ public class BoardGroup extends Group {
     /**
      * @return The game that this board is wrapped to
      */
-    public Game getGame() {
+    public AbstractGame getGame() {
         return game;
     }
 

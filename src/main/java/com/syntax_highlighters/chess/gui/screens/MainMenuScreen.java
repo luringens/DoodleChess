@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.syntax_highlighters.chess.ChessGame;
+import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.Audio;
 import com.syntax_highlighters.chess.gui.actors.Button;
@@ -31,7 +31,7 @@ public class MainMenuScreen extends AbstractScreen {
      * Initializes resources used to render this screen.
      * @param game LibGdx game
      */
-    public MainMenuScreen(ChessGame game) {
+    public MainMenuScreen(LibgdxChessGame game) {
         super(game);
 
         AssetManager assetManager = game.getAssetManager();

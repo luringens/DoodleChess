@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.syntax_highlighters.chess.Account;
-import com.syntax_highlighters.chess.ChessGame;
+import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.WobbleDrawable;
@@ -26,7 +26,7 @@ public class ScoreScreen extends AbstractScreen {
     private final Table scoreList;
     private final Button mainMenuButton;
 
-    public ScoreScreen(ChessGame game) {
+    public ScoreScreen(LibgdxChessGame game) {
         super(game);
 
         BitmapFont font = AssetLoader.GetDefaultFont(game.getAssetManager());
