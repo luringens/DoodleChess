@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
-import com.syntax_highlighters.chess.ChessGame;
+import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.WobbleDrawable;
 import com.syntax_highlighters.chess.gui.screens.SetupScreen;
@@ -35,7 +35,7 @@ public class AccountOverlay extends AbstractOverlay {
 
     private TextField username;
 
-    public AccountOverlay(ChessGame game, SetupScreen screen, AssetManager assetManager) {
+    public AccountOverlay(LibgdxChessGame game, SetupScreen screen, AssetManager assetManager) {
         super("Create new account:", assetManager);
 
         BitmapFont font = AssetLoader.GetDefaultFont(assetManager);

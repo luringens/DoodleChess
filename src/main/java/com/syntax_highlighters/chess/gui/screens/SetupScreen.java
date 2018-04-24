@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.graphics.Color;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
-import com.syntax_highlighters.chess.ChessGame;
+import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
@@ -72,7 +72,7 @@ public class SetupScreen extends AbstractScreen {
 
     private boolean randomBoard = false;
 
-    public SetupScreen(ChessGame game)
+    public SetupScreen(LibgdxChessGame game)
     {
         super(game);
         this.assetManager = game.getAssetManager();
@@ -131,12 +131,12 @@ public class SetupScreen extends AbstractScreen {
 
     }
 
-    public SetupScreen(ChessGame game, boolean randomBoard) {
+    public SetupScreen(LibgdxChessGame game, boolean randomBoard) {
         this(game);
         this.randomBoard = randomBoard;
     }
 
-    public void updateAccountLists(ChessGame game)
+    public void updateAccountLists(LibgdxChessGame game)
     {
         ArrayList<String> accounts = new ArrayList<>();
         accounts.add("Player 1");
@@ -170,7 +170,7 @@ public class SetupScreen extends AbstractScreen {
             player2Difficulty = difficulty == -1 ? null : AiDifficulty.values()[difficulty];
     }
 
-    private void addDifficultyList(ChessGame game, int player)
+    private void addDifficultyList(LibgdxChessGame game, int player)
     {
         SelectBox<String> box = new SelectBox<>(game.skin);
 
@@ -353,7 +353,7 @@ public class SetupScreen extends AbstractScreen {
      *
      * @param game Local variable instance parameter
      */
-    private void startGame(ChessGame game) {
+    private void startGame(LibgdxChessGame game) {
         String selected1 = player1Title.getSelected();
         String selected2 = player2Title.getSelected();
 

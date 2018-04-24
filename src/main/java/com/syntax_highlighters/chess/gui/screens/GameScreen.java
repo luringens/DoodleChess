@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.syntax_highlighters.chess.*;
+import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.entities.IAiPlayer;
 import com.syntax_highlighters.chess.entities.MiniMaxAIPlayer;
@@ -37,7 +38,7 @@ import java.util.Arrays;
 public class GameScreen extends AbstractScreen {
     private final AssetManager assetManager;
 
-    private final Game game;
+    private final AbstractGame game;
     //private final UiBoard board;
     private final BoardGroup board;
     private final Text turnText;
@@ -61,7 +62,7 @@ public class GameScreen extends AbstractScreen {
     private final Color player2Color;
     private Boolean paused = false;
 
-    private final ChessGame chessGame;
+    private final LibgdxChessGame chessGame;
     private com.syntax_highlighters.chess.entities.Color nextPlayerColor;
 
     /**
@@ -74,7 +75,7 @@ public class GameScreen extends AbstractScreen {
      * @param attrib2   Attributes for player 2 (account info, AI difficulty,
      * @param randomBoard Whether or not to generate a random board or a regular one.
      */
-    public GameScreen(ChessGame chessGame, PlayerAttributes attrib1, PlayerAttributes attrib2, boolean randomBoard) {
+    public GameScreen(LibgdxChessGame chessGame, PlayerAttributes attrib1, PlayerAttributes attrib2, boolean randomBoard) {
         super(chessGame, false);
 
         assetManager = chessGame.getAssetManager();
@@ -86,7 +87,7 @@ public class GameScreen extends AbstractScreen {
         this.player2Color = attrib2.getColor();
         this.chessGame = chessGame;
 
-        this.game = new Game(ai1, ai2);
+        this.game = new ChessGame(ai1, ai2);
         if(randomBoard)
             // Do 15-25 random moves
             this.game.getBoard().setupPracticeGame((int)(Math.random() * 5) + 20);

@@ -165,7 +165,7 @@ class ChessRulesTest {
         pieces.add(new ChessPiecePawn(new Position(8, 5), Color.BLACK));
         pieces.add(new ChessPiecePawn(new Position(8, 4), Color.WHITE));
         Board b = new Board(pieces);
-        Game g = Game.setupTestBoard(b, Color.BLACK);
+        ChessGame g = ChessGame.setupTestBoard(b, Color.BLACK);
         System.out.println(b);
         assertTrue(g.isGameOver());
     }

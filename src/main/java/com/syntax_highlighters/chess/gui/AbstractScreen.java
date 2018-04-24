@@ -4,16 +4,16 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.syntax_highlighters.chess.ChessGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.assets.AssetManager;
 import com.syntax_highlighters.chess.gui.actors.DoodleActor;
+import com.syntax_highlighters.chess.AbstractGame;
 
 /**
  * Abstract screen implementing common functionality among different screens.
  */
 public abstract class AbstractScreen implements Screen {
-    private final ChessGame game;
+    private final LibgdxChessGame game;
     protected final Stage stage;
     private final static int N_DOODLES_PER_SCREEN = 10;
     private final static String[] DOODLES = new String[]{
@@ -50,7 +50,7 @@ public abstract class AbstractScreen implements Screen {
      *
      * @param game The ChessGame instance of the gui
      */
-    protected AbstractScreen(ChessGame game)
+    protected AbstractScreen(LibgdxChessGame game)
     {
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
@@ -63,7 +63,7 @@ public abstract class AbstractScreen implements Screen {
      * @param game The ChessGame instance of the gui
      * @param createDoodles Whether or not to create doodles
      */
-    protected AbstractScreen(ChessGame game, boolean createDoodles) {
+    protected AbstractScreen(LibgdxChessGame game, boolean createDoodles) {
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
         if (createDoodles)
@@ -90,7 +90,7 @@ public abstract class AbstractScreen implements Screen {
      *
      * @return The ChessGame instance of the gui
      */
-    protected Game getGame()
+    protected LibgdxChessGame getGame()
     {
         return game;
     }
