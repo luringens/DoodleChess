@@ -44,8 +44,6 @@ A fat-jar is a jar file with all the dependencies aswell
 
 the jar should now be available in `./build/distributions/DoodleChess-fat.jar` and can be run using `java -jar ./build/distributions/DoodleChess-fat.jar`
 
-Note: This will not run the tests
-
 ### Running tests
 
 ```sh
