@@ -182,9 +182,10 @@ public class BoardGroup extends Group {
 
         if (!selected.getPiece().canMoveTo(estimated, game.getBoard())) return false;
         isAnimating = true;
+        final ChessPieceActor animatedPiece = selected;
         selected.animateTo(estimated, () -> {
             isAnimating = false;
-            List<Move> moves = game.performMove(selected.getPiece().getPosition(), estimated);
+            List<Move> moves = game.performMove(animatedPiece.getPiece().getPosition(), estimated);
             if (moves.size() == 1) {
                 trySelect(null);
             } else if (moves.size() > 1) {
