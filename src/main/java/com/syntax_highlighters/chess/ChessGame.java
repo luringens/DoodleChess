@@ -125,4 +125,16 @@ public class ChessGame extends AbstractGame {
         if (board.checkMate(Color.BLACK)) return 1;
         return 0;
     }
+
+    @Override
+    public List<Move> allPossibleMoves() {
+        // TODO: implement
+        return null;
+    }
+    
+    @Override
+    public List<Move> allPossibleMoves(IChessPiece piece) {
+        // TODO: implement
+        return null;
+    }
 }

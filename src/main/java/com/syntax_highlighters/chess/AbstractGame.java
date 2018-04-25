@@ -199,6 +199,9 @@ public abstract class AbstractGame {
      */
     public abstract int getWinner();
 
+    public abstract List<Move> allPossibleMoves();
+    public abstract List<Move> allPossibleMoves(IChessPiece piece);
+
     /**
      * Force the game to end.
      *
