@@ -12,13 +12,23 @@ import java.io.InputStreamReader;
  */
 public class Client extends AbstractNetworkService {
     /**
-     * Creates a Client and attempts to connect to an address.
+     * Creates a Client and attempts to connect to an address on the default port.
      * @param address The address to connect to.
      */
     public Client(String address) throws IOException {
+        this(address, HOST_PORT);
+    }
+
+    /**
+     * Creates a Client and attempts to connect to an address.
+     * @param address The address to connect to.
+     * @param port The port to use.
+     */
+    public Client(String address, int port) throws IOException {
         String host = InetAddress.getByName(address).getCanonicalHostName();
-        socket = new Socket(host, HOST_PORT);
+        socket = new Socket(host, port);
         outputStream = new DataOutputStream(socket.getOutputStream());
         inputReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        status = ConnectionStatus.Connected;
     }
 }

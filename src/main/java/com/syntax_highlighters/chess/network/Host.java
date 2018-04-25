@@ -13,14 +13,25 @@ public class Host extends AbstractNetworkService {
     private final ServerSocket serverSocket;
 
     /**
-     * Creates a Host and looks for a connection.
+     * Creates a Host and looks for a connection on the default port.
      * Throws SocketTimeoutException on a timeout.
      * @param timeout Timeout waiting for connection in ms.
      */
     public Host(int timeout) throws IOException {
+        this(timeout, HOST_PORT);
+    }
+
+    /**
+     * Creates a Host and looks for a connection.
+     * Throws SocketTimeoutException on a timeout.
+     * @param timeout Timeout waiting for connection in ms.
+     * @param port The port to use.
+     */
+    public Host(int timeout, int port) throws IOException {
         // Open the socket
-        serverSocket = new ServerSocket(HOST_PORT);
+        serverSocket = new ServerSocket(port);
         serverSocket.setSoTimeout(timeout);
+        serverSocket.setReuseAddress(true);
         socket = serverSocket.accept();
 
         // Get an input and output stream.

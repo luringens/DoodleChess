@@ -3,12 +3,15 @@ package com.syntax_highlighters.chess.network;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Move;
-import com.syntax_highlighters.chess.Position;
 
 public abstract class AbstractNetworkService implements INetworkService {
     protected static final int HOST_PORT = 6666;
@@ -21,10 +24,18 @@ public abstract class AbstractNetworkService implements INetworkService {
     /** {@inheritDoc} */
 	@Override
 	public void SendMove(Move move) {
-        // TODO: Convert into string.
-        String stringrep = "Nf3 Nc6";
         try {
-            outputStream.writeBytes(stringrep + "\n");
+            // Serialize move into array
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(move);
+            byte[] byteArray = baos.toByteArray();
+            oos.close();
+            baos.close();
+            
+            // Send it to the other client.
+            outputStream.write(byteArray);
+            outputStream.writeBytes("\n");
         } catch (IOException ex) {
             lastError = "Failed to send move: " + ex.getMessage();
             if (socket.isClosed()) status = ConnectionStatus.ConnectionLost;
@@ -41,13 +52,28 @@ public abstract class AbstractNetworkService implements INetworkService {
                 status = ConnectionStatus.OpponentLeft;
                 return null;
             }
+            byte[] bytes = stringrep.getBytes();
+
+            // Deserialize
+            ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+            ObjectInputStream in = new ObjectInputStream(bis);
+            Move move = (Move) in.readObject();
+            in.close();
+            bis.close();
             
-            // TODO: Convert into move.
-            return new Move(new Position(1, 1), new Position(2, 2), board);
-        } catch (SocketTimeoutException ex) {
+            return move;
+        }
+        catch (ClassNotFoundException ex) {
+            lastError = "Failed to deserialize - other client "
+                + "may be running a different version of the game" + ex.getMessage();
+            Disconnect();
+            return null;
+        }
+        catch (SocketTimeoutException ex) {
             // No response
             return null;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             lastError = "Failed to send move: " + ex.getMessage();
             if (socket.isClosed()) status = ConnectionStatus.ConnectionLost;
             return null;
@@ -57,6 +83,7 @@ public abstract class AbstractNetworkService implements INetworkService {
     /** {@inheritDoc} */
 	@Override
 	public void Disconnect() {
+        status = ConnectionStatus.Closed;
         try {
             if (outputStream != null)
                 outputStream.writeBytes("BYE\n");
