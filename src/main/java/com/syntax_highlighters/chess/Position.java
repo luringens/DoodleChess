@@ -205,6 +205,17 @@ public class Position {
     }
 
     /**
+     * Translate the position to chess notation.
+     *
+     * No validity checks of indices.
+     *
+     * @return A string of the format [a-h][1-8]
+     */
+    public String toChessNotation() {
+        return String.format("%c%d", "abcdefgh".charAt(this.x-1), this.y);
+    }
+
+    /**
      * Parse a board position written in chess notation, and return a Position.
      *
      * @param pos The position in chess notation, of the form [A-Ha-h][1-8]

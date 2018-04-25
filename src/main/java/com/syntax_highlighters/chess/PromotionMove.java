@@ -48,4 +48,17 @@ public class PromotionMove extends Move {
         b.putAtPosition(getPosition(), oldPiece);
         super.UndoMove(b);
     }
+
+    /**
+     * Get the move in long algebraic notation.
+     *
+     * Disambiguate to which kind of piece the player promoted using the letter
+     * representing said kind of piece on the end of the string.
+     *
+     * @return The move in long algebraic notation for chess moves
+     */
+    @Override
+    public String toString() {
+        return super.toString() + promoteTo.toChessNotation();
+    }
 }

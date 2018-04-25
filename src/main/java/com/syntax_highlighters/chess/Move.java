@@ -30,6 +30,7 @@ public class Move {
     Position newPos;
     private boolean hadMoved;
     private IChessPiece tookPiece = null;
+    private String pieceString;
 
     /**
      * For inheritance only!
@@ -49,8 +50,27 @@ public class Move {
         this.newPos = newPos;
         IChessPiece piece = this.getPiece(board);
         this.hadMoved = piece.hasMoved();
+        this.pieceString = getPieceString(board); // store for later
     }
 
+    /**
+     * Set the taken piece.
+     *
+     * Used in subclasses.
+     */
+    protected void setTakenPiece(IChessPiece piece) {
+        this.tookPiece = piece;
+    }
+
+    /**
+     * Retrieve the taken piece.
+     *
+     * Used in subclasses.
+     */
+    protected IChessPiece getTakenPiece() {
+        return this.tookPiece;
+    }
+    
     /**
      * Get the new position of the piece.
      *
@@ -86,7 +106,7 @@ public class Move {
      * @param board The board to get the piece from
      * @return The pieces first char
      */
-    public String getPieceString(Board board) {
+    private String getPieceString(Board board) {
         Position p = hasDoneMove ? newPos : oldPos;
         return board.getAtPosition(p).toChessNotation();
     }
@@ -111,7 +131,7 @@ public class Move {
      */
     public void DoMove(Board b) {
         if (hasDoneMove) throw new RuntimeException("Move has already been done.");
-        tookPiece = b.getAtPosition(newPos);
+        setTakenPiece(b.getAtPosition(newPos));
 
         IChessPiece piece = this.getPiece(b);
         piece.setHasMoved(true);
@@ -138,5 +158,21 @@ public class Move {
         }
 
         hasDoneMove = false;
+    }
+
+    /**
+     * Get the move in long algebraic notation.
+     *
+     * https://en.wikipedia.org/wiki/Algebraic_notation_(chess)#Long_algebraic_notation
+     *
+     * Long notation always specifies start and end position, which solves
+     * ambiguity problems. Format: [KQRBN]?[a-h][1-8](-|x)[a-h][1-8]
+     *
+     * @return The move in long algebraic notation for chess moves
+     */
+    @Override
+    public String toString() {
+        return this.pieceString + oldPos.toChessNotation() +
+            (tookPiece != null ? "x" : "-") + newPos.toChessNotation();
     }
 }

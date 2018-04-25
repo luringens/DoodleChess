@@ -61,4 +61,17 @@ public class CastlingMove extends Move {
         b.putAtPosition(rookOldPos, b.getAtPosition(rookNewPos));
         hasDoneMove = false;
     }
+
+    /**
+     * Get the move in algebraic notation.
+     *
+     * Kingside castling represented as 0-0, queenside castling as 0-0-0
+     *
+     * @return The move in algebraic notation for chess moves
+     */
+    @Override
+    public String toString() {
+        if (rookOldPos.getX() == 1) return "0-0-0"; // queenside
+        return "0-0"; // kingside
+    }
 }

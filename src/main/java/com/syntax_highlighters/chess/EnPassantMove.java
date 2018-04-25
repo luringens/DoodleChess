@@ -36,8 +36,8 @@ public class EnPassantMove extends Move {
     @Override
     public void DoMove(Board b) {
         super.DoMove(b);
-        passantTakesPiece = b.getAtPosition(passantTakesPos);
-        b.removePiece(passantTakesPiece);
+        setTakenPiece(b.getAtPosition(passantTakesPos));
+        b.removePiece(getTakenPiece());
     }
 
     /**
@@ -46,6 +46,6 @@ public class EnPassantMove extends Move {
     @Override
     public void UndoMove(Board b) {
         super.UndoMove(b);
-        b.putAtPosition(passantTakesPos, passantTakesPiece);
+        b.putAtPosition(passantTakesPos, getTakenPiece());
     }
 }

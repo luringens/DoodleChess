@@ -27,47 +27,10 @@ public abstract class AbstractGame {
      */
     public List<String> getMoveHistory() {
         List<String> moves = new ArrayList<>();
-        for (Move m : moveHistory) {
-            String piece = String.valueOf((moveHistory.size()/2)+1) + ". ";
-            if(board.getAtPosition(m.newPos).getColor().isWhite()) {
-                piece += "WHITE ";
-            }
-            else{
-                piece += "BLACK ";
-            }
-            piece += m.getPieceString(board) + ": ";
-            int a = m.getPosition().getX();
-            switch(a){
-                case 1:
-                    piece += "A";
-                    break;
-                case 2:
-                    piece += "B";
-                    break;
-                case 3:
-                    piece += "C";
-                    break;
-                case 4:
-                    piece += "D";
-                    break;
-                case 5:
-                    piece += "E";
-                    break;
-                case 6:
-                    piece += "F";
-                    break;
-                case 7:
-                    piece += "G";
-                    break;
-                case 8:
-                    piece += "H";
-                    break;
-                default:
-                    piece += "ERROR";
-                    break;
-            }
-            piece += String.valueOf(m.getPosition().getY());
-            moves.add(piece);
+        for (int i = 0; i < moveHistory.size(); i++) {
+            Move m = moveHistory.get(i);
+            String piece = String.valueOf(i+1) + ". ";
+            moves.add(piece + m.toString());
         }
         return moves;
     }
