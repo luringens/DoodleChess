@@ -4,8 +4,8 @@ import com.syntax_highlighters.chess.*;
 import com.syntax_highlighters.chess.entities.*;
 
 import org.junit.jupiter.api.Test;
-import org.junit.Before;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +57,7 @@ class ChessRulesTest {
      * Only set up those two pieces in the correct positions. They can
      * henceforth be accessed using the variables "whitePawn" and "blackPawn".
      */
-    @Before
+    @BeforeEach
     private void setUp() {
         whitePawn = new ChessPiecePawn(new Position(4, 2), Color.WHITE);
         blackPawn = new ChessPiecePawn(new Position(5, 7), Color.BLACK);
@@ -141,8 +141,7 @@ class ChessRulesTest {
 
         // check that black pawn gets captured
         board.movePiece(whitePawn, whiteTarget);
-        assertTrue("En passant does not capture enemy piece",
-                board.getAtPosition(blackPos) == null);
+        assertTrue(board.getAtPosition(blackPos) == null, "En passant does not capture enemy piece");
     }
 
     @Test
@@ -197,12 +196,11 @@ class ChessRulesTest {
         Optional<Move> enpassant = blackPawn.allPossibleMoves(board).stream()
                 .filter(m -> m instanceof EnPassantMove)
                 .findFirst();
-        assertTrue("No en passant move available", enpassant.isPresent());
+        assertTrue(enpassant.isPresent(), "No en passant move available");
         enpassant.get().DoMove(board);
 
         // check that white pawn gets captured
-        assertTrue("En passant does not capture enemy piece",
-                board.getAtPosition(whitePos) == null);
+        assertTrue(board.getAtPosition(whitePos) == null, "En passant does not capture enemy piece");
     }
 
     @Test
@@ -417,7 +415,7 @@ class ChessRulesTest {
      * @param piece The piece to be moved
      */
     private void existsMoveToPosition(Position target, IChessPiece piece) {
-        assertTrue("No move to " + target, piece.canMoveTo(target, board));
+        assertTrue(piece.canMoveTo(target, board), "No move to " + target);
     }
     
     /**

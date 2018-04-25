@@ -5,6 +5,7 @@ import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import com.syntax_highlighters.chess.entities.Color;
 import com.syntax_highlighters.chess.entities.IChessPiece;
+
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.ArrayList;
