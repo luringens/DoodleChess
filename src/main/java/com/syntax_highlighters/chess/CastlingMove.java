@@ -1,5 +1,7 @@
 package com.syntax_highlighters.chess;
 
+import java.util.Objects;
+
 import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import com.syntax_highlighters.chess.entities.ChessPieceRook;
 
@@ -19,6 +21,12 @@ import com.syntax_highlighters.chess.entities.ChessPieceRook;
 public class CastlingMove extends Move {
     private final Position rookOldPos;
     private final Position rookNewPos;
+
+    /**
+     * IMPORTANT: This must be changed on every release of the class
+     * in order to prevent cross-version serialization.
+     */
+    private static final long serialVersionUID = 1;
 
     /**
      * Construct a castling move between the given king and rook.
@@ -60,5 +68,26 @@ public class CastlingMove extends Move {
         b.putAtPosition(oldPos, getPiece(b));
         b.putAtPosition(rookOldPos, b.getAtPosition(rookNewPos));
         hasDoneMove = false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (!(other instanceof CastlingMove)) return false;
+        CastlingMove o = (CastlingMove) other;
+        return super.equals(o)
+            && Objects.equals(rookOldPos, this.rookOldPos)
+            && Objects.equals(rookNewPos, this.rookNewPos);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), this.rookOldPos, this.rookNewPos);
     }
 }
