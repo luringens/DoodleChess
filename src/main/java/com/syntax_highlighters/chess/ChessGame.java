@@ -126,15 +126,23 @@ public class ChessGame extends AbstractGame {
         return 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Move> allPossibleMoves() {
-        // TODO: implement
-        return null;
+        return getPieces().stream()
+            .filter(p -> p.getColor() == nextPlayerColor())
+            .flatMap(p -> p.allPossibleMoves(getBoard()).stream())
+            .collect(Collectors.toList());
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Move> allPossibleMoves(IChessPiece piece) {
-        // TODO: implement
-        return null;
+        if (piece.getColor() != nextPlayerColor()) return new ArrayList<>(); // piece cannot move
+        return piece.allPossibleMoves(getBoard());
     }
 }
