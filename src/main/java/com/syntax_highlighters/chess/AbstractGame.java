@@ -199,7 +199,20 @@ public abstract class AbstractGame {
      */
     public abstract int getWinner();
 
+    /**
+     * Get a list of all the possible moves that can be made during this turn.
+     *
+     * @return A list of all the possible moves that can be made by the current
+     * player
+     */
     public abstract List<Move> allPossibleMoves();
+
+    /**
+     * Get a list of all possible moves a given piece can make this turn.
+     *
+     * @return A list of the possible moves that can be made by the current
+     * player using this piece.
+     */
     public abstract List<Move> allPossibleMoves(IChessPiece piece);
 
     /**
