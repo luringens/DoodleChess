@@ -77,7 +77,7 @@ public class ChessTileActor extends Actor {
         ChessPieceActor selected = boardGroup.getSelected();
         if(selected != null)
         {
-            List<Move> moves = selected.getPiece().allPossibleMoves(boardGroup.getGame().getBoard());
+            List<Move> moves = boardGroup.getGame().allPossibleMoves(selected.getPiece());
             if(moves.stream().anyMatch(x->x.getPosition().equals(position)))
             {
                 batch.setColor(new Color(1,0.84f,0, 1.0f));

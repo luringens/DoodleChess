@@ -27,47 +27,10 @@ public abstract class AbstractGame {
      */
     public List<String> getMoveHistory() {
         List<String> moves = new ArrayList<>();
-        for (Move m : moveHistory) {
-            String piece = String.valueOf((moveHistory.size()/2)+1) + ". ";
-            if(board.getAtPosition(m.newPos).getColor().isWhite()) {
-                piece += "WHITE ";
-            }
-            else{
-                piece += "BLACK ";
-            }
-            piece += m.getPieceString(board) + ": ";
-            int a = m.getPosition().getX();
-            switch(a){
-                case 1:
-                    piece += "A";
-                    break;
-                case 2:
-                    piece += "B";
-                    break;
-                case 3:
-                    piece += "C";
-                    break;
-                case 4:
-                    piece += "D";
-                    break;
-                case 5:
-                    piece += "E";
-                    break;
-                case 6:
-                    piece += "F";
-                    break;
-                case 7:
-                    piece += "G";
-                    break;
-                case 8:
-                    piece += "H";
-                    break;
-                default:
-                    piece += "ERROR";
-                    break;
-            }
-            piece += String.valueOf(m.getPosition().getY());
-            moves.add(piece);
+        for (int i = 0; i < moveHistory.size(); i++) {
+            Move m = moveHistory.get(i);
+            String piece = String.valueOf(i+1) + ". ";
+            moves.add(piece + m.toString());
         }
         return moves;
     }
@@ -234,7 +197,27 @@ public abstract class AbstractGame {
      * @return 1 if white wins, -1 if black wins, or 0 if the game is not over
      * or a draw
      */
-    public abstract int getWinner();
+    public int getWinner() {
+        if (board.checkMate(Color.WHITE)) return -1;
+        if (board.checkMate(Color.BLACK)) return 1;
+        return 0;
+    }
+
+    /**
+     * Get a list of all the possible moves that can be made during this turn.
+     *
+     * @return A list of all the possible moves that can be made by the current
+     * player
+     */
+    public abstract List<Move> allPossibleMoves();
+
+    /**
+     * Get a list of all possible moves a given piece can make this turn.
+     *
+     * @return A list of the possible moves that can be made by the current
+     * player using this piece.
+     */
+    public abstract List<Move> allPossibleMoves(IChessPiece piece);
 
     /**
      * Force the game to end.
