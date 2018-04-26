@@ -1,6 +1,7 @@
 package com.syntax_highlighters.chess;
 
-import com.syntax_highlighters.chess.entities.Color;
+import java.util.List;
+import com.syntax_highlighters.chess.entities.IChessPiece;
 
 /**
  * Custom game mode with sjadam rules.
@@ -9,12 +10,34 @@ import com.syntax_highlighters.chess.entities.Color;
  * www.sjadam.no
  */
 public class SjadamGame extends AbstractGame {
+
     /**
-     * {@inheritDoc}
+     * Get a list of all the possible moves that can be made during this turn.
+     *
+     * Takes care of any restrictions put in place due to stateful changes in
+     * the SjadamGame.
+     *
+     * @return A list of all the possible moves that can be made by the current
+     * player
      */
-    public int getWinner() {
-        if (board.checkMate(Color.WHITE)) return -1;
-        if (board.checkMate(Color.BLACK)) return 1;
-        return 0;
+    @Override
+    public List<Move> allPossibleMoves() {
+        // TODO: implement
+        return null;
+    }
+
+    /**
+     * Get a list of all possible moves a given piece can make this turn.
+     *
+     * Takes care of any restrictions put in place due to stateful changes in
+     * the SjadamGame.
+     *
+     * @return A list of the possible moves that can be made by the current
+     * player using this piece.
+     */
+    @Override
+    public List<Move> allPossibleMoves(IChessPiece piece) {
+        //TODO: implement
+        return null;
     }
 }
