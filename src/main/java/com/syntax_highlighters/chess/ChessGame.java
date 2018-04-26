@@ -112,21 +112,6 @@ public class ChessGame extends AbstractGame {
     }
 
     /**
-     * Determine the winner of the game, if any.
-     *
-     * Only determines winner by checkmate (not by resignation).
-     *
-     * @return 1 if white wins, -1 if black wins, or 0 if the game is not over
-     * or a draw
-     */
-    @Override
-    public int getWinner() {
-        if (board.checkMate(Color.WHITE)) return -1;
-        if (board.checkMate(Color.BLACK)) return 1;
-        return 0;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

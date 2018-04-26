@@ -197,7 +197,11 @@ public abstract class AbstractGame {
      * @return 1 if white wins, -1 if black wins, or 0 if the game is not over
      * or a draw
      */
-    public abstract int getWinner();
+    public int getWinner() {
+        if (board.checkMate(Color.WHITE)) return -1;
+        if (board.checkMate(Color.BLACK)) return 1;
+        return 0;
+    }
 
     /**
      * Get a list of all the possible moves that can be made during this turn.
