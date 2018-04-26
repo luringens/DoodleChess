@@ -1,14 +1,13 @@
 package com.syntax_highlighters.chess.general;
 
 import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.Game;
+import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.*;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
-import static junit.framework.TestCase.assertTrue;
-import static junit.framework.TestCase.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -19,10 +18,7 @@ class BoardStartupTest {
 
     private Board board;
 
-    // NOTE: Although this is marked using @Before, it doesn't work on my
-    // system. It requires the method to be called in every test method.
-    // - Vegard
-    @Before
+    @BeforeEach
     private void setUp() {
         board = new Board();
         board.setupNewGame();
@@ -156,7 +152,7 @@ class BoardStartupTest {
 
     @Test
     void BlackCannotMoveFirst(){
-        Game game = new Game(null,null);
+        ChessGame game = new ChessGame(null,null);
         board = game.getBoard();
 
         IChessPiece testPawn = board.getAtPosition(new Position(1,7));

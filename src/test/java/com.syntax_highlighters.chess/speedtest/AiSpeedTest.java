@@ -4,7 +4,7 @@ import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.entities.*;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests pertaining to the behavior of the AI.
@@ -17,26 +17,23 @@ class AiSpeedTest {
         final long allowedTime = 1000; // Milliseconds.
         long time = aiSpeedTest(AiDifficulty.Easy);
         System.out.println("Longest move took " + time + "ms.");
-        assertTrue("The easy AI is too slow (" + time + " >= " + allowedTime + ")",
-                time < allowedTime);
+        assertTrue(time < allowedTime, "The easy AI is too slow (" + time + " >= " + allowedTime + ")");
     }
 
     @Test
-    void mediumAICompletesWithinOneSecond() {
+    void mediumAICompletesWithinThreeSeconds() {
         final long allowedTime = 3000; // Milliseconds.
         long time = aiSpeedTest(AiDifficulty.Medium);
         System.out.println("Longest move took " + time + "ms.");
-        assertTrue("The medium AI is too slow (" + time + " >= " + allowedTime + ")",
-                time < allowedTime);
+        assertTrue(time < allowedTime, "The medium AI is too slow (" + time + " >= " + allowedTime + ")");
     }
 
     @Test
-    void hardAICompletesWithinOneSecond() {
+    void hardAICompletesWithinThreeSeconds() {
         final long allowedTime = 3000; // Milliseconds.
         long time = aiSpeedTest(AiDifficulty.Hard);
         System.out.println("Longest move took " + time + "ms.");
-        assertTrue("The hard AI is too slow (" + time + " >= " + allowedTime + ")",
-                time < allowedTime);
+        assertTrue(time < allowedTime, "The hard AI is too slow (" + time + " >= " + allowedTime + ")");
     }
 
     /**
@@ -58,6 +55,7 @@ class AiSpeedTest {
             long end = System.nanoTime();
             long duration = (end - start) / 1_000_000;
             time = Math.max(time, duration);
+            color = color.opponentColor();
         }
         return time;
     }

@@ -1,14 +1,14 @@
 package com.syntax_highlighters.chess.general;
 
 import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.Game;
+import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.*;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ class AiTest {
         pieces.add(new ChessPieceKing(new Position(1, 1), Color.WHITE));
         pieces.add(new ChessPieceKing(new Position(8, 8), Color.BLACK));
         Board board = new Board(pieces);
-        Game game = Game.setupTestBoard(board, Color.BLACK);
+        ChessGame game = ChessGame.setupTestBoard(board, Color.BLACK);
 
         IAiPlayer ai = new MiniMaxAIPlayer(Color.BLACK, AiDifficulty.Hard);
 

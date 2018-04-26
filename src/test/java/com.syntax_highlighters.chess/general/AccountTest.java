@@ -5,67 +5,64 @@ import com.syntax_highlighters.chess.AccountManager;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AccountTest {
+class AccountTest {
     @Test
-    public void defaultAccountCreationHasNoWinsOrLosses() {
+    void defaultAccountCreationHasNoWinsOrLosses() {
         Account a = new Account("Alice");
         assertEquals(0, a.getWinCount());
         assertEquals(0, a.getLossCount());
     }
 
     @Test
-    public void winIncrementsWinCountByOne() {
+    void winIncrementsWinCountByOne() {
         Account a = new Account("Alice");
         int wc = a.getWinCount();
 
-        a.win();
+        a.win(1000);
 
         assertEquals(wc+1, a.getWinCount());
     }
 
     @Test
-    public void winDoesNotChangeLossCount() {
+    void winDoesNotChangeLossCount() {
         Account a = new Account("Alice");
         int lc = a.getLossCount();
 
-        a.win();
+        a.win(1000);
 
         assertEquals(lc, a.getLossCount());
     }
     
     @Test
-    public void lossIncrementsLossCountByOne() {
+    void lossIncrementsLossCountByOne() {
         Account a = new Account("Alice");
         int lc = a.getLossCount();
 
-        a.loss();
+        a.loss(1000);
 
         assertEquals(lc+1, a.getLossCount());
     }
 
     @Test
-    public void lossDoesNotChangeWinCount() {
+    void lossDoesNotChangeWinCount() {
         Account a = new Account("Alice");
         int wc = a.getWinCount();
 
-        a.loss();
+        a.loss(1000);
 
         assertEquals(wc, a.getWinCount());
     }
 
     @Test
-    public void accountStoresCorrectName() {
+    void accountStoresCorrectName() {
         String name = "Alice";
         Account a = new Account(name);
         assertEquals(name, a.getName());
     }
 
     @Test
-    public void defaultRatingOfAccountIs1000() {
+    void defaultRatingOfAccountIs1000() {
         Account a = new Account("Alice");
         assertEquals(1000, a.getRating());
     }
-
-    // TODO: Tests that the rating updates correctly, once the new API is
-    // hammered out
 }
