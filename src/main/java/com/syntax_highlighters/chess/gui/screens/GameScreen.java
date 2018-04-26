@@ -87,7 +87,7 @@ public class GameScreen extends AbstractScreen {
         this.player2Color = attrib2.getColor();
         this.chessGame = chessGame;
 
-        this.game = new ChessGame(ai1, ai2);
+        this.game = new SjadamGame();
         if(randomBoard)
             // Do 15-25 random moves
             this.game.getBoard().setupPracticeGame((int)(Math.random() * 5) + 20);

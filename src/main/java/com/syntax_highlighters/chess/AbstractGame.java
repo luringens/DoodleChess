@@ -227,4 +227,16 @@ public abstract class AbstractGame {
     public void forceGameEnd() {
         gameOver = true;
     }
+
+    /**
+     * Check whether the piece can move to the given position during the given
+     * turn.
+     *
+     * @param piece The piece to move
+     * @param pos The position to move to
+     *
+     * @return true if the piece can currently move to the position, false
+     * otherwise
+     */
+    public abstract boolean canMoveTo(IChessPiece piece, Position pos);
 }

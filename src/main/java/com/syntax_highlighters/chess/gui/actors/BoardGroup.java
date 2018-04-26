@@ -180,7 +180,8 @@ public class BoardGroup extends Group {
 
         Position estimated = new Position((int) (x / tileWidth) + 1, (int) (y / tileHeight) + 1);
 
-        if (!selected.getPiece().canMoveTo(estimated, game.getBoard())) return false;
+        if (!game.canMoveTo(selected.getPiece(), estimated)) return false;
+        
         isAnimating = true;
         final ChessPieceActor animatedPiece = selected;
         selected.animateTo(estimated, () -> {

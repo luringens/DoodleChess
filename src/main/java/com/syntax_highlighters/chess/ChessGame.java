@@ -130,4 +130,9 @@ public class ChessGame extends AbstractGame {
         if (piece.getColor() != nextPlayerColor()) return new ArrayList<>(); // piece cannot move
         return piece.allPossibleMoves(getBoard());
     }
+
+    @Override 
+    public boolean canMoveTo(IChessPiece piece, Position pos) {
+        return piece.canMoveTo(pos, board);
+    }
 }
