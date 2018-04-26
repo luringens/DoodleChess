@@ -66,4 +66,26 @@ class AiTest {
 
         assertTrue(game.isGameOver());
     }
+    @Test
+    void ThreatenedQueenShouldMoveAwayTest(){
+        ArrayList<IChessPiece> pieces = new ArrayList<>();
+        ChessPieceQueen queen = new ChessPieceQueen(new Position(8,1),Color.BLACK);
+        pieces.add(queen);
+        pieces.add(new ChessPieceQueen(new Position(4,1),Color.WHITE));
+        pieces.add(new ChessPieceKing(new Position(5,8),Color.BLACK));
+        pieces.add(new ChessPieceRook(new Position(8,2),Color.WHITE));
+        pieces.add(new ChessPieceKing(new Position(8,3),Color.WHITE));
+        pieces.add(new ChessPieceKnight(new Position(7,1),Color.WHITE));
+        Board board = new Board(pieces);
+        ChessGame game = ChessGame.setupTestBoard(board,Color.BLACK);
+
+        IAiPlayer ai = new MiniMaxAIPlayer(Color.BLACK,AiDifficulty.ShortSighted);
+
+        System.out.println(board);
+        ai.PerformMove(board);
+        System.out.println(board);
+        Position queenPos = queen.getPosition() ;
+
+        assertTrue(queenPos != new Position(8,2) || queenPos != new Position(4,1));
+    }
 }

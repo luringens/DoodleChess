@@ -151,7 +151,6 @@ public class    Board {
             if (kings == 2) break;
         }
     }
-
     /**
      * Performs a random move for a color.
      * @param color The color to do a move for.
