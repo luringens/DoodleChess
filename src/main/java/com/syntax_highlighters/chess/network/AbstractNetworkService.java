@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import com.syntax_highlighters.chess.AbstractGame;
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Move;
 
@@ -40,7 +41,12 @@ public abstract class AbstractNetworkService implements INetworkService {
             lastError = "Failed to send move: " + ex.getMessage();
             if (socket.isClosed()) status = ConnectionStatus.ConnectionLost;
         }
-	}
+    }
+    
+    /** {@inheritDoc} */
+    public Move GetMove(AbstractGame game) {
+        return ReceiveMove(game.getBoard(), 0);
+    }
 
     /** {@inheritDoc} */
 	@Override

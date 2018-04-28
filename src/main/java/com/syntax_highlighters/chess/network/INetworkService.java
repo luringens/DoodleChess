@@ -1,13 +1,14 @@
 package com.syntax_highlighters.chess.network;
 
 import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.IBlockingPlayer;
 import com.syntax_highlighters.chess.Move;
 
 /**
  * Represents a service that abstracts communicating to another player.
  * Is implemented by host and client alike.
  */
-public interface INetworkService {
+public interface INetworkService extends IBlockingPlayer {
     /**
      * Sends a move to the opponent.
      * @param move The move to send.
