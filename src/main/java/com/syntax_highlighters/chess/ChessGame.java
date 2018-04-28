@@ -60,8 +60,8 @@ public class ChessGame extends AbstractGame {
     @Override
     public boolean isGameOver() {
         return super.isGameOver()
-                || board.checkMate(Color.WHITE)
-                || board.checkMate(Color.BLACK)
+                || checkMate(Color.WHITE)
+                || checkMate(Color.BLACK)
                 || insufficientMaterial()
                 || board.getAllPieces().stream()
                 .filter(p -> p.getColor() == nextPlayerColor)
@@ -130,4 +130,12 @@ public class ChessGame extends AbstractGame {
         if (piece.getColor() != nextPlayerColor()) return new ArrayList<>(); // piece cannot move
         return piece.allPossibleMoves(getBoard());
     }
+
+	@Override
+	public ChessGame copy() {
+        ChessGame chess = new ChessGame(board.copy(), nextPlayerColor);
+        chess.moveHistory = copyMoveHistory();
+        chess.gameOver = gameOver;
+        return chess;
+	}
 }
