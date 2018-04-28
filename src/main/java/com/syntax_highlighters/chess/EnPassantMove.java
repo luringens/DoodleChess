@@ -19,6 +19,10 @@ public class EnPassantMove extends Move {
     private final Position passantTakesPos;
     private IChessPiece passantTakesPiece = null;
 
+    private EnPassantMove(Position passantTakesPos) {
+        this.passantTakesPos = passantTakesPos;
+    }
+
     /**
      * IMPORTANT: This must be changed on every release of the class
      * in order to prevent cross-version serialization.
@@ -44,8 +48,8 @@ public class EnPassantMove extends Move {
     @Override
     public void DoMove(Board b) {
         super.DoMove(b);
-        passantTakesPiece = b.getAtPosition(passantTakesPos);
-        b.removePiece(passantTakesPiece);
+        setTakenPiece(b.getAtPosition(passantTakesPos));
+        b.removePiece(getTakenPiece());
     }
 
     /**
@@ -54,7 +58,23 @@ public class EnPassantMove extends Move {
     @Override
     public void UndoMove(Board b) {
         super.UndoMove(b);
-        b.putAtPosition(passantTakesPos, passantTakesPiece);
+        b.putAtPosition(passantTakesPos, getTakenPiece());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Move copy() {
+        EnPassantMove m = new EnPassantMove(passantTakesPos);
+        m.oldPos = oldPos;
+        m.newPos = newPos;
+        m.hadMoved = hadMoved;
+        m.pieceString = pieceString;
+        m.tookPiece = tookPiece;
+        m.hasDoneMove = hasDoneMove;
+        m.passantTakesPiece = passantTakesPiece;
+        return m;
     }
 
     /**

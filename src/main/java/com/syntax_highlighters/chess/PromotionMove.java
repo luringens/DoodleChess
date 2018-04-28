@@ -12,6 +12,8 @@ public class PromotionMove extends Move {
     private IChessPiece promoteTo;
     private IChessPiece oldPiece;
 
+    private PromotionMove() {}
+
     /**
      * IMPORTANT: This must be changed on every release of the class
      * in order to prevent cross-version serialization.
@@ -71,10 +73,39 @@ public class PromotionMove extends Move {
     }
 
     /**
+     * Get the move in long algebraic notation.
+     *
+     * Disambiguate to which kind of piece the player promoted using the letter
+     * representing said kind of piece on the end of the string.
+     *
+     * @return The move in long algebraic notation for chess moves
+     */
+    @Override
+    public String toString() {
+        return super.toString() + promoteTo.toChessNotation();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), this.promoteTo, this.oldPiece);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Move copy() {
+        PromotionMove m = new PromotionMove();
+        m.oldPos = oldPos;
+        m.newPos = newPos;
+        m.hadMoved = hadMoved;
+        m.pieceString = pieceString;
+        m.tookPiece = tookPiece;
+        m.hasDoneMove = hasDoneMove;
+        m.promoteTo = promoteTo;
+        m.oldPiece = oldPiece;
+        return m;
     }
 }

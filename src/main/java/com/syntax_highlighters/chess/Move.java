@@ -32,8 +32,9 @@ public class Move implements Serializable {
     boolean hasDoneMove = false;
     Position oldPos;
     Position newPos;
-    private boolean hadMoved;
-    private IChessPiece tookPiece = null;
+    protected boolean hadMoved;
+    protected IChessPiece tookPiece = null;
+    protected String pieceString;
 
     /**
      * IMPORTANT: This must be changed on every release of the class
@@ -59,8 +60,27 @@ public class Move implements Serializable {
         this.newPos = newPos;
         IChessPiece piece = this.getPiece(board);
         this.hadMoved = piece.hasMoved();
+        this.pieceString = getPieceString(board); // store for later
     }
 
+    /**
+     * Set the taken piece.
+     *
+     * Used in subclasses.
+     */
+    protected void setTakenPiece(IChessPiece piece) {
+        this.tookPiece = piece;
+    }
+
+    /**
+     * Retrieve the taken piece.
+     *
+     * Used in subclasses.
+     */
+    protected IChessPiece getTakenPiece() {
+        return this.tookPiece;
+    }
+    
     /**
      * Get the new position of the piece.
      *
@@ -87,7 +107,12 @@ public class Move implements Serializable {
      */
     public IChessPiece getPiece(Board board) {
         Position p = hasDoneMove ? newPos : oldPos;
-        return board.getAtPosition(p);
+        IChessPiece piece = board.getAtPosition(p);
+        if (piece == null) {
+            System.out.println(this + "\n" + board + "\n----------");
+            throw new RuntimeException("PIECE NULL");
+        }
+        return piece;
     }
 
     /**
@@ -96,7 +121,7 @@ public class Move implements Serializable {
      * @param board The board to get the piece from
      * @return The pieces first char
      */
-    public String getPieceString(Board board) {
+    private String getPieceString(Board board) {
         Position p = hasDoneMove ? newPos : oldPos;
         return board.getAtPosition(p).toChessNotation();
     }
@@ -121,7 +146,7 @@ public class Move implements Serializable {
      */
     public void DoMove(Board b) {
         if (hasDoneMove) throw new RuntimeException("Move has already been done.");
-        tookPiece = b.getAtPosition(newPos);
+        setTakenPiece(b.getAtPosition(newPos));
 
         IChessPiece piece = this.getPiece(b);
         piece.setHasMoved(true);
@@ -183,5 +208,36 @@ public class Move implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(this.hadMoved, this.hasDoneMove, this.newPos, this.oldPos, this.tookPiece);
+    }
+
+    /**
+     * Get the move in long algebraic notation.
+     *
+     * https://en.wikipedia.org/wiki/Algebraic_notation_(chess)#Long_algebraic_notation
+     *
+     * Long notation always specifies start and end position, which solves
+     * ambiguity problems. Format: [KQRBN]?[a-h][1-8](-|x)[a-h][1-8]
+     *
+     * @return The move in long algebraic notation for chess moves
+     */
+    @Override
+    public String toString() {
+        return this.pieceString + oldPos.toChessNotation() +
+            (tookPiece != null ? "x" : "-") + newPos.toChessNotation();
+    }
+
+    /**
+     * Copies the move.
+     * @return A copy of the move.
+     */
+    public Move copy() {
+        Move m = new Move();
+        m.oldPos = oldPos;
+        m.newPos = newPos;
+        m.hadMoved = hadMoved;
+        m.pieceString = pieceString;
+        m.tookPiece = tookPiece;
+        m.hasDoneMove = hasDoneMove;
+        return m;
     }
 }

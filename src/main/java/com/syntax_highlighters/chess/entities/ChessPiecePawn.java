@@ -29,7 +29,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
      */
     @Override
     public String toChessNotation() {
-        return "P";
+        return ""; // pawns are denoted by their lack of a letter
     }
 
     /**

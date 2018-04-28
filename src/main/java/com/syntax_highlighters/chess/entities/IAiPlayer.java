@@ -1,6 +1,6 @@
 package com.syntax_highlighters.chess.entities;
 
-import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.AbstractGame;
 import com.syntax_highlighters.chess.Move;
 
 /**
@@ -21,16 +21,16 @@ public interface IAiPlayer {
      *
      * Modifies the state of the board.
      *
-     * @param board The current board state
+     * @param game The game to work with.
      */
-    void PerformMove(Board board);
-
+    void PerformMove(AbstractGame game);
+    
     /**
      * Choose a move and return it without performing it on the board.
      *
-     * @param board The current board state
+     * @param game The game to work with.
      * @return The suggested best move.
      */
-    Move GetMove(Board board);
+    Move GetMove(AbstractGame game);
 }
 

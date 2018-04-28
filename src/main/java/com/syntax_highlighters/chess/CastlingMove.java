@@ -22,6 +22,11 @@ public class CastlingMove extends Move {
     private final Position rookOldPos;
     private final Position rookNewPos;
 
+    private CastlingMove(Position rookOldPos, Position rookNewPos) {
+        this.rookOldPos = rookOldPos;
+        this.rookNewPos = rookNewPos;
+    }
+
     /**
      * IMPORTANT: This must be changed on every release of the class
      * in order to prevent cross-version serialization.
@@ -82,6 +87,18 @@ public class CastlingMove extends Move {
             && Objects.equals(rookOldPos, this.rookOldPos)
             && Objects.equals(rookNewPos, this.rookNewPos);
     }
+    /**
+     * Get the move in algebraic notation.
+     *
+     * Kingside castling represented as 0-0, queenside castling as 0-0-0
+     *
+     * @return The move in algebraic notation for chess moves
+     */
+    @Override
+    public String toString() {
+        if (rookOldPos.getX() == 1) return "0-0-0"; // queenside
+        return "0-0"; // kingside
+    }
 
     /**
      * {@inheritDoc}
@@ -89,5 +106,19 @@ public class CastlingMove extends Move {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), this.rookOldPos, this.rookNewPos);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Move copy() {
+        CastlingMove m = new CastlingMove(rookOldPos, rookNewPos);
+        m.oldPos = oldPos;
+        m.newPos = newPos;
+        m.hadMoved = hadMoved;
+        m.pieceString = pieceString;
+        m.tookPiece = tookPiece;
+        m.hasDoneMove = hasDoneMove;
+        return m;
     }
 }
