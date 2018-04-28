@@ -277,16 +277,17 @@ public class GameScreen extends AbstractScreen {
                 stage.draw();
                 return;
             }
+        }
 
-            // Do an AI turn if needed
-            if (game.nextPlayerIsAI()) {
-                game.PerformAIMove();
-                // If the AI performed a promotion move, we need to add the
-                // piece that was promoted to as an actor to the BoardGroup.
-                Board b = game.getBoard();
-                Move m = b.getLastMove();
+        // Do an AI turn if needed
+        if (game.nextPlayerIsAI()) {
+            Move m = game.PerformAIMoveAsync();
+            // If the AI performed a promotion move, we need to add the
+            // piece that was promoted to as an actor to the BoardGroup.
+            if (m != null) {
+                nextPlayerColor = game.nextPlayerColor();
                 if (m instanceof PromotionMove) {
-                    IChessPiece promoted = b.getAtPosition(m.getPosition());
+                    IChessPiece promoted = game.getBoard().getAtPosition(m.getPosition());
                     board.addPiece(promoted);
                 }
             }

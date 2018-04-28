@@ -18,6 +18,15 @@ public class AsyncPlayer {
     }
 
     /**
+     * Get a move synchronously from the player.
+     * @param game The game to work with.
+     * @return The received move or null.
+     */
+    public Move getMove(AbstractGame game) {
+        return wrapper.getMoveSynchronous(game);
+    }
+
+    /**
      * Get a move asynchronously from the player.
      * @param game The game to work with.
      * @return The received move or null.
@@ -25,7 +34,7 @@ public class AsyncPlayer {
     public Move pollMove(AbstractGame game) {
         switch (wrapper.getState()) {
             case Done: return wrapper.getResult();
-            case Waiting: wrapper.startAi(game);
+            case Waiting: wrapper.startProcess(game);
             default: return null;
         }
     }
@@ -57,7 +66,11 @@ class Wrapper {
         this.player = player;
     }
 
-    public void startAi(AbstractGame game) {
+    public Move getMoveSynchronous(AbstractGame game) {
+        return player.GetMove(game);
+    }
+
+    public void startProcess(AbstractGame game) {
         if (state != State.Waiting) return;
         state = State.Runnning;
         new Thread(new Runnable(){
