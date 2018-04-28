@@ -10,6 +10,8 @@ public class PromotionMove extends Move {
     private IChessPiece promoteTo;
     private IChessPiece oldPiece;
 
+    private PromotionMove() {}
+
     /**
      * Create a PromotionMove from the given position to the new position, which
      * promotes the pawn to the piece specified.
@@ -60,5 +62,21 @@ public class PromotionMove extends Move {
     @Override
     public String toString() {
         return super.toString() + promoteTo.toChessNotation();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Move copy() {
+        PromotionMove m = new PromotionMove();
+        m.oldPos = oldPos;
+        m.newPos = newPos;
+        m.hadMoved = hadMoved;
+        m.pieceString = pieceString;
+        m.tookPiece = tookPiece;
+        m.hasDoneMove = hasDoneMove;
+        m.promoteTo = promoteTo;
+        m.oldPiece = oldPiece;
+        return m;
     }
 }

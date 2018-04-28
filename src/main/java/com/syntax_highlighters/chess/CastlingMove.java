@@ -20,6 +20,11 @@ public class CastlingMove extends Move {
     private final Position rookOldPos;
     private final Position rookNewPos;
 
+    private CastlingMove(Position rookOldPos, Position rookNewPos) {
+        this.rookOldPos = rookOldPos;
+        this.rookNewPos = rookNewPos;
+    }
+
     /**
      * Construct a castling move between the given king and rook.
      *
@@ -73,5 +78,19 @@ public class CastlingMove extends Move {
     public String toString() {
         if (rookOldPos.getX() == 1) return "0-0-0"; // queenside
         return "0-0"; // kingside
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Move copy() {
+        CastlingMove m = new CastlingMove(rookOldPos, rookNewPos);
+        m.oldPos = oldPos;
+        m.newPos = newPos;
+        m.hadMoved = hadMoved;
+        m.pieceString = pieceString;
+        m.tookPiece = tookPiece;
+        m.hasDoneMove = hasDoneMove;
+        return m;
     }
 }
