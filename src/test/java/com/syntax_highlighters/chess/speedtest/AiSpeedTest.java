@@ -1,6 +1,7 @@
 package com.syntax_highlighters.chess.speedtest;
 
 import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.entities.*;
 import org.junit.jupiter.api.Test;
 
@@ -43,19 +44,13 @@ class AiSpeedTest {
      */
     private long aiSpeedTest(AiDifficulty ai) {
         long time = 0;
-        Color color = Color.WHITE;
-        Board board = new Board();
-        board.setupNewGame();
-        IAiPlayer white = new MiniMaxAIPlayer(Color.WHITE, ai);
-        IAiPlayer black = new MiniMaxAIPlayer(Color.BLACK, ai);
+        ChessGame game = new ChessGame(ai, ai);
         for (int i = 0; i < MOVES_TO_TEST; i++) {
             long start = System.nanoTime();
-            if (color.isWhite()) white.PerformMove(board);
-            else black.PerformMove(board);
+            game.PerformAIMove();
             long end = System.nanoTime();
             long duration = (end - start) / 1_000_000;
             time = Math.max(time, duration);
-            color = color.opponentColor();
         }
         return time;
     }

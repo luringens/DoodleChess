@@ -17,6 +17,10 @@ public class EnPassantMove extends Move {
     private final Position passantTakesPos;
     private IChessPiece passantTakesPiece = null;
 
+    private EnPassantMove(Position passantTakesPos) {
+        this.passantTakesPos = passantTakesPos;
+    }
+
     /**
      * Constructor.
      *
@@ -47,5 +51,21 @@ public class EnPassantMove extends Move {
     public void UndoMove(Board b) {
         super.UndoMove(b);
         b.putAtPosition(passantTakesPos, getTakenPiece());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Move copy() {
+        EnPassantMove m = new EnPassantMove(passantTakesPos);
+        m.oldPos = oldPos;
+        m.newPos = newPos;
+        m.hadMoved = hadMoved;
+        m.pieceString = pieceString;
+        m.tookPiece = tookPiece;
+        m.hasDoneMove = hasDoneMove;
+        m.passantTakesPiece = passantTakesPiece;
+        return m;
     }
 }

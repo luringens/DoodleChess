@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * The white player starts at rows 1 and 2
  * The black player starts at rows 7 and 8
  */
-public class    Board {
+public class Board {
     // constants, just in case
     public static final int BOARD_WIDTH = 8;
     public static final int BOARD_HEIGHT = 8;
@@ -151,7 +151,6 @@ public class    Board {
             if (kings == 2) break;
         }
     }
-
     /**
      * Performs a random move for a color.
      * @param color The color to do a move for.
@@ -389,24 +388,6 @@ public class    Board {
      */
     public Move getLastMove() {
         return this.lastMove;
-    }
-
-    /**
-     * Determine whether the given player is in checkmate.
-     *
-     * @param playerColor The color of the player to check for
-     *
-     * @return true if the given player is in checkmate, false otherwise
-     */
-    public boolean checkMate(Color playerColor) {
-        List<IChessPiece> allPieces = getAllPieces();
-        if (allPieces.size() == 0) return false; // not possible
-        ChessPieceKing king = allPieces.stream()
-                .filter(p -> p instanceof ChessPieceKing && p.getColor() == playerColor)
-                .map(p -> (ChessPieceKing)p).findFirst().orElse(null);
-        return king == null || king.isThreatened(this) && allPieces.stream()
-                .filter(p -> p.getColor() == playerColor)
-                .mapToLong(p -> p.allPossibleMoves(this).size()).sum() == 0;
     }
 
     /**
