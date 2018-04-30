@@ -1,7 +1,6 @@
 package com.syntax_highlighters.chess;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.ArrayList;
 
 import com.syntax_highlighters.chess.entities.*;
@@ -19,7 +18,7 @@ public abstract class AbstractGame {
     protected IAiPlayer blackAI = null;
     protected Color nextPlayerColor = Color.WHITE;
     protected List<Move> moveHistory = new ArrayList<>();
-    protected boolean gameOver = false;
+    private boolean gameOver = false;
 
     /**
      * Return a List of String containing all moves to date.
@@ -34,6 +33,11 @@ public abstract class AbstractGame {
             moves.add(piece + m.toString());
         }
         return moves;
+    }
+
+    private void addMoveToHistory(Move m)
+    {
+        moveHistory.add(m);
     }
 
     /**
@@ -74,28 +78,7 @@ public abstract class AbstractGame {
         assert m != null;
         m.DoMove(board);
         board.setLastMove(m);
-        moveHistory.add(m);
-        nextPlayerColor = nextPlayerColor.opponentColor();
-    }
-    
-    /**
-     * Undoes the last move. Will likely break if someone has modified
-     * the game board without the knowledge of Game.
-     */
-    public void undoMove() {
-        if (moveHistory.isEmpty()) return;
-
-        // Pop the last move off the history.
-        int i = moveHistory.size() - 1;
-        Move m = moveHistory.get(i);
-
-        // Set board's last move
-        if (moveHistory.size() <= 1) board.setLastMove(null);
-        else board.setLastMove(moveHistory.get(i - 1));
-
-        // Swap nextplayercolor back and undo.
-        m.UndoMove(board);
-        moveHistory.remove(i);
+        addMoveToHistory(m);
         nextPlayerColor = nextPlayerColor.opponentColor();
     }
 
@@ -111,10 +94,10 @@ public abstract class AbstractGame {
         if (nextPlayerIsAI()) {
             Move move;
             if (nextPlayerColor.isWhite()) {
-                move = whiteAI.GetMove(this);
+                move = whiteAI.GetMove(board);
             }
             else {
-                move = blackAI.GetMove(this);
+                move = blackAI.GetMove(board);
             }
             this.performMove(move);
             return move;
@@ -215,8 +198,8 @@ public abstract class AbstractGame {
      * or a draw
      */
     public int getWinner() {
-        if (checkMate(Color.WHITE)) return -1;
-        if (checkMate(Color.BLACK)) return 1;
+        if (board.checkMate(Color.WHITE)) return -1;
+        if (board.checkMate(Color.BLACK)) return 1;
         return 0;
     }
 
@@ -243,74 +226,5 @@ public abstract class AbstractGame {
      */
     public void forceGameEnd() {
         gameOver = true;
-    }
-
-    /**
-     * Returns the percieved value of the board for a player using centipawn.
-     * 
-     * @param color The color to evaluate score for
-     * @return The score of the board for the given player
-     */
-    public int getBoardScore(Color color) {
-        // Check if we are in an "end state"
-        boolean endstate = false;
-        boolean whiteQueenExists = false;
-        boolean blackQueenExists = false;
-        for (IChessPiece p : board.getAllPieces()) {
-            if (p instanceof ChessPieceQueen) {
-                if (p.getColor().isWhite()) whiteQueenExists = true;
-                else blackQueenExists = true;
-            }
-        }
-
-        // Endstate is when both queens are dead.
-        if (!whiteQueenExists && !blackQueenExists) endstate = true;
-
-        int score = (int)(Math.random() * 10) - 5;
-        for (IChessPiece p : board.getAllPieces()) {
-            int pscore;
-            if (endstate && p instanceof ChessPieceKing) {
-                pscore = ((ChessPieceKing)p).getEndgamePositionalScore();
-            }
-            else pscore = p.getPositionalScore();
-
-            if (p.getColor() == color) score += pscore;
-            else score -= pscore;
-        }
-        return score;
-    }
-
-    /**
-     * Returns all available moves for a player.
-     * 
-     * @param color The color to filter moves by.
-     * @return The moves for the given player.
-     */
-    public List<Move> getAllMovesForPlayer(Color color) {
-        return board.getAllPieces().stream()
-        .filter(p -> p.getColor() == color)
-        .flatMap(p -> p.allPossibleMoves(board).stream())
-        .collect(Collectors.toList());
-    }
-
-    /**
-     * Determine whether the given player is in checkmate.
-     *
-     * @param playerColor The color of the player to check for
-     * @return true if the given player is in checkmate, false otherwise
-     */
-    public boolean checkMate(Color playerColor) {
-        List<IChessPiece> allPieces = getPieces();
-        if (allPieces.size() == 0) return false; // not possible
-        ChessPieceKing king = (ChessPieceKing)board.getKing(playerColor);
-        return king == null || king.isThreatened(board) && allPieces.stream()
-            .filter(p -> p.getColor() == playerColor)
-            .mapToLong(p -> p.allPossibleMoves(board).size()).sum() == 0;
-    }
-
-    public abstract AbstractGame copy();
-
-    List<Move> copyMoveHistory() {
-        return moveHistory.stream().map(Move::copy).collect(Collectors.toList());
     }
 }
