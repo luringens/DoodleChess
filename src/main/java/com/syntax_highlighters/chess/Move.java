@@ -28,9 +28,9 @@ public class Move {
     boolean hasDoneMove = false;
     Position oldPos;
     Position newPos;
-    private boolean hadMoved;
-    private IChessPiece tookPiece = null;
-    private String pieceString;
+    protected boolean hadMoved;
+    protected IChessPiece tookPiece = null;
+    protected String pieceString;
 
     /**
      * For inheritance only!
@@ -97,7 +97,12 @@ public class Move {
      */
     public IChessPiece getPiece(Board board) {
         Position p = hasDoneMove ? newPos : oldPos;
-        return board.getAtPosition(p);
+        IChessPiece piece = board.getAtPosition(p);
+        if (piece == null) {
+            System.out.println(this + "\n" + board + "\n----------");
+            throw new RuntimeException("PIECE NULL");
+        }
+        return piece;
     }
 
     /**
@@ -174,5 +179,20 @@ public class Move {
     public String toString() {
         return this.pieceString + oldPos.toChessNotation() +
             (tookPiece != null ? "x" : "-") + newPos.toChessNotation();
+    }
+
+    /**
+     * Copies the move.
+     * @return A copy of the move.
+     */
+    public Move copy() {
+        Move m = new Move();
+        m.oldPos = oldPos;
+        m.newPos = newPos;
+        m.hadMoved = hadMoved;
+        m.pieceString = pieceString;
+        m.tookPiece = tookPiece;
+        m.hasDoneMove = hasDoneMove;
+        return m;
     }
 }
