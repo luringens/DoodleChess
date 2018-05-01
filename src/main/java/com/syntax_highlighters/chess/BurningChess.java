@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BurningChess extends AbstractGame{
+    private float blackTimer = 0;
+    private float whiteTimer = 0;
+    private static final float TENMINS = 60 * 10;
+
     public BurningChess(AiDifficulty whiteAi, AiDifficulty blackAi) {
         if (whiteAi != null) {
             this.whiteAI = new MiniMaxAIPlayer(Color.WHITE, whiteAi);
@@ -35,14 +39,15 @@ public class BurningChess extends AbstractGame{
 
     public void fireTimer(float seconds){
         if(nextPlayerColor.isWhite()) {
-            long p1 =0;
-            p1 += seconds;
+            whiteTimer += seconds;
         }
         if(nextPlayerColor.isBlack()) {
-            long p2 = 0;
-            p2 += seconds;
+            blackTimer += seconds;
         }
     }
+
+    public float getWhiteTimer() { return whiteTimer / TENMINS; }
+    public float getBlackTimer() { return blackTimer / TENMINS; }
 
     public List<Position> tileUnreachable(){
         return unreachablePos;
