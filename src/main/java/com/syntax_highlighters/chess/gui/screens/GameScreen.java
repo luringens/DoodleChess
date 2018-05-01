@@ -23,11 +23,7 @@ import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.Audio;
 import com.syntax_highlighters.chess.gui.WobbleDrawable;
-import com.syntax_highlighters.chess.gui.actors.BoardGroup;
-import com.syntax_highlighters.chess.gui.actors.Button;
-import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
-import com.syntax_highlighters.chess.gui.actors.ConfirmationOverlay;
-import com.syntax_highlighters.chess.gui.actors.Text;
+import com.syntax_highlighters.chess.gui.actors.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,7 +83,8 @@ public class GameScreen extends AbstractScreen {
         this.player2Color = attrib2.getColor();
         this.chessGame = chessGame;
 
-        this.game = new ChessGame(ai1, ai2);
+        BurningChess chess = new BurningChess(ai1, ai2);
+        this.game = chess;
         if(randomBoard)
             // Do 15-25 random moves
             this.game.getBoard().setupPracticeGame((int)(Math.random() * 5) + 20);

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class BurningChess extends AbstractGame{
     private float blackTimer = 0;
     private float whiteTimer = 0;
-    private static final float TENMINS = 60 * 10;
+    private static final float TENMINS = 60 * 2;
 
     public BurningChess(AiDifficulty whiteAi, AiDifficulty blackAi) {
         if (whiteAi != null) {
