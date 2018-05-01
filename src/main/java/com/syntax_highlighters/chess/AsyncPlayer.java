@@ -2,7 +2,6 @@ package com.syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.AbstractGame;
 import com.syntax_highlighters.chess.Move;
-import com.syntax_highlighters.chess.entities.IAiPlayer;
 
 /**
  * Interface for async players players.
