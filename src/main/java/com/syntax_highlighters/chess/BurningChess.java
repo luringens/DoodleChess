@@ -79,5 +79,10 @@ public class BurningChess extends AbstractGame{
                 .filter(m -> !unreachablePos.contains(m.getPosition()))
                 .collect(Collectors.toList()) ;
         }
-    }
 
+	@Override
+	public AbstractGame copy() {
+        //TODO: Implement copy.
+        throw new RuntimeException("Copy not implemented for burningchess.");
+	}
+}

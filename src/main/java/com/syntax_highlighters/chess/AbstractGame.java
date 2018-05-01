@@ -1,6 +1,7 @@
 package com.syntax_highlighters.chess;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 
 import com.syntax_highlighters.chess.entities.*;
@@ -18,7 +19,7 @@ public abstract class AbstractGame {
     protected IAiPlayer blackAI = null;
     protected Color nextPlayerColor = Color.WHITE;
     protected List<Move> moveHistory = new ArrayList<>();
-    private boolean gameOver = false;
+    protected boolean gameOver = false;
 
     /**
      * Return a List of String containing all moves to date.
@@ -80,6 +81,19 @@ public abstract class AbstractGame {
         board.setLastMove(m);
         addMoveToHistory(m);
         nextPlayerColor = nextPlayerColor.opponentColor();
+    }
+
+    /**
+     * Undoes the last performed move.
+     */
+    public void undoMove() {
+        if (moveHistory.size() < 1) return;
+        int i = moveHistory.size() - 1;
+        Move lastMove = moveHistory.get(i);
+        moveHistory.remove(i);
+        board.setLastMove(moveHistory.get(i - 1));
+        nextPlayerColor = nextPlayerColor.opponentColor();
+        lastMove.UndoMove(board);
     }
 
     /**
@@ -226,5 +240,50 @@ public abstract class AbstractGame {
      */
     public void forceGameEnd() {
         gameOver = true;
+    }
+
+    /**
+     * Determine the strength of the board for a given player.
+     *
+     * @param color The color to determine score for.
+     * @return The score of the board for the given player.
+     */
+    public int evaluateScore(Color color) {
+        // Check if we are in an "end state".
+        boolean endstate = false;
+        boolean whiteQueenExists = false;
+        boolean blackQueenExists = false;
+        for (IChessPiece p : board.getAllPieces()) {
+            if (p instanceof ChessPieceQueen) {
+                if (p.getColor().isWhite()) whiteQueenExists = true;
+                else blackQueenExists = true;
+            }
+        }
+
+        // Endstate is when both queens are dead.
+        if (!whiteQueenExists && !blackQueenExists) endstate = true;
+
+        int score = ((int)(Math.random()*10)) - 5;
+        for (IChessPiece p : board.getAllPieces()) {
+            int pscore;
+            if (endstate && p instanceof ChessPieceKing) {
+                pscore = ((ChessPieceKing)p).getEndgamePositionalScore();
+            }
+            else pscore = p.getPositionalScore();
+
+            if (p.getColor() == color) score += pscore;
+            else score -= pscore;
+        }
+        return score;
+    }
+
+    /**
+     * Copy the board.
+     * @return A copy of the board.
+     */
+    public abstract AbstractGame copy();
+
+    protected List<Move> copyMoveHistory() {
+        return moveHistory.stream().map(m -> m.copy()).collect(Collectors.toList());
     }
 }

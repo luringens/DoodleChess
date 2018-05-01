@@ -130,4 +130,14 @@ public class ChessGame extends AbstractGame {
         if (piece.getColor() != nextPlayerColor()) return new ArrayList<>(); // piece cannot move
         return piece.allPossibleMoves(getBoard());
     }
+
+	@Override
+	public AbstractGame copy() {
+        ChessGame copy = new ChessGame(board.copy(), nextPlayerColor);
+        copy.whiteAI = whiteAI;
+        copy.blackAI = blackAI;
+        copy.gameOver = gameOver;
+        copy.moveHistory = copyMoveHistory();
+		return copy;
+	}
 }
