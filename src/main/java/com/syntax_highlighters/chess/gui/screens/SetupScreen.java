@@ -38,44 +38,49 @@ import java.util.ArrayList;
  */
 public class SetupScreen extends AbstractScreen {
 
-    private final Text title;
-    private final Text playerNote;
+    private final Text title;      // title of setup screen
+    private final Text playerNote; // not sure
 
+    // image indicating the color of each player
     private final ChessPieceActor blackKing;
     private final ChessPieceActor whiteKing;
 
+    // displayed if the user tries to click play while selecting the same
+    // account on both sides
     private final Text sameAccountErrorMsg;
 
-    private AiDifficulty player1Difficulty;
-    private AiDifficulty player2Difficulty;
-    private final AssetManager assetManager;
+    private final AssetManager assetManager; // asset manager
 
+    // dropdown menus for either account or AI difficulty selection
     private SelectBox<String> player1Title;
     private SelectBox<String> player2Title;
 
+    // buttons for displaying the color picker dialog for each player
     private Button player1ColorShow;
     private Button player2ColorShow;
     private int selectingPlayer = -1;
 
-    private final ArrayList<Button> player1Buttons = new ArrayList<>();
-    private final ArrayList<Button> player2Buttons = new ArrayList<>();
+    private final Button playButton;    // start game
+    private final Button mainMenu;      // return to main menu
+    private final Button createAccount; // show account creation dialog
 
-    private final Button playButton;
-    private final Button mainMenu;
-    private final Button createAccount;
+    private final PencilSelector selector; // color picker
 
-    private final PencilSelector selector;
-
+    // constants
     final float buttonBigWidth = 200;
     final float buttonBigHeight = 60;
     final float buttonSmallWidth = 175;
     final float buttonSmallHeight = 50;
 
+    // logical color variables of the two players
     private Color player1Color = Color.WHITE;
     private Color player2Color = Color.BLACK;
 
+    // whether or not to randomize the board
     private boolean randomBoard = false;
 
+    // radio button groups for each player indicating whether the player is a
+    // human player or AI player
     private RadioGroup rb1;
     private RadioGroup rb2;
 
@@ -121,23 +126,19 @@ public class SetupScreen extends AbstractScreen {
         rb2 = new RadioGroup(assetManager, false);
         
         rb1.addButton("Human player", selected -> {
-            if (selected)
-                player1Title = swapDropdownMenu(pl1, ai1);
+            if (selected) player1Title = swapDropdownMenu(pl1, ai1);
         });
         rb1.addButton("Machine player", selected -> {
-            if (selected)
-                player1Title = swapDropdownMenu(ai1, pl1);
+            if (selected) player1Title = swapDropdownMenu(ai1, pl1);
         });
         rb1.setOnSelectionChangeCallback(
                 () -> resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         
         rb2.addButton("Human player", selected -> {
-            if (selected)
-                player2Title = swapDropdownMenu(pl2, ai2);
+            if (selected) player2Title = swapDropdownMenu(pl2, ai2);
         });
         rb2.addButton("Machine player", selected -> {
-            if (selected)
-                player2Title = swapDropdownMenu(ai2, pl2);
+            if (selected) player2Title = swapDropdownMenu(ai2, pl2);
         });
         rb2.setOnSelectionChangeCallback(
                 () -> resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -358,8 +359,8 @@ public class SetupScreen extends AbstractScreen {
         Account player1 = si1 == 1 ? null : manager.getAccount(selected1);
         Account player2 = si2 == 1 ? null : manager.getAccount(selected2);
         
-        player1Difficulty = si1 == 0 ? null : getAiDifficulty(selected1);
-        player2Difficulty = si2 == 0 ? null : getAiDifficulty(selected2);
+        AiDifficulty player1Difficulty = si1 == 0 ? null : getAiDifficulty(selected1);
+        AiDifficulty player2Difficulty = si2 == 0 ? null : getAiDifficulty(selected2);
 
         // Create player attribute objects
         PlayerAttributes attrib1 = createAttributes(player1, player1Difficulty, player1Color);
@@ -448,24 +449,7 @@ public class SetupScreen extends AbstractScreen {
         player1ColorShow.setPosition(column1 - buttonSmallWidth / 2.f, y);
         player2ColorShow.setPosition(column2 - buttonSmallWidth / 2.f, y);
 
-
         y -= buttonBigHeight;
-        float tempY = y;
-        for(int i = 0; i < player1Buttons.size(); ++i)
-        {
-            Button button = player1Buttons.get(i);
-            button.setPosition(column1 - buttonSmallWidth / 2.f, y);
-            y -= buttonSmallHeight;
-        }
-        y = tempY;
-        for(int i = 0; i < player2Buttons.size(); ++i)
-        {
-            Button button = player2Buttons.get(i);
-            button.setPosition(column2 - buttonSmallWidth / 2.f, y);
-            y -= buttonSmallHeight;
-        }
-
-        y -= buttonBigHeight / 2.f;
 
         float cw = width / 2.f - buttonBigWidth / 2.f;
 
