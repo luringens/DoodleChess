@@ -120,13 +120,27 @@ public class SetupScreen extends AbstractScreen {
         rb1 = new RadioGroup(assetManager, false);
         rb2 = new RadioGroup(assetManager, false);
         
-        rb1.addButton("Human player", () -> player1Title = swapDropdownMenu(pl1, ai1));
-        rb1.addButton("Machine player", () -> player1Title = swapDropdownMenu(ai1, pl1));
-        rb1.setSelectionCallback(() -> resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        rb1.addButton("Human player", selected -> {
+            if (selected)
+                player1Title = swapDropdownMenu(pl1, ai1);
+        });
+        rb1.addButton("Machine player", selected -> {
+            if (selected)
+                player1Title = swapDropdownMenu(ai1, pl1);
+        });
+        rb1.setOnSelectionChangeCallback(
+                () -> resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         
-        rb2.addButton("Human player", () -> player2Title = swapDropdownMenu(pl2, ai2));
-        rb2.addButton("Machine player", () -> player2Title = swapDropdownMenu(ai2, pl2));
-        rb2.setSelectionCallback(() -> resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        rb2.addButton("Human player", selected -> {
+            if (selected)
+                player2Title = swapDropdownMenu(pl2, ai2);
+        });
+        rb2.addButton("Machine player", selected -> {
+            if (selected)
+                player2Title = swapDropdownMenu(ai2, pl2);
+        });
+        rb2.setOnSelectionChangeCallback(
+                () -> resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
                 
         stage.addActor(rb1);
         stage.addActor(rb2);

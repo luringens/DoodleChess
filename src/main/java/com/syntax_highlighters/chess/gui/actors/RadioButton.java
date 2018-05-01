@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-public class RadioButton extends Actor {
+public class RadioButton extends AbstractSelectable {
     private Texture circleTexture;
     private Texture dotTexture;
     private WobbleDrawable circle;
@@ -19,8 +19,6 @@ public class RadioButton extends Actor {
     private boolean selected;
     private final static float RADIO_BUTTON_SIZE = 20f;
     private final static float RADIO_BUTTON_DOT_SIZE = 10f;
-    private RadioGroup parent = null;
-    private Callback callback;
 
     public RadioButton(AssetManager assetManager, String buttonText, Color textColor) {
         text = new Text(AssetLoader.GetDefaultFont(assetManager, false));
@@ -36,28 +34,9 @@ public class RadioButton extends Actor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                if (callback != null) {
-                    callback.callback();
-                }
-                if (parent != null) {
-                    parent.deselectAll();
-                    parent.signalClicked();
-                }
                 setSelected(true);
             }
         });
-    }
-
-    public void setParent(RadioGroup rg) {
-        this.parent = rg;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
-    public boolean isSelected() {
-        return this.selected;
     }
 
     @Override
@@ -77,7 +56,7 @@ public class RadioButton extends Actor {
         setBounds(getX(), getY(), getWidth(), getHeight());
 
         circle.draw(batch, getX(), getY(), RADIO_BUTTON_SIZE, RADIO_BUTTON_SIZE);
-        if (this.selected) {
+        if (isSelected()) {
             float x = getX() + RADIO_BUTTON_SIZE/2.f - RADIO_BUTTON_DOT_SIZE/2.f;
             float y = getY() + RADIO_BUTTON_SIZE/2.f - RADIO_BUTTON_DOT_SIZE/2.f;
             dot.draw(batch, x, y, RADIO_BUTTON_DOT_SIZE, RADIO_BUTTON_DOT_SIZE);
@@ -85,13 +64,5 @@ public class RadioButton extends Actor {
         text.setX(getX() + RADIO_BUTTON_SIZE);
         text.setY(getY() + RADIO_BUTTON_SIZE/2.f - text.getHeight()/2.f);
         text.draw(batch, 1.f);
-    }
-
-    public void setSelectionCallback(Callback callback) {
-        this.callback = callback;
-    }
-
-    public static interface Callback {
-        void callback();
     }
 }
