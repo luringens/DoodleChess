@@ -100,7 +100,9 @@ public class AssetLoader {
                 "transparent.png",
                 "leaderboardsBackground.png",
                 "circle.png",
-                "dot.png"
+                "dot.png",
+                "square.png",
+                "tick.png"
         };
 
         for (String path : textures) {

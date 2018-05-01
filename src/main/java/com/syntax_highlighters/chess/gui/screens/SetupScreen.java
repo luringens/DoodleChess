@@ -84,6 +84,8 @@ public class SetupScreen extends AbstractScreen {
     private RadioGroup rb1;
     private RadioGroup rb2;
 
+    private CheckButton randomCheckButton;
+
     public SetupScreen(LibgdxChessGame game)
     {
         super(game);
@@ -145,6 +147,12 @@ public class SetupScreen extends AbstractScreen {
                 
         stage.addActor(rb1);
         stage.addActor(rb2);
+
+        // random game checkbutton
+        randomCheckButton = new CheckButton(assetManager, "Random starting positions",
+                Color.BLACK);
+        randomCheckButton.setOnSelectionChangedCallback(selected -> randomBoard = selected);
+        stage.addActor(randomCheckButton);
 
         AccountOverlay accountOverlay = new AccountOverlay(game, this, assetManager);
         accountOverlay.setVisible(false);
