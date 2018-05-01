@@ -166,7 +166,7 @@ public class GameScreen extends AbstractScreen {
                 super.clicked(event, x, y);
                 if (!isGameOver && !game.nextPlayerIsAI()) {
                     // Suggest a simple move to the player.
-                    IAiPlayer ai = new MiniMaxAIPlayer(nextPlayerColor, AiDifficulty.ShortSighted);
+                    IAiPlayer ai = new MiniMaxAIPlayer(AiDifficulty.ShortSighted);
                     Move move = ai.GetMove(game);
                     board.showSuggestion(move);
                 }

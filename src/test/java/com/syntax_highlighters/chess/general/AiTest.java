@@ -35,7 +35,7 @@ class AiTest {
 
         Board board = new Board(pieces);
         ChessGame game = ChessGame.setupTestBoard(board, Color.WHITE);
-        IAiPlayer ai = new MiniMaxAIPlayer(Color.WHITE, AiDifficulty.ShortSighted);
+        IAiPlayer ai = new MiniMaxAIPlayer(AiDifficulty.ShortSighted);
 
         System.out.println(board);
         ai.PerformMove(game);
@@ -57,7 +57,7 @@ class AiTest {
         
         Board board = new Board(pieces);
         ChessGame game = ChessGame.setupTestBoard(board, Color.BLACK);
-        IAiPlayer ai = new MiniMaxAIPlayer(Color.BLACK, AiDifficulty.ShortSighted);
+        IAiPlayer ai = new MiniMaxAIPlayer(AiDifficulty.ShortSighted);
 
         System.out.println(board);
         ai.PerformMove(game);
@@ -78,7 +78,7 @@ class AiTest {
 
         Board board = new Board(pieces);
         ChessGame game = ChessGame.setupTestBoard(board,Color.BLACK);
-        IAiPlayer ai = new MiniMaxAIPlayer(Color.BLACK,AiDifficulty.ShortSighted);
+        IAiPlayer ai = new MiniMaxAIPlayer(AiDifficulty.ShortSighted);
 
         System.out.println(board);
         ai.PerformMove(game);

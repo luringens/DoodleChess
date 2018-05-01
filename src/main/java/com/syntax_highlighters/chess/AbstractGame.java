@@ -286,4 +286,15 @@ public abstract class AbstractGame {
     protected List<Move> copyMoveHistory() {
         return moveHistory.stream().map(m -> m.copy()).collect(Collectors.toList());
     }
+
+    /**
+     * Returns a list of all possible moves for the next player.
+     * @return A list of all possible moves for the next player.
+     */
+	public List<Move> getPossibleMoves() {
+		return this.getBoard().getAllPieces().stream()
+            .filter(p -> p.getColor() == nextPlayerColor)
+            .flatMap(p -> p.allPossibleMoves(board).stream())
+            .collect(Collectors.toList());
+	}
 }
