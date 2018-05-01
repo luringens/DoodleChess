@@ -1,5 +1,7 @@
 package com.syntax_highlighters.chess;
 
+import java.util.Objects;
+
 import com.syntax_highlighters.chess.entities.IChessPiece;
 
 /**
@@ -11,6 +13,12 @@ public class PromotionMove extends Move {
     private IChessPiece oldPiece;
 
     private PromotionMove() {}
+
+    /**
+     * IMPORTANT: This must be changed on every release of the class
+     * in order to prevent cross-version serialization.
+     */
+    private static final long serialVersionUID = 1;
 
     /**
      * Create a PromotionMove from the given position to the new position, which
@@ -52,6 +60,19 @@ public class PromotionMove extends Move {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (!(other instanceof PromotionMove)) return false;
+        PromotionMove o = (PromotionMove) other;
+        return super.equals(o)
+            && Objects.equals(o.promoteTo, this.promoteTo)
+            && Objects.equals(o.oldPiece, this.oldPiece);
+    }
+
+    /**
      * Get the move in long algebraic notation.
      *
      * Disambiguate to which kind of piece the player promoted using the letter
@@ -62,6 +83,14 @@ public class PromotionMove extends Move {
     @Override
     public String toString() {
         return super.toString() + promoteTo.toChessNotation();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), this.promoteTo, this.oldPiece);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.syntax_highlighters.chess.entities;
 
 import com.syntax_highlighters.chess.AbstractGame;
+import com.syntax_highlighters.chess.IBlockingPlayer;
 import com.syntax_highlighters.chess.Move;
 
 /**
@@ -8,7 +9,7 @@ import com.syntax_highlighters.chess.Move;
  *
  * AI players can receive a new difficulty level, or perform a move on a Board.
  */
-public interface IAiPlayer {
+public interface IAiPlayer extends IBlockingPlayer {
     /**
      * Set the difficulty level of this AI player.
      *

@@ -12,10 +12,12 @@ import java.util.stream.Collectors;
 public class BurningChess extends AbstractGame{
     public BurningChess(AiDifficulty whiteAi, AiDifficulty blackAi) {
         if (whiteAi != null) {
-            this.whiteAI = new MiniMaxAIPlayer(whiteAi);
+            MiniMaxAIPlayer ai = new MiniMaxAIPlayer(whiteAi);
+            this.whiteAI = new AsyncPlayer(ai);
         }
         if (blackAi != null) {
-            this.blackAI = new MiniMaxAIPlayer(blackAi);
+            MiniMaxAIPlayer ai = new MiniMaxAIPlayer(blackAi);
+            this.blackAI = new AsyncPlayer(ai);
         }
 
         this.board = new Board();

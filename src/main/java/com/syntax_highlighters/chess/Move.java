@@ -3,6 +3,9 @@ package com.syntax_highlighters.chess;
 import com.syntax_highlighters.chess.entities.Color;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 /**
  * Stores info about a move in the game.
  *
@@ -21,13 +24,19 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
  * This is no longer the case once the move has been used! This is due to how the
  * move may store a reference to taken pieces in order to restore them.
  */
-public class Move {
+public class Move implements Serializable {
     boolean hasDoneMove = false;
     Position oldPos;
     Position newPos;
     protected boolean hadMoved;
     protected IChessPiece tookPiece = null;
     protected String pieceString;
+
+    /**
+     * IMPORTANT: This must be changed on every release of the class
+     * in order to prevent cross-version serialization.
+     */
+    private static final long serialVersionUID = 1;
 
     /**
      * For inheritance only!
@@ -160,6 +169,41 @@ public class Move {
         }
 
         hasDoneMove = false;
+    }
+
+    /**
+     * Custom equality method.
+     *
+     * Two moves are equal if all fields are equal.
+     * This does not depend on board state!
+     * As such, a move that moves a rook from A1 to A2 and a move that moves
+     * a queen from A1 to A2 are equal.
+     *
+     * @param other The object to test for equality
+     * @return true if the object is equal to this Position, false otherwise
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (!(other instanceof Move)) return false;
+        Move o = (Move) other;
+        return o.hadMoved == this.hadMoved
+            && o.hasDoneMove == this.hasDoneMove
+            && Objects.equals(oldPos, this.oldPos)
+            && Objects.equals(newPos, this.newPos)
+            && Objects.equals(o.tookPiece, this.tookPiece);
+    }
+
+    /**
+     * Custom hashCode method.
+     *
+     * Use Objects.hash for simplicity. Considers the x and y coordinate.
+     *
+     * @return The hash of the Position
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.hadMoved, this.hasDoneMove, this.newPos, this.oldPos, this.tookPiece);
     }
 
     /**

@@ -15,8 +15,8 @@ import com.syntax_highlighters.chess.entities.*;
  */
 public abstract class AbstractGame {
     protected Board board;
-    protected IAiPlayer whiteAI = null;
-    protected IAiPlayer blackAI = null;
+    protected AsyncPlayer whiteAI = null;
+    protected AsyncPlayer blackAI = null;
     protected Color nextPlayerColor = Color.WHITE;
     protected List<Move> moveHistory = new ArrayList<>();
     protected boolean gameOver = false;
@@ -108,12 +108,35 @@ public abstract class AbstractGame {
         if (nextPlayerIsAI()) {
             Move move;
             if (nextPlayerColor.isWhite()) {
-                move = whiteAI.GetMove(this);
+                move = whiteAI.getMove(this);
             }
             else {
-                move = blackAI.GetMove(this);
+                move = blackAI.getMove(this);
             }
-            this.performMove(move);
+            if (move != null) this.performMove(move);
+            return move;
+        }
+        return null;
+    }
+    
+    /**
+     * Perform AI move if next player is AI.
+     *
+     * If the next player is an AI player, make the player perform a move, and
+     * then change turns. Otherwise do nothing.
+     *
+     * @return The move that was performed or null if no move was performed.
+     */
+    public Move PerformAIMoveAsync() {
+        if (nextPlayerIsAI()) {
+            Move move;
+            if (nextPlayerColor.isWhite()) {
+                move = whiteAI.pollMove(this);
+            }
+            else {
+                move = blackAI.pollMove(this);
+            }
+            if (move != null) this.performMove(move);
             return move;
         }
         return null;
