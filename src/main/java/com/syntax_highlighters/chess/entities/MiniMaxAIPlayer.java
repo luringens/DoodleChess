@@ -49,18 +49,18 @@ public class MiniMaxAIPlayer implements IAiPlayer {
      * {@inheritDoc}
      */
     @Override
-    public void PerformMove(Board board) {
-        Move m = GetMove(board);
-        if (m != null) m.DoMove(board);
+    public void PerformMove(AbstractGame game) {
+        Move m = GetMove(game);
+        if (m != null) m.DoMove(game.getBoard());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Move GetMove(Board board) {
-        if (board.checkMate(color)) return null;
-        return MiniMaxMove(diff, board);
+    public Move GetMove(AbstractGame game) {
+        if (game.getBoard().checkMate(color)) return null;
+        return MiniMaxMove(diff, game);
     }
 
     /**
@@ -90,7 +90,8 @@ public class MiniMaxAIPlayer implements IAiPlayer {
      * @param board The current board state
      * @return The suggested best move.
      */
-    private Move MiniMaxMove(int depth, Board board) {
+    private Move MiniMaxMove(int depth, AbstractGame game) {
+        Board board = game.getBoard();
         assert(depth >= 1);
         List<IChessPiece> pieces = board.getAllPieces();
 

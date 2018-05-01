@@ -94,10 +94,10 @@ public abstract class AbstractGame {
         if (nextPlayerIsAI()) {
             Move move;
             if (nextPlayerColor.isWhite()) {
-                move = whiteAI.GetMove(board);
+                move = whiteAI.GetMove(this);
             }
             else {
-                move = blackAI.GetMove(board);
+                move = blackAI.GetMove(this);
             }
             this.performMove(move);
             return move;
