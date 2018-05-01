@@ -195,23 +195,15 @@ public class SetupScreen extends AbstractScreen {
 
     }
 
-    /* HELPER METHODS */
-
-    private void resetbuttonList(int player)
-    {
-        for (int i = 0; i < player1Buttons.size(); i++) {
-            getAIDifficultySettingButton(player, i).setSelected(false);
-        }
-    }
-
-    private void setDifficulty(int player, int difficulty)
-    {
-        if(player == -1)
-            player1Difficulty = difficulty == -1 ? null : AiDifficulty.values()[difficulty];
-        else
-            player2Difficulty = difficulty == -1 ? null : AiDifficulty.values()[difficulty];
-    }
-
+    /**
+     * Helper method: Create a dropdown menu with the given elements and add it
+     * to the stage.
+     *
+     * @param options Which options are visible in the dropdown menu
+     * @param visible Whether or not this drop down menu should be shown or not
+     *
+     * @return The newly created dropdown menu
+     */
     private SelectBox<String> createDropdownMenu(List<String> options, boolean visible) {
         SelectBox<String> box = new SelectBox<>(getGame().skin);
         box.setItems(options.stream().map(String::toString).toArray(String[]::new));
@@ -221,77 +213,6 @@ public class SetupScreen extends AbstractScreen {
         box.setVisible(visible);
         stage.addActor(box);
         return box;
-    }
-
-    private void addDifficultyList(LibgdxChessGame game, int player)
-    {
-        SelectBox<String> box = new SelectBox<>(game.skin);
-
-        ArrayList<String> accounts = new ArrayList<>();
-        accounts.add("Player" + (player == -1 ? "1" : "2"));
-        for(Account acc : game.getAccountManager().getAll())
-        {
-            accounts.add(acc.getName());
-        }
-
-        box.setItems(accounts.stream().map(String::toString).toArray(String[]::new));
-        box.setSelected("Player" + (player == -1 ? "1" : "2"));
-        box.setAlignment(Align.center);
-        box.setSize(200,  buttonBigHeight);
-        stage.addActor(box);
-        if(player == -1)
-            player1Title = box;
-        else
-            player2Title = box;
-
-        String[] labels = new String[]{"No Ai", "Easy", "Medium", "Hard"};
-        for(int i = 0; i < labels.length; ++i)
-        {
-            final int difficulty = i-1;
-            Button button = createButton(labels[i], false, () -> {
-                resetbuttonList(player);
-                getAIDifficultySettingButton(player, difficulty+1).setSelected(true);
-                if(difficulty >= -1 && difficulty < AiDifficulty.values().length)
-                    setDifficulty(player, difficulty);
-
-                if(player == -1)
-                    player1Title.setVisible(difficulty == -1);
-                else
-                    player2Title.setVisible(difficulty == -1);
-            });
-
-            if(i == 0)
-            {
-                button.setSelected(true);
-                setDifficulty(player, -1);
-            }
-
-            if(player == -1)
-                player1Buttons.add(button);
-            else
-                player2Buttons.add(button);
-        }
-    }
-
-    /**
-     * Helper method: Retrieve the AI difficulty selection button of the given
-     * player at the given position.
-     *
-     * @param player -1 for player 1, or 1 for player 2
-     * @param index The index of the button to select - in range [0,4)
-     *
-     * @return The selected button
-     */
-    private Button getAIDifficultySettingButton(int player, int index) {
-        if (!(player == -1 || player == 1)) {
-            throw new IllegalArgumentException("player == -1 || player == 1");
-        }
-        if (!(0 <= index && index < 4)) {
-            throw new IllegalArgumentException("0 <= index && index < 4");
-        }
-
-        return (player == -1 ? player1Buttons : player2Buttons).get(index);
-
     }
 
     /**
@@ -432,6 +353,13 @@ public class SetupScreen extends AbstractScreen {
         game.setScreen(new GameScreen(game, attrib1, attrib2, randomBoard));
     }
 
+    /**
+     * Helper method: Retrieve the AI difficulty corresponding to the selected
+     * option.
+     *
+     * @param aiLevel The string representing the AI difficulty level
+     * @return The corresponding AiDifficulty
+     */
     private AiDifficulty getAiDifficulty(String aiLevel) {
         switch(aiLevel) {
             case "Easy AI":
