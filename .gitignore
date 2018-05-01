@@ -35,4 +35,5 @@ db/
 .idea/**/uiDesigner.xml
 .idea/**/libraries/
 
-
+.project
+bin/*
