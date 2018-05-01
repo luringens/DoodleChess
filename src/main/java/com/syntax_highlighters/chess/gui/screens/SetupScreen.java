@@ -458,11 +458,17 @@ public class SetupScreen extends AbstractScreen {
         player2ColorShow.setPosition(column2 - buttonSmallWidth / 2.f, y);
 
         y -= buttonBigHeight;
+        
+        randomCheckButton.setPosition(width/2.f-randomCheckButton.getWidth()/2.f,
+                y+randomCheckButton.getHeight()/2.f);
+
+        y -= buttonBigHeight;
 
         float cw = width / 2.f - buttonBigWidth / 2.f;
 
         playButton.setPosition(column2 - buttonBigWidth/2.f, y);
 
+        
         mainMenu.setPosition(column1 - buttonBigWidth / 2.f, y);
         createAccount.setPosition(cw, y);
         playerNote.setCenter(width / 2.f, y - 20.f);
