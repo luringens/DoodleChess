@@ -2,9 +2,6 @@ package com.syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.entities.Color;
 import com.syntax_highlighters.chess.entities.IChessPiece;
-import com.syntax_highlighters.chess.entities.ChessPiecePawn;
-import com.syntax_highlighters.chess.entities.ChessPieceQueen;
-import com.syntax_highlighters.chess.gui.Audio;
 
 /**
  * Stores info about a move in the game.

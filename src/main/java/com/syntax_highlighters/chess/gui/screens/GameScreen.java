@@ -30,7 +30,6 @@ import com.syntax_highlighters.chess.gui.actors.ConfirmationOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Game main screen.

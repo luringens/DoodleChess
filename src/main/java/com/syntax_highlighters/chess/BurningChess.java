@@ -33,17 +33,6 @@ public class BurningChess extends AbstractGame{
 
     List<Position> unreachablePos = new ArrayList<>();
 
-    public void fireTimer(float seconds){
-        if(nextPlayerColor.isWhite()) {
-            long p1 =0;
-            p1 += seconds;
-        }
-        if(nextPlayerColor.isBlack()) {
-            long p2 = 0;
-            p2 += seconds;
-        }
-    }
-
     public List<Position> tileUnreachable(){
         return unreachablePos;
     }

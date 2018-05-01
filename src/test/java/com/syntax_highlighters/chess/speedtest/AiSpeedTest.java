@@ -1,6 +1,5 @@
 package com.syntax_highlighters.chess.speedtest;
 
-import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.entities.*;
 import org.junit.jupiter.api.Test;

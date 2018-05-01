@@ -33,8 +33,6 @@ public class GameOverOverlay extends AbstractOverlay {
     private final Button mainMenuButton;
     private final Button dismissOverlayButton;
 
-    private LibgdxChessGame game;
-
     public GameOverOverlay(LibgdxChessGame game) {
         super("Game over", game.getAssetManager());
         AssetManager assetManager = game.getAssetManager();

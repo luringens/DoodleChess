@@ -5,17 +5,13 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.Audio;
 
@@ -45,7 +41,6 @@ public class Button extends Actor {
 
         // WTF OpenGl...
         ShaderProgram.pedantic = false;
-        boolean built = shader.isCompiled();
 
         if(!shader.isCompiled())
         {
