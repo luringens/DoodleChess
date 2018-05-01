@@ -87,11 +87,18 @@ public abstract class AbstractGame {
      * Undoes the last performed move.
      */
     public void undoMove() {
+        // Don't undo if there's nothing left to do
         if (moveHistory.size() < 1) return;
+        
+        // Pop the most recent move off the list.
         int i = moveHistory.size() - 1;
         Move lastMove = moveHistory.get(i);
         moveHistory.remove(i);
-        board.setLastMove(moveHistory.get(i - 1));
+        
+        // Set board's last move, null if there's none left.
+        Move lastmove = moveHistory.size() > 0 ? moveHistory.get(i - 1) : null;
+        board.setLastMove(lastmove);
+        
         nextPlayerColor = nextPlayerColor.opponentColor();
         lastMove.UndoMove(board);
     }
