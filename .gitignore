@@ -4,7 +4,6 @@
 docs/classdiagram.png
 docs/classdiagram.xml
 *.DS_Store
-.vscode
 accounts.data
 .gradle/*
 build/*
@@ -35,4 +34,9 @@ db/
 .idea/**/uiDesigner.xml
 .idea/**/libraries/
 
-
+# Visual Studio Code
+.vscode
+.classpath
+.project
+.settings/
+bin/

@@ -30,7 +30,6 @@ import com.syntax_highlighters.chess.gui.actors.ConfirmationOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Game main screen.
@@ -166,8 +165,8 @@ public class GameScreen extends AbstractScreen {
                 super.clicked(event, x, y);
                 if (!isGameOver && !game.nextPlayerIsAI()) {
                     // Suggest a simple move to the player.
-                    IAiPlayer ai = new MiniMaxAIPlayer(nextPlayerColor, AiDifficulty.ShortSighted);
-                    Move move = ai.GetMove(game.getBoard());
+                    IAiPlayer ai = new MiniMaxAIPlayer(AiDifficulty.ShortSighted);
+                    Move move = ai.GetMove(game);
                     board.showSuggestion(move);
                 }
             }
@@ -277,16 +276,17 @@ public class GameScreen extends AbstractScreen {
                 stage.draw();
                 return;
             }
+        }
 
-            // Do an AI turn if needed
-            if (game.nextPlayerIsAI()) {
-                game.PerformAIMove();
-                // If the AI performed a promotion move, we need to add the
-                // piece that was promoted to as an actor to the BoardGroup.
-                Board b = game.getBoard();
-                Move m = b.getLastMove();
+        // Do an AI turn if needed
+        if (game.nextPlayerIsAI()) {
+            Move m = game.PerformAIMoveAsync();
+            // If the AI performed a promotion move, we need to add the
+            // piece that was promoted to as an actor to the BoardGroup.
+            if (m != null) {
+                nextPlayerColor = game.nextPlayerColor();
                 if (m instanceof PromotionMove) {
-                    IChessPiece promoted = b.getAtPosition(m.getPosition());
+                    IChessPiece promoted = game.getBoard().getAtPosition(m.getPosition());
                     board.addPiece(promoted);
                 }
             }

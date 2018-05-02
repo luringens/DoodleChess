@@ -1,6 +1,7 @@
 package com.syntax_highlighters.chess;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 
 import com.syntax_highlighters.chess.entities.*;
@@ -14,11 +15,11 @@ import com.syntax_highlighters.chess.entities.*;
  */
 public abstract class AbstractGame {
     protected Board board;
-    protected IAiPlayer whiteAI = null;
-    protected IAiPlayer blackAI = null;
+    protected AsyncPlayer whiteAI = null;
+    protected AsyncPlayer blackAI = null;
     protected Color nextPlayerColor = Color.WHITE;
     protected List<Move> moveHistory = new ArrayList<>();
-    private boolean gameOver = false;
+    protected boolean gameOver = false;
 
     /**
      * Return a List of String containing all moves to date.
@@ -83,6 +84,26 @@ public abstract class AbstractGame {
     }
 
     /**
+     * Undoes the last performed move.
+     */
+    public void undoMove() {
+        // Don't undo if there's nothing left to do
+        if (moveHistory.size() < 1) return;
+        
+        // Pop the most recent move off the list.
+        int i = moveHistory.size() - 1;
+        Move lastMove = moveHistory.get(i);
+        moveHistory.remove(i);
+        
+        // Set board's last move, null if there's none left.
+        Move lastmove = moveHistory.size() > 0 ? moveHistory.get(i - 1) : null;
+        board.setLastMove(lastmove);
+        
+        nextPlayerColor = nextPlayerColor.opponentColor();
+        lastMove.UndoMove(board);
+    }
+
+    /**
      * Perform AI move if next player is AI.
      *
      * If the next player is an AI player, make the player perform a move, and
@@ -94,12 +115,35 @@ public abstract class AbstractGame {
         if (nextPlayerIsAI()) {
             Move move;
             if (nextPlayerColor.isWhite()) {
-                move = whiteAI.GetMove(board);
+                move = whiteAI.getMove(this);
             }
             else {
-                move = blackAI.GetMove(board);
+                move = blackAI.getMove(this);
             }
-            this.performMove(move);
+            if (move != null) this.performMove(move);
+            return move;
+        }
+        return null;
+    }
+    
+    /**
+     * Perform AI move if next player is AI.
+     *
+     * If the next player is an AI player, make the player perform a move, and
+     * then change turns. Otherwise do nothing.
+     *
+     * @return The move that was performed or null if no move was performed.
+     */
+    public Move PerformAIMoveAsync() {
+        if (nextPlayerIsAI()) {
+            Move move;
+            if (nextPlayerColor.isWhite()) {
+                move = whiteAI.pollMove(this);
+            }
+            else {
+                move = blackAI.pollMove(this);
+            }
+            if (move != null) this.performMove(move);
             return move;
         }
         return null;
@@ -239,4 +283,60 @@ public abstract class AbstractGame {
      * otherwise
      */
     public abstract boolean canMoveTo(IChessPiece piece, Position pos);
+    
+    /**
+     * Determine the strength of the board for a given player.
+     *
+     * @param color The color to determine score for.
+     * @return The score of the board for the given player.
+     */
+    public int evaluateScore(Color color) {
+        // Check if we are in an "end state".
+        boolean endstate = false;
+        boolean whiteQueenExists = false;
+        boolean blackQueenExists = false;
+        for (IChessPiece p : board.getAllPieces()) {
+            if (p instanceof ChessPieceQueen) {
+                if (p.getColor().isWhite()) whiteQueenExists = true;
+                else blackQueenExists = true;
+            }
+        }
+
+        // Endstate is when both queens are dead.
+        if (!whiteQueenExists && !blackQueenExists) endstate = true;
+
+        int score = ((int)(Math.random()*10)) - 5;
+        for (IChessPiece p : board.getAllPieces()) {
+            int pscore;
+            if (endstate && p instanceof ChessPieceKing) {
+                pscore = ((ChessPieceKing)p).getEndgamePositionalScore();
+            }
+            else pscore = p.getPositionalScore();
+
+            if (p.getColor() == color) score += pscore;
+            else score -= pscore;
+        }
+        return score;
+    }
+
+    /**
+     * Copy the board.
+     * @return A copy of the board.
+     */
+    public abstract AbstractGame copy();
+
+    protected List<Move> copyMoveHistory() {
+        return moveHistory.stream().map(m -> m.copy()).collect(Collectors.toList());
+    }
+
+    /**
+     * Returns a list of all possible moves for the next player.
+     * @return A list of all possible moves for the next player.
+     */
+	public List<Move> getPossibleMoves() {
+		return this.getBoard().getAllPieces().stream()
+            .filter(p -> p.getColor() == nextPlayerColor)
+            .flatMap(p -> p.allPossibleMoves(board).stream())
+            .collect(Collectors.toList());
+	}
 }

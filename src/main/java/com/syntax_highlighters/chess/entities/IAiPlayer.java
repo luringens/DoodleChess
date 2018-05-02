@@ -1,6 +1,7 @@
 package com.syntax_highlighters.chess.entities;
 
-import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.AbstractGame;
+import com.syntax_highlighters.chess.IBlockingPlayer;
 import com.syntax_highlighters.chess.Move;
 
 /**
@@ -8,7 +9,7 @@ import com.syntax_highlighters.chess.Move;
  *
  * AI players can receive a new difficulty level, or perform a move on a Board.
  */
-public interface IAiPlayer {
+public interface IAiPlayer extends IBlockingPlayer {
     /**
      * Set the difficulty level of this AI player.
      *
@@ -21,16 +22,16 @@ public interface IAiPlayer {
      *
      * Modifies the state of the board.
      *
-     * @param board The current board state
+     * @param game The game to work with.
      */
-    void PerformMove(Board board);
-
+    void PerformMove(AbstractGame game);
+    
     /**
      * Choose a move and return it without performing it on the board.
      *
-     * @param board The current board state
+     * @param game The game to work with.
      * @return The suggested best move.
      */
-    Move GetMove(Board board);
+    Move GetMove(AbstractGame game);
 }
 

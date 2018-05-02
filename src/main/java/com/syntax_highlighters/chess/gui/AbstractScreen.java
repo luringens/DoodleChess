@@ -1,13 +1,11 @@
 package com.syntax_highlighters.chess.gui;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.assets.AssetManager;
 import com.syntax_highlighters.chess.gui.actors.DoodleActor;
-import com.syntax_highlighters.chess.AbstractGame;
 
 /**
  * Abstract screen implementing common functionality among different screens.

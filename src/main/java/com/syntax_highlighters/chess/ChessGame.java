@@ -23,10 +23,12 @@ public class ChessGame extends AbstractGame {
      */
     public ChessGame(AiDifficulty whiteAi, AiDifficulty blackAi) {
         if (whiteAi != null) {
-            this.whiteAI = new MiniMaxAIPlayer(Color.WHITE, whiteAi);
+            IAiPlayer ai = new MiniMaxAIPlayer(whiteAi);
+            this.whiteAI = new AsyncPlayer(ai);
         }
         if (blackAi != null) {
-            this.blackAI = new MiniMaxAIPlayer(Color.BLACK, blackAi);
+            IAiPlayer ai = new MiniMaxAIPlayer(blackAi);
+            this.blackAI = new AsyncPlayer(ai);
         }
 
         this.board = new Board();
@@ -135,4 +137,17 @@ public class ChessGame extends AbstractGame {
     public boolean canMoveTo(IChessPiece piece, Position pos) {
         return piece.canMoveTo(pos, board);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+	@Override
+	public AbstractGame copy() {
+        ChessGame copy = new ChessGame(board.copy(), nextPlayerColor);
+        copy.whiteAI = whiteAI;
+        copy.blackAI = blackAI;
+        copy.gameOver = gameOver;
+        copy.moveHistory = copyMoveHistory();
+		return copy;
+	}
 }

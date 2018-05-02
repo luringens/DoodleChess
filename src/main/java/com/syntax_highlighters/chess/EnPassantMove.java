@@ -1,5 +1,7 @@
 package com.syntax_highlighters.chess;
 
+import java.util.Objects;
+
 import com.syntax_highlighters.chess.entities.IChessPiece;
 
 /**
@@ -16,6 +18,16 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
 public class EnPassantMove extends Move {
     private final Position passantTakesPos;
     private IChessPiece passantTakesPiece = null;
+
+    private EnPassantMove(Position passantTakesPos) {
+        this.passantTakesPos = passantTakesPos;
+    }
+
+    /**
+     * IMPORTANT: This must be changed on every release of the class
+     * in order to prevent cross-version serialization.
+     */
+    private static final long serialVersionUID = 1;
 
     /**
      * Constructor.
@@ -47,5 +59,42 @@ public class EnPassantMove extends Move {
     public void UndoMove(Board b) {
         super.UndoMove(b);
         b.putAtPosition(passantTakesPos, getTakenPiece());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Move copy() {
+        EnPassantMove m = new EnPassantMove(passantTakesPos);
+        m.oldPos = oldPos;
+        m.newPos = newPos;
+        m.hadMoved = hadMoved;
+        m.pieceString = pieceString;
+        m.tookPiece = tookPiece;
+        m.hasDoneMove = hasDoneMove;
+        m.passantTakesPiece = passantTakesPiece;
+        return m;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (!(other instanceof EnPassantMove)) return false;
+        EnPassantMove o = (EnPassantMove) other;
+        return super.equals(o)
+            && Objects.equals(o.passantTakesPos, this.passantTakesPos)
+            && Objects.equals(o.passantTakesPiece, this.passantTakesPiece);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), this.passantTakesPos, this.passantTakesPiece);
     }
 }

@@ -47,7 +47,8 @@ void main()
     // Normalized pixel coordinates (from 0 to 1)
     float biggest = max(u_resolution.x, u_resolution.y);
     vec2 uv = v_texCoords;
-    vec2 nosieCoord = v_texCoords * u_resolution / vec2(biggest, biggest);
+    vec2 uv2 = uv  * u_resolution / 850.f;
+    vec2 nosieCoord = uv2;
     
     float dx = 1.0f - abs(uv.x - 0.5f);
     float dy = 1.0f - abs(uv.y - 0.5f);

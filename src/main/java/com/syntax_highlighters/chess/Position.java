@@ -3,6 +3,7 @@ package com.syntax_highlighters.chess;
 import java.util.Objects; // Objects.hash
 import java.util.Arrays; // asList
 import java.util.List;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -10,10 +11,15 @@ import java.util.ArrayList;
  *
  * This class should be immutable. The Position is one-based.
  */
-public class Position {
-
+public class Position implements Serializable {
     private final int x;
     private final int y;
+
+    /**
+     * IMPORTANT: This must be changed on every release of the class
+     * in order to prevent cross-version serialization.
+     */
+    private static final long serialVersionUID = 1;
     
     /**
      * Constructor.

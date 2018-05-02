@@ -3,7 +3,6 @@ package com.syntax_highlighters.chess.entities;
 /**
  * Represents whether a piece is black or white.
  */
-@SuppressWarnings("ConstantConditions")
 public class Color {
     private final boolean color;
 

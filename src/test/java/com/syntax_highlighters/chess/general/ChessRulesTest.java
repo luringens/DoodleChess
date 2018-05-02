@@ -267,8 +267,6 @@ class ChessRulesTest {
         setUpCastle();
         Position oldKingPos = king.getPosition();
         Position kingTarget = oldKingPos.west(2);
-        
-        List<Move> possibleMoves = king.allPossibleMoves(board);
 
         existsMoveToPosition(kingTarget, king);
         
