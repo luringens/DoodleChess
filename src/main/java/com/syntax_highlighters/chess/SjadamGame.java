@@ -179,4 +179,9 @@ public class SjadamGame extends AbstractGame {
     public boolean canMoveTo(IChessPiece piece, Position pos) {
         return allPossibleMoves(piece).stream().anyMatch(m -> m.getPosition().equals(pos));
     }
+
+    @Override
+    public SjadamGame copy() {
+        throw new RuntimeException("Copy not implemented for sjadam");
+    }
 }
