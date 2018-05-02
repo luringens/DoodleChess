@@ -5,6 +5,7 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.entities.Color;
 import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
+import java.util.stream.Collectors;
 
 import java.util.List;
 
@@ -32,7 +33,9 @@ public class SjadamTest {
         // back, most of which cannot move from the starting positions in
         // regular chess, can each jump over at least one other piece with
         // sjadam rules)
-        List<IChessPiece> pieces = game.getPieces();
+        List<IChessPiece> pieces = game.getPieces().stream()
+            .filter(p -> p.getColor() == Color.WHITE)
+            .collect(Collectors.toList());
         for (IChessPiece p : pieces) {
             // check that the number of possible moves is at least 1
             assertTrue(game.allPossibleMoves(p).size() >= 1,
@@ -201,7 +204,7 @@ public class SjadamTest {
     }
 
     @Test
-    public void chessPieceCanJumpOverSamePieceWithDifferentColorOnce() {
+    public void chessPieceCanMoveBackAfterJumpingOverEnemyPiece() {
         // setup: make queen north until the enemy pawn line, and make pawn jump
         // over the queen
         whiteQueenToD6(); // move queen to d6
@@ -214,12 +217,12 @@ public class SjadamTest {
         game.performMove(pawnPos, nextPawnPos);
         List<Move> pawnPossibleMoves = game.allPossibleMoves(pawn);
 
-        // ensure pawn cannot move back
-        assertFalse(pawnPossibleMoves.stream().anyMatch(m -> m.getPosition().equals(pawnPos)));
+        // ensure pawn can move back
+        assertTrue(pawnPossibleMoves.stream().anyMatch(m -> m.getPosition().equals(pawnPos)));
     }
 
     @Test
-    public void chessPieceHasOnlyChessMovesAvailableAfterJumpingOverEnemyPiece() {
+    public void chessPieceCannotJumpOverMoreThanOneEnemyPiece() {
         // setup: make queen north until the enemy pawn line, move black bishop
         // to the position southeast of the queen, and make the black pawn jump
         // over the queen. The pawn should then only be allowed to make a chess
@@ -232,8 +235,8 @@ public class SjadamTest {
         // pieces in general, not that it cannot jump back to where it came from
         // in particular
         Position bishopPos = Position.fromChessNotation("f8");
-        game.performMove(bishopPos, bishopPos.south(2));              // to f6
-        game.performMove(bishopPos, bishopPos.south(2).southwest(1)); // to e5
+        game.performMove(bishopPos, bishopPos.south(2));                       // to f6
+        game.performMove(bishopPos.south(2), bishopPos.south(2).southwest(1)); // to e5
 
         // move white pawn to switch turns
         game.performMove(Position.fromChessNotation("a2"), Position.fromChessNotation("a3"));
@@ -241,13 +244,13 @@ public class SjadamTest {
         Position pawnPos = Position.fromChessNotation("d7");
         Position nextPawnPos = pawnPos.south(2);
         IChessPiece pawn = game.getPieceAtPosition(pawnPos);
-        
+
         // perform the pawn move
         game.performMove(pawnPos, nextPawnPos);
         List<Move> pawnPossibleMoves = game.allPossibleMoves(pawn);
-
-        assertEquals(1, pawnPossibleMoves.size()); // should only be one possible move
-        assertEquals(nextPawnPos.south(1), pawnPossibleMoves.get(0)); // which is a step forward
+        
+        // should be able to move back and take a step forward
+        assertEquals(2, pawnPossibleMoves.size());
 
     }
 
