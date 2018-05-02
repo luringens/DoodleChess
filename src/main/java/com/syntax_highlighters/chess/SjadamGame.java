@@ -14,11 +14,30 @@ import com.syntax_highlighters.chess.entities.Color;
  */
 public class SjadamGame extends AbstractGame {
     private IChessPiece jumpingPiece;
+    private Board lastBoard;
 
     public SjadamGame() {
         this.board = new Board();
         this.board.setupNewGame();
     }
+
+    private boolean lastMoveTookEnemy(){
+        if(lastBoard.getAllPieces().equals(board.getAllPieces()))
+            return true;
+        return false;
+    }
+
+    private boolean lastMoveWasSameColour(){
+        Color col = board.getLastMove().getColor(board);
+        if(col == nextPlayerColor)
+            return true;
+        return false;
+    }
+
+    private IChessPiece lastPiece(){
+        return board.getAtPosition(board.getLastMove().newPos);
+    }
+
 
     /**
      * Get a list of all the possible moves that can be made during this turn.
@@ -50,6 +69,7 @@ public class SjadamGame extends AbstractGame {
             tryAddSjadamMove(piece, p -> p.southwest(1), allMoves);
             tryAddSjadamMove(piece, p -> p.southeast(1), allMoves);
         }
+        lastBoard = board;
         return allMoves;
     }
 
