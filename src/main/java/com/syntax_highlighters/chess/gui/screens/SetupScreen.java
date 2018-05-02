@@ -54,6 +54,9 @@ public class SetupScreen extends AbstractScreen {
     // dropdown menus for either account or AI difficulty selection
     private SelectBox<String> player1Title;
     private SelectBox<String> player2Title;
+    
+    private SelectBox<String> gameModes;
+    
 
     // buttons for displaying the color picker dialog for each player
     private Button player1ColorShow;
@@ -114,6 +117,7 @@ public class SetupScreen extends AbstractScreen {
         final List<String> pl2Accounts = Stream.concat(Stream.of("Player2"), accounts.stream())
             .collect(Collectors.toList());
         final List<String> ais = Arrays.asList("Easy AI", "Medium AI", "Hard AI");
+        final List<String> modes = Arrays.asList("Regular Chess", "Sjadam", "Fire Chess");
         
         // create select boxes
         final SelectBox<String> pl1 = createDropdownMenu(pl1Accounts, true);
@@ -123,6 +127,8 @@ public class SetupScreen extends AbstractScreen {
         // set which select boxes to show
         player1Title = pl1;
         player2Title = pl2;
+        
+        gameModes = createDropdownMenu(modes, true); // set the game mode select box
 
         rb1 = new RadioGroup(assetManager, false);
         rb2 = new RadioGroup(assetManager, false);
@@ -232,7 +238,7 @@ public class SetupScreen extends AbstractScreen {
         box.setItems(options.stream().map(String::toString).toArray(String[]::new));
         box.setSelected(options.get(0));
         box.setAlignment(Align.center);
-        box.setSize(200, buttonBigHeight);
+        box.setSize(buttonBigWidth, buttonBigHeight);
         box.setVisible(visible);
         stage.addActor(box);
         return box;
@@ -353,6 +359,7 @@ public class SetupScreen extends AbstractScreen {
     private void startGame(LibgdxChessGame game) {
         String selected1 = player1Title.getSelected();
         String selected2 = player2Title.getSelected();
+        String selectedMode = gameModes.getSelected();
 
         int si1 = rb1.getSelectedIndex();
         int si2 = rb2.getSelectedIndex();
@@ -373,7 +380,7 @@ public class SetupScreen extends AbstractScreen {
         // Create player attribute objects
         PlayerAttributes attrib1 = createAttributes(player1, player1Difficulty, player1Color);
         PlayerAttributes attrib2 = createAttributes(player2, player2Difficulty, player2Color);
-        game.setScreen(new GameScreen(game, attrib1, attrib2, randomBoard));
+        game.setScreen(new GameScreen(game, selectedMode, attrib1, attrib2, randomBoard));
     }
 
     /**
@@ -441,6 +448,8 @@ public class SetupScreen extends AbstractScreen {
         float y = height / 2.f + 400 - buttonBigHeight * 1.5f - blackKing.getHeight();
         whiteKing.setPosition(column1 - whiteKing.getWidth() / 2.f, y);
         blackKing.setPosition(column2 - blackKing.getWidth() / 2.f, y);
+        
+        gameModes.setPosition(width/2.f - gameModes.getWidth()/2.f, y);
 
         y -= rb1.getHeight()*2;
         
@@ -460,7 +469,7 @@ public class SetupScreen extends AbstractScreen {
         y -= buttonBigHeight;
         
         randomCheckButton.setPosition(width/2.f-randomCheckButton.getWidth()/2.f,
-                y+randomCheckButton.getHeight()/2.f);
+                y + randomCheckButton.getHeight()/2.f);
 
         y -= buttonBigHeight;
 
