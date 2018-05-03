@@ -1,5 +1,8 @@
 package com.syntax_highlighters.chess.gui.screens;
 
+import java.io.IOException;
+import java.net.SocketTimeoutException;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,18 +10,23 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.syntax_highlighters.chess.gui.AssetLoader;
+import com.syntax_highlighters.chess.NetworkChessGame;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.WobbleDrawable;
 import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.Text;
+import com.syntax_highlighters.chess.network.*;
 import com.badlogic.gdx.graphics.Color;
 
-public class MultiplayerSetupScreen extends AbstractScreen {
+import static com.syntax_highlighters.chess.entities.Color.WHITE;
+import static com.syntax_highlighters.chess.entities.Color.BLACK;
 
+public class MultiplayerSetupScreen extends AbstractScreen {
     private AssetManager assetManager;
     private final Button mainMenuButton;
     private final Button connectButton;
+    private final Button hostButton;
     private final TextField opponentTextField;
     private final Text opponentTextFieldLabel;
 
@@ -34,7 +42,13 @@ public class MultiplayerSetupScreen extends AbstractScreen {
 
         connectButton = new Button.Builder("Connect", assetManager)
             .size(250, 75)
-            .callback(() -> {throw new RuntimeException("Connection logic not yet added");})
+            .callback(() -> {connect();})
+            .stage(stage)
+            .create();
+
+        hostButton = new Button.Builder("Host", assetManager)
+            .size(250, 75)
+            .callback(() -> {host();})
             .stage(stage)
             .create();
         
@@ -63,7 +77,35 @@ public class MultiplayerSetupScreen extends AbstractScreen {
         Gdx.input.setInputProcessor(stage);
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
+
+    private void host() {
+        try {
+            AbstractNetworkService host = new Host(30 * 1000);
+            NetworkChessGame game = new NetworkChessGame(BLACK, host);
+            NetworkGameScreen screen = new NetworkGameScreen(getGame(), game);
+            getGame().setScreen(screen);
+		} catch (SocketTimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
     
+    private void connect() {
+        String address = opponentTextField.getText();
+        try {
+            AbstractNetworkService client = new Client(address);
+            NetworkChessGame game = new NetworkChessGame(WHITE, client);
+            NetworkGameScreen screen = new NetworkGameScreen(getGame(), game);
+            getGame().setScreen(screen);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+
     @Override
     public void render(float delta) {
         stage.act(delta);
@@ -73,17 +115,25 @@ public class MultiplayerSetupScreen extends AbstractScreen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
+
+        float xCentre = width/2.f;
+        float yCentre = height/2.f;
+
+        float padding = 10;
+        float buttonw = 250;
+        float xButtonCentre = xCentre - buttonw / 2.f;
         
         // position "return to main menu" button next to "connect" button
-        mainMenuButton.setPosition(width / 2.f - mainMenuButton.getWidth(),
+        mainMenuButton.setPosition(xButtonCentre - buttonw - padding,
                 height / 2.f - 400.f + 25.f);
-        connectButton.setPosition(width/2.f, height/2.f - 400.f + 25.f);
+        connectButton.setPosition(xButtonCentre, yCentre - 400.f + 25.f);
+        hostButton.setPosition(xButtonCentre + padding + buttonw, yCentre - 400.f + 25.f);
         
         // position text field label above text field in the center of the
         // screen
-        opponentTextFieldLabel.setPosition(width/2.f - opponentTextFieldLabel.getWidth()/2.f,
-                height/2.f + opponentTextFieldLabel.getHeight()/2.f + 40);
-        opponentTextField.setPosition(width/2.f - opponentTextField.getWidth()/2.f,
-                height/2.f - opponentTextField.getHeight()/2.f);
+        opponentTextFieldLabel.setPosition(xCentre - opponentTextFieldLabel.getWidth()/2.f,
+                yCentre + opponentTextFieldLabel.getHeight()/2.f + 40);
+        opponentTextField.setPosition(xCentre - opponentTextField.getWidth()/2.f,
+                yCentre - opponentTextField.getHeight()/2.f);
     }
 }

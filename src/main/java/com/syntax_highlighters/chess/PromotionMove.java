@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import com.syntax_highlighters.chess.entities.AbstractChessPiece;
+import com.syntax_highlighters.chess.entities.Color;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 
 /**
@@ -11,8 +13,12 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
  * what they're promoted to.
  */
 public class PromotionMove extends Move {
-    private IChessPiece promoteTo;
-    private IChessPiece oldPiece;
+    private transient IChessPiece promoteTo;
+    private transient IChessPiece oldPiece;
+
+    // For serialization purposes:
+    private String promoteToStringrep;
+    private Color color;
 
     private PromotionMove() {}
 
@@ -37,6 +43,10 @@ public class PromotionMove extends Move {
     public PromotionMove(Position oldPos, Position newPos, Board board, IChessPiece promoteToPiece) {
         super(oldPos, newPos, board);
         promoteTo = promoteToPiece;
+
+        // For serialization:
+        promoteToStringrep = promoteToPiece.toChessNotation();
+        color = promoteToPiece.getColor();
     }
 
     @Override
@@ -52,6 +62,9 @@ public class PromotionMove extends Move {
      */
     @Override
     public void DoMove(Board b) {
+        if (promoteTo == null) {
+            promoteTo = AbstractChessPiece.fromChessNotation(promoteToStringrep, color);
+        }
         oldPiece = getPiece(b);
         super.DoMove(b);
         b.removePiece(oldPiece);

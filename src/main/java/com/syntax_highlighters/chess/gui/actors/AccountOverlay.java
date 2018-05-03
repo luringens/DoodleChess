@@ -80,6 +80,11 @@ public class AccountOverlay extends AbstractOverlay {
                     error.setText("* Name " + name + " is reserved");
                     return;
                 }
+                if(name.length() > 20){
+
+                        error.setText("* Name cannot be >20");
+                        return;
+                }
 
                 AccountManager accountManager = game.getAccountManager();
                 Account newAccount = new Account(name);
