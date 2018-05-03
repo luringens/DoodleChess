@@ -76,4 +76,9 @@ public class BurningChess extends AbstractGame{
         //TODO: Implement copy.
         throw new RuntimeException("Copy not implemented for burningchess.");
 	}
+
+    @Override
+    public boolean canMoveTo(IChessPiece piece, Position pos) {
+        return piece.canMoveTo(pos, board) && !unreachablePos.contains(pos);
+    }
 }

@@ -90,7 +90,7 @@ public class GameScreen extends AbstractScreen {
         this.chessGame = chessGame;
 
         initChessGame(selectedMode, ai1, ai2, randomBoard);
-
+        
         this.nextPlayerColor = this.game.nextPlayerColor().opponentColor();
 
         Gdx.input.setInputProcessor(stage);

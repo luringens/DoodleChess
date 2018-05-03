@@ -215,6 +215,8 @@ public class    Board {
      * @return true if the position is occupied, false otherwise
      */
     public boolean isOccupied(Position pos) {
+        if(pos.getY() > 8 || pos.getY() < 0 || pos.getX() < 0 || pos.getX() > 8)
+            return true;
         return getAtPosition(pos) != null;
     }
 

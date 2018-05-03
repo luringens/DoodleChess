@@ -133,6 +133,11 @@ public class ChessGame extends AbstractGame {
         return piece.allPossibleMoves(getBoard());
     }
 
+    @Override 
+    public boolean canMoveTo(IChessPiece piece, Position pos) {
+        return piece.canMoveTo(pos, board);
+    }
+    
     /**
      * {@inheritDoc}
      */
