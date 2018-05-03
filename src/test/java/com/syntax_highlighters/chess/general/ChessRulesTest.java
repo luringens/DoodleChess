@@ -5,6 +5,8 @@ import com.syntax_highlighters.chess.entities.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestTemplate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -385,6 +387,16 @@ class ChessRulesTest {
 
         assertEquals(1, validMoves);
     }
+    @Test
+    void OnlyTwoKingsLeftTest(){
+        List<IChessPiece> pieces = new ArrayList<>();
+        pieces.add(new ChessPieceKing(new Position(5,1),Color.WHITE));
+        pieces.add(new ChessPieceKing(new Position(5,8),Color.BLACK));
+        Board b = new Board(pieces);
+        ChessGame game = ChessGame.setupTestBoard(board, Color.WHITE);
+
+        assertTrue(game.isGameOver());
+    }
     
     /**
      * Helper method: check that no available move of the given piece leads to
@@ -440,4 +452,6 @@ class ChessRulesTest {
             return pawn.getPosition().north(nSteps);
         return pawn.getPosition().south(nSteps);
     }
+
+
 }
