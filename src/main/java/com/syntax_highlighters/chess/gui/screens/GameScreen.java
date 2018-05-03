@@ -327,10 +327,10 @@ public class GameScreen extends AbstractScreen {
      */
     private void setTurnText() {
         if (!isGameOver) {
-            turnText.setText(game.nextPlayerColor().isWhite() ? "White's turn" : "Black's turn");
+            turnText.setText(game.nextPlayerColor().isWhite() ? player1.getName() + "'s turn" : player2.getName() + "'s turn");
         } else {
-            turnText.setText(winner == 1 ? "White has won the game" :
-                    winner == -1 ? "Black has won the game" :
+            turnText.setText(winner == 1 ? player1.getName()+ " has won the game" :
+                    winner == -1 ? player2.getName() + " has won the game" :
                             "It's a draw!");
         }
 
