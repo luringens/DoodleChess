@@ -29,7 +29,7 @@ import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
 import com.syntax_highlighters.chess.gui.actors.ConfirmationOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
 import com.syntax_highlighters.chess.BurningChess;
-//import com.syntax_highlighters.chess.SjadamGame;
+import com.syntax_highlighters.chess.SjadamGame;
 
 import java.util.ArrayList;
 
@@ -213,9 +213,8 @@ public class GameScreen extends AbstractScreen {
                 this.game = new ChessGame(ai1, ai2);
                 break;
             case "Sjadam":
-                throw new IllegalArgumentException("Not yet supported: " + mode);
-//                this.game = new SjadamGame();
-//                break;
+                this.game = new SjadamGame();
+                break;
             case "Fire Chess":
                 this.game = new BurningChess(ai1, ai2);
                 break;
