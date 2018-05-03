@@ -261,7 +261,7 @@ public class GameScreen extends AbstractScreen {
         }
 
         // Has the board updated?
-        if (game.nextPlayerColor() != nextPlayerColor) {
+        if (game.nextPlayerColor() != nextPlayerColor || true) {
             nextPlayerColor = game.nextPlayerColor();
             board.clearSuggestion();
 

@@ -82,7 +82,7 @@ public class BoardGroup extends Group {
                 assetManager.get("knight_white.png", Texture.class));
         this.promotionSelection.setVisible(false);
 
-        addActor(new FireOverlay((BurningChess)game, tiles));
+        pieceGroup.addActor(new FireOverlay((BurningChess)game, tiles));
     }
 
     /**

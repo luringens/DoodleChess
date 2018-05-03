@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class BurningChess extends AbstractGame{
     private float blackTimer = 0;
     private float whiteTimer = 0;
-    private static final float TENMINS = 60 * 2;
+    private static final float TENMINS = 10 * 2;
 
     public BurningChess(AiDifficulty whiteAi, AiDifficulty blackAi) {
         if (whiteAi != null) {
@@ -49,15 +49,18 @@ public class BurningChess extends AbstractGame{
         return unreachablePos;
     }
 
-    public void killTile(Position tile) {
+    public IChessPiece killTile(Position tile) {
         IChessPiece piece = getPieceAtPosition(tile);
         if (piece != null)
             killPiece(piece);
         unreachablePos.add(tile);
+        return piece;
     }
 
 
     public void killPiece(IChessPiece piece) {
+        if(piece instanceof ChessPieceKing)
+            forceGameEnd();
         board.removePiece(piece);
         pieceSplash(piece);
     }
@@ -67,74 +70,25 @@ public class BurningChess extends AbstractGame{
             unreachablePos.remove(tile);
     }
 
-    public void pieceSplash(IChessPiece piece) {
-        int rand = (int) (-2 + Math.random() * (2 - (-2)+1));
-        if (piece instanceof ChessPieceBishop && unreachablePos.contains(piece.getPosition())) {
-            reviveTile(piece.getPosition());
-            reviveTile(new Position(piece.getPosition().getX() + 1, piece.getPosition().getY() + 1));
-            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY() + 1));
-            reviveTile(new Position(piece.getPosition().getX() + 1, piece.getPosition().getY() - 1));
-            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY() - 1));
+    public void pieceSplash(IChessPiece piece){
+        /*
+        int offset = 1;
+
+        if(piece instanceof ChessPiecePawn) offset = 1;
+        if(piece instanceof ChessPieceBishop ||
+                piece instanceof ChessPieceRook ||
+                piece instanceof ChessPieceKnight)
+            offset = 2;
+        if(piece instanceof ChessPieceQueen)
+            offset = 3;
+
+        for(int x = piece.getPosition().getX()-offset; x < piece.getPosition().getX() + offset; ++x) {
+            for(int y = piece.getPosition().getY() - offset; y < piece.getPosition().getY() + offset; ++y) {
+                reviveTile(new Position(x, y));
+            }
         }
-
-        if (piece instanceof ChessPieceQueen && unreachablePos.contains(piece.getPosition())) {
-            reviveTile(piece.getPosition());
-            reviveTile(new Position(piece.getPosition().getX() + 1, piece.getPosition().getY() + 1));
-            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY() + 1));
-            reviveTile(new Position(piece.getPosition().getX() + 1, piece.getPosition().getY() - 1));
-            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY() - 1));
-            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() + 1));
-            reviveTile(new Position(piece.getPosition().getX() + 1, piece.getPosition().getY()));
-            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() - 1));
-            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY()));
-            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() + 2));
-            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() - 2));
-            reviveTile(new Position(piece.getPosition().getX() + 2, piece.getPosition().getY()));
-            reviveTile(new Position(piece.getPosition().getX() - 2, piece.getPosition().getY()));
-            reviveTile(new Position(piece.getPosition().getX() + 1, piece.getPosition().getY() + 2));
-            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY() + 2));
-            reviveTile(new Position(piece.getPosition().getX() + 1, piece.getPosition().getY() - 2));
-            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY() - 2));
-            reviveTile(new Position(piece.getPosition().getX() + 2, piece.getPosition().getY() + 1));
-            reviveTile(new Position(piece.getPosition().getX() + 2, piece.getPosition().getY() - 1));
-            reviveTile(new Position(piece.getPosition().getX() - 2, piece.getPosition().getY() + 1));
-            reviveTile(new Position(piece.getPosition().getX() - 2, piece.getPosition().getY() - 1));
-            reviveTile(new Position(piece.getPosition().getX() + 2, piece.getPosition().getY() + 2));
-            reviveTile(new Position(piece.getPosition().getX() - 2, piece.getPosition().getY() + 2));
-            reviveTile(new Position(piece.getPosition().getX() + 2, piece.getPosition().getY() - 2));
-            reviveTile(new Position(piece.getPosition().getX() - 2, piece.getPosition().getY() - 2));
-        }
-
-        if (piece instanceof ChessPieceRook && unreachablePos.contains(piece.getPosition())) {
-            reviveTile(piece.getPosition());
-            reviveTile(new Position(piece.getPosition().getX() + 1, piece.getPosition().getY()));
-            reviveTile(new Position(piece.getPosition().getX() + 2, piece.getPosition().getY()));
-            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY()));
-            reviveTile(new Position(piece.getPosition().getX() - 2, piece.getPosition().getY()));
-            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() + 1));
-            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() + 2));
-            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() - 1));
-            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() - 2));
-
-
-        }
-
-        if (piece instanceof ChessPiecePawn && unreachablePos.contains(piece.getPosition())) {
-            reviveTile(piece.getPosition());
-            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY()));
-            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() + 1));
-            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY() + 1));
-        }
-
-        if (piece instanceof ChessPieceKnight && unreachablePos.contains(piece.getPosition())) {
-            reviveTile(piece.getPosition());
-            reviveTile(new Position(piece.getPosition().getX() + rand, piece.getPosition().getY() + rand));
-            reviveTile(new Position(piece.getPosition().getX() + rand, piece.getPosition().getY() + rand));
-            reviveTile(new Position(piece.getPosition().getX() + rand, piece.getPosition().getY() + rand));
-            reviveTile(new Position(piece.getPosition().getX() + rand, piece.getPosition().getY() + rand));
-        }
-
-
+        */
+        unreachablePos = new ArrayList<>();
     }
 
     @Override
