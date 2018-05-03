@@ -1,7 +1,6 @@
 package com.syntax_highlighters.chess.general;
 
 import com.syntax_highlighters.chess.Account;
-import com.syntax_highlighters.chess.AccountManager;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

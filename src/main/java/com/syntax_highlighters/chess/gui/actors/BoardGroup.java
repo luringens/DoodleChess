@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.syntax_highlighters.chess.*;
 import com.syntax_highlighters.chess.entities.IChessPiece;
@@ -82,7 +81,8 @@ public class BoardGroup extends Group {
                 assetManager.get("knight_white.png", Texture.class));
         this.promotionSelection.setVisible(false);
 
-        pieceGroup.addActor(new FireOverlay((BurningChess)game, tiles));
+        if(game instanceof BurningChess)
+            pieceGroup.addActor(new FireOverlay((BurningChess)game, tiles));
     }
 
     /**
@@ -182,7 +182,8 @@ public class BoardGroup extends Group {
 
         Position estimated = new Position((int) (x / tileWidth) + 1, (int) (y / tileHeight) + 1);
 
-        if (!selected.getPiece().canMoveTo(estimated, game.getBoard())) return false;
+        if (!game.canMoveTo(selected.getPiece(), estimated)) return false;
+        
         isAnimating = true;
         final ChessPieceActor animatedPiece = selected;
         selected.animateTo(estimated, () -> {

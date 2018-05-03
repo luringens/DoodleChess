@@ -1,5 +1,7 @@
 package com.syntax_highlighters.chess;
 
+import java.util.Objects;
+
 import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import com.syntax_highlighters.chess.entities.ChessPieceRook;
 
@@ -24,6 +26,12 @@ public class CastlingMove extends Move {
         this.rookOldPos = rookOldPos;
         this.rookNewPos = rookNewPos;
     }
+
+    /**
+     * IMPORTANT: This must be changed on every release of the class
+     * in order to prevent cross-version serialization.
+     */
+    private static final long serialVersionUID = 1;
 
     /**
      * Construct a castling move between the given king and rook.
@@ -68,6 +76,18 @@ public class CastlingMove extends Move {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (!(other instanceof CastlingMove)) return false;
+        CastlingMove o = (CastlingMove) other;
+        return super.equals(o)
+            && Objects.equals(rookOldPos, this.rookOldPos)
+            && Objects.equals(rookNewPos, this.rookNewPos);
+    }
+    /**
      * Get the move in algebraic notation.
      *
      * Kingside castling represented as 0-0, queenside castling as 0-0-0
@@ -78,6 +98,14 @@ public class CastlingMove extends Move {
     public String toString() {
         if (rookOldPos.getX() == 1) return "0-0-0"; // queenside
         return "0-0"; // kingside
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), this.rookOldPos, this.rookNewPos);
     }
 
     /**

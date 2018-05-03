@@ -1,0 +1,53 @@
+Feedback INF112 spring 2018 - Oblig.4
+
+Group: Syntax Highlighters
+
+
+
+
+Overall feedback:
+Very good delivery. Most of the previous errors have been fixed, and both the game and
+the documentation is mostly on point.
+
+
+Deliverable: Minutes/ meeting reports
+Seems that you cover the things you should, good.
+
+
+Deliverable: Chess game + code quality
+Good, really nice graphics and the game seems to be working for the most part. 
+The expert AI might be a bit slow and laggy (especially for slower computers) 
+and also not that hard to beat. Also the scoreboard does not seem to update the score 
+and statistics properly when completing a game.  
+
+
+Deliverable: Retrospective summary
+Overall good, no comments for this.
+
+
+Deliverable: License + trello/issue tracker/backlog
+Still relevant and up to date. 
+
+
+Deliverable: Presentation
+Nice slides and good presentation overall.
+
+
+Deliverable: Sequence diagram
+Very good, the multiplayer game is a bit messy though 
+
+
+Deliverable: Design/class diagram
+This is also much better this time, most of the diagram is correct. Only comment to be made is
+that there are some instances where using "composition" arrows (filled diamond arrow) 
+might be more correct than using "aggregation" arrows (hollow diamond arrow). 
+E.g. between classes like game and move (can the move class exist without the game class?).
+
+
+Score: 99.3 (of 100)
+
+Evaluation: PASS
+
+
+
+Graded by Jonathan and Joakim, Bergen, May 2nd.

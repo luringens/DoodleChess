@@ -12,10 +12,12 @@ public class BurningChess extends AbstractGame{
 
     public BurningChess(AiDifficulty whiteAi, AiDifficulty blackAi) {
         if (whiteAi != null) {
-            this.whiteAI = new MiniMaxAIPlayer(Color.WHITE, whiteAi);
+            MiniMaxAIPlayer ai = new MiniMaxAIPlayer(whiteAi);
+            this.whiteAI = new AsyncPlayer(ai);
         }
         if (blackAi != null) {
-            this.blackAI = new MiniMaxAIPlayer(Color.BLACK, blackAi);
+            MiniMaxAIPlayer ai = new MiniMaxAIPlayer(blackAi);
+            this.blackAI = new AsyncPlayer(ai);
         }
 
         this.board = new Board();
@@ -71,23 +73,6 @@ public class BurningChess extends AbstractGame{
     }
 
     public void pieceSplash(IChessPiece piece){
-        /*
-        int offset = 1;
-
-        if(piece instanceof ChessPiecePawn) offset = 1;
-        if(piece instanceof ChessPieceBishop ||
-                piece instanceof ChessPieceRook ||
-                piece instanceof ChessPieceKnight)
-            offset = 2;
-        if(piece instanceof ChessPieceQueen)
-            offset = 3;
-
-        for(int x = piece.getPosition().getX()-offset; x < piece.getPosition().getX() + offset; ++x) {
-            for(int y = piece.getPosition().getY() - offset; y < piece.getPosition().getY() + offset; ++y) {
-                reviveTile(new Position(x, y));
-            }
-        }
-        */
         unreachablePos = new ArrayList<>();
     }
 
@@ -170,6 +155,16 @@ public class BurningChess extends AbstractGame{
                 || pieces.size() == 4 && bishops.size() == 2
                 && sameColoredSquare(bishops.get(0).getPosition(), bishops.get(1).getPosition());
 
+    }
+    @Override
+    public AbstractGame copy() {
+        //TODO: Implement copy.
+        throw new RuntimeException("Copy not implemented for burningchess.");
+    }
+
+    @Override
+    public boolean canMoveTo(IChessPiece piece, Position pos) {
+        return piece.canMoveTo(pos, board) && !unreachablePos.contains(pos);
     }
 }
 

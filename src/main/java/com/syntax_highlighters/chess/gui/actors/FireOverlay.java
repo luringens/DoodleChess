@@ -76,9 +76,10 @@ public class FireOverlay extends Actor {
 
     @Override
     public void act(float delta) {
+        if(game.isGameOver())
+            return;
         super.act(delta);
         game.fireTimer(delta);
-
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
         float dist = (float)Math.sqrt(w*w+h*h);

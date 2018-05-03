@@ -2,7 +2,6 @@ package com.syntax_highlighters.chess;
 
 import com.syntax_highlighters.chess.entities.*;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -216,6 +215,8 @@ public class    Board {
      * @return true if the position is occupied, false otherwise
      */
     public boolean isOccupied(Position pos) {
+        if(pos.getY() > 8 || pos.getY() < 0 || pos.getX() < 0 || pos.getX() > 8)
+            return true;
         return getAtPosition(pos) != null;
     }
 
@@ -273,26 +274,6 @@ public class    Board {
         List<IChessPiece> copied = new ArrayList<>();
         copied.addAll(this.pieces);
         return copied;
-    }
-
-    /**
-     * If the king is moving 2 steps in any direction it can only be castling.
-     * If king is castling, the ability to caste has already been checked, so the rook can move to it's new position
-     * before the king is moved, without taking an extra turn.
-     */
-    @Deprecated
-    private void performCastling(IChessPiece piece, Position toPosition){
-        Position rookpos, oldRookpos;
-        if (toPosition.getX() < 5) {
-            oldRookpos = piece.getPosition().west(4);
-            rookpos = toPosition.east(1);
-        }
-        else {
-            oldRookpos = piece.getPosition().east(3);
-            rookpos = toPosition.west(1);
-        }
-        ChessPieceRook rook = (ChessPieceRook) getAtPosition(oldRookpos);
-        putAtPosition(rookpos, rook);
     }
 
     /**
