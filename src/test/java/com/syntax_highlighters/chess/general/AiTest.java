@@ -51,7 +51,7 @@ class AiTest {
         pieces.add(new ChessPiecePawn(new Position(3, 3), Color.BLACK));
         pieces.add(new ChessPieceKing(new Position(1, 1), Color.WHITE));
         pieces.add(new ChessPieceKing(new Position(8, 8), Color.BLACK));
-        
+
         Board board = new Board(pieces);
         ChessGame game = ChessGame.setupTestBoard(board, Color.BLACK);
         IAiPlayer ai = new MiniMaxAIPlayer(AiDifficulty.ShortSighted);
@@ -62,6 +62,7 @@ class AiTest {
 
         assertTrue(game.isGameOver());
     }
+
     @Test
     void ThreatenedQueenShouldMoveAwayTest(){
         ArrayList<IChessPiece> pieces = new ArrayList<>();
@@ -83,5 +84,96 @@ class AiTest {
         Position queenPos = queen.getPosition() ;
 
         assertTrue(queenPos != new Position(8,2) || queenPos != new Position(4,1));
+    }
+    @Test
+    void QueenSuicideTest1(){
+        ArrayList<IChessPiece> pieces = new ArrayList<>();
+        ChessPieceQueen queen = new ChessPieceQueen(new Position(4,4),Color.BLACK);
+        pieces.add(queen);
+        pieces.add(new ChessPieceQueen(new Position(4,1),Color.WHITE));
+        pieces.add(new ChessPieceKing(new Position(5,2),Color.WHITE));
+        pieces.add(new ChessPiecePawn(new Position(3,2),Color.WHITE));
+        pieces.add(new ChessPieceRook(new Position(3,1),Color.WHITE));
+        pieces.add(new ChessPieceRook(new Position(6,1),Color.WHITE));
+        pieces.add(new ChessPiecePawn(new Position(6,2),Color.WHITE));
+        pieces.add(new ChessPieceKnight(new Position(7,1),Color.WHITE));
+        pieces.add(new ChessPieceKnight(new Position(3,6),Color.BLACK));
+        pieces.add(new ChessPieceKnight(new Position(6,6),Color.BLACK));
+
+        pieces.add(new ChessPieceKing(new Position(5,8),Color.BLACK));
+        Board board = new Board(pieces);
+        ChessGame game = ChessGame.setupTestBoard(board,Color.BLACK);
+
+        IAiPlayer ai = new MiniMaxAIPlayer(AiDifficulty.ShortSighted);
+
+        System.out.println(board);
+        ai.PerformMove(game);
+        System.out.println(board);
+        Position queenPos = queen.getPosition() ;
+
+        assertTrue(queenPos != new Position(6,2) || queenPos != new Position(5,3));
+
+    }
+    @Test
+    void QueenSuicideTest2(){
+        ArrayList<IChessPiece> pieces = new ArrayList<>();
+        ChessPieceQueen queen = new ChessPieceQueen(new Position(7,3),Color.BLACK);
+        pieces.add(queen);
+        pieces.add(new ChessPieceQueen(new Position(4,1),Color.WHITE));
+        pieces.add(new ChessPieceKing(new Position(8,1),Color.WHITE));
+        pieces.add(new ChessPiecePawn(new Position(4,2),Color.WHITE));
+        pieces.add(new ChessPieceRook(new Position(8,2),Color.WHITE));
+        pieces.add(new ChessPieceRook(new Position(1,1),Color.WHITE));
+        pieces.add(new ChessPiecePawn(new Position(8,3),Color.WHITE));
+        pieces.add(new ChessPiecePawn(new Position(2,3),Color.WHITE));
+        pieces.add(new ChessPiecePawn(new Position(3,4),Color.WHITE));
+        pieces.add(new ChessPieceKnight(new Position(3,3),Color.WHITE));
+        pieces.add(new ChessPieceKnight(new Position(2,4),Color.BLACK));
+        pieces.add(new ChessPieceKing(new Position(5,8),Color.BLACK));
+
+        Board board = new Board(pieces);
+        ChessGame game = ChessGame.setupTestBoard(board,Color.BLACK);
+
+        IAiPlayer ai = new MiniMaxAIPlayer(AiDifficulty.ShortSighted);
+
+        System.out.println(board);
+        ai.PerformMove(game);
+        System.out.println(board);
+        Position queenPos = queen.getPosition() ;
+
+        assertTrue(queenPos != new Position(3,3) || queenPos != new Position(5,3));
+
+    }
+    @Test
+    void RookSuicideTest(){
+        ArrayList<IChessPiece> pieces = new ArrayList<>();
+        ChessPieceRook rook = new ChessPieceRook(new Position(5,5),Color.BLACK);
+        pieces.add(rook);
+        pieces.add(new ChessPieceKing(new Position(8,1),Color.WHITE));
+        pieces.add(new ChessPiecePawn(new Position(2,4),Color.WHITE));
+        pieces.add(new ChessPiecePawn(new Position(1,5),Color.WHITE));
+        pieces.add(new ChessPieceRook(new Position(8,2),Color.WHITE));
+        pieces.add(new ChessPieceRook(new Position(1,1),Color.WHITE));
+
+        pieces.add(new ChessPieceKing(new Position(7,8),Color.BLACK));
+        pieces.add(new ChessPiecePawn(new Position(2,7),Color.BLACK));
+        pieces.add(new ChessPiecePawn(new Position(6,7),Color.BLACK));
+        pieces.add(new ChessPiecePawn(new Position(7,6),Color.BLACK));
+        pieces.add(new ChessPiecePawn(new Position(8,6),Color.BLACK));
+        pieces.add(new ChessPieceRook(new Position(1,8),Color.BLACK));
+        pieces.add(new ChessPieceBishop(new Position(4,7),Color.BLACK));
+
+
+        Board board = new Board(pieces);
+        ChessGame game = ChessGame.setupTestBoard(board,Color.BLACK);
+
+        IAiPlayer ai = new MiniMaxAIPlayer(AiDifficulty.ShortSighted);
+
+        System.out.println(board);
+        ai.PerformMove(game);
+        System.out.println(board);
+        Position rookPos = rook.getPosition() ;
+
+        assertTrue(rookPos != new Position(5,1));
     }
 }
