@@ -47,7 +47,12 @@ public abstract class AbstractGame {
      * @param to Coordinate to
      * @return If the move was valid and performed.
      */
+    @Deprecated
     public List<Move> performMove(Position from, Position to) {
+        throw new RuntimeException("Do not call this method");
+    }
+
+    public List<Move> getMoves(Position from, Position to) {
         IChessPiece piece = getPieceAtPosition(from);
         
         // Check that the piece exists
@@ -57,12 +62,7 @@ public abstract class AbstractGame {
         if (piece.getColor() != nextPlayerColor) return new ArrayList<>(); // wrong color of piece
         
         // Performs move if valid, returns whether move was performed
-        List<Move> result = board.getMove(piece, to);
-        if (result.size() == 1) {
-            Move move = result.get(0);
-            performMove(move);
-        }
-        return result;
+        return board.getMove(piece, to);
     }
 
     /**

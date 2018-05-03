@@ -1,5 +1,7 @@
 package com.syntax_highlighters.chess;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import com.syntax_highlighters.chess.entities.IChessPiece;
@@ -37,6 +39,13 @@ public class PromotionMove extends Move {
         promoteTo = promoteToPiece;
     }
 
+    @Override
+    public List<PositionChange> getPositionChanges(Board b) {
+        List<PositionChange> ret = new ArrayList<>();
+        IChessPiece p = hasDoneMove ? oldPiece : b.getAtPosition(oldPos);
+        ret.add(new PositionChange(p, oldPos, newPos));
+        return ret;
+    }
 
     /**
      * {@inheritDoc}

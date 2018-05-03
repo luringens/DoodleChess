@@ -1,7 +1,10 @@
 package com.syntax_highlighters.chess;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Objects;
 
+import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import com.syntax_highlighters.chess.entities.ChessPieceRook;
 
@@ -51,6 +54,16 @@ public class CastlingMove extends Move {
             this.newPos = king.getPosition().east(2);
             this.rookNewPos = newPos.west(1);
         }
+    }
+
+    @Override
+    public List<PositionChange> getPositionChanges(Board b) {
+        List<PositionChange> ret = new ArrayList<>();
+        IChessPiece king = b.getAtPosition(hasDoneMove ? newPos : oldPos);
+        IChessPiece rook = b.getAtPosition(hasDoneMove ? rookNewPos : rookOldPos);
+        ret.add(new PositionChange(king, oldPos, newPos));
+        ret.add(new PositionChange(rook, rookOldPos, rookNewPos));
+        return ret;
     }
 
     /**
