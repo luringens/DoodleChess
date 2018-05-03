@@ -115,15 +115,15 @@ public class SetupScreen extends AbstractScreen {
         final List<String> modes = Arrays.asList("Regular Chess", "Sjadam", "Fire Chess");
         
         // create select boxes
-        final SelectBox<String> pl1 = createDropdownMenu(pl1Accounts, true);
-        final SelectBox<String> pl2 = createDropdownMenu(pl2Accounts, true);
-        final SelectBox<String> ai1 = createDropdownMenu(ais, false);
-        final SelectBox<String> ai2 = createDropdownMenu(ais, false);
+        final SelectBox<String> pl1 = createDropdownMenu(pl1Accounts, true, buttonBigWidth, buttonBigHeight);
+        final SelectBox<String> pl2 = createDropdownMenu(pl2Accounts, true, buttonBigWidth, buttonBigHeight);
+        final SelectBox<String> ai1 = createDropdownMenu(ais, false, buttonBigWidth, buttonBigHeight);
+        final SelectBox<String> ai2 = createDropdownMenu(ais, false, buttonBigWidth, buttonBigHeight);
         // set which select boxes to show
         player1Title = pl1;
         player2Title = pl2;
         
-        gameModes = createDropdownMenu(modes, true); // set the game mode select box
+        gameModes = createDropdownMenu(modes, true, buttonBigWidth + 40, buttonBigHeight); // set the game mode select box
 
         rb1 = new RadioGroup(assetManager, false);
         rb2 = new RadioGroup(assetManager, false);
@@ -228,12 +228,12 @@ public class SetupScreen extends AbstractScreen {
      *
      * @return The newly created dropdown menu
      */
-    private SelectBox<String> createDropdownMenu(List<String> options, boolean visible) {
+    private SelectBox<String> createDropdownMenu(List<String> options, boolean visible, float width, float height) {
         SelectBox<String> box = new SelectBox<>(getGame().skin);
         box.setItems(options.stream().map(String::toString).toArray(String[]::new));
         box.setSelected(options.get(0));
         box.setAlignment(Align.center);
-        box.setSize(buttonBigWidth, buttonBigHeight);
+        box.setSize(width, height);
         box.setVisible(visible);
         stage.addActor(box);
         return box;
