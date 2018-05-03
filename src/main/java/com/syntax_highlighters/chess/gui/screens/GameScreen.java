@@ -28,6 +28,8 @@ import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
 import com.syntax_highlighters.chess.gui.actors.ConfirmationOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
+import com.syntax_highlighters.chess.BurningChess;
+//import com.syntax_highlighters.chess.SjadamGame;
 
 import java.util.ArrayList;
 
@@ -37,7 +39,7 @@ import java.util.ArrayList;
 public class GameScreen extends AbstractScreen {
     private final AssetManager assetManager;
 
-    private final AbstractGame game;
+    private AbstractGame game;
     //private final UiBoard board;
     private final BoardGroup board;
     private final Text turnText;
@@ -74,7 +76,8 @@ public class GameScreen extends AbstractScreen {
      * @param attrib2   Attributes for player 2 (account info, AI difficulty,
      * @param randomBoard Whether or not to generate a random board or a regular one.
      */
-    public GameScreen(LibgdxChessGame chessGame, PlayerAttributes attrib1, PlayerAttributes attrib2, boolean randomBoard) {
+    public GameScreen(LibgdxChessGame chessGame, String selectedMode,
+            PlayerAttributes attrib1, PlayerAttributes attrib2, boolean randomBoard) {
         super(chessGame, false);
 
         assetManager = chessGame.getAssetManager();
@@ -86,10 +89,7 @@ public class GameScreen extends AbstractScreen {
         this.player2Color = attrib2.getColor();
         this.chessGame = chessGame;
 
-        this.game = new ChessGame(ai1, ai2);
-        if(randomBoard)
-            // Do 15-25 random moves
-            this.game.getBoard().setupPracticeGame((int)(Math.random() * 5) + 20);
+        initChessGame(selectedMode, ai1, ai2, randomBoard);
 
         this.nextPlayerColor = this.game.nextPlayerColor().opponentColor();
 
@@ -205,6 +205,26 @@ public class GameScreen extends AbstractScreen {
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+    }
+
+    private void initChessGame(String mode, AiDifficulty ai1, AiDifficulty ai2, boolean random) {
+        switch (mode) {
+            case "Regular Chess":
+                this.game = new ChessGame(ai1, ai2);
+                break;
+            case "Sjadam":
+                throw new IllegalArgumentException("Not yet supported: " + mode);
+//                this.game = new SjadamGame();
+//                break;
+            case "Fire Chess":
+                this.game = new BurningChess(ai1, ai2);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown game mode: " + mode);
+        }
+        if(random)
+            // Do 15-25 random moves
+            this.game.getBoard().setupPracticeGame((int)(Math.random() * 5) + 20);
     }
 
     private void gameOver(int winner) {

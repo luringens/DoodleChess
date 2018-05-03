@@ -19,7 +19,7 @@ public class MainMenuScreen extends AbstractScreen {
     private final Image background;
 
     private final Button playButton;
-    private final Button playRandomButton;
+    private final Button multiplayerButton;
     private final Button scoreButton;
 
     /**
@@ -38,44 +38,29 @@ public class MainMenuScreen extends AbstractScreen {
         background = new Image(tex);
         background.setSize(800, 800);
 
-        playButton = new Button("Play", assetManager);
-        playButton.setSize(250, 75);
-
-        playRandomButton = new Button("Play random game", assetManager);
-        playRandomButton.setSize(250, 75);
-
-        scoreButton = new Button("Leaderboards", assetManager);
-        scoreButton.setSize(250, 75);
-
         stage.addActor(background);
-        stage.addActor(playButton);
-        stage.addActor(playRandomButton);
-        stage.addActor(scoreButton);
+
+        playButton = new Button.Builder("Local game", assetManager)
+            .size(250, 75)
+            .callback(() -> game.setScreen(new SetupScreen(game)))
+            .stage(stage)
+            .create();
+        
+        multiplayerButton = new Button.Builder("Multiplayer", assetManager)
+            .size(250, 75)
+            .callback(() -> game.setScreen(new MultiplayerSetupScreen(game)))
+            .stage(stage)
+            .create();
+        
+        scoreButton = new Button.Builder("Leaderboards", assetManager)
+            .size(250, 75)
+            .callback(() -> game.setScreen(new ScoreScreen(game)))
+            .stage(stage)
+            .create();
+        
         Gdx.input.setInputProcessor(stage);
 
         Audio.themeMusic(assetManager,true);
-
-        playButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new SetupScreen(game));
-            }
-        });
-
-        playRandomButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new SetupScreen(game, true));
-            }
-        });
-
-        scoreButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new ScoreScreen(game));
-            }
-        });
-
     }
 
     /**
@@ -114,7 +99,7 @@ public class MainMenuScreen extends AbstractScreen {
         }
 
         playButton.setPosition(x + 80, height/1.75f);
-        playRandomButton.setPosition(x + 80, height/1.75f - 75);
+        multiplayerButton.setPosition(x + 80, height/1.75f - 75);
         scoreButton.setPosition(x + 80, height/1.75f - 150);
     }
 }

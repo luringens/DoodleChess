@@ -1,5 +1,9 @@
 package com.syntax_highlighters.chess.gui.screens;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+import java.util.stream.Collectors;
+import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
@@ -29,43 +33,56 @@ import java.util.ArrayList;
  */
 public class SetupScreen extends AbstractScreen {
 
-    private final Text title;
-    private final Text playerNote;
+    private final Text title;      // title of setup screen
+    private final Text playerNote; // not sure
 
+    // image indicating the color of each player
     private final ChessPieceActor blackKing;
     private final ChessPieceActor whiteKing;
 
+    // displayed if the user tries to click play while selecting the same
+    // account on both sides
     private final Text sameAccountErrorMsg;
 
-    private AiDifficulty player1Difficulty;
-    private AiDifficulty player2Difficulty;
-    private final AssetManager assetManager;
+    private final AssetManager assetManager; // asset manager
 
+    // dropdown menus for either account or AI difficulty selection
     private SelectBox<String> player1Title;
     private SelectBox<String> player2Title;
+    
+    private SelectBox<String> gameModes;
+    
 
+    // buttons for displaying the color picker dialog for each player
     private Button player1ColorShow;
     private Button player2ColorShow;
     private int selectingPlayer = -1;
 
-    private final ArrayList<Button> player1Buttons = new ArrayList<>();
-    private final ArrayList<Button> player2Buttons = new ArrayList<>();
+    private final Button playButton;    // start game
+    private final Button mainMenu;      // return to main menu
+    private final Button createAccount; // show account creation dialog
 
-    private final Button playButton;
-    private final Button mainMenu;
-    private final Button createAccount;
+    private final PencilSelector selector; // color picker
 
-    private final PencilSelector selector;
-
+    // constants
     final float buttonBigWidth = 200;
     final float buttonBigHeight = 60;
     final float buttonSmallWidth = 175;
     final float buttonSmallHeight = 50;
 
+    // logical color variables of the two players
     private Color player1Color = Color.WHITE;
     private Color player2Color = Color.BLACK;
 
+    // whether or not to randomize the board
     private boolean randomBoard = false;
+
+    // radio button groups for each player indicating whether the player is a
+    // human player or AI player
+    private RadioGroup rb1;
+    private RadioGroup rb2;
+
+    private CheckButton randomCheckButton;
 
     public SetupScreen(LibgdxChessGame game)
     {
@@ -77,8 +94,7 @@ public class SetupScreen extends AbstractScreen {
         sameAccountErrorMsg = createText("Error: Cannot use same account on both sides", false, Color.RED);
         sameAccountErrorMsg.setVisible(false); // display only if player tries to use same account on both sides
 
-        //blackKing = new Image(this.assetManager.get("king_white.png", Texture.class));
-        //whiteKing = new Image(this.assetManager.get("king_white.png", Texture.class));
+        // display which player setup belongs to which player
         whiteKing = new ChessPieceActor(new ChessPieceKing(null, null), player1Color, null, assetManager);
         blackKing = new ChessPieceActor(new ChessPieceKing(null, null), player2Color, null, assetManager);
         whiteKing.setSize(120, 120);
@@ -87,8 +103,57 @@ public class SetupScreen extends AbstractScreen {
         stage.addActor(blackKing);
         stage.addActor(whiteKing);
 
-        addDifficultyList(game, -1);
-        addDifficultyList(game, 1);
+        // lists
+        final List<String> accounts = game.getAccountManager().getAll().stream()
+            .map(a->a.getName())
+            .collect(Collectors.toList());
+        final List<String> pl1Accounts = Stream.concat(Stream.of("Player1"), accounts.stream())
+            .collect(Collectors.toList());
+        final List<String> pl2Accounts = Stream.concat(Stream.of("Player2"), accounts.stream())
+            .collect(Collectors.toList());
+        final List<String> ais = Arrays.asList("Easy AI", "Medium AI", "Hard AI");
+        final List<String> modes = Arrays.asList("Regular Chess", "Sjadam", "Fire Chess");
+        
+        // create select boxes
+        final SelectBox<String> pl1 = createDropdownMenu(pl1Accounts, true);
+        final SelectBox<String> pl2 = createDropdownMenu(pl2Accounts, true);
+        final SelectBox<String> ai1 = createDropdownMenu(ais, false);
+        final SelectBox<String> ai2 = createDropdownMenu(ais, false);
+        // set which select boxes to show
+        player1Title = pl1;
+        player2Title = pl2;
+        
+        gameModes = createDropdownMenu(modes, true); // set the game mode select box
+
+        rb1 = new RadioGroup(assetManager, false);
+        rb2 = new RadioGroup(assetManager, false);
+        
+        rb1.addButton("Human player", selected -> {
+            if (selected) player1Title = swapDropdownMenu(pl1, ai1);
+        });
+        rb1.addButton("Machine player", selected -> {
+            if (selected) player1Title = swapDropdownMenu(ai1, pl1);
+        });
+        rb1.setOnSelectionChangeCallback(
+                () -> resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        
+        rb2.addButton("Human player", selected -> {
+            if (selected) player2Title = swapDropdownMenu(pl2, ai2);
+        });
+        rb2.addButton("Machine player", selected -> {
+            if (selected) player2Title = swapDropdownMenu(ai2, pl2);
+        });
+        rb2.setOnSelectionChangeCallback(
+                () -> resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+                
+        stage.addActor(rb1);
+        stage.addActor(rb2);
+
+        // random game checkbutton
+        randomCheckButton = new CheckButton(assetManager, "Random starting positions",
+                Color.BLACK);
+        randomCheckButton.setOnSelectionChangedCallback(selected -> randomBoard = selected);
+        stage.addActor(randomCheckButton);
 
         AccountOverlay accountOverlay = new AccountOverlay(game, this, assetManager);
         accountOverlay.setVisible(false);
@@ -126,6 +191,12 @@ public class SetupScreen extends AbstractScreen {
 
     }
 
+    private SelectBox<String> swapDropdownMenu(SelectBox<String> show, SelectBox<String> hide) {
+        show.setVisible(true);
+        hide.setVisible(false);
+        return show;
+    }
+
     public SetupScreen(LibgdxChessGame game, boolean randomBoard) {
         this(game);
         this.randomBoard = randomBoard;
@@ -148,92 +219,24 @@ public class SetupScreen extends AbstractScreen {
 
     }
 
-    /* HELPER METHODS */
-
-    private void resetbuttonList(int player)
-    {
-        for (int i = 0; i < player1Buttons.size(); i++) {
-            getAIDifficultySettingButton(player, i).setSelected(false);
-        }
-    }
-
-    private void setDifficulty(int player, int difficulty)
-    {
-        if(player == -1)
-            player1Difficulty = difficulty == -1 ? null : AiDifficulty.values()[difficulty];
-        else
-            player2Difficulty = difficulty == -1 ? null : AiDifficulty.values()[difficulty];
-    }
-
-    private void addDifficultyList(LibgdxChessGame game, int player)
-    {
-        SelectBox<String> box = new SelectBox<>(game.skin);
-
-        ArrayList<String> accounts = new ArrayList<>();
-        accounts.add("Player" + (player == -1 ? "1" : "2"));
-        for(Account acc : game.getAccountManager().getAll())
-        {
-            accounts.add(acc.getName());
-        }
-
-        box.setItems(accounts.stream().map(String::toString).toArray(String[]::new));
-        box.setSelected("Player" + (player == -1 ? "1" : "2"));
-        box.setAlignment(Align.center);
-        box.setSize(200,  buttonBigHeight);
-        stage.addActor(box);
-        if(player == -1)
-            player1Title = box;
-        else
-            player2Title = box;
-
-        String[] labels = new String[]{"No Ai", "Easy", "Medium", "Hard"};
-        for(int i = 0; i < labels.length; ++i)
-        {
-            final int difficulty = i-1;
-            Button button = createButton(labels[i], false, () -> {
-                resetbuttonList(player);
-                getAIDifficultySettingButton(player, difficulty+1).setSelected(true);
-                if(difficulty >= -1 && difficulty < AiDifficulty.values().length)
-                    setDifficulty(player, difficulty);
-
-                if(player == -1)
-                    player1Title.setVisible(difficulty == -1);
-                else
-                    player2Title.setVisible(difficulty == -1);
-            });
-
-            if(i == 0)
-            {
-                button.setSelected(true);
-                setDifficulty(player, -1);
-            }
-
-            if(player == -1)
-                player1Buttons.add(button);
-            else
-                player2Buttons.add(button);
-        }
-    }
-
     /**
-     * Helper method: Retrieve the AI difficulty selection button of the given
-     * player at the given position.
+     * Helper method: Create a dropdown menu with the given elements and add it
+     * to the stage.
      *
-     * @param player -1 for player 1, or 1 for player 2
-     * @param index The index of the button to select - in range [0,4)
+     * @param options Which options are visible in the dropdown menu
+     * @param visible Whether or not this drop down menu should be shown or not
      *
-     * @return The selected button
+     * @return The newly created dropdown menu
      */
-    private Button getAIDifficultySettingButton(int player, int index) {
-        if (!(player == -1 || player == 1)) {
-            throw new IllegalArgumentException("player == -1 || player == 1");
-        }
-        if (!(0 <= index && index < 4)) {
-            throw new IllegalArgumentException("0 <= index && index < 4");
-        }
-
-        return (player == -1 ? player1Buttons : player2Buttons).get(index);
-
+    private SelectBox<String> createDropdownMenu(List<String> options, boolean visible) {
+        SelectBox<String> box = new SelectBox<>(getGame().skin);
+        box.setItems(options.stream().map(String::toString).toArray(String[]::new));
+        box.setSelected(options.get(0));
+        box.setAlignment(Align.center);
+        box.setSize(buttonBigWidth, buttonBigHeight);
+        box.setVisible(visible);
+        stage.addActor(box);
+        return box;
     }
 
     /**
@@ -351,21 +354,48 @@ public class SetupScreen extends AbstractScreen {
     private void startGame(LibgdxChessGame game) {
         String selected1 = player1Title.getSelected();
         String selected2 = player2Title.getSelected();
+        String selectedMode = gameModes.getSelected();
 
-        if(invalidAccountSelection(selected1, selected2))
+        int si1 = rb1.getSelectedIndex();
+        int si2 = rb2.getSelectedIndex();
+
+        if(si1 == 0 && invalidAccountSelection(selected1, selected2))
         {
             if (selected1 != null && selected1.equals(selected2))
                 sameAccountErrorMsg.setVisible(true);
             return;
         }
         AccountManager manager = game.getAccountManager();
-        Account player1 = manager.getAccount(selected1);
-        Account player2 = manager.getAccount(selected2);
+        Account player1 = si1 == 1 ? null : manager.getAccount(selected1);
+        Account player2 = si2 == 1 ? null : manager.getAccount(selected2);
+        
+        AiDifficulty player1Difficulty = si1 == 0 ? null : getAiDifficulty(selected1);
+        AiDifficulty player2Difficulty = si2 == 0 ? null : getAiDifficulty(selected2);
 
         // Create player attribute objects
         PlayerAttributes attrib1 = createAttributes(player1, player1Difficulty, player1Color);
         PlayerAttributes attrib2 = createAttributes(player2, player2Difficulty, player2Color);
-        game.setScreen(new GameScreen(game, attrib1, attrib2, randomBoard));
+        game.setScreen(new GameScreen(game, selectedMode, attrib1, attrib2, randomBoard));
+    }
+
+    /**
+     * Helper method: Retrieve the AI difficulty corresponding to the selected
+     * option.
+     *
+     * @param aiLevel The string representing the AI difficulty level
+     * @return The corresponding AiDifficulty
+     */
+    private AiDifficulty getAiDifficulty(String aiLevel) {
+        switch(aiLevel) {
+            case "Easy AI":
+                return AiDifficulty.Easy;
+            case "Medium AI":
+                return AiDifficulty.Medium;
+            case "Hard AI":
+                return AiDifficulty.Hard;
+            default:
+                return null;
+        }
     }
 
     /**
@@ -413,9 +443,16 @@ public class SetupScreen extends AbstractScreen {
         float y = height / 2.f + 400 - buttonBigHeight * 1.5f - blackKing.getHeight();
         whiteKing.setPosition(column1 - whiteKing.getWidth() / 2.f, y);
         blackKing.setPosition(column2 - blackKing.getWidth() / 2.f, y);
+        
+        gameModes.setPosition(width/2.f - gameModes.getWidth()/2.f, y);
+
+        y -= rb1.getHeight()*2;
+        
+        rb1.setPosition(column1 - buttonBigWidth / 2.f, y);
+        rb2.setPosition(column2 - buttonBigWidth / 2.f, y);
 
         y -= 80;
-
+        
         player1Title.setPosition(column1 - buttonBigWidth / 2.f, y);
         player2Title.setPosition(column2 - buttonBigWidth / 2.f, y);
 
@@ -425,27 +462,17 @@ public class SetupScreen extends AbstractScreen {
         player2ColorShow.setPosition(column2 - buttonSmallWidth / 2.f, y);
 
         y -= buttonBigHeight;
-        float tempY = y;
-        for(int i = 0; i < player1Buttons.size(); ++i)
-        {
-            Button button = player1Buttons.get(i);
-            button.setPosition(column1 - buttonSmallWidth / 2.f, y);
-            y -= buttonSmallHeight;
-        }
-        y = tempY;
-        for(int i = 0; i < player2Buttons.size(); ++i)
-        {
-            Button button = player2Buttons.get(i);
-            button.setPosition(column2 - buttonSmallWidth / 2.f, y);
-            y -= buttonSmallHeight;
-        }
+        
+        randomCheckButton.setPosition(width/2.f-randomCheckButton.getWidth()/2.f,
+                y + randomCheckButton.getHeight()/2.f);
 
-        y -= buttonBigHeight / 2.f;
+        y -= buttonBigHeight;
 
         float cw = width / 2.f - buttonBigWidth / 2.f;
 
         playButton.setPosition(column2 - buttonBigWidth/2.f, y);
 
+        
         mainMenu.setPosition(column1 - buttonBigWidth / 2.f, y);
         createAccount.setPosition(cw, y);
         playerNote.setCenter(width / 2.f, y - 20.f);
