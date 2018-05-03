@@ -161,7 +161,8 @@ public class SjadamGame extends AbstractGame {
         super.performMove(move);
         
         Position oldPos = getLastJumpedPosition();
-        if (endTurn) {
+        if (endTurn || !jumpedFromPositions.isEmpty()
+                && move.newPos.equals(jumpedFromPositions.get(0))) {
             jumpedFromPositions = new ArrayList<>(); // clear jumped positions
         }
         else if (move.newPos.equals(oldPos)) {
