@@ -5,6 +5,8 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Stores info about a move in the game.
@@ -235,5 +237,30 @@ public class Move implements Serializable {
         m.tookPiece = tookPiece;
         m.hasDoneMove = hasDoneMove;
         return m;
+    }
+
+    public List<PositionChange> getPositionChanges(Board b) {
+        List<PositionChange> ret = new ArrayList<>();
+        ret.add(new PositionChange(getPiece(b), getOldPosition(), getPosition()));
+        return ret;
+    }
+
+    public static class PositionChange {
+        public IChessPiece pieceMoved;
+        public Position oldPos;
+        public Position newPos;
+        
+        /**
+         * Convenience constructor.
+         *
+         * @param p The piece that moved
+         * @param op Start position
+         * @param np End position
+         */
+        public PositionChange(IChessPiece p, Position op, Position np) {
+            pieceMoved = p;
+            oldPos = op;
+            newPos = np;
+        }
     }
 }
