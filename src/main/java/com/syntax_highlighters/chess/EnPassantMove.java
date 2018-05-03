@@ -17,7 +17,7 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
  */
 public class EnPassantMove extends Move {
     private final Position passantTakesPos;
-    private IChessPiece passantTakesPiece = null;
+    private transient IChessPiece passantTakesPiece = null;
 
     private EnPassantMove(Position passantTakesPos) {
         this.passantTakesPos = passantTakesPos;

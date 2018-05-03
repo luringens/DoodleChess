@@ -29,7 +29,7 @@ public class Move implements Serializable {
     Position oldPos;
     Position newPos;
     protected boolean hadMoved;
-    protected IChessPiece tookPiece = null;
+    protected transient IChessPiece tookPiece = null;
     protected String pieceString;
 
     /**

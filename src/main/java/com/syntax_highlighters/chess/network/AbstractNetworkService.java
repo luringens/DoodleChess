@@ -39,6 +39,7 @@ public abstract class AbstractNetworkService implements INetworkService {
             outputStream.writeBytes("\n");
         } catch (IOException ex) {
             lastError = "Failed to send move: " + ex.getMessage();
+            ex.printStackTrace();
             if (socket.isClosed()) status = ConnectionStatus.ConnectionLost;
         }
     }
@@ -73,6 +74,7 @@ public abstract class AbstractNetworkService implements INetworkService {
             lastError = "Failed to deserialize - other client "
                 + "may be running a different version of the game" + ex.getMessage();
             Disconnect();
+            System.out.println("Host/client version mismatch.");
             return null;
         }
         catch (SocketTimeoutException ex) {
@@ -82,6 +84,7 @@ public abstract class AbstractNetworkService implements INetworkService {
         catch (Exception ex) {
             lastError = "Failed to send move: " + ex.getMessage();
             if (socket.isClosed()) status = ConnectionStatus.ConnectionLost;
+            ex.printStackTrace();
             return null;
         }
 	}

@@ -3,11 +3,17 @@ package com.syntax_highlighters.chess.entities;
 /**
  * Represents whether a piece is black or white.
  */
-public class Color {
+public class Color implements java.io.Serializable {
     private final boolean color;
 
     private static boolean WHITE_B = true;
     private static boolean BLACK_B = false;
+
+    /**
+     * IMPORTANT: This must be changed on every release of the class
+     * in order to prevent cross-version serialization.
+     */
+    private static final long serialVersionUID = 1;
 
     /**
      * The instance of color that is white.
