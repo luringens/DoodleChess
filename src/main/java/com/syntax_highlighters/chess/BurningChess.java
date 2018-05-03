@@ -1,10 +1,6 @@
 package com.syntax_highlighters.chess;
 
-import com.syntax_highlighters.chess.entities.AiDifficulty;
-import com.syntax_highlighters.chess.entities.Color;
-import com.syntax_highlighters.chess.entities.IChessPiece;
-import com.syntax_highlighters.chess.entities.MiniMaxAIPlayer;
-
+import com.syntax_highlighters.chess.entities.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,18 +49,92 @@ public class BurningChess extends AbstractGame{
         return unreachablePos;
     }
 
-    public void killTile(Position tile){
+    public void killTile(Position tile) {
+        IChessPiece piece = getPieceAtPosition(tile);
+        if (piece != null)
+            killPiece(piece);
         unreachablePos.add(tile);
     }
 
 
-    public void killPiece(IChessPiece piece){
+    public void killPiece(IChessPiece piece) {
         board.removePiece(piece);
+        pieceSplash(piece);
     }
 
-    public void reviveTile(Position tile){
-        if(unreachablePos.contains(tile))
+    public void reviveTile(Position tile) {
+        if (unreachablePos.contains(tile))
             unreachablePos.remove(tile);
+    }
+
+    public void pieceSplash(IChessPiece piece) {
+        int rand = (int) (-2 + Math.random() * (2 - (-2)+1));
+        if (piece instanceof ChessPieceBishop && unreachablePos.contains(piece.getPosition())) {
+            reviveTile(piece.getPosition());
+            reviveTile(new Position(piece.getPosition().getX() + 1, piece.getPosition().getY() + 1));
+            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY() + 1));
+            reviveTile(new Position(piece.getPosition().getX() + 1, piece.getPosition().getY() - 1));
+            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY() - 1));
+        }
+
+        if (piece instanceof ChessPieceQueen && unreachablePos.contains(piece.getPosition())) {
+            reviveTile(piece.getPosition());
+            reviveTile(new Position(piece.getPosition().getX() + 1, piece.getPosition().getY() + 1));
+            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY() + 1));
+            reviveTile(new Position(piece.getPosition().getX() + 1, piece.getPosition().getY() - 1));
+            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY() - 1));
+            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() + 1));
+            reviveTile(new Position(piece.getPosition().getX() + 1, piece.getPosition().getY()));
+            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() - 1));
+            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY()));
+            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() + 2));
+            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() - 2));
+            reviveTile(new Position(piece.getPosition().getX() + 2, piece.getPosition().getY()));
+            reviveTile(new Position(piece.getPosition().getX() - 2, piece.getPosition().getY()));
+            reviveTile(new Position(piece.getPosition().getX() + 1, piece.getPosition().getY() + 2));
+            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY() + 2));
+            reviveTile(new Position(piece.getPosition().getX() + 1, piece.getPosition().getY() - 2));
+            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY() - 2));
+            reviveTile(new Position(piece.getPosition().getX() + 2, piece.getPosition().getY() + 1));
+            reviveTile(new Position(piece.getPosition().getX() + 2, piece.getPosition().getY() - 1));
+            reviveTile(new Position(piece.getPosition().getX() - 2, piece.getPosition().getY() + 1));
+            reviveTile(new Position(piece.getPosition().getX() - 2, piece.getPosition().getY() - 1));
+            reviveTile(new Position(piece.getPosition().getX() + 2, piece.getPosition().getY() + 2));
+            reviveTile(new Position(piece.getPosition().getX() - 2, piece.getPosition().getY() + 2));
+            reviveTile(new Position(piece.getPosition().getX() + 2, piece.getPosition().getY() - 2));
+            reviveTile(new Position(piece.getPosition().getX() - 2, piece.getPosition().getY() - 2));
+        }
+
+        if (piece instanceof ChessPieceRook && unreachablePos.contains(piece.getPosition())) {
+            reviveTile(piece.getPosition());
+            reviveTile(new Position(piece.getPosition().getX() + 1, piece.getPosition().getY()));
+            reviveTile(new Position(piece.getPosition().getX() + 2, piece.getPosition().getY()));
+            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY()));
+            reviveTile(new Position(piece.getPosition().getX() - 2, piece.getPosition().getY()));
+            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() + 1));
+            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() + 2));
+            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() - 1));
+            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() - 2));
+
+
+        }
+
+        if (piece instanceof ChessPiecePawn && unreachablePos.contains(piece.getPosition())) {
+            reviveTile(piece.getPosition());
+            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY()));
+            reviveTile(new Position(piece.getPosition().getX(), piece.getPosition().getY() + 1));
+            reviveTile(new Position(piece.getPosition().getX() - 1, piece.getPosition().getY() + 1));
+        }
+
+        if (piece instanceof ChessPieceKnight && unreachablePos.contains(piece.getPosition())) {
+            reviveTile(piece.getPosition());
+            reviveTile(new Position(piece.getPosition().getX() + rand, piece.getPosition().getY() + rand));
+            reviveTile(new Position(piece.getPosition().getX() + rand, piece.getPosition().getY() + rand));
+            reviveTile(new Position(piece.getPosition().getX() + rand, piece.getPosition().getY() + rand));
+            reviveTile(new Position(piece.getPosition().getX() + rand, piece.getPosition().getY() + rand));
+        }
+
+
     }
 
     @Override
@@ -77,12 +147,75 @@ public class BurningChess extends AbstractGame{
     }
 
     @Override
-    public List<Move> allPossibleMoves(IChessPiece piece){
+    public List<Move> allPossibleMoves(IChessPiece piece) {
         if (piece.getColor() != nextPlayerColor())
             return new ArrayList<>(); // piece cannot move
         return piece.allPossibleMoves(getBoard()).stream()
                 .filter(m -> !unreachablePos.contains(m.getPosition()))
-                .collect(Collectors.toList()) ;
-        }
+                .collect(Collectors.toList());
     }
+
+
+    /**
+     * Checks if game is over.
+     * <p>
+     * Deliberately ignores fifty-move rule and threefold repetition (at least
+     * for the time being).
+     *
+     * @return true if the game is over, false otherwise
+     */
+    @Override
+    public boolean isGameOver() {
+        return super.isGameOver()
+                || board.checkMate(Color.WHITE)
+                || board.checkMate(Color.BLACK)
+                || insufficientMaterial()
+                || board.getAllPieces().stream()
+                .filter(p -> p.getColor() == nextPlayerColor)
+                .noneMatch(p -> p.allPossibleMoves(board).size() > 0);
+    }
+
+    /**
+     * Check whether the board contains insufficient material (automatic draw).
+     * <p>
+     * Insufficient material is true if any of these conditions hold:
+     * - king vs king
+     * - king vs king and bishop
+     * - king vs king and knight
+     * - king and bishop vs king and bishop, bishops are on same colored square
+     * <p>
+     * For the purpose of this method, we'll also say that a game with less than
+     * two kings contains insufficient material, for obvious reasons.
+     * <p>
+     * NOTE: Could be more efficient with early return, but I did it like this
+     * to increase readability.
+     *
+     * @return true if the game should be drawn due to insufficient material,
+     * false otherwise
+     */
+    public boolean insufficientMaterial() {
+        List<IChessPiece> pieces = board.getAllPieces();
+
+        List<IChessPiece> kings = pieces.stream()
+                .filter(p -> p instanceof ChessPieceKing)
+                .collect(Collectors.toList());
+
+        List<IChessPiece> knights = pieces.stream()
+                .filter(p -> p instanceof ChessPieceKnight)
+                .collect(Collectors.toList());
+
+        List<IChessPiece> bishops = pieces.stream()
+                .filter(p -> p instanceof ChessPieceBishop)
+                .collect(Collectors.toList());
+
+        // obviously
+        return kings.size() < 2
+                || pieces.size() == kings.size()
+                || pieces.size() == 3 && bishops.size() == 1
+                || pieces.size() == 3 && knights.size() == 1
+                || pieces.size() == 4 && bishops.size() == 2
+                && sameColoredSquare(bishops.get(0).getPosition(), bishops.get(1).getPosition());
+
+    }
+}
 

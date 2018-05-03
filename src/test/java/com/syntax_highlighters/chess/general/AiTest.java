@@ -38,7 +38,7 @@ class AiTest {
         IAiPlayer ai = new MiniMaxAIPlayer(Color.WHITE, AiDifficulty.ShortSighted);
 
         System.out.println(board);
-        ai.PerformMove(board);
+        //ai.PerformMove(game);
         System.out.println(board);
 
         assertFalse(board.getAllPieces().contains(queen));
@@ -60,7 +60,7 @@ class AiTest {
         IAiPlayer ai = new MiniMaxAIPlayer(Color.BLACK, AiDifficulty.ShortSighted);
 
         System.out.println(board);
-        ai.PerformMove(board);
+        //ai.PerformMove(game);
         System.out.println(board);
 
         assertTrue(game.isGameOver());
@@ -81,7 +81,7 @@ class AiTest {
         IAiPlayer ai = new MiniMaxAIPlayer(Color.BLACK,AiDifficulty.ShortSighted);
 
         System.out.println(board);
-        ai.PerformMove(board);
+        //ai.PerformMove(game);
         System.out.println(board);
         Position queenPos = queen.getPosition() ;
 
