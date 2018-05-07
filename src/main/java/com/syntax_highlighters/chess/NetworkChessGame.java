@@ -31,11 +31,14 @@ public class NetworkChessGame extends ChessGame {
     /** {@inheritDoc} */
     @Override
     public Move PerformAIMove() {
-        if (nextPlayerIsAI()) {
+        if (nextPlayerIsAI() && !gameOver) {
             Move move = opponentAsync.getMove(this);
             if (move != null) {
                 performMove(move);
                 return move;
+            }
+            else if (opponent.GetStatus() != ConnectionStatus.Connected) {
+                forceGameEnd();
             }
         }
         
@@ -45,11 +48,14 @@ public class NetworkChessGame extends ChessGame {
     /** {@inheritDoc} */
     @Override
     public Move PerformAIMoveAsync() {
-        if (nextPlayerIsAI()) {
+        if (nextPlayerIsAI() && !gameOver) {
             Move move = opponentAsync.pollMove(this);
             if (move != null) {
                 performMove(move);
                 return move;
+            }
+            else if (opponent.GetStatus() != ConnectionStatus.Connected) {
+                forceGameEnd();
             }
         }
         

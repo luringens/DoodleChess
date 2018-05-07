@@ -89,9 +89,10 @@ public class MultiplayerSetupScreen extends AbstractScreen {
         stage.addActor(opponentTextFieldLabel);
         
         statusLabel = new Text(AssetLoader.GetDefaultFont(assetManager, false));
-        opponentTextFieldLabel.setText("");
-        opponentTextFieldLabel.setColor(Color.BLACK);
-        stage.addActor(opponentTextFieldLabel);
+        statusLabel.setText("Ready!");
+        statusLabel.setText("");
+        statusLabel.setColor(Color.BLACK);
+        stage.addActor(statusLabel);
 
         Gdx.input.setInputProcessor(stage);
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -107,9 +108,9 @@ public class MultiplayerSetupScreen extends AbstractScreen {
                         unlockui(host.GetLastFailureDescription());
                         return;
                     }
-                    color = WHITE;
-                    service = host;
                     unlockui("Connected!");
+                    color = BLACK;
+                    service = host;
                 } catch (SocketTimeoutException e) {
                     unlockui("Nobody joined.");
                 } catch (IOException e) {
@@ -133,9 +134,9 @@ public class MultiplayerSetupScreen extends AbstractScreen {
                         unlockui(client.GetLastFailureDescription());
                         return;
                     }
+                    unlockui("Connected!");
                     color = WHITE;
                     service = client;
-                    unlockui("Connected!");
                 } catch (IOException e) {
                     e.printStackTrace();
                     unlockui(e.getMessage());
@@ -150,6 +151,7 @@ public class MultiplayerSetupScreen extends AbstractScreen {
     private boolean lockui(String message) {
         if (uiLock) return false;
         uiLock = true;
+        setStatusLabel(message);
 
         class UpdateLabel extends TimerTask {
             int dots = 1;
@@ -173,8 +175,10 @@ public class MultiplayerSetupScreen extends AbstractScreen {
     }
 
     private void setStatusLabel(String message) {
-        opponentTextFieldLabel.setText(message);
-        statusLabel.setCenter(stage.getWidth()/2.f, stage.getHeight()/2.f + 120);
+        statusLabel.setText(message);
+        float y = stage.getWidth()/2.f - statusLabel.getWidth()/2.f;
+        float x = stage.getHeight()/2.f - 130;
+        statusLabel.setPosition(y, x);
     }
 
     private void nextScreen() {

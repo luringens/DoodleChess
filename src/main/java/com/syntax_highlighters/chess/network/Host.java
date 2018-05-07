@@ -1,6 +1,7 @@
 package com.syntax_highlighters.chess.network;
 
 import java.net.ServerSocket;
+import java.net.SocketTimeoutException;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -27,12 +28,18 @@ public class Host extends AbstractNetworkService {
      * @param timeout Timeout waiting for connection in ms.
      * @param port The port to use.
      */
-    public Host(int timeout, int port) throws IOException {
+    public Host(int timeout, int port) throws IOException, SocketTimeoutException {
         // Open the socket
         serverSocket = new ServerSocket(port);
         serverSocket.setSoTimeout(timeout);
         serverSocket.setReuseAddress(true);
-        socket = serverSocket.accept();
+        
+        try {
+            socket = serverSocket.accept();
+        } catch (SocketTimeoutException ex) {
+            serverSocket.close();
+            throw ex;
+        }
 
         // Get an input and output stream.
         inputReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));

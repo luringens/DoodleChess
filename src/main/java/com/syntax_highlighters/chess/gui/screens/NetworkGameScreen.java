@@ -1,50 +1,46 @@
 package com.syntax_highlighters.chess.gui.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.syntax_highlighters.chess.NetworkChessGame;
+import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.LibgdxChessGame;
+import com.syntax_highlighters.chess.gui.actors.Text;
+import com.syntax_highlighters.chess.network.ConnectionStatus;
 
-/**
- * Game main screen.
- */
+/** Game screen with additional network UI elements. */
 public class NetworkGameScreen extends GameScreen {
-    /**
-     * Constructor.
-     * <p>
-     * We have put the AI on a separate thread to stop the window from becoming unresponsive while the AI is thinking.
-     *  @param chessGame current ChessGame
-     * @param attrib1   Attributes for player 1 (account info, AI difficulty,
-     *                  piece color)
-     * @param attrib2   Attributes for player 2 (account info, AI difficulty,
-     * @param randomBoard Whether or not to generate a random board or a regular one.
-     */
+    protected final Text netText;
+
+    /** {@inheritDoc} */
     public NetworkGameScreen(LibgdxChessGame chessGame, NetworkChessGame game) {
         super(chessGame, game);
-    }
 
-    /**
-     * Render the screen
-     * <p>
-     * Due to how the AI works do we have to draw it to an offscreen buffer before we let it think.
-     * This is so that we can safely draw the game while the ai is thinking.
-     * We also wait til the next draw call to resize the buffer the ai is thinking.
-     *
-     * @param delta time passed since last frame, in seconds
-     */
+        BitmapFont font = AssetLoader.GetDefaultFont(assetManager);
+        netText = new Text(font);
+        netText.setColor(0, 0, 0, 1);
+        stage.addActor(netText);
+        netText.setText(game.getNetworkState().toString());
+    }
+    
+    /** {@inheritDoc} */
     @Override
     public void render(float delta) {
+        NetworkChessGame game = (NetworkChessGame) this.game;
+        if (game.getNetworkError() != null) {
+            game.forceGameEnd();
+            this.netText.setText(game.getNetworkError());
+            resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        }
+
         super.render(delta);
     }
-
-    /**
-     * Resize event.
-     * <p>
-     * Used to correctly position the elements on screen and update the viewport size to support the new window size.
-     *
-     * @param width  new window width
-     * @param height new window height
-     */
+    
+    /** {@inheritDoc} */
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
+        float midW = width / 2.f - netText.getWidth() / 2.f;
+        netText.setCenter(midW, height - 10.f);
     }
 }

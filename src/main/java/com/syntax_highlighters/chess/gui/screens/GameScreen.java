@@ -237,9 +237,6 @@ public class GameScreen extends AbstractScreen {
                 .stage(stage)
                 .visible(false)
                 .create();
-
-        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
     }
 
     private void initChessGame(String mode, AiDifficulty ai1, AiDifficulty ai2, boolean random) {
