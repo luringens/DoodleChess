@@ -2,6 +2,9 @@ package com.syntax_highlighters.chess.gui.screens;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -29,6 +32,13 @@ public class MultiplayerSetupScreen extends AbstractScreen {
     private final Button hostButton;
     private final TextField opponentTextField;
     private final Text opponentTextFieldLabel;
+    
+    private final Text statusLabel;
+    private Timer statusUpdater = null;
+    private boolean uiLock = false;
+
+    private AbstractNetworkService service = null;
+    private com.syntax_highlighters.chess.entities.Color color = null;
 
     public MultiplayerSetupScreen(LibgdxChessGame game) {
         super(game);
@@ -36,7 +46,11 @@ public class MultiplayerSetupScreen extends AbstractScreen {
 
         mainMenuButton = new Button.Builder("Main menu", assetManager)
             .size(250, 75)
-            .callback(() -> game.setScreen(new MainMenuScreen(game)))
+            .callback(() -> {
+                if (!uiLock) {
+                    game.setScreen(new MainMenuScreen(game));
+                }
+            })
             .stage(stage)
             .create();
 
@@ -73,43 +87,112 @@ public class MultiplayerSetupScreen extends AbstractScreen {
         opponentTextFieldLabel.setText("Enter opponent:");
         opponentTextFieldLabel.setColor(Color.BLACK);
         stage.addActor(opponentTextFieldLabel);
+        
+        statusLabel = new Text(AssetLoader.GetDefaultFont(assetManager, false));
+        opponentTextFieldLabel.setText("");
+        opponentTextFieldLabel.setColor(Color.BLACK);
+        stage.addActor(opponentTextFieldLabel);
 
         Gdx.input.setInputProcessor(stage);
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     private void host() {
-        try {
-            AbstractNetworkService host = new Host(30 * 1000);
-            NetworkChessGame game = new NetworkChessGame(BLACK, host);
-            NetworkGameScreen screen = new NetworkGameScreen(getGame(), game);
-            getGame().setScreen(screen);
-		} catch (SocketTimeoutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        if (!lockui("Waiting for someone to join")) return;
+        class HostConstructor implements Runnable {
+            public void run() {
+                try {
+                    AbstractNetworkService host = new Host(30 * 1000);
+                    if (host.GetStatus() != ConnectionStatus.Connected) {
+                        unlockui(host.GetLastFailureDescription());
+                        return;
+                    }
+                    color = WHITE;
+                    service = host;
+                    unlockui("Connected!");
+                } catch (SocketTimeoutException e) {
+                    unlockui("Nobody joined.");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    unlockui(e.getMessage());
+                }
+            }
+        }
+        Thread t = new Thread(new HostConstructor());
+        t.start();
     }
     
     private void connect() {
+        if (!lockui("Connecting")) return;
         String address = opponentTextField.getText();
-        try {
-            AbstractNetworkService client = new Client(address);
-            NetworkChessGame game = new NetworkChessGame(WHITE, client);
-            NetworkGameScreen screen = new NetworkGameScreen(getGame(), game);
-            getGame().setScreen(screen);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        class ClientConstructor implements Runnable {
+            public void run() {
+                try {
+                    AbstractNetworkService client = new Client(address);
+                    if (client.GetStatus() != ConnectionStatus.Connected) {
+                        unlockui(client.GetLastFailureDescription());
+                        return;
+                    }
+                    color = WHITE;
+                    service = client;
+                    unlockui("Connected!");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    unlockui(e.getMessage());
+                }
+            }
+        }
+        Thread t = new Thread(new ClientConstructor());
+        t.start();
+    }
+    
+    /** Returns whether or not the lock was gotten. */
+    private boolean lockui(String message) {
+        if (uiLock) return false;
+        uiLock = true;
+
+        class UpdateLabel extends TimerTask {
+            int dots = 1;
+            public void run() {
+                String dotsstr = String.join("", Collections.nCopies(dots, "."));
+                setStatusLabel(message + dotsstr);
+                this.dots++;
+                if (dots > 3) dots = 1;
+            }
+        }
+        statusUpdater = new Timer();
+        statusUpdater.schedule(new UpdateLabel(), 1000, 1000);
+
+        return true;
+    }
+    
+    private void unlockui(String message) {
+        setStatusLabel(message);
+        uiLock = false;
+        statusUpdater.cancel();
+    }
+
+    private void setStatusLabel(String message) {
+        opponentTextFieldLabel.setText(message);
+        statusLabel.setCenter(stage.getWidth()/2.f, stage.getHeight()/2.f + 120);
+    }
+
+    private void nextScreen() {
+        assert color != null && service != null;
+        NetworkChessGame game = new NetworkChessGame(color, service);
+        NetworkGameScreen screen = new NetworkGameScreen(getGame(), game);
+        unlockui("");
+        getGame().setScreen(screen);
     }
 
     @Override
     public void render(float delta) {
-        stage.act(delta);
-        stage.draw();
+        if (color != null && service != null) {
+            nextScreen();
+        } else {
+            stage.act(delta);
+            stage.draw();
+        }
     }
 
     @Override
@@ -125,12 +208,12 @@ public class MultiplayerSetupScreen extends AbstractScreen {
         
         // position "return to main menu" button next to "connect" button
         mainMenuButton.setPosition(xButtonCentre - buttonw - padding,
-                height / 2.f - 400.f + 25.f);
-        connectButton.setPosition(xButtonCentre, yCentre - 400.f + 25.f);
+            height / 2.f - 400.f + 25.f);
         hostButton.setPosition(xButtonCentre + padding + buttonw, yCentre - 400.f + 25.f);
+        connectButton.setPosition(xButtonCentre, yCentre - connectButton.getHeight() - 20);
         
-        // position text field label above text field in the center of the
-        // screen
+        // position text field label above text field in the center of the screen
+        statusLabel.setCenter(xCentre, yCentre + 120);
         opponentTextFieldLabel.setPosition(xCentre - opponentTextFieldLabel.getWidth()/2.f,
                 yCentre + opponentTextFieldLabel.getHeight()/2.f + 40);
         opponentTextField.setPosition(xCentre - opponentTextField.getWidth()/2.f,

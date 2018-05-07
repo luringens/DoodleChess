@@ -75,8 +75,8 @@ public class GameScreen extends AbstractScreen {
         this(
             chessGame,
             null,
-            new PlayerAttributes(new Account("You"), Color.WHITE),
-            new PlayerAttributes(new Account("You"), Color.BLACK),
+            new PlayerAttributes(new Account("White"), Color.WHITE),
+            new PlayerAttributes(new Account("Black"), Color.BLACK),
             false,
             game
         );
