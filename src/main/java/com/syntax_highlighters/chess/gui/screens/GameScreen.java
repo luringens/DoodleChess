@@ -312,6 +312,8 @@ public class GameScreen extends AbstractScreen {
         showResults.setVisible(isGameOver);
         
         endTurnButton.setVisible(game instanceof SjadamGame && ((SjadamGame)game).hasJumped());
+        
+        getHelp.setVisible(game instanceof ChessGame);
 
         java.util.List<String> moves = new ArrayList<>(game.getMoveHistory());
         if(moves.size() > history.getItems().size)
