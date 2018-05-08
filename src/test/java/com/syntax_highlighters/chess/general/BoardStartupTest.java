@@ -2,6 +2,7 @@ package com.syntax_highlighters.chess.general;
 
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.ChessGame;
+import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.*;
 import org.junit.jupiter.api.Test;
@@ -154,11 +155,13 @@ class BoardStartupTest {
     void BlackCannotMoveFirst(){
         ChessGame game = new ChessGame(null,null);
         board = game.getBoard();
+        Position pos1 = new Position(1,7);
+        Position pos2 = new Position(1,6);
 
         IChessPiece testPawn = board.getAtPosition(new Position(1,7));
+        Move move = new Move(pos1,pos2,board);
 
-
-        assertEquals(0, game.performMove(new Position(1,7),new Position(1,6)).size());
+        assertEquals(0, game.allPossibleMoves(testPawn).size());
         assertEquals(new Position(1,7), testPawn.getPosition());
     }
 }
