@@ -193,6 +193,7 @@ public class BoardGroup extends Group {
                     int index = (int) (x / MenuIcon.SIZE);
                     performAnimation(moves.get(index), move -> {
                         game.performMove(move);
+                        clearSuggestion();
                         trySelect(null);
                         promotionSelection.setVisible(false);
                         addPiece(move.getPiece(game.getBoard()));
@@ -204,6 +205,7 @@ public class BoardGroup extends Group {
         else {
             performAnimation(moves.get(0), move -> {
                 game.performMove(move);
+                clearSuggestion();
                 trySelect(null);
             });
         }
