@@ -87,7 +87,7 @@ public class WobbleDrawable extends BaseDrawable {
         Texture selected = preRender.get(id).get(textureId).getColorBufferTexture();
         selected.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         batch.setColor(tint);
-        batch.draw(selected, x, y, width, height);
+        batch.draw(selected, x, y, width, height, 0, 0, selected.getWidth(), selected.getHeight(), false, true);
 
     }
 

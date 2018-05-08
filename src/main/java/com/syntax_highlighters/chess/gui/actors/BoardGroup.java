@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.AbstractGame;
@@ -180,40 +179,68 @@ public class BoardGroup extends Group {
 
         Position estimated = new Position((int) (x / tileWidth) + 1, (int) (y / tileHeight) + 1);
 
-        if (!selected.getPiece().canMoveTo(estimated, game.getBoard())) return false;
-        isAnimating = true;
-        final ChessPieceActor animatedPiece = selected;
-        selected.animateTo(estimated, () -> {
-            isAnimating = false;
-            List<Move> moves = game.performMove(animatedPiece.getPiece().getPosition(), estimated);
-            if (moves.size() == 1) {
-                trySelect(null);
-            } else if (moves.size() > 1) {
-                promotionSelection.setX(Math.min(x, getWidth() - promotionSelection.getWidth()));
-                promotionSelection.setY(y);
-                promotionSelection.setListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        int index = (int) (x / MenuIcon.SIZE);
-                        Move m = moves.get(index);
-                        game.performMove(m);
+        final List<Move> moves = game.getMoves(selected.getPiece().getPosition(), estimated);
+        
+        if (moves.size() < 1) return false;
+        else if (moves.size() > 1) {
+            setTouchable(Touchable.disabled);
+            promotionSelection.setVisible(true);
+            promotionSelection.setX(Math.min(x, getWidth() - promotionSelection.getWidth()));
+            promotionSelection.setY(y);
+            promotionSelection.setListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    int index = (int) (x / MenuIcon.SIZE);
+                    performAnimation(moves.get(index), move -> {
+                        game.performMove(move);
                         trySelect(null);
                         promotionSelection.setVisible(false);
-                        addPiece(m.getPiece(game.getBoard()));
-//                        pieceGroup.addActor(newPiece(m.getPiece(game.getBoard())));
+                        addPiece(move.getPiece(game.getBoard()));
                         setTouchable(Touchable.enabled);
-                    }
-                });
-            }
-
-            promotionSelection.setVisible(moves.size() > 1);
-            if (promotionSelection.isVisible() || game.isGameOver()) {
-                this.setTouchable(Touchable.disabled);
-            } else {
-                this.setTouchable(Touchable.enabled);
-            }
-        });
+                    });
+                }
+            });
+        }
+        else {
+            performAnimation(moves.get(0), move -> {
+                game.performMove(move);
+                trySelect(null);
+            });
+        }
         return true;
+    }
+
+    private void performAnimation(Move move, AnimationCompletedCallback callback) {
+        isAnimating = true;
+        final List<Move.PositionChange> posChanges = move.getPositionChanges(game.getBoard());
+        for (int i = 0; i < posChanges.size(); i++) {
+            Move.PositionChange change = posChanges.get(i);
+            System.out.println("Animating change "  + change);
+            ChessPieceActor actor = null;
+            for (Actor a : pieceGroup.getChildren()) {
+                if (a instanceof ChessPieceActor) {
+                    actor = (ChessPieceActor)a;
+                    if (actor.getPiece() == change.pieceMoved) break;
+                }
+            }
+            if (actor == null || actor.getPiece() != change.pieceMoved) {
+                Color c = change.pieceMoved.getColor() == com.syntax_highlighters.chess.entities.Color.WHITE ? whiteColor : blackColor;
+                actor = new ChessPieceActor(change.pieceMoved, c, game, assetManager);
+            }
+            // actor should now have the correct actor
+            final int index = i;
+            actor.animateTo(change.newPos, () -> { 
+                if (index == posChanges.size()-1) {
+                    isAnimating = false;
+                    callback.callback(move);
+                    System.out.println("Animation done");
+                }
+            });
+        }
+    }
+
+    private static interface AnimationCompletedCallback {
+        void callback(Move movePerformed);
     }
 
     /**

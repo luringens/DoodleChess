@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
@@ -80,6 +79,11 @@ public class AccountOverlay extends AbstractOverlay {
                 {
                     error.setText("* Name " + name + " is reserved");
                     return;
+                }
+                if(name.length() > 20){
+
+                        error.setText("* Name cannot be >20");
+                        return;
                 }
 
                 AccountManager accountManager = game.getAccountManager();

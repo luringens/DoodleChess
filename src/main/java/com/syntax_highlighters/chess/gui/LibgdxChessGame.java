@@ -6,15 +6,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.syntax_highlighters.chess.AccountManager;
@@ -31,7 +28,6 @@ public class LibgdxChessGame extends Game {
 	private ShaderProgram noiseShader;
 	private FrameBuffer paperBuffer;
 	private FrameBuffer screenBuffer;
-	private Texture paper;
 	private AccountManager accountManager;
 	public Skin skin;
 
@@ -59,9 +55,6 @@ public class LibgdxChessGame extends Game {
 
 		skin.addRegions(atlas);
 		skin.load(Gdx.files.internal("uiskin.json"));
-
-        paper = assetManager.get("paper.png", Texture.class);
-
 		batch = new SpriteBatch();
 		noiseShader = new ShaderProgram(Gdx.files.internal("shaders/id.vert"), Gdx.files.internal("shaders/noise.frag"));
 		paperBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, ishW, ishH, false);

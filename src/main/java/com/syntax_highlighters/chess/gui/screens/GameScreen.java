@@ -28,55 +28,91 @@ import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
 import com.syntax_highlighters.chess.gui.actors.ConfirmationOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
+import com.syntax_highlighters.chess.BurningChess;
+import com.syntax_highlighters.chess.SjadamGame;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Game main screen.
  */
 public class GameScreen extends AbstractScreen {
-    private final AssetManager assetManager;
+    protected final AssetManager assetManager;
 
-    private final AbstractGame game;
+    protected AbstractGame game;
     //private final UiBoard board;
-    private final BoardGroup board;
-    private final Text turnText;
-    private final Button giveUp;
-    private final Button getHelp;
-    private final Button showResults;
-    private final Image mute;
-    private final List<String> history;
-    private final ScrollPane historyPane;
-    private final Table historyList;
+    protected final BoardGroup board;
+    protected final Text turnText;
+    protected final Button giveUp;
+    protected final Button getHelp;
+    protected final Button showResults;
+    protected final Image mute;
+    protected final List<String> history;
+    protected final ScrollPane historyPane;
+    protected final Table historyList;
 
-    private boolean isGameOver = false;
-    private int winner = 0; // NOTE: do not consider this valid until isGameOver
-    private final GameOverOverlay gameOverOverlay;
+    protected boolean isGameOver = false;
+    protected int winner = 0; // NOTE: do not consider this valid until isGameOver
+    protected final GameOverOverlay gameOverOverlay;
 
-    private final Account player1;
-    private final Account player2;
-    private final AiDifficulty ai1;
-    private final AiDifficulty ai2;
-    private final Color player1Color;
-    private final Color player2Color;
-    private Boolean paused = false;
+    protected final Account player1;
+    protected final Account player2;
+    protected final AiDifficulty ai1;
+    protected final AiDifficulty ai2;
+    protected final Color player1Color;
+    protected final Color player2Color;
+    protected Boolean paused = false;
 
-    private final LibgdxChessGame chessGame;
-    private com.syntax_highlighters.chess.entities.Color nextPlayerColor;
+    protected final LibgdxChessGame chessGame;
+    protected com.syntax_highlighters.chess.entities.Color nextPlayerColor;
 
     /**
-     * Constructor.
-     * <p>
-     * We have put the AI on a separate thread to stop the window from becoming unresponsive while the AI is thinking.
-     *  @param chessGame current ChessGame
-     * @param attrib1   Attributes for player 1 (account info, AI difficulty,
-     *                  piece color)
-     * @param attrib2   Attributes for player 2 (account info, AI difficulty,
+     * Set up a new gamescreen using a game instance and default settings.
+     * @param chessGame current ChessGame.
+     * @param game The game to use instead of chessgame.
+     */
+    public GameScreen(LibgdxChessGame chessGame, AbstractGame game) {
+        this(
+            chessGame,
+            null,
+            new PlayerAttributes(new Account("White"), Color.WHITE),
+            new PlayerAttributes(new Account("Black"), Color.BLACK),
+            false,
+            game
+        );
+    }
+
+    /**
+     * Sets up a new gamescreen.
+     * @param chessGame current ChessGame.
+     * @param selectedMode the selected game mode in string form.
+     * @param attrib1   Attributes for player 1.
+     * @param attrib2   Attributes for player 2.
      * @param randomBoard Whether or not to generate a random board or a regular one.
      */
-    public GameScreen(LibgdxChessGame chessGame, PlayerAttributes attrib1, PlayerAttributes attrib2, boolean randomBoard) {
-        super(chessGame, false);
+    public GameScreen(LibgdxChessGame chessGame, String selectedMode,
+            PlayerAttributes attrib1, PlayerAttributes attrib2, boolean randomBoard) {
+        this(chessGame, selectedMode, attrib1, attrib2, randomBoard, null);
+    }
+
+    /**
+     * Sets up a new gamescreen.
+     * @param chessGame current ChessGame.
+     * @param selectedMode the selected game mode in string form.
+     * @param attrib1   Attributes for player 1.
+     * @param attrib2   Attributes for player 2.
+     * @param randomBoard Whether or not to generate a random board or a regular one.
+     * @param newGame The game to use instead of chessgame.
+     */
+    private GameScreen(LibgdxChessGame chessGame,
+                       String selectedMode,
+                       PlayerAttributes attrib1,
+                       PlayerAttributes attrib2,
+                       boolean randomBoard,
+                       AbstractGame newGame) {
+        super(chessGame);
+        // Can't define newGame and selectedmode at once - one has to be null!
+        assert (selectedMode == null) != (newGame == null);
 
         assetManager = chessGame.getAssetManager();
         this.player1 = attrib1.getAccount();
@@ -87,10 +123,8 @@ public class GameScreen extends AbstractScreen {
         this.player2Color = attrib2.getColor();
         this.chessGame = chessGame;
 
-        this.game = new ChessGame(ai1, ai2);
-        if(randomBoard)
-            // Do 15-25 random moves
-            this.game.getBoard().setupPracticeGame((int)(Math.random() * 5) + 20);
+        if (selectedMode != null) initChessGame(selectedMode, ai1, ai2, randomBoard);
+        else this.game = newGame;
 
         this.nextPlayerColor = this.game.nextPlayerColor().opponentColor();
 
@@ -166,8 +200,8 @@ public class GameScreen extends AbstractScreen {
                 super.clicked(event, x, y);
                 if (!isGameOver && !game.nextPlayerIsAI()) {
                     // Suggest a simple move to the player.
-                    IAiPlayer ai = new MiniMaxAIPlayer(nextPlayerColor, AiDifficulty.ShortSighted);
-                    Move move = ai.GetMove(game.getBoard());
+                    IAiPlayer ai = new MiniMaxAIPlayer(AiDifficulty.ShortSighted);
+                    Move move = ai.GetMove(game);
                     board.showSuggestion(move);
                 }
             }
@@ -206,6 +240,25 @@ public class GameScreen extends AbstractScreen {
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+    }
+
+    private void initChessGame(String mode, AiDifficulty ai1, AiDifficulty ai2, boolean random) {
+        switch (mode) {
+            case "Regular Chess":
+                this.game = new ChessGame(ai1, ai2);
+                break;
+            case "Sjadam":
+                this.game = new SjadamGame();
+                break;
+            case "Fire Chess":
+                this.game = new BurningChess(ai1, ai2);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown game mode: " + mode);
+        }
+        if(random)
+            // Do 15-25 random moves
+            this.game.getBoard().setupPracticeGame((int)(Math.random() * 5) + 20);
     }
 
     private void gameOver(int winner) {
@@ -277,16 +330,17 @@ public class GameScreen extends AbstractScreen {
                 stage.draw();
                 return;
             }
+        }
 
-            // Do an AI turn if needed
-            if (game.nextPlayerIsAI()) {
-                game.PerformAIMove();
-                // If the AI performed a promotion move, we need to add the
-                // piece that was promoted to as an actor to the BoardGroup.
-                Board b = game.getBoard();
-                Move m = b.getLastMove();
+        // Do an AI turn if needed
+        if (game.nextPlayerIsAI()) {
+            Move m = game.PerformAIMoveAsync();
+            // If the AI performed a promotion move, we need to add the
+            // piece that was promoted to as an actor to the BoardGroup.
+            if (m != null) {
+                nextPlayerColor = game.nextPlayerColor();
                 if (m instanceof PromotionMove) {
-                    IChessPiece promoted = b.getAtPosition(m.getPosition());
+                    IChessPiece promoted = game.getBoard().getAtPosition(m.getPosition());
                     board.addPiece(promoted);
                 }
             }
@@ -307,11 +361,14 @@ public class GameScreen extends AbstractScreen {
      * choice
      */
     private void setTurnText() {
+        String p1Name = player1 != null ? player1.getName() : "AI";
+        String p2Name = player2 != null ? player2.getName() : "AI";
         if (!isGameOver) {
-            turnText.setText(game.nextPlayerColor().isWhite() ? "White's turn" : "Black's turn");
+
+            turnText.setText(game.nextPlayerColor().isWhite() ? p1Name + "'s turn" : p2Name + "'s turn");
         } else {
-            turnText.setText(winner == 1 ? "White has won the game" :
-                    winner == -1 ? "Black has won the game" :
+            turnText.setText(winner == 1 ? player1.getName()+ " has won the game" :
+                    winner == -1 ? player2.getName() + " has won the game" :
                             "It's a draw!");
         }
 

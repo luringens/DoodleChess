@@ -1,5 +1,10 @@
 package com.syntax_highlighters.chess;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Objects;
+
+import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import com.syntax_highlighters.chess.entities.ChessPieceRook;
 
@@ -20,6 +25,17 @@ public class CastlingMove extends Move {
     private final Position rookOldPos;
     private final Position rookNewPos;
 
+    private CastlingMove(Position rookOldPos, Position rookNewPos) {
+        this.rookOldPos = rookOldPos;
+        this.rookNewPos = rookNewPos;
+    }
+
+    /**
+     * IMPORTANT: This must be changed on every release of the class
+     * in order to prevent cross-version serialization.
+     */
+    private static final long serialVersionUID = 1;
+
     /**
      * Construct a castling move between the given king and rook.
      *
@@ -38,6 +54,16 @@ public class CastlingMove extends Move {
             this.newPos = king.getPosition().east(2);
             this.rookNewPos = newPos.west(1);
         }
+    }
+
+    @Override
+    public List<PositionChange> getPositionChanges(Board b) {
+        List<PositionChange> ret = new ArrayList<>();
+        IChessPiece king = b.getAtPosition(hasDoneMove ? newPos : oldPos);
+        IChessPiece rook = b.getAtPosition(hasDoneMove ? rookNewPos : rookOldPos);
+        ret.add(new PositionChange(king, oldPos, newPos));
+        ret.add(new PositionChange(rook, rookOldPos, rookNewPos));
+        return ret;
     }
 
     /**
@@ -63,6 +89,18 @@ public class CastlingMove extends Move {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (!(other instanceof CastlingMove)) return false;
+        CastlingMove o = (CastlingMove) other;
+        return super.equals(o)
+            && Objects.equals(rookOldPos, this.rookOldPos)
+            && Objects.equals(rookNewPos, this.rookNewPos);
+    }
+    /**
      * Get the move in algebraic notation.
      *
      * Kingside castling represented as 0-0, queenside castling as 0-0-0
@@ -73,5 +111,27 @@ public class CastlingMove extends Move {
     public String toString() {
         if (rookOldPos.getX() == 1) return "0-0-0"; // queenside
         return "0-0"; // kingside
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), this.rookOldPos, this.rookNewPos);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Move copy() {
+        CastlingMove m = new CastlingMove(rookOldPos, rookNewPos);
+        m.oldPos = oldPos;
+        m.newPos = newPos;
+        m.hadMoved = hadMoved;
+        m.pieceString = pieceString;
+        m.tookPiece = tookPiece;
+        m.hasDoneMove = hasDoneMove;
+        return m;
     }
 }

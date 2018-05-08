@@ -1,0 +1,84 @@
+package com.syntax_highlighters.chess;
+
+import com.syntax_highlighters.chess.entities.AiDifficulty;
+import com.syntax_highlighters.chess.entities.Color;
+import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.entities.MiniMaxAIPlayer;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class BurningChess extends AbstractGame{
+    public BurningChess(AiDifficulty whiteAi, AiDifficulty blackAi) {
+        if (whiteAi != null) {
+            MiniMaxAIPlayer ai = new MiniMaxAIPlayer(whiteAi);
+            this.whiteAI = new AsyncPlayer(ai);
+        }
+        if (blackAi != null) {
+            MiniMaxAIPlayer ai = new MiniMaxAIPlayer(blackAi);
+            this.blackAI = new AsyncPlayer(ai);
+        }
+
+        this.board = new Board();
+        this.board.setupNewGame();
+    }
+
+    public BurningChess(Board board, Color nextPlayerColor) {
+        this.board = board;
+        this.nextPlayerColor = nextPlayerColor;
+    }
+
+    public static BurningChess setupTestBoard(Board board, Color nextPlayerColor) {
+        return new BurningChess(board, nextPlayerColor);
+    }
+
+    List<Position> unreachablePos = new ArrayList<>();
+
+    public List<Position> tileUnreachable(){
+        return unreachablePos;
+    }
+
+    public void killTile(Position tile){
+        unreachablePos.add(tile);
+    }
+
+
+    public void killPiece(IChessPiece piece){
+        board.removePiece(piece);
+    }
+
+    public void reviveTile(Position tile){
+        if(unreachablePos.contains(tile))
+            unreachablePos.remove(tile);
+    }
+
+    @Override
+    public List<Move> allPossibleMoves() {
+        return getPieces().stream()
+                .filter(p -> p.getColor() == nextPlayerColor())
+                .flatMap(p -> p.allPossibleMoves(getBoard()).stream())
+                .filter(m -> !unreachablePos.contains(m.getPosition()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Move> allPossibleMoves(IChessPiece piece){
+        if (piece.getColor() != nextPlayerColor())
+            return new ArrayList<>(); // piece cannot move
+        return piece.allPossibleMoves(getBoard()).stream()
+                .filter(m -> !unreachablePos.contains(m.getPosition()))
+                .collect(Collectors.toList()) ;
+        }
+
+	@Override
+	public AbstractGame copy() {
+        //TODO: Implement copy.
+        throw new RuntimeException("Copy not implemented for burningchess.");
+	}
+
+    @Override
+    public boolean canMoveTo(IChessPiece piece, Position pos) {
+        return piece.canMoveTo(pos, board) && !unreachablePos.contains(pos);
+    }
+}
