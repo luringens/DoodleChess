@@ -94,7 +94,7 @@ public class SetupScreen extends AbstractScreen {
         title = createText("Setup game", true, Color.BLACK);
         playerNote = createText("Note: Using the names Player 1 or Player 2 will not count to any score", false, Color.BLACK);
         sameAccountErrorMsg = createText("Error: Cannot use same account on both sides", false, Color.RED);
-        sjadamMultiplayerErrorMsg = createText("Error: Cannot use multiplayer on Sjadam Game", false, Color.RED);
+        sjadamMultiplayerErrorMsg = createText("Error: this mode only supports human vs. human gameplay", false, Color.RED);
         sjadamMultiplayerErrorMsg.setVisible(false);
         sameAccountErrorMsg.setVisible(false); // display only if player tries to use same account on both sides
 
@@ -364,7 +364,7 @@ public class SetupScreen extends AbstractScreen {
         int si2 = rb2.getSelectedIndex();
         sjadamMultiplayerErrorMsg.setVisible(false);
         sameAccountErrorMsg.setVisible(false);
-        if(gameModes.getSelected().equals("Sjadam")){
+        if(selectedMode.equals("Sjadam") || selectedMode.equals("Fire Chess")){
             if(si1 == 1 || si2 == 1) {
                 sjadamMultiplayerErrorMsg.setVisible(true);
                 return;
@@ -376,7 +376,6 @@ public class SetupScreen extends AbstractScreen {
                 sameAccountErrorMsg.setVisible(true);
             return;
         }
-        sjadamMultiplayerErrorMsg.setVisible(false);
         AccountManager manager = game.getAccountManager();
         Account player1 = si1 == 1 ? null : manager.getAccount(selected1);
         Account player2 = si2 == 1 ? null : manager.getAccount(selected2);
