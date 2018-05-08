@@ -49,8 +49,10 @@ public class FireOverlay extends Actor {
         whiteBurn = new Ellipse(0,0,0,0);
         blackBurn = new Ellipse(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), 0, 0);
 
-        noise = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-        fire = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        float aspect = Gdx.graphics.getWidth() / Gdx.graphics.getHeight();
+
+        noise = new FrameBuffer(Pixmap.Format.RGBA8888, (int)(800 * aspect), 800, false);
+        fire = new FrameBuffer(Pixmap.Format.RGBA8888, (int)(800 * aspect), 800, false);
 
         ShaderProgram program = manager.get("fireNoise.frag");
         if(!program.isCompiled()) System.out.println(program.getLog());
@@ -62,11 +64,11 @@ public class FireOverlay extends Actor {
 
         SpriteBatch batch = new SpriteBatch();
         batch.setShader(program);
-        Vector2 size = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Vector2 size = new Vector2(800 * aspect, 800);
         noise.begin();
         batch.begin();
         program.setUniformf("u_resolution", size);
-        batch.draw(pixel, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(pixel, 0, 0, 800 * aspect, 800);
         batch.end();
         noise.end();
         batch.dispose();
