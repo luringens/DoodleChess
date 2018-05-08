@@ -176,4 +176,35 @@ class AiTest {
 
         assertTrue(rookPos != new Position(5,1));
     }
+    @Test
+    void RookSuicideTest2(){
+        ArrayList<IChessPiece> pieces = new ArrayList<>();
+        ChessPieceRook rook = new ChessPieceRook(new Position(5,1),Color.WHITE);
+        pieces.add(rook);
+        pieces.add(new ChessPieceKing(new Position(4,3),Color.WHITE));
+        pieces.add(new ChessPiecePawn(new Position(1,3),Color.WHITE));
+        pieces.add(new ChessPiecePawn(new Position(6,4),Color.WHITE));
+        pieces.add(new ChessPiecePawn(new Position(7,2),Color.WHITE));
+        pieces.add(new ChessPiecePawn(new Position(8,2),Color.WHITE));
+        pieces.add(new ChessPieceKnight(new Position(3,5),Color.WHITE));
+
+        pieces.add(new ChessPieceKing(new Position(6,8),Color.BLACK));
+        pieces.add(new ChessPiecePawn(new Position(7,6),Color.BLACK));
+        pieces.add(new ChessPiecePawn(new Position(1,5),Color.BLACK));
+        pieces.add(new ChessPiecePawn(new Position(2,5),Color.BLACK));
+        pieces.add(new ChessPieceBishop(new Position(2,2),Color.BLACK));
+
+
+        Board board = new Board(pieces);
+        ChessGame game = ChessGame.setupTestBoard(board,Color.BLACK);
+
+        IAiPlayer ai = new MiniMaxAIPlayer(AiDifficulty.ShortSighted);
+
+        System.out.println(board);
+        ai.PerformMove(game);
+        System.out.println(board);
+        Position rookPos = rook.getPosition() ;
+
+        assertTrue(rookPos != new Position(5,7));
+    }
 }

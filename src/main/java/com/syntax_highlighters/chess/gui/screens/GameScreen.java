@@ -361,8 +361,8 @@ public class GameScreen extends AbstractScreen {
      * choice
      */
     private void setTurnText() {
-        String p1Name = player1 != null ? player1.getName() : "AI";
-        String p2Name = player2 != null ? player2.getName() : "AI";
+        String p1Name = player1 != null ? player1.getName() : ai1 == null ? "Player 1" : "AI";
+        String p2Name = player2 != null ? player2.getName() : ai2 == null ? "Player 2" : "AI";
         if (!isGameOver) {
 
             turnText.setText(game.nextPlayerColor().isWhite() ? p1Name + "'s turn" : p2Name + "'s turn");
