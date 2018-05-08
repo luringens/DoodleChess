@@ -51,7 +51,7 @@ public class BoardGroup extends Group {
         // Add board tiles
         for (int x = 0; x < Board.BOARD_WIDTH; ++x) {
             for (int y = 0; y < Board.BOARD_HEIGHT; ++y) {
-                boolean isBlack = (x + y) % 2 != 0;
+                boolean isBlack = (x + y) % 2 == 0;
                 Actor actor = new ChessTileActor(isBlack, new Position(x + 1, y + 1), assetManager, this);
                 actor.addListener(new ClickListener() {
                     @Override
