@@ -190,4 +190,12 @@ public class SjadamGame extends AbstractGame {
     public SjadamGame copy() {
         throw new RuntimeException("Copy not implemented for sjadam");
     }
+
+    public void endTurn() {
+        nextPlayerColor = nextPlayerColor.opponentColor();
+    }
+    
+    public boolean hasJumped() {
+        return getLastJumpedPosition() != null;
+    }
 }

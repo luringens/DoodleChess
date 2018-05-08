@@ -64,7 +64,7 @@ public class GameScreen extends AbstractScreen {
     protected Boolean paused = false;
 
     protected final LibgdxChessGame chessGame;
-    protected com.syntax_highlighters.chess.entities.Color nextPlayerColor;
+    protected Button endTurnButton;
 
     /**
      * Set up a new gamescreen using a game instance and default settings.
@@ -125,8 +125,6 @@ public class GameScreen extends AbstractScreen {
 
         if (selectedMode != null) initChessGame(selectedMode, ai1, ai2, randomBoard);
         else this.game = newGame;
-
-        this.nextPlayerColor = this.game.nextPlayerColor().opponentColor();
 
         Gdx.input.setInputProcessor(stage);
 
@@ -224,6 +222,12 @@ public class GameScreen extends AbstractScreen {
                         .create());
         giveUp = giveUpButtonBuilder.size(200, 75).stage(stage).create();
 
+        endTurnButton = new Button.Builder("End turn", assetManager)
+            .callback(() -> ((SjadamGame)game).endTurn())
+            .size(200, 75)
+            .stage(stage)
+            .create();
+
         // Always added last!!!
         gameOverOverlay = new GameOverOverlay(chessGame);
         gameOverOverlay.setVisible(false);
@@ -232,11 +236,13 @@ public class GameScreen extends AbstractScreen {
         // display results button (initially invisible, but becomes visible when
         // game ends)
         showResults = new Button.Builder("Show results", assetManager)
-                .size(200, 75)
-                .callback(() -> gameOverOverlay.setVisible(true))
-                .stage(stage)
-                .visible(false)
-                .create();
+            .size(200, 75)
+            .callback(() -> gameOverOverlay.setVisible(true))
+            .stage(stage)
+            .visible(false)
+            .create();
+
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     private void initChessGame(String mode, AiDifficulty ai1, AiDifficulty ai2, boolean random) {
@@ -313,12 +319,6 @@ public class GameScreen extends AbstractScreen {
             historyPane.setScrollPercentY(100);
         }
 
-        // Has the board updated?
-        if (game.nextPlayerColor() != nextPlayerColor) {
-            nextPlayerColor = game.nextPlayerColor();
-            board.clearSuggestion();
-        }
-        
         // Game over check
         if (game.isGameOver()) {
             if (!isGameOver) {
@@ -335,7 +335,6 @@ public class GameScreen extends AbstractScreen {
             // If the AI performed a promotion move, we need to add the
             // piece that was promoted to as an actor to the BoardGroup.
             if (m != null) {
-                nextPlayerColor = game.nextPlayerColor();
                 if (m instanceof PromotionMove) {
                     IChessPiece promoted = game.getBoard().getAtPosition(m.getPosition());
                     board.addPiece(promoted);
@@ -404,5 +403,7 @@ public class GameScreen extends AbstractScreen {
 
         showResults.setPosition(width / 2.f + getHelp.getWidth()*1.5f - getHelp.getWidth() / 2.f,
                 height / 2.f - size / 2.f - showResults.getHeight() / 1.5f);
+
+        endTurnButton.setVisible(game instanceof SjadamGame && ((SjadamGame)game).hasJumped());
     }
 }
