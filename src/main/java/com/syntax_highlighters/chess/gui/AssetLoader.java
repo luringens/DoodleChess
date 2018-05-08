@@ -102,7 +102,7 @@ public class AssetLoader {
                 "circle.png",
                 "dot.png",
                 "square.png",
-                "tick.png"
+                "tick.png",
         };
 
         for (String path : textures) {
@@ -112,6 +112,7 @@ public class AssetLoader {
         manager.load("tick.wav", Sound.class);
         manager.load("kho.wav", Sound.class);
         manager.load("chesstheme.wav", Music.class);
+        manager.load("WaterSplash.wav",Sound.class);
 
         // set the loaders for the generator and the fonts themselves
         FileHandleResolver resolver = new InternalFileHandleResolver();

@@ -21,7 +21,7 @@ import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.BurningChess;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.IChessPiece;
-import org.lwjgl.util.vector.Vector2f;
+import com.syntax_highlighters.chess.gui.Audio;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +38,7 @@ public class FireOverlay extends Actor {
     FrameBuffer noise;
     FrameBuffer fire;
     ShaderProgram fireProgram;
+    AssetManager manager;
 
     public FireOverlay(AssetManager manager, BurningChess game, List<ChessTileActor> tiles) {
         this.game = game;
@@ -70,6 +71,7 @@ public class FireOverlay extends Actor {
         noise.end();
         batch.dispose();
         System.out.println(program.getLog());
+        this.manager = manager;
     }
 
     private void checkCircle(Ellipse c) {
@@ -125,6 +127,7 @@ public class FireOverlay extends Actor {
         end.setRunnable(() -> splashes.remove(splashcircle));
 
         this.addAction(new SequenceAction(anim, anim2, end));
+        Audio.SplashingSound(manager);
 
     }
 
@@ -193,10 +196,8 @@ public class FireOverlay extends Actor {
         batch.draw(noise.getColorBufferTexture(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, true);
         batch.setTransformMatrix(transform );
         batch.setShader(shader);
-
-        //batch.draw(noise.getColorBufferTexture(), 0, 0);
-
         this.renderer.setProjectionMatrix(batch.getProjectionMatrix());
+        if(!fireProgram.isCompiled()) System.out.println(fireProgram.getLog());
         //this.renderer.setTransformMatrix(batch.getTransformMatrix());
         /*batch.end();
         Gdx.gl.glEnable(GL20.GL_BLEND);

@@ -26,4 +26,9 @@ public class Audio {
 
     }
 
+    public static void SplashingSound(AssetManager manager){
+        Sound sound = manager.get("WaterSplash.wav");
+        sound.play(0.5f);
+    }
+
 }
