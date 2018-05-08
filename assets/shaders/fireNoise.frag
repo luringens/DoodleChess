@@ -1,4 +1,5 @@
 #version 120
+#pragma optionNV (unroll all)
 
 varying vec2 v_texCoords;
 
