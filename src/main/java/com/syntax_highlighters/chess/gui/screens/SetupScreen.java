@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.graphics.Color;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
+import com.syntax_highlighters.chess.SjadamGame;
 import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.entities.ChessPieceKing;
@@ -43,6 +44,7 @@ public class SetupScreen extends AbstractScreen {
     // displayed if the user tries to click play while selecting the same
     // account on both sides
     private final Text sameAccountErrorMsg;
+    private final Text sjadamMultiplayerErrorMsg;
 
     private final AssetManager assetManager; // asset manager
 
@@ -92,6 +94,8 @@ public class SetupScreen extends AbstractScreen {
         title = createText("Setup game", true, Color.BLACK);
         playerNote = createText("Note: Using the names Player 1 or Player 2 will not count to any score", false, Color.BLACK);
         sameAccountErrorMsg = createText("Error: Cannot use same account on both sides", false, Color.RED);
+        sjadamMultiplayerErrorMsg = createText("Error: Cannot use multiplayer on Sjadam Game", false, Color.RED);
+        sjadamMultiplayerErrorMsg.setVisible(false);
         sameAccountErrorMsg.setVisible(false); // display only if player tries to use same account on both sides
 
         // display which player setup belongs to which player
@@ -358,13 +362,21 @@ public class SetupScreen extends AbstractScreen {
 
         int si1 = rb1.getSelectedIndex();
         int si2 = rb2.getSelectedIndex();
-
+        sjadamMultiplayerErrorMsg.setVisible(false);
+        sameAccountErrorMsg.setVisible(false);
+        if(gameModes.getSelected().equals("Sjadam")){
+            if(si1 == 1 || si2 == 1) {
+                sjadamMultiplayerErrorMsg.setVisible(true);
+                return;
+            }
+        }
         if(si1 == 0 && invalidAccountSelection(selected1, selected2))
         {
             if (selected1 != null && selected1.equals(selected2))
                 sameAccountErrorMsg.setVisible(true);
             return;
         }
+        sjadamMultiplayerErrorMsg.setVisible(false);
         AccountManager manager = game.getAccountManager();
         Account player1 = si1 == 1 ? null : manager.getAccount(selected1);
         Account player2 = si2 == 1 ? null : manager.getAccount(selected2);
@@ -477,6 +489,7 @@ public class SetupScreen extends AbstractScreen {
         createAccount.setPosition(cw, y);
         playerNote.setCenter(width / 2.f, y - 20.f);
         sameAccountErrorMsg.setCenter(width/2.f, y - 50.f);
+        sjadamMultiplayerErrorMsg.setCenter(width/2.f, y - 70.f);
     }
 
 }
