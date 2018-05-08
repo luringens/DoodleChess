@@ -40,8 +40,21 @@ void main()
 {
     vec2 uv = v_texCoords * u_resolution / 800.f;
     float noise = 0.0f;
-    for(float i = 2.0f; i < 15.0f; ++i)
-        noise += 1.0f / i * snoise(uv * i*i + i);
+    //for(float i = 2.0f; i < 15.0f; ++i)
+    //    noise += 1.0f / i * snoise(uv * i*i + i);
+    noise += 1.0f / 2.0f * snoise(uv* 2.0f * 2.0f + 2.0f);
+    noise += 1.0f / 3.0f * snoise(uv* 3.0f * 3.0f + 3.0f);
+    noise += 1.0f / 4.0f * snoise(uv* 4.0f * 4.0f + 4.0f);
+    noise += 1.0f / 5.0f * snoise(uv* 5.0f * 5.0f + 5.0f);
+    noise += 1.0f / 6.0f * snoise(uv* 6.0f * 6.0f + 6.0f);
+    noise += 1.0f / 7.0f * snoise(uv* 7.0f * 7.0f + 7.0f);
+    noise += 1.0f / 8.0f * snoise(uv* 8.0f * 8.0f + 8.0f);
+    noise += 1.0f / 9.0f * snoise(uv* 9.0f * 9.0f + 9.0f);
+    noise += 1.0f / 10.0f * snoise(uv* 10.0f * 10.0f + 10.0f);
+    noise += 1.0f / 11.0f * snoise(uv* 11.0f * 11.0f + 11.0f);
+    noise += 1.0f / 12.0f * snoise(uv* 12.0f * 12.0f + 12.0f);
+    noise += 1.0f / 13.0f * snoise(uv* 13.0f * 13.0f + 13.0f);
+    noise += 1.0f / 14.0f * snoise(uv* 14.0f * 14.0f + 14.0f);
     noise = noise / 2.0f + 0.5f;
     gl_FragColor = vec4(1) * noise;
 }
