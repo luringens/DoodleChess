@@ -63,7 +63,6 @@ public class NetworkChessGame extends ChessGame {
     }
 
     /** {@inheritDoc} */
-    @Override
     public List<Move> performMove(Position from, Position to) {
         IChessPiece piece = getPieceAtPosition(from);
         

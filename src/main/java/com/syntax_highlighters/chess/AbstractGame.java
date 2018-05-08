@@ -41,17 +41,6 @@ public abstract class AbstractGame {
         moveHistory.add(m);
     }
 
-    /**
-     * Validate and perform a move.
-     * @param from Coordinate from
-     * @param to Coordinate to
-     * @return If the move was valid and performed.
-     */
-    @Deprecated
-    public List<Move> performMove(Position from, Position to) {
-        throw new RuntimeException("Do not call this method");
-    }
-
     public List<Move> getMoves(Position from, Position to) {
         IChessPiece piece = getPieceAtPosition(from);
         

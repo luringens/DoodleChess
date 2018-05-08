@@ -135,7 +135,12 @@ public class SjadamGame extends AbstractGame {
             .collect(Collectors.toList());
     }
 
-    @Override
+    /**
+     * Validate and perform a move.
+     * @param from Coordinate from
+     * @param to Coordinate to
+     * @return If the move was valid and performed.
+     */
     public List<Move> performMove(Position from, Position to) {
         IChessPiece piece = getPieceAtPosition(from);
         if (piece == null) return new ArrayList<>();
