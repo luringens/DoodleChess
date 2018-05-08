@@ -2,6 +2,8 @@
 
 varying vec2 v_texCoords;
 
+uniform vec2 u_resolution;
+
 // Simplex 2D noise
 //
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
@@ -35,7 +37,7 @@ float snoise(vec2 v){
 
 void main()
 {
-    vec2 uv = v_texCoords;
+    vec2 uv = v_texCoords * u_resolution / 800.f;
     float noise = 0.0f;
     for(float i = 2.0f; i < 15.0f; ++i)
         noise += 1.0f / i * snoise(uv * i*i + i);

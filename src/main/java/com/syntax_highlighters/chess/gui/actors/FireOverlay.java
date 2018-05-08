@@ -21,6 +21,7 @@ import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.BurningChess;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.IChessPiece;
+import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,12 +61,15 @@ public class FireOverlay extends Actor {
 
         SpriteBatch batch = new SpriteBatch();
         batch.setShader(program);
+        Vector2 size = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         noise.begin();
         batch.begin();
+        program.setUniformf("u_resolution", size);
         batch.draw(pixel, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
         noise.end();
         batch.dispose();
+        System.out.println(program.getLog());
     }
 
     private void checkCircle(Ellipse c) {
@@ -166,9 +170,6 @@ public class FireOverlay extends Actor {
         ShaderProgram shader= batch.getShader();
         batch.setTransformMatrix(new Matrix4());
         batch.setShader(fireProgram);
-        Gdx.gl.glActiveTexture(GL20.GL_TEXTURE1);
-        noise.getColorBufferTexture().bind();
-        fireProgram.setUniformf("u_noise", 1);
         float gxW = Gdx.graphics.getWidth();
         float gxH = Gdx.graphics.getHeight();
         float ex = (whiteBurn.x - whiteBurn.width / 4.0f) / gxW;
@@ -189,10 +190,11 @@ public class FireOverlay extends Actor {
         }
         fireProgram.setUniformi("u_safePosCount", i);
 
-        Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
         batch.draw(noise.getColorBufferTexture(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, true);
         batch.setTransformMatrix(transform );
         batch.setShader(shader);
+
+        //batch.draw(noise.getColorBufferTexture(), 0, 0);
 
         this.renderer.setProjectionMatrix(batch.getProjectionMatrix());
         //this.renderer.setTransformMatrix(batch.getTransformMatrix());
