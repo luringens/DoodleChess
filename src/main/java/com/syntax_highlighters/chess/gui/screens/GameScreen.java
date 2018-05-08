@@ -320,16 +320,16 @@ public class GameScreen extends AbstractScreen {
         if (game.nextPlayerColor() != nextPlayerColor) {
             nextPlayerColor = game.nextPlayerColor();
             board.clearSuggestion();
-
-            // Game over check
-            if (game.isGameOver()) {
-                if (!isGameOver) {
-                    gameOver(game.getWinner());
-                }
-                stage.act(delta);
-                stage.draw();
-                return;
+        }
+        
+        // Game over check
+        if (game.isGameOver()) {
+            if (!isGameOver) {
+                gameOver(game.getWinner());
             }
+            stage.act(delta);
+            stage.draw();
+            return;
         }
 
         // Do an AI turn if needed
@@ -367,8 +367,8 @@ public class GameScreen extends AbstractScreen {
 
             turnText.setText(game.nextPlayerColor().isWhite() ? p1Name + "'s turn" : p2Name + "'s turn");
         } else {
-            turnText.setText(winner == 1 ? player1.getName()+ " has won the game" :
-                    winner == -1 ? player2.getName() + " has won the game" :
+            turnText.setText(winner == 1 ? p1Name + " has won the game" :
+                    winner == -1 ? p2Name + " has won the game" :
                             "It's a draw!");
         }
 
