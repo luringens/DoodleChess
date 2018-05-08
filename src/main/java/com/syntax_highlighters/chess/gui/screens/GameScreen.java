@@ -401,6 +401,9 @@ public class GameScreen extends AbstractScreen {
 
         getHelp.setPosition(width / 2.f - getHelp.getWidth()*1.5f - getHelp.getWidth() / 2.f,
                 height / 2.f - size / 2.f - getHelp.getHeight() / 1.5f);
+        
+        endTurnButton.setPosition(width / 2.f - getHelp.getWidth()*1.5f - getHelp.getWidth() / 2.f,
+                height / 2.f - size / 2.f - getHelp.getHeight() / 1.5f);
 
         giveUp.setPosition(width / 2.f + giveUp.getWidth() * 1.5f - getHelp.getWidth() / 2.f,
                 height / 2.f - size / 2.f - giveUp.getHeight() / 1.5f);
