@@ -82,7 +82,7 @@ public class BoardGroup extends Group {
         this.promotionSelection.setVisible(false);
 
         if(game instanceof BurningChess)
-            pieceGroup.addActor(new FireOverlay((BurningChess)game, tiles));
+            pieceGroup.addActor(new FireOverlay(assetManager, (BurningChess)game, tiles));
     }
 
     /**

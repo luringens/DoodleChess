@@ -140,6 +140,15 @@ public class AssetLoader {
         wobbleParameters.fragmentFile = "shaders/offset.frag";
         manager.load("wobble.frag", ShaderProgram.class, wobbleParameters);
 
+        loadFragmentShader(manager, "fireNoise.frag");
+        loadFragmentShader(manager, "fire.frag");
+    }
+
+    private static void loadFragmentShader(AssetManager manager, String name) {
+        ShaderProgramLoader.ShaderProgramParameter wobbleParameters = new ShaderProgramLoader.ShaderProgramParameter();
+        wobbleParameters.vertexFile = "shaders/id.vert";
+        wobbleParameters.fragmentFile = "shaders/" + name;
+        manager.load(name, ShaderProgram.class, wobbleParameters);
     }
 
     public static String getAccountPath() {
