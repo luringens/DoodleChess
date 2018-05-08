@@ -368,7 +368,7 @@ public class SetupScreen extends AbstractScreen {
             if(si1 == 1 || si2 == 1) {
                 sjadamMultiplayerErrorMsg.setVisible(true);
                 return;
-            }
+            } 
         }
         if(si1 == 0 && invalidAccountSelection(selected1, selected2))
         {
