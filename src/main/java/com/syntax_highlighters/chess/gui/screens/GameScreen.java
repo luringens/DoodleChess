@@ -310,6 +310,8 @@ public class GameScreen extends AbstractScreen {
         giveUp.setVisible(!isGameOver &&
                 (!game.nextPlayerIsAI() || (player1 == null && player2 == null)));
         showResults.setVisible(isGameOver);
+        
+        endTurnButton.setVisible(game instanceof SjadamGame && ((SjadamGame)game).hasJumped());
 
         java.util.List<String> moves = new ArrayList<>(game.getMoveHistory());
         if(moves.size() > history.getItems().size)
@@ -404,6 +406,5 @@ public class GameScreen extends AbstractScreen {
         showResults.setPosition(width / 2.f + getHelp.getWidth()*1.5f - getHelp.getWidth() / 2.f,
                 height / 2.f - size / 2.f - showResults.getHeight() / 1.5f);
 
-        endTurnButton.setVisible(game instanceof SjadamGame && ((SjadamGame)game).hasJumped());
     }
 }

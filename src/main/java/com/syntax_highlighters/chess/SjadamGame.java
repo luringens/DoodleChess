@@ -2,6 +2,7 @@ package com.syntax_highlighters.chess;
 
 import java.util.List;
 import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import com.syntax_highlighters.chess.entities.Color;
@@ -191,8 +192,23 @@ public class SjadamGame extends AbstractGame {
         throw new RuntimeException("Copy not implemented for sjadam");
     }
 
+    @Override
+    public List<Move> getMoves(Position from, Position to) {
+        return allPossibleMoves().stream()
+            .filter(m -> m.getOldPosition().equals(from) && m.getPosition().equals(to))
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean isGameOver() {
+        return super.isGameOver()
+            || getPieces().stream().filter(ChessPieceKing.class::isInstance).count() < 2
+            || allPossibleMoves().size() == 0;
+    }
+
     public void endTurn() {
         nextPlayerColor = nextPlayerColor.opponentColor();
+        jumpedFromPositions = new ArrayList<>(); // clear jumped positions
     }
     
     public boolean hasJumped() {
