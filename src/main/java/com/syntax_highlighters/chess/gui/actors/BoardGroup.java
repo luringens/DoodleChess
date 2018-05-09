@@ -9,13 +9,11 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.AbstractGame;
-import com.syntax_highlighters.chess.Move;
-import com.syntax_highlighters.chess.Position;
+import com.syntax_highlighters.chess.*;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +30,7 @@ public class BoardGroup extends Group {
     private final float LEGEND_OFFSET = 50;
     private PopupSelectionMenu promotionSelection;
     private Move suggestedMove = null;
+    private List<ChessTileActor> tiles = new ArrayList<>();
 
     /**
      * Constructor
@@ -52,7 +51,7 @@ public class BoardGroup extends Group {
         for (int x = 0; x < Board.BOARD_WIDTH; ++x) {
             for (int y = 0; y < Board.BOARD_HEIGHT; ++y) {
                 boolean isBlack = (x + y) % 2 == 0;
-                Actor actor = new ChessTileActor(isBlack, new Position(x + 1, y + 1), assetManager, this);
+                ChessTileActor actor = new ChessTileActor(isBlack, new Position(x + 1, y + 1), assetManager, this);
                 actor.addListener(new ClickListener() {
                     @Override
                     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -63,6 +62,7 @@ public class BoardGroup extends Group {
                     }
                 });
                 pieceGroup.addActor(actor);
+                tiles.add(actor);
             }
         }
 
@@ -80,6 +80,9 @@ public class BoardGroup extends Group {
                 assetManager.get("bishop_white.png", Texture.class),
                 assetManager.get("knight_white.png", Texture.class));
         this.promotionSelection.setVisible(false);
+
+        if(game instanceof BurningChess)
+            pieceGroup.addActor(new FireOverlay(assetManager, (BurningChess)game, tiles));
     }
 
     /**

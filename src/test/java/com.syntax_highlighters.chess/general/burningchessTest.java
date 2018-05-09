@@ -26,7 +26,7 @@ public class burningchessTest {
         IChessPiece piece = new ChessPiecePawn(new Position(2, 2), Color.WHITE);
         bo.putAtPosition(new Position(2, 2), piece);
         burning.killTile(new Position(2, 3));
-        assertEquals(burning.allPossibleMoves(piece).size(), 1);
+        assertEquals(1, burning.allPossibleMoves(piece).size());
 
     }
 
@@ -38,7 +38,7 @@ public class burningchessTest {
         bo.putAtPosition(new Position(2,2),piece);
         System.out.println(bo);
         burning.killPiece(piece);
-        assertEquals(burning.getBoard().getAllPieces().size(),0);
+        assertEquals(0,burning.getBoard().getAllPieces().size());
     }
 
     @Test
@@ -48,9 +48,9 @@ public class burningchessTest {
         IChessPiece piece = new ChessPiecePawn(new Position(2, 2), Color.WHITE);
         bo.putAtPosition(new Position(2, 2), piece);
         burning.killTile(new Position(2, 3));
-        assertEquals(burning.tileUnreachable().size(),1);
+        assertEquals(1,burning.tileUnreachable().size());
         burning.reviveTile(new Position(2,3));
-        assertEquals(burning.tileUnreachable().size(),0);
+        assertEquals(0,burning.tileUnreachable().size());
     }
 
 

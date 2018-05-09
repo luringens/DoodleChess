@@ -35,6 +35,10 @@ public class ChessTileActor extends Actor {
         this.boardGroup = boardGroup;
     }
 
+    public Position getTilePosition() {
+        return position;
+    }
+
     /**
      * Internal updates
      * @param delta time since last update

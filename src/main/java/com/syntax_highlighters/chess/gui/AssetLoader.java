@@ -102,7 +102,7 @@ public class AssetLoader {
                 "circle.png",
                 "dot.png",
                 "square.png",
-                "tick.png"
+                "tick.png",
         };
 
         for (String path : textures) {
@@ -112,6 +112,7 @@ public class AssetLoader {
         manager.load("tick.wav", Sound.class);
         manager.load("kho.wav", Sound.class);
         manager.load("chesstheme.wav", Music.class);
+        manager.load("WaterSplash.wav",Sound.class);
 
         // set the loaders for the generator and the fonts themselves
         FileHandleResolver resolver = new InternalFileHandleResolver();
@@ -140,6 +141,16 @@ public class AssetLoader {
         wobbleParameters.fragmentFile = "shaders/offset.frag";
         manager.load("wobble.frag", ShaderProgram.class, wobbleParameters);
 
+        loadFragmentShader(manager, "fireNoise.frag");
+        loadFragmentShader(manager, "fire.frag");
+        loadFragmentShader(manager, "metaball.frag");
+    }
+
+    private static void loadFragmentShader(AssetManager manager, String name) {
+        ShaderProgramLoader.ShaderProgramParameter wobbleParameters = new ShaderProgramLoader.ShaderProgramParameter();
+        wobbleParameters.vertexFile = "shaders/id.vert";
+        wobbleParameters.fragmentFile = "shaders/" + name;
+        manager.load(name, ShaderProgram.class, wobbleParameters);
     }
 
     public static String getAccountPath() {
