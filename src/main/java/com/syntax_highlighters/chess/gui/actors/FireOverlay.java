@@ -38,6 +38,7 @@ public class FireOverlay extends Actor {
     FrameBuffer noise;
     FrameBuffer fire;
     ShaderProgram fireProgram;
+    ShaderProgram metaballProgram;
     AssetManager manager;
 
     public FireOverlay(AssetManager manager, BurningChess game, List<ChessTileActor> tiles) {
@@ -57,6 +58,9 @@ public class FireOverlay extends Actor {
 
         fireProgram = manager.get("fire.frag");
         if(!fireProgram.isCompiled()) System.out.println(fireProgram.getLog());
+
+        metaballProgram = manager.get("metaball.frag");
+        if(!metaballProgram.isCompiled()) System.out.println(metaballProgram.getLog());
 
         Texture pixel = manager.get("pixel.png");
 
@@ -88,6 +92,7 @@ public class FireOverlay extends Actor {
             if(c.contains(x+w2, y) && !inSplash(x+w2,y)) contained++;
             if(c.contains(x+w2, y+h2) && !inSplash(x+w2,y+h2)) contained++;
             if(c.contains(x, y+h2) && !inSplash(x,y+h2)) contained++;
+            if(c.contains(x + w2/2.0f, y+h2 / 2.0f) && !inSplash(x + w2/2.0f, y+h2 / 2.0f)) contained++;
             if(contained >= 3)
             {
                 IChessPiece piece = game.killTile(tpos);
@@ -99,11 +104,15 @@ public class FireOverlay extends Actor {
     }
 
     private boolean inSplash(float x, float y) {
-            for(Circle k : splashes){
-                if(k.contains(x,y))
-                    return true;
-            }
-            return false;
+        float v = 0.0f;
+        for(Circle k : splashes){
+            Vector2 ballPos = new Vector2(x - k.x, y - k.y);
+            v += k.radius * k.radius / (ballPos.x * ballPos.x + ballPos.y * ballPos.y);
+            //if(k.contains(x,y))
+            //    return true;
+        }
+
+        return v > 1.2f;
     }
 
     private void splashing(IChessPiece piece){
@@ -133,8 +142,8 @@ public class FireOverlay extends Actor {
 
     @Override
     public void act(float delta) {
-        if(game.isGameOver())
-            return;
+        //if(game.isGameOver())
+        //    return;
         super.act(delta);
         game.fireTimer(delta);
         float w = Gdx.graphics.getWidth();
@@ -175,9 +184,9 @@ public class FireOverlay extends Actor {
         batch.setShader(fireProgram);
         float gxW = Gdx.graphics.getWidth();
         float gxH = Gdx.graphics.getHeight();
-        float ex = (whiteBurn.x - whiteBurn.width / 4.0f) / gxW;
-        float ey = (whiteBurn.y - whiteBurn.height / 4.0f) / gxH;
-        fireProgram.setUniformf("burn", new Color(ex, ey, whiteBurn.width / 2.0f / gxW, whiteBurn.height / 2.0f/ gxH));
+        float ex = (whiteBurn.x) / gxW;
+        float ey = (whiteBurn.y) / gxH;
+        fireProgram.setUniformf("burn", ex, ey, whiteBurn.width / 2.0f / gxW, whiteBurn.height / 2.0f/ gxH);
         ex = (blackBurn.x - blackBurn.width / 8.0f) / gxW;
         ey = (blackBurn.y - blackBurn.height / 8.0f) / gxH;
         fireProgram.setUniformf("burn2", new Color(ex, ey, blackBurn.width / 4.0f / gxW, blackBurn.height / 4.0f / gxH));
@@ -199,7 +208,7 @@ public class FireOverlay extends Actor {
         this.renderer.setProjectionMatrix(batch.getProjectionMatrix());
         if(!fireProgram.isCompiled()) System.out.println(fireProgram.getLog());
         //this.renderer.setTransformMatrix(batch.getTransformMatrix());
-        /*batch.end();
+        batch.end();
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -207,12 +216,28 @@ public class FireOverlay extends Actor {
         renderer.ellipse(whiteBurn.x - whiteBurn.width / 2.0f, whiteBurn.y - whiteBurn.height / 2.0f, whiteBurn.width, whiteBurn.height);
         renderer.ellipse(blackBurn.x - blackBurn.width / 2.0f, blackBurn.y - blackBurn.height / 2.0f, blackBurn.width, blackBurn.height );
 
-        renderer.setColor(0,1,0,0.25f);
+        /*renderer.setColor(0,1,0,0.25f);
         for(Circle c : splashes)
-            renderer.circle(c.x, c.y, c.radius);
+            renderer.circle(c.x, c.y, c.radius);*/
         renderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
-        batch.begin();*/
+        batch.begin();
+
+        batch.setShader(metaballProgram);
+        batch.setTransformMatrix(new Matrix4());
+        i = 0;
+        for(Circle c : splashes) {
+            float nX = c.x / Gdx.graphics.getWidth();
+            float nY = c.y / Gdx.graphics.getHeight();
+            float nrX = c.radius / Gdx.graphics.getWidth();
+            float nrY = c.radius / Gdx.graphics.getHeight();
+            metaballProgram.setUniformf("u_safePos[" +i + "]", new Color(nX, nY, nrX, nrY));
+            i++;
+        }
+        metaballProgram.setUniformi("u_safePosCount", i);
+        batch.draw(noise.getColorBufferTexture(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, true);
+        batch.setTransformMatrix(transform );
+        batch.setShader(shader);
     }
 
     private class CircleAnimation extends TemporalAction {

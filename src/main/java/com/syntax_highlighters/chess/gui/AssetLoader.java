@@ -143,6 +143,7 @@ public class AssetLoader {
 
         loadFragmentShader(manager, "fireNoise.frag");
         loadFragmentShader(manager, "fire.frag");
+        loadFragmentShader(manager, "metaball.frag");
     }
 
     private static void loadFragmentShader(AssetManager manager, String name) {

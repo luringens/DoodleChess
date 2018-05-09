@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class BurningChess extends AbstractGame{
     private float blackTimer = 0;
     private float whiteTimer = 0;
-    private static final float TENMINS = 5 * 6;
+    private static final float TENMINS = 5 * 1;
 
     public BurningChess(AiDifficulty whiteAi, AiDifficulty blackAi) {
         if (whiteAi != null) {
@@ -158,8 +158,15 @@ public class BurningChess extends AbstractGame{
     }
     @Override
     public AbstractGame copy() {
-        //TODO: Implement copy.
-        throw new RuntimeException("Copy not implemented for burningchess.");
+        BurningChess copy = new BurningChess(board.copy(), nextPlayerColor);
+        copy.whiteAI = whiteAI;
+        copy.blackAI = blackAI;
+        copy.gameOver = gameOver;
+        copy.moveHistory = copyMoveHistory();
+        copy.whiteTimer = whiteTimer;
+        copy.blackTimer = blackTimer;
+        copy.unreachablePos = new ArrayList<>(unreachablePos);
+        return copy;
     }
 
     @Override

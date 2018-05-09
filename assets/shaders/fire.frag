@@ -8,8 +8,8 @@ varying vec2 v_texCoords;
 uniform sampler2D u_texture;
 
 // Burns
-uniform vec4 burn = vec4(0,0,0.0,0.0);
-uniform vec4 burn2 = vec4(1,1,0.0,0.0);
+uniform vec4 burn;
+uniform vec4 burn2;
 
 // Splash balls
 uniform vec4 u_safePos[32];
@@ -36,9 +36,6 @@ void main()
     // Normalized pixel coordinates (from 0 to 1)
     vec2 uv = v_texCoords;
     
-    // Default color to transparent
-    gl_FragColor = vec4(0);
-    
     // Get noise from texture
     float noiseX = texture2D(u_texture, uv).r;
     // Normalize noise from [0-1]
@@ -59,21 +56,22 @@ void main()
     //v2 -= v;
 
     // Normalize gradient
-    if(v > 1.0f) {
+    if(v > 0.8f) {
+        v += 0.2f;
         float c = v2;
-        if (c >= 1.2f) c = 1.2f;
-        v2 = 1.0f / sqrt(v) * c;
+        if (c >= 1.4f) c = 1.4f;
+        v2 = 1.0f / v * c;
     }
     
     // Apply noise
     v2 += noiseX / 8.0f;
     
     // Apply gradient to subsection of metaball membrane
-    if(v2 >= 0.6f) {
+    if(v2 >= 0.8f) {
     	
         const vec4 red = vec4(1,0,0,1);
         const vec4 green = vec4(0,1,0,1);
-        float t = (v2 - 0.6f) / 0.4f;
+        float t = (v2 - 0.8f) / 0.4f;
         
         vec4 col = mix(red, orange, (t - change2) / (1.0f - change2) );
         if(t < change2)
@@ -86,7 +84,7 @@ void main()
     
 
     // Fill rest with black
-    if(v2 >= 1.0f) gl_FragColor = vec4(0, 0, 0, 1);
+    if(v2 >= 1.20f) gl_FragColor = vec4(0, 0, 0, 1);
 
     if(v2 < 0.8f) {
         if(v - noiseX / 1.5f > 1.0f) gl_FragColor += vec4(0.2f, 0.2f, 0.2f, 0.4f);
