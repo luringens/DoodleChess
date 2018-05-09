@@ -111,7 +111,7 @@ public class GameScreen extends AbstractScreen {
                        PlayerAttributes attrib2,
                        boolean randomBoard,
                        AbstractGame newGame) {
-        super(chessGame);
+        super(chessGame, false);
         // Can't define newGame and selectedmode at once - one has to be null!
         assert (selectedMode == null) != (newGame == null);
 
