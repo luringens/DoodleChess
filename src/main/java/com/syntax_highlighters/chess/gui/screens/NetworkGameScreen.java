@@ -43,4 +43,12 @@ public class NetworkGameScreen extends GameScreen {
         float midW = width / 2.f - netText.getWidth() / 2.f;
         netText.setCenter(midW, height - 10.f);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void gameOver(int winner) {
+        NetworkChessGame game = (NetworkChessGame) this.game;
+        game.disconnect();
+        super.gameOver(winner);
+    }
 }

@@ -263,7 +263,7 @@ public class GameScreen extends AbstractScreen {
             this.game.getBoard().setupPracticeGame((int)(Math.random() * 5) + 20);
     }
 
-    private void gameOver(int winner) {
+    protected void gameOver(int winner) {
         this.winner = winner;
         isGameOver = true;
         board.unselectSelected();

@@ -109,4 +109,11 @@ public class NetworkChessGame extends ChessGame {
     public String getNetworkError() {
         return opponent.GetLastFailureDescription();
     }
+
+    /**
+     * Disconnect the network session in order to free the network resources.
+     */
+	public void disconnect() {
+        opponent.Disconnect();
+	}
 }
