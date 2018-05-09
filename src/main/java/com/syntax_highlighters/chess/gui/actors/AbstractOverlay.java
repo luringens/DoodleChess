@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.syntax_highlighters.chess.gui.AssetLoader;
+import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.gui.WobbleDrawable;
 
 /**
@@ -32,9 +33,9 @@ public class AbstractOverlay extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         batch.setColor(0,0,0,075f);
-        batch.draw(pixel, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        float cw = Gdx.graphics.getWidth() / 2.f;
-        float ch = Gdx.graphics.getHeight() / 2.f;
+        batch.draw(pixel, 0, 0, LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT);
+        float cw = LibgdxChessGame.WORLDWIDTH / 2.f;
+        float ch = LibgdxChessGame.WORLDHEIGHT / 2.f;
         float tw = overlay.getTexture().getWidth() / 1.6f;
         float th = overlay.getTexture().getHeight() / 1.6f;
         setBounds(cw - tw / 2.f, ch - th/2.f, tw, th);

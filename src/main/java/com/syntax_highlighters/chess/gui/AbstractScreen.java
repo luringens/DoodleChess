@@ -1,17 +1,20 @@
 package com.syntax_highlighters.chess.gui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.*;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.assets.AssetManager;
 import com.syntax_highlighters.chess.gui.actors.DoodleActor;
+import com.syntax_highlighters.chess.gui.actors.PaperBackground;
 
 /**
  * Abstract screen implementing common functionality among different screens.
  */
 public abstract class AbstractScreen implements Screen {
     private final LibgdxChessGame game;
+    private boolean firstDraw = true;
     protected final Stage stage;
     private final static int N_DOODLES_PER_SCREEN = 10;
     private final static String[] DOODLES = new String[]{
@@ -43,6 +46,9 @@ public abstract class AbstractScreen implements Screen {
         "Doodle/Horse.png"
     };
 
+    public static final float WORLDWIDTH = LibgdxChessGame.WORLDWIDTH;
+    public static final float WORLDHEIGHT = LibgdxChessGame.WORLDHEIGHT;
+
     /**
      * Create a screen based on a ChessGame.
      *
@@ -50,9 +56,7 @@ public abstract class AbstractScreen implements Screen {
      */
     protected AbstractScreen(LibgdxChessGame game)
     {
-        this.game = game;
-        this.stage = new Stage(new ScreenViewport());
-        addDoodles();
+        this(game, true);
     }
 
     /**
@@ -63,7 +67,8 @@ public abstract class AbstractScreen implements Screen {
      */
     protected AbstractScreen(LibgdxChessGame game, boolean createDoodles) {
         this.game = game;
-        this.stage = new Stage(new ScreenViewport());
+        this.stage = new Stage(new FitViewport(WORLDWIDTH, WORLDHEIGHT), game.getBatch());
+        this.stage.addActor(new PaperBackground(game.getAssetManager()));
         if (createDoodles)
             addDoodles();
     }
@@ -93,18 +98,22 @@ public abstract class AbstractScreen implements Screen {
         return game;
     }
 
-//    /**
-//     * Render all the actors on the stage.
-//     *
-//     * Subclasses must call this super method the last thing they do in their
-//     * render method.
-//     */
-//    @Override
-//    public void render(float delta) {
-//        stage.act(delta);
-//        stage.draw();
-//    }
-    
+    /**
+     * Render all the actors on the stage.
+     *
+     * Subclasses must call this super method the last thing they do in their
+     * render method.
+     */
+    @Override
+    public void render(float delta) {
+        if(firstDraw) {
+            stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+            firstDraw = false;
+        }
+        stage.act(delta);
+        stage.draw();
+    }
+
     /**
      * Disposes classes that needs disposing.
      */

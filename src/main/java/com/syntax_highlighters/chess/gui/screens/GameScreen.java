@@ -130,8 +130,10 @@ public class GameScreen extends AbstractScreen {
         Gdx.input.setInputProcessor(stage);
 
         board = new BoardGroup(this.game, this.player2Color, this.player1Color, assetManager);
-        float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 50;
+        float boardPadding = 25.f;
+        float size = Math.min(WORLDWIDTH, WORLDHEIGHT) - boardPadding*2.f;
         board.setSize(size, size);
+        board.setPosition(boardPadding, boardPadding);
         stage.addActor(board);
 
         // TODO: Move style stuff to a separate class
@@ -161,6 +163,7 @@ public class GameScreen extends AbstractScreen {
         historyList.background(new WobbleDrawable(assetManager.get("listBackground.png"), assetManager));
         historyList.setSize(200, 600);
         historyList.add(historyPane).expand().top();
+        historyList.setPosition(WORLDWIDTH / 4.f * 3.f - historyList.getWidth() / 2.f, WORLDHEIGHT / 2.f - historyList.getHeight() / 2.f + 50);
         stage.addActor(historyList);
 
 
@@ -176,6 +179,7 @@ public class GameScreen extends AbstractScreen {
 
         mute = new Image(soundDrawable);
         mute.setSize(100, 100);
+        mute.setPosition(WORLDWIDTH - 110, 10.f);
         stage.addActor(mute);
 
         mute.addListener(new ClickListener() {
@@ -193,6 +197,7 @@ public class GameScreen extends AbstractScreen {
 
         getHelp = new Button("Get hint", assetManager);
         getHelp.setSize(200, 75);
+        getHelp.setPosition(WORLDWIDTH / 4.f * 3.f - getHelp.getWidth() + 20.f, 25.f);
         getHelp.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -221,12 +226,14 @@ public class GameScreen extends AbstractScreen {
                         .confirmCallback(() -> gameOver(game.nextPlayerColor().isWhite() ? -1 : 1))
                         .stage(stage)
                         .create());
-        giveUp = giveUpButtonBuilder.size(200, 75).stage(stage).create();
+        giveUp = giveUpButtonBuilder.size(200, 75).position(WORLDWIDTH / 4.f * 3.f + 20.f, 25.f).stage(stage).create();
+
 
         endTurnButton = new Button.Builder("End turn", assetManager)
             .callback(() -> ((SjadamGame)game).endTurn())
             .size(200, 75)
             .stage(stage)
+            .position(WORLDWIDTH / 4.f * 3.f - getHelp.getWidth() + 20.f, 25.f)
             .create();
 
         // Always added last!!!
@@ -237,6 +244,7 @@ public class GameScreen extends AbstractScreen {
         // display results button (initially invisible, but becomes visible when
         // game ends)
         showResults = new Button.Builder("Show results", assetManager)
+            .position(WORLDWIDTH / 4.f * 3.f + 20.f, 25.f)
             .size(200, 75)
             .callback(() -> gameOverOverlay.setVisible(true))
             .stage(stage)
@@ -346,8 +354,8 @@ public class GameScreen extends AbstractScreen {
         }
 
         setTurnText();
-        stage.act(delta);
-        stage.draw();
+
+        super.render(delta);
     }
 
     /**
@@ -371,13 +379,9 @@ public class GameScreen extends AbstractScreen {
                             "It's a draw!");
         }
 
-        // this is modeled after the similar operation in the resize method
-        // below
-        int width = Gdx.graphics.getWidth();  // I think this is right
-        int height = Gdx.graphics.getHeight();
-        float size = Math.min(width, height);
+        float size = Math.min(WORLDWIDTH, WORLDHEIGHT);
         size = Math.min(size, 1000);
-        turnText.setCenter(width / 2.f, height / 2.f - size / 2.f + 40.f);
+        turnText.setCenter(WORLDWIDTH / 4.f * 3.f, WORLDHEIGHT - 20.f);
     }
 
     /**
@@ -391,24 +395,6 @@ public class GameScreen extends AbstractScreen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-        float size = Math.min(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()) - 100;
-        size = Math.min(size, 1000);
-        board.setSize(size, size);
-        board.setPosition(width / 2.f - size / 2.f - 40, height / 2.f - size / 2.f + 25);
-        historyList.setPosition(width / 2.f + size / 2.f + 35,height / 2.f  - historyList.getHeight() / 2.f + 50);
-        turnText.setCenter(width / 2.f, height / 2.f - size / 2.f - 10.f);
-
-        getHelp.setPosition(width / 2.f - getHelp.getWidth()*1.5f - getHelp.getWidth() / 2.f,
-                height / 2.f - size / 2.f - getHelp.getHeight() / 1.5f);
-        
-        endTurnButton.setPosition(width / 2.f - getHelp.getWidth()*1.5f - getHelp.getWidth() / 2.f,
-                height / 2.f - size / 2.f - getHelp.getHeight() / 1.5f);
-
-        giveUp.setPosition(width / 2.f + giveUp.getWidth() * 1.5f - getHelp.getWidth() / 2.f,
-                height / 2.f - size / 2.f - giveUp.getHeight() / 1.5f);
-
-        showResults.setPosition(width / 2.f + getHelp.getWidth()*1.5f - getHelp.getWidth() / 2.f,
-                height / 2.f - size / 2.f - showResults.getHeight() / 1.5f);
 
     }
 }

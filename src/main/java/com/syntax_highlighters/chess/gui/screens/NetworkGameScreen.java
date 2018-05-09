@@ -40,8 +40,8 @@ public class NetworkGameScreen extends GameScreen {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        float midW = width / 2.f - netText.getWidth() / 2.f;
-        netText.setCenter(midW, height - 10.f);
+        float midW = WORLDWIDTH / 2.f - netText.getWidth() / 2.f;
+        netText.setCenter(midW, WORLDHEIGHT - 10.f);
     }
 
     /** {@inheritDoc} */

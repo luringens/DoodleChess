@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class BurningChess extends AbstractGame{
     private float blackTimer = 0;
     private float whiteTimer = 0;
-    private static final float TENMINS = 10 * 60;
+    private static final float TENMINS = 10 * 2;
     public static final float SPLASHTIME = 20; // in seconds
 
     public BurningChess(AiDifficulty whiteAi, AiDifficulty blackAi) {

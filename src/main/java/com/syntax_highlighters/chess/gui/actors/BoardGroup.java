@@ -128,7 +128,7 @@ public class BoardGroup extends Group {
     public void setSize(float width, float height) {
         super.setSize(width, height);
 
-        pieceGroup.setSize(width - LEGEND_OFFSET, height - LEGEND_OFFSET);
+        pieceGroup.setSize(width - LEGEND_OFFSET * 2.0f, height - LEGEND_OFFSET * 2.0f);
         pieceGroup.setPosition(LEGEND_OFFSET, LEGEND_OFFSET);
     }
 
@@ -270,8 +270,8 @@ public class BoardGroup extends Group {
      * @param batch Spritebatch
      */
     private void drawLegend(Batch batch) {
-        float tileWidth = (getWidth() - LEGEND_OFFSET) / Board.BOARD_WIDTH;
-        float tileHeight = (getHeight() - LEGEND_OFFSET) / Board.BOARD_HEIGHT;
+        float tileWidth = (getWidth() - LEGEND_OFFSET * 2.0f) / Board.BOARD_WIDTH;
+        float tileHeight = (getHeight() - LEGEND_OFFSET * 2.0f) / Board.BOARD_HEIGHT;
         BitmapFont font = AssetLoader.GetDefaultFont(assetManager);
         GlyphLayout layout = new GlyphLayout();
         font.setColor(0, 0, 0, 1);
@@ -283,10 +283,25 @@ public class BoardGroup extends Group {
             font.draw(batch, "" + pos, x, y);
         }
 
+        for (int i = 0; i < Board.BOARD_WIDTH; ++i) {
+            char pos = (char) ('A' + i);
+            layout.setText(font, "" + pos);
+            float x = LEGEND_OFFSET + tileWidth / 2.f + i * tileWidth + getX() - layout.width / 2.0f;
+            float y = getY() - LEGEND_OFFSET / 2.f + layout.height / 2.0f + getHeight();
+            font.draw(batch, "" + pos, x, y);
+        }
+
         for (int i = 0; i < Board.BOARD_HEIGHT; ++i) {
             char pos = (char) ('1' + i);
             layout.setText(font, "" + pos);
             float x = getX() + LEGEND_OFFSET / 2.f - layout.width / 2.f;
+            float y = LEGEND_OFFSET + tileHeight / 2.f + i * tileHeight + getY() + layout.height / 2.0f;
+            font.draw(batch, "" + pos, x, y);
+        }
+        for (int i = 0; i < Board.BOARD_HEIGHT; ++i) {
+            char pos = (char) ('1' + i);
+            layout.setText(font, "" + pos);
+            float x = getX() - LEGEND_OFFSET / 2.f - layout.width / 2.f + getWidth();
             float y = LEGEND_OFFSET + tileHeight / 2.f + i * tileHeight + getY() + layout.height / 2.0f;
             font.draw(batch, "" + pos, x, y);
         }

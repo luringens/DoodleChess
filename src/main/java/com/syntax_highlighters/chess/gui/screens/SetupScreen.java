@@ -98,11 +98,17 @@ public class SetupScreen extends AbstractScreen {
         sjadamMultiplayerErrorMsg.setVisible(false);
         sameAccountErrorMsg.setVisible(false); // display only if player tries to use same account on both sides
 
+        float column1 = WORLDWIDTH / 4.f;
+        float column2 = WORLDWIDTH / 4.f * 3.f;
+
         // display which player setup belongs to which player
         whiteKing = new ChessPieceActor(new ChessPieceKing(null, null), player1Color, null, assetManager);
         blackKing = new ChessPieceActor(new ChessPieceKing(null, null), player2Color, null, assetManager);
         whiteKing.setSize(120, 120);
         blackKing.setSize(120, 120);
+        float y = WORLDHEIGHT / 2.f + 400 - buttonBigHeight * 1.5f - blackKing.getHeight();
+        whiteKing.setPosition(column1 - whiteKing.getWidth() / 2.f, y);
+        blackKing.setPosition(column2 - blackKing.getWidth() / 2.f, y);
 
         stage.addActor(blackKing);
         stage.addActor(whiteKing);
@@ -128,10 +134,11 @@ public class SetupScreen extends AbstractScreen {
         player2Title = pl2;
         
         gameModes = createDropdownMenu(modes, true, buttonBigWidth + 40, buttonBigHeight); // set the game mode select box
+        gameModes.setPosition(WORLDWIDTH / 2.f - gameModes.getWidth() / 2.f, y);
 
         rb1 = new RadioGroup(assetManager, false);
         rb2 = new RadioGroup(assetManager, false);
-        
+
         rb1.addButton("Human player", selected -> {
             if (selected) player1Title = swapDropdownMenu(pl1, ai1);
         });
@@ -149,7 +156,16 @@ public class SetupScreen extends AbstractScreen {
         });
         rb2.setOnSelectionChangeCallback(
                 () -> resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-                
+
+        y -= rb1.getHeight();
+        rb1.setPosition(column1 - buttonBigWidth / 2.f, y);
+        rb2.setPosition(column2 - buttonBigWidth / 2.f, y);
+
+        y -= 80;
+        player1Title.setPosition(column1 - buttonBigWidth / 2.f, y);
+        player2Title.setPosition(column2 - buttonBigWidth / 2.f, y);
+
+
         stage.addActor(rb1);
         stage.addActor(rb2);
 
@@ -192,6 +208,28 @@ public class SetupScreen extends AbstractScreen {
         // add this last
         stage.addActor(accountOverlay);
         stage.addActor(selector);
+
+        y -= buttonBigHeight;
+
+        player1ColorShow.setPosition(column1 - buttonSmallWidth / 2.f, y);
+        player2ColorShow.setPosition(column2 - buttonSmallWidth / 2.f, y);
+
+
+        y -= buttonBigHeight;
+
+        randomCheckButton.setPosition(WORLDWIDTH / 2.f - randomCheckButton.getWidth() / 2.f,
+                y + randomCheckButton.getHeight() / 2.f);
+
+        y -= buttonBigHeight;
+
+        float cw = WORLDWIDTH / 2.f - buttonBigWidth / 2.f;
+        playButton.setPosition(column2 - buttonBigWidth / 2.f, y);
+
+        mainMenu.setPosition(column1 - buttonBigWidth / 2.f, y);
+        createAccount.setPosition(cw, y);
+        playerNote.setCenter(WORLDWIDTH / 2.f, y - 20.f);
+        sameAccountErrorMsg.setCenter(WORLDWIDTH / 2.f, y - 50.f);
+        sjadamMultiplayerErrorMsg.setCenter(WORLDWIDTH / 2.f, y - 70.f);
 
     }
 
@@ -435,60 +473,9 @@ public class SetupScreen extends AbstractScreen {
     }
 
     @Override
-    public void render(float delta) {
-        stage.act(delta);
-        stage.draw();
-    }
-
-    @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
 
-        title.setCenter(width / 2.f, height / 2.f + 400.f - buttonBigHeight*1.5f);
-
-        float column1 = width/2.f - 800/4.f;
-        float column2 = width/2.f + 800/4.f;
-
-        selector.setPosition(width/2.f - selector.getWidth()/2.f, selector.getY());
-
-        float y = height / 2.f + 400 - buttonBigHeight * 1.5f - blackKing.getHeight();
-        whiteKing.setPosition(column1 - whiteKing.getWidth() / 2.f, y);
-        blackKing.setPosition(column2 - blackKing.getWidth() / 2.f, y);
-        
-        gameModes.setPosition(width/2.f - gameModes.getWidth()/2.f, y);
-
-        y -= rb1.getHeight()*2;
-        
-        rb1.setPosition(column1 - buttonBigWidth / 2.f, y);
-        rb2.setPosition(column2 - buttonBigWidth / 2.f, y);
-
-        y -= 80;
-        
-        player1Title.setPosition(column1 - buttonBigWidth / 2.f, y);
-        player2Title.setPosition(column2 - buttonBigWidth / 2.f, y);
-
-        y -= buttonBigHeight;
-
-        player1ColorShow.setPosition(column1 - buttonSmallWidth / 2.f, y);
-        player2ColorShow.setPosition(column2 - buttonSmallWidth / 2.f, y);
-
-        y -= buttonBigHeight;
-        
-        randomCheckButton.setPosition(width/2.f-randomCheckButton.getWidth()/2.f,
-                y + randomCheckButton.getHeight()/2.f);
-
-        y -= buttonBigHeight;
-
-        float cw = width / 2.f - buttonBigWidth / 2.f;
-
-        playButton.setPosition(column2 - buttonBigWidth/2.f, y);
-
-        
-        mainMenu.setPosition(column1 - buttonBigWidth / 2.f, y);
-        createAccount.setPosition(cw, y);
-        playerNote.setCenter(width / 2.f, y - 20.f);
-        sameAccountErrorMsg.setCenter(width/2.f, y - 50.f);
-        sjadamMultiplayerErrorMsg.setCenter(width/2.f, y - 70.f);
     }
 
 }

@@ -20,11 +20,11 @@ public class AssetLoader {
     public static BitmapFont font;
 
     public static BitmapFont GetDefaultFont(AssetManager assetManager) {
-        return assetManager.get("font24.ttf");
+        return GetDefaultFont(assetManager, 24);
     }
 
     public static BitmapFont GetDefaultFont(AssetManager assetManager, boolean big) {
-        return big ? assetManager.get("fontBig.ttf") : assetManager.get("font24.ttf");
+        return GetDefaultFont(assetManager, big ? 42 : 24);
     }
 
     public static BitmapFont GetDefaultFont(AssetManager assetManager, int size) {
@@ -36,7 +36,9 @@ public class AssetLoader {
             assetManager.load("font" + size + ".ttf", BitmapFont.class, sizeParams);
             assetManager.finishLoading();
         }
-        return assetManager.get("font" + size + ".ttf");
+        BitmapFont font = assetManager.get("font" + size + ".ttf");
+        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        return font;
     }
 
     public static void LoadAssets(AssetManager manager) {
@@ -103,6 +105,7 @@ public class AssetLoader {
                 "dot.png",
                 "square.png",
                 "tick.png",
+                "table.jpg"
         };
 
         for (String path : textures) {

@@ -36,23 +36,29 @@ public class MainMenuScreen extends AbstractScreen {
         Texture tex = assetManager.get("background2.png", Texture.class);
         tex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         background = new Image(tex);
+        float size = Math.min(WORLDWIDTH, WORLDHEIGHT);
+        background.setPosition(WORLDWIDTH / 2.0f - size / 2.f, WORLDHEIGHT / 2.f - size / 2.f);
         background.setSize(800, 800);
 
         stage.addActor(background);
 
+        float x = WORLDWIDTH / 2.0f - 350.f;
         playButton = new Button.Builder("Local game", assetManager)
+            .position(x, WORLDHEIGHT / 1.75f)
             .size(250, 75)
             .callback(() -> game.setScreen(new SetupScreen(game)))
             .stage(stage)
             .create();
         
         multiplayerButton = new Button.Builder("Multiplayer", assetManager)
+            .position(x, WORLDHEIGHT / 1.75f - 75)
             .size(250, 75)
             .callback(() -> game.setScreen(new MultiplayerSetupScreen(game)))
             .stage(stage)
             .create();
         
         scoreButton = new Button.Builder("Leaderboards", assetManager)
+            .position(x, WORLDHEIGHT / 1.75f - 150)
             .size(250, 75)
             .callback(() -> game.setScreen(new ScoreScreen(game)))
             .stage(stage)
@@ -61,16 +67,7 @@ public class MainMenuScreen extends AbstractScreen {
         Gdx.input.setInputProcessor(stage);
 
         Audio.themeMusic(assetManager,true);
-    }
 
-    /**
-     * Renders the screen
-     * @param delta time passed since last frame, in seconds
-     */
-    @Override
-    public void render(float delta) {
-        stage.act(delta);
-        stage.draw();
     }
 
     /**
@@ -83,23 +80,5 @@ public class MainMenuScreen extends AbstractScreen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-
-        int min = Math.min(width, height);
-        background.setSize(min,  min);
-        float x = 0;
-
-        if(width > height)
-        {
-            x = width / 2.f - min / 2.f;
-            background.setPosition(x, 0);
-        }
-        else
-        {
-            background.setPosition(0, height / 2.f - min / 2.f);
-        }
-
-        playButton.setPosition(x + 80, height/1.75f);
-        multiplayerButton.setPosition(x + 80, height/1.75f - 75);
-        scoreButton.setPosition(x + 80, height/1.75f - 150);
     }
 }

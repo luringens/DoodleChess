@@ -84,7 +84,9 @@ void main()
     
 
     // Fill rest with black
-    if(v2 >= 1.20f) gl_FragColor = vec4(0, 0, 0, 1);
+    if(v2 >= 1.20f) {
+        gl_FragColor = vec4(0.1f,0,0,0.90f + 0.05f * noiseX);
+    }
 
     if(v2 < 0.8f) {
         if(v - noiseX / 1.5f > 1.0f) gl_FragColor += vec4(0.2f, 0.2f, 0.2f, 0.4f);

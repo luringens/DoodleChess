@@ -131,6 +131,17 @@ public class Button extends Actor {
         }
 
         /**
+         * Specify the size of this button
+         * @param x The x position of the button
+         * @param y The y position of the button
+         * @return
+         */
+        public Builder position(float x, float y) {
+            b.setPosition(x, y);
+            return this;
+        }
+
+        /**
          * Return the specified button.
          *
          * @return The newly created Button

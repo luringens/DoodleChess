@@ -6,14 +6,18 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.syntax_highlighters.chess.AccountManager;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.WobbleDrawable;
@@ -24,15 +28,17 @@ import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
  */
 public class LibgdxChessGame extends Game {
 	private AssetManager assetManager;
+	private SpriteBatch background;
 	private SpriteBatch batch;
 	private ShaderProgram noiseShader;
 	private FrameBuffer paperBuffer;
-	private FrameBuffer screenBuffer;
 	private AccountManager accountManager;
+	private Texture table;
 	public Skin skin;
 
-	private final int ishW = 1920;
-	private final int ishH = 1080;
+	public static final float aspectRatio = 1.6f;
+	public static final float WORLDWIDTH = 800 * (aspectRatio > 1.0f ? aspectRatio : 1.0f);
+	public static final float WORLDHEIGHT = 800.f / (aspectRatio <= 1.0f ? aspectRatio : 1.0f);
 
 	/**
      * Game creation event, used to initialize resources
@@ -56,21 +62,19 @@ public class LibgdxChessGame extends Game {
 		skin.addRegions(atlas);
 		skin.load(Gdx.files.internal("uiskin.json"));
 		batch = new SpriteBatch();
+		background = new SpriteBatch();
 		noiseShader = new ShaderProgram(Gdx.files.internal("shaders/id.vert"), Gdx.files.internal("shaders/noise.frag"));
-		paperBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, ishW, ishH, false);
-		screenBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+		paperBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+
+		table = assetManager.get("table.jpg");
+		table.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
 		setScreen(new MainMenuScreen(this));
 	}
 
 	@Override
 	public void resize(int width, int height) {
-
 		super.resize(width, height);
-
-		screenBuffer.dispose();
-		screenBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-
 	}
 
 	/**
@@ -100,12 +104,18 @@ public class LibgdxChessGame extends Game {
 	public void render () {
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		batch.setColor(1,1,1,1);
 
 		// Draw paper background
-		batch.begin();
-		batch.draw(paperBuffer.getColorBufferTexture(), 0,0, ishW, ishH, 0, 0, ishW, ishH, false, false);
-		batch.end();
+		// TODO: Paper to actor in AbstractScreen
 
+		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		background.begin();
+		background.draw(table, 0, 0);
+		//background.draw(paperBuffer.getColorBufferTexture(), Gdx.graphics.getWidth() / 2.0f - WORLDWIDTH / 2.0f,0, WORLDWIDTH, WORLDHEIGHT);
+		background.end();
+
+		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		super.render();
 	}
 
@@ -118,7 +128,6 @@ public class LibgdxChessGame extends Game {
 	    batch.dispose();
 		noiseShader.dispose();
 	    paperBuffer.dispose();
-		screenBuffer.dispose();
 	}
 
     /**
@@ -137,14 +146,18 @@ public class LibgdxChessGame extends Game {
      */
     private void recomputeBackground()
     {
+		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		batch.setShader(noiseShader);
+		Matrix4 trans = batch.getTransformMatrix();
+		batch.setTransformMatrix(new Matrix4());
 		paperBuffer.begin();
 		batch.begin();
 		noiseShader.setUniformf("u_offset", new Vector2((float)Math.random() * 100.f, (float)Math.random() * 100.f));
-		batch.draw(paperBuffer.getColorBufferTexture(), 0, 0, ishW, ishH);
+		batch.draw(paperBuffer.getColorBufferTexture(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		batch.end();
 		paperBuffer.end();
 		batch.setShader(null);
+		batch.setTransformMatrix(trans);
 		Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
     }
 
@@ -155,5 +168,9 @@ public class LibgdxChessGame extends Game {
 	 */
 	public AccountManager getAccountManager() {
 		return accountManager;
+	}
+
+	public SpriteBatch getBatch() {
+		return batch;
 	}
 }

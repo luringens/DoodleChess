@@ -45,6 +45,7 @@ public class MultiplayerSetupScreen extends AbstractScreen {
         this.assetManager = game.getAssetManager();
 
         mainMenuButton = new Button.Builder("Main menu", assetManager)
+            .position(WORLDWIDTH / 2.0f - 250/2.f - 250 - 10, WORLDHEIGHT / 2.0f - 400.f + 25.f)
             .size(250, 75)
             .callback(() -> {
                 if (!uiLock) {
@@ -55,12 +56,14 @@ public class MultiplayerSetupScreen extends AbstractScreen {
             .create();
 
         connectButton = new Button.Builder("Connect", assetManager)
+            .position(WORLDWIDTH / 2.0f - 250/2.f, WORLDHEIGHT / 2.0f - 75.f - 40)
             .size(250, 75)
             .callback(() -> {connect();})
             .stage(stage)
             .create();
 
         hostButton = new Button.Builder("Host", assetManager)
+            .position(WORLDWIDTH / 2.0f - 250/2.f + 10.f + 250.f, WORLDHEIGHT / 2.0f - 400.f + 25.f)
             .size(250, 75)
             .callback(() -> {host();})
             .stage(stage)
@@ -80,12 +83,15 @@ public class MultiplayerSetupScreen extends AbstractScreen {
         // create text field for entering opponent to play against online
         opponentTextField = new TextField("", style);
         opponentTextField.setSize(200, 60);
+        opponentTextField.setPosition(WORLDWIDTH / 2.f - opponentTextField.getWidth() / 2.f,
+                WORLDHEIGHT / 2.f - opponentTextField.getHeight() / 2.f);
         stage.addActor(opponentTextField);
 
         // label for opponent text field
         opponentTextFieldLabel = new Text(AssetLoader.GetDefaultFont(assetManager, false));
         opponentTextFieldLabel.setText("Enter opponent:");
         opponentTextFieldLabel.setColor(Color.BLACK);
+        opponentTextFieldLabel.setCenter(WORLDWIDTH / 2.f, WORLDHEIGHT / 2.f + 40);
         stage.addActor(opponentTextFieldLabel);
         
         statusLabel = new Text(AssetLoader.GetDefaultFont(assetManager, false));
@@ -194,33 +200,12 @@ public class MultiplayerSetupScreen extends AbstractScreen {
         if (color != null && service != null) {
             nextScreen();
         } else {
-            stage.act(delta);
-            stage.draw();
+            super.render(delta);
         }
     }
 
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-
-        float xCentre = width/2.f;
-        float yCentre = height/2.f;
-
-        float padding = 10;
-        float buttonw = 250;
-        float xButtonCentre = xCentre - buttonw / 2.f;
-        
-        // position "return to main menu" button next to "connect" button
-        mainMenuButton.setPosition(xButtonCentre - buttonw - padding,
-            height / 2.f - 400.f + 25.f);
-        hostButton.setPosition(xButtonCentre + padding + buttonw, yCentre - 400.f + 25.f);
-        connectButton.setPosition(xButtonCentre, yCentre - connectButton.getHeight() - 20);
-        
-        // position text field label above text field in the center of the screen
-        statusLabel.setCenter(xCentre, yCentre + 120);
-        opponentTextFieldLabel.setPosition(xCentre - opponentTextFieldLabel.getWidth()/2.f,
-                yCentre + opponentTextFieldLabel.getHeight()/2.f + 40);
-        opponentTextField.setPosition(xCentre - opponentTextField.getWidth()/2.f,
-                yCentre - opponentTextField.getHeight()/2.f);
     }
 }

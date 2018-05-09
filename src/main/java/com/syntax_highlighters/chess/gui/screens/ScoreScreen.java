@@ -32,6 +32,7 @@ public class ScoreScreen extends AbstractScreen {
 
         title = new Text(AssetLoader.GetDefaultFont(game.getAssetManager(), true));
         title.setText("Leaderboard:");
+        title.setCenter(WORLDWIDTH / 2.f, WORLDHEIGHT / 2.f + 400.f - 50.f);
         title.setColor(0,0,0,1);
 
         stage.addActor(title);
@@ -91,6 +92,9 @@ public class ScoreScreen extends AbstractScreen {
             scoreList.add(accWins).width(100).center();
             scoreList.add(accLosses).width(100).center();
         }
+        float size = Math.min(WORLDWIDTH, WORLDHEIGHT) - 200.f;
+        scoreList.setSize(size, size);
+        scoreList.setPosition(WORLDWIDTH / 2.f - scoreList.getWidth() / 2.f, WORLDHEIGHT / 2.f - scoreList.getHeight() / 2.f);
         stage.addActor(scoreList);
 
         mainMenuButton = new Button("Main menu", game.getAssetManager());
@@ -102,22 +106,12 @@ public class ScoreScreen extends AbstractScreen {
             }
         });
         mainMenuButton.setSize(200, 75);
+        mainMenuButton.setPosition(WORLDWIDTH / 2.f - mainMenuButton.getWidth() / 2.f, WORLDHEIGHT / 2.f - 400f + 25.f);
         stage.addActor(mainMenuButton);
 
         Gdx.input.setInputProcessor(stage);
-
-
     }
 
-    /***
-     * Renders the screen
-     * @param delta time passed since last frame, in seconds
-     */
-    @Override
-    public void render(float delta) {
-        stage.act(delta);
-        stage.draw();
-    }
 
     /***
      * Resize event.
@@ -129,11 +123,5 @@ public class ScoreScreen extends AbstractScreen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-        title.setCenter(width / 2.f, height/2.f + 400.f - 50.f);
-
-        scoreList.setSize(850, 600);
-        scoreList.setPosition(width/2.f - scoreList.getWidth() / 2.f, height / 2.f - scoreList.getHeight()/2.f);
-
-        mainMenuButton.setPosition(width / 2.f - mainMenuButton.getWidth() / 2.f, height / 2.f - 400.f + 25.f);
     }
 }
