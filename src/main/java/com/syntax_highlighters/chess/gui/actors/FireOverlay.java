@@ -108,8 +108,6 @@ public class FireOverlay extends Actor {
         for(Circle k : splashes){
             Vector2 ballPos = new Vector2(x - k.x, y - k.y);
             v += k.radius * k.radius / (ballPos.x * ballPos.x + ballPos.y * ballPos.y);
-            //if(k.contains(x,y))
-            //    return true;
         }
 
         return v > 1.2f;
@@ -129,7 +127,7 @@ public class FireOverlay extends Actor {
         anim.setDuration(0.3f);
         anim.setInterpolation(Interpolation.exp10Out);
         CircleAnimation anim2 = new CircleAnimation(splashcircle, 0.0f);
-        anim2.setDuration(10.0f);
+        anim2.setDuration(BurningChess.SPLASHTIME);
         anim2.setInterpolation(Interpolation.linear);
 
         RunnableAction end = new RunnableAction();
@@ -142,8 +140,8 @@ public class FireOverlay extends Actor {
 
     @Override
     public void act(float delta) {
-        //if(game.isGameOver())
-        //    return;
+        if(game.isGameOver())
+            return;
         super.act(delta);
         game.fireTimer(delta);
         float w = Gdx.graphics.getWidth();
@@ -203,10 +201,14 @@ public class FireOverlay extends Actor {
         fireProgram.setUniformi("u_safePosCount", i);
 
         batch.draw(noise.getColorBufferTexture(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, true);
+
+
         batch.setTransformMatrix(transform );
         batch.setShader(shader);
+    }
+
+    void DrawDebug(Batch batch) {
         this.renderer.setProjectionMatrix(batch.getProjectionMatrix());
-        if(!fireProgram.isCompiled()) System.out.println(fireProgram.getLog());
         //this.renderer.setTransformMatrix(batch.getTransformMatrix());
         batch.end();
         Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -216,16 +218,13 @@ public class FireOverlay extends Actor {
         renderer.ellipse(whiteBurn.x - whiteBurn.width / 2.0f, whiteBurn.y - whiteBurn.height / 2.0f, whiteBurn.width, whiteBurn.height);
         renderer.ellipse(blackBurn.x - blackBurn.width / 2.0f, blackBurn.y - blackBurn.height / 2.0f, blackBurn.width, blackBurn.height );
 
-        /*renderer.setColor(0,1,0,0.25f);
-        for(Circle c : splashes)
-            renderer.circle(c.x, c.y, c.radius);*/
         renderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
         batch.begin();
 
         batch.setShader(metaballProgram);
         batch.setTransformMatrix(new Matrix4());
-        i = 0;
+        int i = 0;
         for(Circle c : splashes) {
             float nX = c.x / Gdx.graphics.getWidth();
             float nY = c.y / Gdx.graphics.getHeight();
@@ -236,8 +235,7 @@ public class FireOverlay extends Actor {
         }
         metaballProgram.setUniformi("u_safePosCount", i);
         batch.draw(noise.getColorBufferTexture(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, true);
-        batch.setTransformMatrix(transform );
-        batch.setShader(shader);
+
     }
 
     private class CircleAnimation extends TemporalAction {
