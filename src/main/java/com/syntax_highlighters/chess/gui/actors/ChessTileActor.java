@@ -103,7 +103,7 @@ public class ChessTileActor extends Actor {
         // Draw the black overlay
         if(isBlack)
         {
-            batch.setColor(0.4f, 0.4f, 0.4f, 0.75f);
+            batch.setColor(0.4f, 0.4f, 0.4f, 0.5f);
             batch.draw(assetManager.get("tile_black.png", Texture.class), getX(), getY(), getWidth(), getHeight());
         }
     }
