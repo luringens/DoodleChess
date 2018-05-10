@@ -92,6 +92,7 @@ public class SetupScreen extends AbstractScreen {
         this.assetManager = game.getAssetManager();
         
         title = createText("Setup game", true, Color.BLACK);
+        title.setCenter(WORLDWIDTH/2,WORLDHEIGHT-title.getHeight()-10);
         playerNote = createText("Note: Using the names Player 1 or Player 2 will not count to any score", false, Color.BLACK);
         sameAccountErrorMsg = createText("Error: Cannot use same account on both sides", false, Color.RED);
         sjadamMultiplayerErrorMsg = createText("Error: this mode only supports human vs. human gameplay", false, Color.RED);
