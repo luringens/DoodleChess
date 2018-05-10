@@ -21,7 +21,7 @@ public abstract class AbstractScreen implements Screen {
     protected final Stage stage;
     protected final Image mute;
     private Boolean paused = false;
-    private final static int N_DOODLES_PER_SCREEN = 10;
+    private final static int N_DOODLES_PER_SCREEN = 7;
     private final static String[] DOODLES = new String[]{
         "Doodle/eye.png",
         "Doodle/chessstars.png",
@@ -107,9 +107,8 @@ public abstract class AbstractScreen implements Screen {
             // select a random doodle
             int index = (int)(Math.random()*DOODLES.length);
             Texture doodle = assetManager.get(DOODLES[index], Texture.class);
-            float angle = (float)(Math.PI * i / N_DOODLES_PER_SCREEN);
+            float angle = (float)(Math.PI / 2.f * i / (N_DOODLES_PER_SCREEN));
             if(angle > Math.PI / 4.f) angle += Math.PI / 2.f;
-            if(angle > Math.PI / 4.f + Math.PI) angle += Math.PI / 2.f;
             stage.addActor(new DoodleActor(doodle, angle));
         }
     }
