@@ -15,12 +15,12 @@ import com.syntax_highlighters.chess.chesspiece.IChessPiece;
  * what they're promoted to.
  */
 public class PromotionMove extends Move {
-    private transient IChessPiece promoteTo;
-    private transient IChessPiece oldPiece;
+    private transient IChessPiece promoteTo = null;
+    private transient IChessPiece oldPiece = null;
 
     // For serialization purposes:
-    private String promoteToStringrep;
-    private Color color;
+    private String promoteToStringrep = null;
+    private Color color = null;
 
     private PromotionMove() {}
 
@@ -92,8 +92,8 @@ public class PromotionMove extends Move {
         if (!(other instanceof PromotionMove)) return false;
         PromotionMove o = (PromotionMove) other;
         return super.equals(o)
-            && Objects.equals(o.promoteTo, this.promoteTo)
-            && Objects.equals(o.oldPiece, this.oldPiece);
+            && Objects.equals(o.promoteToStringrep, this.promoteToStringrep)
+            && this.color.isWhite() == o.color.isWhite();
     }
 
     /**
@@ -106,7 +106,7 @@ public class PromotionMove extends Move {
      */
     @Override
     public String toString() {
-        return super.toString() + promoteTo.toChessNotation();
+        return super.toString() + promoteToStringrep;
     }
 
     /**

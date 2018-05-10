@@ -1,24 +1,20 @@
 package com.syntax_highlighters.chess.network;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-import com.syntax_highlighters.chess.game.AbstractGame;
 import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.game.AbstractGame;
 import com.syntax_highlighters.chess.move.Move;
 
 public abstract class AbstractNetworkService implements INetworkService {
     static final int HOST_PORT = 6666;
     Socket socket;
-    BufferedReader inputReader;
-    DataOutputStream outputStream;
+    ObjectInputStream inputStream;
+    ObjectOutputStream outputStream;
     ConnectionStatus status = ConnectionStatus.NotConnected;
     private String lastError = null;
 
@@ -26,17 +22,7 @@ public abstract class AbstractNetworkService implements INetworkService {
 	@Override
 	public void SendMove(Move move) {
         try {
-            // Serialize move into array
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            oos.writeObject(move);
-            byte[] byteArray = baos.toByteArray();
-            oos.close();
-            baos.close();
-            
-            // Send it to the other client.
-            outputStream.write(byteArray);
-            outputStream.writeBytes("\n");
+            outputStream.writeObject(move);
         } catch (IOException ex) {
             lastError = "Failed to send move: " + ex.getMessage();
             ex.printStackTrace();
@@ -54,21 +40,7 @@ public abstract class AbstractNetworkService implements INetworkService {
 	public Move ReceiveMove(Board board, int timeout) {
         try {
             socket.setSoTimeout(timeout);
-            String stringrep = inputReader.readLine();
-            if (stringrep.equals("BYE")) {
-                status = ConnectionStatus.OpponentLeft;
-                return null;
-            }
-            byte[] bytes = stringrep.getBytes();
-
-            // Deserialize
-            ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-            ObjectInputStream in = new ObjectInputStream(bis);
-            Move move = (Move) in.readObject();
-            in.close();
-            bis.close();
-            
-            return move;
+            return (Move) inputStream.readObject();
         }
         catch (ClassNotFoundException ex) {
             lastError = "Failed to deserialize - other client "
@@ -93,13 +65,9 @@ public abstract class AbstractNetworkService implements INetworkService {
 	@Override
 	public void Disconnect() {
         status = ConnectionStatus.Closed;
-        try {
-            if (outputStream != null)
-                outputStream.writeBytes("BYE\n");
-        } catch (Exception ex) { /* Doesn't matter if this fails. */ }
 
         try {
-            if (inputReader != null) inputReader.close();
+            if (inputStream != null) inputStream.close();
         } catch (IOException ex) {
             System.out.print("Failed to close inputreader: " + ex.getMessage());
         }
