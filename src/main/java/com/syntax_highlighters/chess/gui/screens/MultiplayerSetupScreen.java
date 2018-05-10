@@ -180,8 +180,8 @@ public class MultiplayerSetupScreen extends AbstractScreen {
 
     private void setStatusLabel(String message) {
         statusLabel.setText(message);
-        float y = stage.getWidth()/2.f - statusLabel.getWidth()/2.f;
-        float x = stage.getHeight()/2.f - 130;
+        float x = stage.getWidth()/2.f - statusLabel.getWidth()/2.f;
+        float y = stage.getHeight()/2.f - 130;
         statusLabel.setPosition(x, y);
     }
 
