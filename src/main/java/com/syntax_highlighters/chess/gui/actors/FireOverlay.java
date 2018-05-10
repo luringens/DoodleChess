@@ -160,7 +160,6 @@ public class FireOverlay extends Actor {
         if(piece instanceof ChessPieceKnight) {
             splashSize = tileSize * 1.5f;
         }
->>>>>>> aeed898964acbbc371980b06749b9d3af3626418
 
         CircleAnimation anim = new CircleAnimation(splashcircle, splashSize);
         anim.setDuration(0.3f);
