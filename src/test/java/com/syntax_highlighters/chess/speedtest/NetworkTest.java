@@ -3,10 +3,17 @@ package com.syntax_highlighters.chess.speedtest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.move.Move;
+import com.syntax_highlighters.chess.Color;
 import com.syntax_highlighters.chess.Position;
+import com.syntax_highlighters.chess.chesspiece.ChessPieceKing;
+import com.syntax_highlighters.chess.chesspiece.ChessPiecePawn;
+import com.syntax_highlighters.chess.chesspiece.ChessPieceQueen;
+import com.syntax_highlighters.chess.chesspiece.IChessPiece;
+import com.syntax_highlighters.chess.move.Move;
+import com.syntax_highlighters.chess.move.PromotionMove;
 import com.syntax_highlighters.chess.network.Client;
 import com.syntax_highlighters.chess.network.ConnectionStatus;
 import com.syntax_highlighters.chess.network.Host;
@@ -76,6 +83,27 @@ class NetworkTest {
         // Receive a move
         Board clientBoard = new Board();
         clientBoard.setupNewGame();
+        Move receiveMove = client.ReceiveMove(clientBoard, 1000);
+
+        assertEquals(sendMove, receiveMove);
+    }
+    
+    /**
+     * Assert that the game can (de)serialize moves between instances.
+     */
+    @Test
+    void canTransferPromotionMovesToSelf() {
+        // Send a move
+        IChessPiece kb = new ChessPieceKing(new Position(1, 1), Color.BLACK);
+        IChessPiece kw = new ChessPieceKing(new Position(8, 1), Color.WHITE);
+        IChessPiece pw = new ChessPiecePawn(new Position(4, 7), Color.WHITE);
+        Board hostBoard = new Board(Arrays.asList(kb, kw, pw));
+        Board clientBoard = hostBoard.copy();
+        
+        Move sendMove = new PromotionMove(new Position(4, 7), new Position(4, 8),       hostBoard, new ChessPieceQueen(new Position(4, 8), Color.WHITE));
+        host.SendMove(sendMove);
+
+        // Receive a move
         Move receiveMove = client.ReceiveMove(clientBoard, 1000);
 
         assertEquals(sendMove, receiveMove);
