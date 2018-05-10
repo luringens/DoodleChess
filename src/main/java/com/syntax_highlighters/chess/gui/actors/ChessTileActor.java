@@ -79,7 +79,7 @@ public class ChessTileActor extends Actor {
 
         // If this piece is a potential target for the selected piece, draw with a golden tint.
         ChessPieceActor selected = boardGroup.getSelected();
-        if(selected != null)
+        if(selected != null && selected.getPiece()!=null && this.boardGroup.getGame().getPieceAtPosition(selected.getPiece().getPosition())!=null)
         {
             List<Move> moves = boardGroup.getGame().allPossibleMoves(selected.getPiece());
             if(moves.stream().anyMatch(x->x.getPosition().equals(position)))
