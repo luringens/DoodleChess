@@ -107,6 +107,7 @@ public class Move implements Serializable {
         Position p = hasDoneMove ? newPos : oldPos;
         IChessPiece piece = board.getAtPosition(p);
         if (piece == null) {
+
             System.out.println(this + "\n" + board + "\n----------");
             throw new RuntimeException("PIECE NULL");
         }
