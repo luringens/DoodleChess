@@ -14,13 +14,9 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.syntax_highlighters.chess.AccountManager;
-import com.syntax_highlighters.chess.gui.AssetLoader;
-import com.syntax_highlighters.chess.gui.WobbleDrawable;
 import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
 
 /**

@@ -1,8 +1,8 @@
 package com.syntax_highlighters.chess.gui.actors;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class ConfirmationOverlay extends AbstractOverlay {
     private Button confirmButton;

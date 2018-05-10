@@ -1,7 +1,9 @@
 package com.syntax_highlighters.chess.gui.actors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,7 +14,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Ellipse;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
@@ -20,15 +26,15 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.BurningChess;
-import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.Position;
-import com.syntax_highlighters.chess.entities.*;
+import com.syntax_highlighters.chess.entities.ChessPieceBishop;
+import com.syntax_highlighters.chess.entities.ChessPieceKnight;
+import com.syntax_highlighters.chess.entities.ChessPiecePawn;
+import com.syntax_highlighters.chess.entities.ChessPieceQueen;
+import com.syntax_highlighters.chess.entities.ChessPieceRook;
+import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.gui.Audio;
 import com.syntax_highlighters.chess.gui.LibgdxChessGame;
-import com.syntax_highlighters.chess.gui.screens.GameScreen;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FireOverlay extends Actor {
 

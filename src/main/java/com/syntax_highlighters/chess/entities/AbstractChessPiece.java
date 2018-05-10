@@ -1,12 +1,12 @@
 package com.syntax_highlighters.chess.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
-
-import java.util.stream.Collectors;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Abstract class that implements common chess piece functionality.

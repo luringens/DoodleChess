@@ -1,18 +1,18 @@
 package com.syntax_highlighters.chess.general;
 
-import com.badlogic.gdx.Game;
-import com.syntax_highlighters.chess.BurningChess;
-import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.Position;
-import com.syntax_highlighters.chess.entities.ChessPiecePawn;
-import com.syntax_highlighters.chess.entities.Color;
-import com.syntax_highlighters.chess.entities.IChessPiece;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.BurningChess;
+import com.syntax_highlighters.chess.Position;
+import com.syntax_highlighters.chess.entities.ChessPiecePawn;
+import com.syntax_highlighters.chess.entities.Color;
+import com.syntax_highlighters.chess.entities.IChessPiece;
+
+import org.junit.jupiter.api.Test;
 
 public class burningchessTest {
     BurningChess burning;

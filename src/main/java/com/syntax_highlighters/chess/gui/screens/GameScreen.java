@@ -1,5 +1,7 @@
 package com.syntax_highlighters.chess.gui.screens;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -13,26 +15,28 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.syntax_highlighters.chess.*;
-import com.syntax_highlighters.chess.gui.LibgdxChessGame;
+import com.syntax_highlighters.chess.AbstractGame;
+import com.syntax_highlighters.chess.Account;
+import com.syntax_highlighters.chess.BurningChess;
+import com.syntax_highlighters.chess.ChessGame;
+import com.syntax_highlighters.chess.Move;
+import com.syntax_highlighters.chess.PlayerAttributes;
+import com.syntax_highlighters.chess.PromotionMove;
+import com.syntax_highlighters.chess.SjadamGame;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.entities.IAiPlayer;
-import com.syntax_highlighters.chess.entities.MiniMaxAIPlayer;
 import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.entities.MiniMaxAIPlayer;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.Audio;
+import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.gui.WobbleDrawable;
-import com.syntax_highlighters.chess.gui.actors.*;
 import com.syntax_highlighters.chess.gui.actors.BoardGroup;
 import com.syntax_highlighters.chess.gui.actors.Button;
-import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
 import com.syntax_highlighters.chess.gui.actors.ConfirmationOverlay;
+import com.syntax_highlighters.chess.gui.actors.GameOverOverlay;
 import com.syntax_highlighters.chess.gui.actors.Text;
-import com.syntax_highlighters.chess.BurningChess;
-import com.syntax_highlighters.chess.SjadamGame;
-
-import java.util.ArrayList;
 
 /**
  * Game main screen.

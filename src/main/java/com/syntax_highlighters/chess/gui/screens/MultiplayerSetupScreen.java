@@ -1,5 +1,8 @@
 package com.syntax_highlighters.chess.gui.screens;
 
+import static com.syntax_highlighters.chess.entities.Color.BLACK;
+import static com.syntax_highlighters.chess.entities.Color.WHITE;
+
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.Collections;
@@ -8,22 +11,22 @@ import java.util.TimerTask;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.syntax_highlighters.chess.gui.AssetLoader;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.syntax_highlighters.chess.NetworkChessGame;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
-import com.syntax_highlighters.chess.gui.WobbleDrawable;
+import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.LibgdxChessGame;
+import com.syntax_highlighters.chess.gui.WobbleDrawable;
 import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.Text;
-import com.syntax_highlighters.chess.network.*;
-import com.badlogic.gdx.graphics.Color;
-
-import static com.syntax_highlighters.chess.entities.Color.WHITE;
-import static com.syntax_highlighters.chess.entities.Color.BLACK;
+import com.syntax_highlighters.chess.network.AbstractNetworkService;
+import com.syntax_highlighters.chess.network.Client;
+import com.syntax_highlighters.chess.network.ConnectionStatus;
+import com.syntax_highlighters.chess.network.Host;
 
 public class MultiplayerSetupScreen extends AbstractScreen {
     private AssetManager assetManager;

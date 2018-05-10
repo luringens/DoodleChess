@@ -1,14 +1,15 @@
 package com.syntax_highlighters.chess;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import com.syntax_highlighters.chess.entities.IChessPiece;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import com.syntax_highlighters.chess.entities.ChessPieceQueen;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
-import java.util.Map;
-import java.util.HashMap;
 import com.syntax_highlighters.chess.entities.Color;
+import com.syntax_highlighters.chess.entities.IChessPiece;
 
 /**
  * Custom game mode with sjadam rules.

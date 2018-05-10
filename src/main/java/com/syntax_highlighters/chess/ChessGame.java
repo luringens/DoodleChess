@@ -1,10 +1,17 @@
 package com.syntax_highlighters.chess;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
-import com.syntax_highlighters.chess.entities.*;
+import com.syntax_highlighters.chess.entities.AiDifficulty;
+import com.syntax_highlighters.chess.entities.ChessPieceBishop;
+import com.syntax_highlighters.chess.entities.ChessPieceKing;
+import com.syntax_highlighters.chess.entities.ChessPieceKnight;
+import com.syntax_highlighters.chess.entities.Color;
+import com.syntax_highlighters.chess.entities.IAiPlayer;
+import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.entities.MiniMaxAIPlayer;
 
 /**
  * Game class keeping track of the game state.

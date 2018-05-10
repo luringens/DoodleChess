@@ -1,13 +1,23 @@
 package com.syntax_highlighters.chess.general;
 
-import com.syntax_highlighters.chess.*;
-import com.syntax_highlighters.chess.entities.*;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.Move;
+import com.syntax_highlighters.chess.Position;
+import com.syntax_highlighters.chess.entities.ChessPieceBishop;
+import com.syntax_highlighters.chess.entities.ChessPieceKing;
+import com.syntax_highlighters.chess.entities.ChessPieceKnight;
+import com.syntax_highlighters.chess.entities.ChessPiecePawn;
+import com.syntax_highlighters.chess.entities.ChessPieceQueen;
+import com.syntax_highlighters.chess.entities.ChessPieceRook;
+import com.syntax_highlighters.chess.entities.Color;
+import com.syntax_highlighters.chess.entities.IChessPiece;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests asserting that the number of moves available to the different pieces is

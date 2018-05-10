@@ -1,29 +1,34 @@
 package com.syntax_highlighters.chess.gui.screens;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Stream;
-import java.util.stream.Collectors;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.graphics.Color;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
-import com.syntax_highlighters.chess.SjadamGame;
-import com.syntax_highlighters.chess.gui.LibgdxChessGame;
+import com.syntax_highlighters.chess.PlayerAttributes;
 import com.syntax_highlighters.chess.entities.AiDifficulty;
 import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
-import com.syntax_highlighters.chess.gui.actors.*;
-import com.syntax_highlighters.chess.PlayerAttributes;
-
-import java.util.ArrayList;
+import com.syntax_highlighters.chess.gui.LibgdxChessGame;
+import com.syntax_highlighters.chess.gui.actors.AccountOverlay;
+import com.syntax_highlighters.chess.gui.actors.Button;
+import com.syntax_highlighters.chess.gui.actors.CheckButton;
+import com.syntax_highlighters.chess.gui.actors.ChessPieceActor;
+import com.syntax_highlighters.chess.gui.actors.PencilSelector;
+import com.syntax_highlighters.chess.gui.actors.RadioGroup;
+import com.syntax_highlighters.chess.gui.actors.Text;
 
 /**
  * Screen allowing for setup options of the game of chess to be played.

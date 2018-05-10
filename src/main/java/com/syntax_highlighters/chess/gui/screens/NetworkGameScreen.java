@@ -6,7 +6,6 @@ import com.syntax_highlighters.chess.NetworkChessGame;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.gui.actors.Text;
-import com.syntax_highlighters.chess.network.ConnectionStatus;
 
 /** Game screen with additional network UI elements. */
 public class NetworkGameScreen extends GameScreen {

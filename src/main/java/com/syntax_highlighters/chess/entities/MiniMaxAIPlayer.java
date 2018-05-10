@@ -1,8 +1,12 @@
 package com.syntax_highlighters.chess.entities;
-import com.syntax_highlighters.chess.*;
-
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
+
+import com.syntax_highlighters.chess.AbstractGame;
+import com.syntax_highlighters.chess.Move;
 
 /**
  * A chess AI trying to find the best move by using a minimaxing algorithm.

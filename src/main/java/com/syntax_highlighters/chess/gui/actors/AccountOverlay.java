@@ -13,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.syntax_highlighters.chess.Account;
 import com.syntax_highlighters.chess.AccountManager;
-import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.gui.AssetLoader;
+import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.gui.WobbleDrawable;
 import com.syntax_highlighters.chess.gui.screens.SetupScreen;
 

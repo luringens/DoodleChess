@@ -1,19 +1,19 @@
 package com.syntax_highlighters.chess.gui.screens;
 
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.syntax_highlighters.chess.Account;
-import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.gui.AbstractScreen;
 import com.syntax_highlighters.chess.gui.AssetLoader;
+import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.gui.WobbleDrawable;
 import com.syntax_highlighters.chess.gui.actors.Button;
 import com.syntax_highlighters.chess.gui.actors.Text;
-
-import java.util.List;
 
 /**
  * Screen displaying the scores of the top ten players accounts in the accounts

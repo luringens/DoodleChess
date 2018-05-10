@@ -1,10 +1,10 @@
 package com.syntax_highlighters.chess.entities;
 
-import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.Position;
-import com.syntax_highlighters.chess.Move;
-
 import java.util.List;
+
+import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.Move;
+import com.syntax_highlighters.chess.Position;
 
 /**
  * Common interface for all chess pieces.

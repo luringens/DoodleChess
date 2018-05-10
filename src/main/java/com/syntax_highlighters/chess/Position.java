@@ -1,10 +1,10 @@
 package com.syntax_highlighters.chess;
 
-import java.util.Objects; // Objects.hash
-import java.util.Arrays; // asList
-import java.util.List;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays; // asList
+import java.util.List;
+import java.util.Objects; // Objects.hash
 
 /**
  * Position on a grid (x, y).

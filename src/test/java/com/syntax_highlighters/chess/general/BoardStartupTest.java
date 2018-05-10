@@ -1,15 +1,22 @@
 package com.syntax_highlighters.chess.general;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
-import com.syntax_highlighters.chess.entities.*;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
+import com.syntax_highlighters.chess.entities.ChessPieceBishop;
+import com.syntax_highlighters.chess.entities.ChessPieceKing;
+import com.syntax_highlighters.chess.entities.ChessPieceKnight;
+import com.syntax_highlighters.chess.entities.ChessPiecePawn;
+import com.syntax_highlighters.chess.entities.ChessPieceQueen;
+import com.syntax_highlighters.chess.entities.ChessPieceRook;
+import com.syntax_highlighters.chess.entities.IChessPiece;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for the initial board setup, checks that the preconditions for a new

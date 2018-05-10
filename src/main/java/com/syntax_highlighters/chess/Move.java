@@ -1,12 +1,12 @@
 package com.syntax_highlighters.chess;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import com.syntax_highlighters.chess.entities.Color;
 import com.syntax_highlighters.chess.entities.IChessPiece;
-
-import java.io.Serializable;
-import java.util.Objects;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Stores info about a move in the game.

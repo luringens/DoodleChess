@@ -1,11 +1,11 @@
 package com.syntax_highlighters.chess.network;
 
-import java.net.InetAddress;
-import java.net.Socket;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.Socket;
 
 /**
  * Extends AbstractNetworkService as a client.

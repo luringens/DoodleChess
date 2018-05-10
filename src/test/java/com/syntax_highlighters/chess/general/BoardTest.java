@@ -1,18 +1,26 @@
 package com.syntax_highlighters.chess.general;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.Position;
-import com.syntax_highlighters.chess.entities.*;
+import com.syntax_highlighters.chess.entities.ChessPieceBishop;
+import com.syntax_highlighters.chess.entities.ChessPieceKing;
+import com.syntax_highlighters.chess.entities.ChessPieceKnight;
 import com.syntax_highlighters.chess.entities.Color;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 
 import org.junit.jupiter.api.Test;
-import java.util.List;
-import java.util.ArrayList;
-
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test that the public API of the Board class works correctly.

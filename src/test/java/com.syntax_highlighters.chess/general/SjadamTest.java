@@ -1,17 +1,22 @@
 package com.syntax_highlighters.chess.general;
 
-import com.syntax_highlighters.chess.SjadamGame;
-import com.syntax_highlighters.chess.entities.IChessPiece;
-import com.syntax_highlighters.chess.entities.Color;
-import com.syntax_highlighters.chess.Move;
-import com.syntax_highlighters.chess.Position;
-import java.util.stream.Collectors;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Test;
+import com.syntax_highlighters.chess.Move;
+import com.syntax_highlighters.chess.Position;
+import com.syntax_highlighters.chess.SjadamGame;
+import com.syntax_highlighters.chess.entities.Color;
+import com.syntax_highlighters.chess.entities.IChessPiece;
+
 import org.junit.jupiter.api.BeforeEach;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test that the SjadamGame class behaves as expected when the player attempts

@@ -2,10 +2,10 @@ package com.syntax_highlighters.chess.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.*;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.syntax_highlighters.chess.gui.actors.DoodleActor;
 import com.syntax_highlighters.chess.gui.actors.PaperBackground;
 

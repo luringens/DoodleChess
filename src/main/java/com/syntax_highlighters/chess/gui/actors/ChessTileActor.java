@@ -1,5 +1,7 @@
 package com.syntax_highlighters.chess.gui.actors;
 
+import java.util.List;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,8 +11,6 @@ import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Move;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.IChessPiece;
-
-import java.util.List;
 
 /**
  * Actor representing one chess tile

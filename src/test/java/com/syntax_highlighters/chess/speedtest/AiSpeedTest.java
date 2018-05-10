@@ -1,10 +1,11 @@
 package com.syntax_highlighters.chess.speedtest;
 
-import com.syntax_highlighters.chess.ChessGame;
-import com.syntax_highlighters.chess.entities.*;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.syntax_highlighters.chess.ChessGame;
+import com.syntax_highlighters.chess.entities.AiDifficulty;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests pertaining to the behavior of the AI.

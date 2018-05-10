@@ -1,12 +1,12 @@
 package com.syntax_highlighters.chess.gui.actors;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 
 public class PopupSelectionMenu extends Actor {

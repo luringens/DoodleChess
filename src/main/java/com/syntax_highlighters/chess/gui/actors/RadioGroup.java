@@ -1,15 +1,13 @@
 package com.syntax_highlighters.chess.gui.actors;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import java.util.List;
-import java.util.ArrayList;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class RadioGroup extends Group implements ISelectableGroup {
     List<RadioButton> buttons = new ArrayList<>();

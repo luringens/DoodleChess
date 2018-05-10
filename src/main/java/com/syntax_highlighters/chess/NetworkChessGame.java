@@ -3,7 +3,8 @@ package com.syntax_highlighters.chess;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.syntax_highlighters.chess.entities.*;
+import com.syntax_highlighters.chess.entities.Color;
+import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.network.AbstractNetworkService;
 import com.syntax_highlighters.chess.network.ConnectionStatus;
 

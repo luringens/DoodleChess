@@ -1,5 +1,8 @@
 package com.syntax_highlighters.chess.gui;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -12,9 +15,6 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class WobbleDrawable extends BaseDrawable {
     private Texture texture;

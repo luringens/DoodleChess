@@ -1,11 +1,11 @@
 package com.syntax_highlighters.chess.gui.actors;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.WobbleDrawable;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.Batch;
 
 public abstract class AbstractSelectableButton extends AbstractSelectable {
     protected Texture boxTexture;

@@ -1,14 +1,26 @@
 package com.syntax_highlighters.chess.general;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.Position;
-import com.syntax_highlighters.chess.entities.*;
+import com.syntax_highlighters.chess.entities.AiDifficulty;
+import com.syntax_highlighters.chess.entities.ChessPieceBishop;
+import com.syntax_highlighters.chess.entities.ChessPieceKing;
+import com.syntax_highlighters.chess.entities.ChessPieceKnight;
+import com.syntax_highlighters.chess.entities.ChessPiecePawn;
+import com.syntax_highlighters.chess.entities.ChessPieceQueen;
+import com.syntax_highlighters.chess.entities.ChessPieceRook;
+import com.syntax_highlighters.chess.entities.Color;
+import com.syntax_highlighters.chess.entities.IAiPlayer;
+import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.entities.MiniMaxAIPlayer;
+
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
 
 /**
  * Tests pertaining to the behavior of the AI.

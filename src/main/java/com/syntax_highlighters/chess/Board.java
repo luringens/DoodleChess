@@ -1,12 +1,20 @@
 package com.syntax_highlighters.chess;
 
-import com.syntax_highlighters.chess.entities.*;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
+
+import com.syntax_highlighters.chess.entities.AbstractChessPiece;
+import com.syntax_highlighters.chess.entities.ChessPieceBishop;
+import com.syntax_highlighters.chess.entities.ChessPieceKing;
+import com.syntax_highlighters.chess.entities.ChessPieceKnight;
+import com.syntax_highlighters.chess.entities.ChessPiecePawn;
+import com.syntax_highlighters.chess.entities.ChessPieceQueen;
+import com.syntax_highlighters.chess.entities.ChessPieceRook;
+import com.syntax_highlighters.chess.entities.Color;
+import com.syntax_highlighters.chess.entities.IChessPiece;
 
 /**
  * Holds the current state of the board.

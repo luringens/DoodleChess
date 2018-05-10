@@ -1,6 +1,5 @@
 package com.syntax_highlighters.chess.gui.screens;
 
-import com.syntax_highlighters.chess.AbstractGame;
 import com.syntax_highlighters.chess.PlayerAttributes;
 import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 

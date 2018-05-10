@@ -1,11 +1,11 @@
 package com.syntax_highlighters.chess.gui.actors;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.syntax_highlighters.chess.gui.WobbleDrawable;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.syntax_highlighters.chess.gui.WobbleDrawable;
 
 public class CheckButton extends AbstractSelectableButton {
     public CheckButton(AssetManager assetManager, String buttonText, Color textColor) {

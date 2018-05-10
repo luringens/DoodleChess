@@ -1,12 +1,12 @@
 package com.syntax_highlighters.chess;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import com.syntax_highlighters.chess.entities.ChessPieceRook;
+import com.syntax_highlighters.chess.entities.IChessPiece;
 
 /**
  * Special move which places the king behind the rook.

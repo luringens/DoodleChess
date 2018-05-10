@@ -1,7 +1,5 @@
 package com.syntax_highlighters.chess.network;
 
-import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -9,6 +7,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 import com.syntax_highlighters.chess.AbstractGame;
 import com.syntax_highlighters.chess.Board;

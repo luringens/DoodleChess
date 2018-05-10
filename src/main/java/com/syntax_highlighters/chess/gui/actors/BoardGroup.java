@@ -1,5 +1,8 @@
 package com.syntax_highlighters.chess.gui.actors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,14 +10,20 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.syntax_highlighters.chess.*;
+import com.syntax_highlighters.chess.AbstractGame;
+import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.BurningChess;
+import com.syntax_highlighters.chess.Move;
+import com.syntax_highlighters.chess.Position;
+import com.syntax_highlighters.chess.PromotionMove;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.gui.AssetLoader;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * An actor representing the board in the chess game
