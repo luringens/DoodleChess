@@ -1,12 +1,11 @@
 package com.syntax_highlighters.chess.general;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.Move;
-import com.syntax_highlighters.chess.entities.AiDifficulty;
-
+import com.syntax_highlighters.chess.entities.*;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Tests pertaining to the Async Player Wrapper.
