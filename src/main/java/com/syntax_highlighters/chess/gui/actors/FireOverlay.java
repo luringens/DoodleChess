@@ -186,9 +186,9 @@ public class FireOverlay extends Actor {
         float ex = (whiteBurn.x) / gxW;
         float ey = (whiteBurn.y) / gxH;
         fireProgram.setUniformf("burn", ex, ey, whiteBurn.width / 2.0f / gxW, whiteBurn.height / 2.0f/ gxH);
-        ex = (blackBurn.x - blackBurn.width / 8.0f) / gxW;
-        ey = (blackBurn.y - blackBurn.height / 8.0f) / gxH;
-        fireProgram.setUniformf("burn2", new Color(ex, ey, blackBurn.width / 4.0f / gxW, blackBurn.height / 4.0f / gxH));
+        ex = (blackBurn.x) / gxW;
+        ey = (blackBurn.y) / gxH;
+        fireProgram.setUniformf("burn2", new Color(ex, ey, blackBurn.width / 2.0f / gxW, blackBurn.height / 2.0f / gxH));
 
         int i = 0;
         for(Circle c : splashes) {
@@ -203,9 +203,9 @@ public class FireOverlay extends Actor {
 
         batch.draw(noise.getColorBufferTexture(), 0, 0, LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT, 0, 0, (int) LibgdxChessGame.WORLDWIDTH, (int) LibgdxChessGame.WORLDHEIGHT, false, true);
 
-        /*batch.setTransformMatrix(transform );
+        batch.setTransformMatrix(transform );
         batch.setShader(shader);
-        DrawDebug(batch);*/
+        DrawDebug(batch);
 
         batch.setTransformMatrix(transform );
         batch.setShader(shader);
