@@ -218,7 +218,7 @@ public class FireOverlay extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        Matrix4 transform = batch.getTransformMatrix();
+        Matrix4 transform = new Matrix4(batch.getTransformMatrix());
         ShaderProgram shader= batch.getShader();
         batch.setShader(fireProgram);
         batch.setTransformMatrix(new Matrix4());
