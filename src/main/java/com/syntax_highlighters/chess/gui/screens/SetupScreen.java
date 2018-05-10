@@ -169,6 +169,8 @@ public class SetupScreen extends AbstractScreen {
         y -= 80;
         player1Title.setPosition(column1 - buttonBigWidth / 2.f, y);
         player2Title.setPosition(column2 - buttonBigWidth / 2.f, y);
+        ai1.setPosition(column1 - buttonBigWidth / 2.f, y);
+        ai2.setPosition(column2 - buttonBigWidth / 2.f, y);
 
 
         stage.addActor(rb1);
