@@ -135,4 +135,11 @@ public interface IChessPiece {
      * @param state The new state of the piece
      */
     void setHasMoved(boolean state);
+
+    /**
+     * Check if the position is on the very edge of the board on the enemy side.
+     *
+     * @param p The position to check for
+     */
+    boolean isOnEnemyRank(Position p);
 }

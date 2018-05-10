@@ -14,7 +14,7 @@ import java.util.List;
  * Also contains a static method for creating chess pieces based on algebraic
  * notation (AN). Algebraic notation is generally used for describing chess
  * moves (Ne5 is, for instance, read as "knight to E5"), but they're equally
- * adequate at simply describing a piece of a given kind at a given position.
+ /* adequate at simply describing a piece of a given kind at a given position.
  */
 public abstract class AbstractChessPiece implements IChessPiece {
     protected final Color color;
@@ -102,7 +102,7 @@ public abstract class AbstractChessPiece implements IChessPiece {
     public static IChessPiece fromChessNotation(String piece, Color color) {
         assert piece.length() == 3; // of the form [KQNBRP][A-Ha-h][1-8]
 
-        // assure that the first part is referencing a valid type of piece
+        /// assure that the first part is referencing a valid type of piece
         assert "KQNBRP".contains(piece.substring(0,1));
 
         Position pos = Position.fromChessNotation(piece.substring(1, piece.length()));
@@ -238,5 +238,13 @@ public abstract class AbstractChessPiece implements IChessPiece {
      */
     public void setHasMoved(boolean b) {
         this.hasMoved = b;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isOnEnemyRank(Position p) {
+        return getColor() == Color.WHITE ? p.getY() == 8 : p.getY() == 1;
     }
 }

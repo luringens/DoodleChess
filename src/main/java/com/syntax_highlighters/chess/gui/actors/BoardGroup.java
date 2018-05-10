@@ -210,6 +210,9 @@ public class BoardGroup extends Group {
                 game.performMove(move);
                 clearSuggestion();
                 trySelect(null);
+                if (move instanceof PromotionMove) {
+                    addPiece(move.getPiece(game.getBoard()));
+                }
             });
         }
         return true;
@@ -229,8 +232,7 @@ public class BoardGroup extends Group {
                 }
             }
             if (actor == null || actor.getPiece() != change.pieceMoved) {
-                Color c = change.pieceMoved.getColor() == com.syntax_highlighters.chess.entities.Color.WHITE ? whiteColor : blackColor;
-                actor = new ChessPieceActor(change.pieceMoved, c, game, assetManager);
+                actor = newPiece(change.pieceMoved);
             }
             // actor should now have the correct actor
             final int index = i;

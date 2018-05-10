@@ -3,8 +3,11 @@ package com.syntax_highlighters.chess;
 import java.util.List;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.entities.ChessPieceKing;
+import com.syntax_highlighters.chess.entities.ChessPieceQueen;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.HashMap;
 import com.syntax_highlighters.chess.entities.Color;
 
 /**
@@ -84,7 +87,38 @@ public class SjadamGame extends AbstractGame {
                 allMoves.add(new Move(piece.getPosition(), oldPos, board));
             }
         }
-        return allMoves;
+        
+        // THIS IS A HACK
+        // NEVER DO THIS
+        // NEVER TELL ANYONE I TOLD YOU THIS IS OKAY
+        // I DIDN'T
+        // I SHOULDN'T EVEN SHOW YOU THIS
+        // I'M JUST GONNA SHOW MYSELF OUT
+        final Map<Position, List<IChessPiece>> burned = new HashMap<>();
+        return allMoves.stream()
+            .filter(m -> {
+                IChessPiece p = m.getPiece(board);
+                List<IChessPiece> b = burned.get(m.getPosition());
+                if (b == null) {
+                    b = new ArrayList<>();
+                    burned.put(m.getPosition(), b);
+                }
+                if (b.contains(p)) {
+                    return false;
+                }
+                b.add(p);
+                return true;
+            }).map(m -> {
+                IChessPiece p = m.getPiece(board);  // the moved piece
+                Position np = m.getPosition();      // new position
+                Position op = m.getOldPosition();   // old position
+
+                Move ret = m;
+                if (p.isOnEnemyRank(np) && !(p instanceof ChessPieceKing)) {
+                    ret = new PromotionMove(op, np, board, new ChessPieceQueen(np, p.getColor()));
+                }
+                return ret;
+            }).collect(Collectors.toList());
     }
 
     /**
