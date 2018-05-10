@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
  * Tests pertaining to the networking code.
  */
 class NetworkTest {
-    private static final int TIMEOUT = 250;
+    private static final int TIMEOUT = 500;
 
     private Host host;
     private Client client;
