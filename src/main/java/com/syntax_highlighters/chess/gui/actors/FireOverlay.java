@@ -22,6 +22,7 @@ import com.syntax_highlighters.chess.BurningChess;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.gui.Audio;
+import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +49,10 @@ public class FireOverlay extends Actor {
         //whiteBurn = new Circle(0,0,0);
         //blackBurn = new Circle(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),0);
         whiteBurn = new Ellipse(0,0,0,0);
-        blackBurn = new Ellipse(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), 0, 0);
+        blackBurn = new Ellipse(LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT, 0, 0);
 
-        noise = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-        fire = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        noise = new FrameBuffer(Pixmap.Format.RGBA8888, (int)LibgdxChessGame.WORLDWIDTH, (int)LibgdxChessGame.WORLDHEIGHT, false);
+        fire = new FrameBuffer(Pixmap.Format.RGBA8888, (int)LibgdxChessGame.WORLDWIDTH, (int)LibgdxChessGame.WORLDHEIGHT, false);
 
         ShaderProgram program = manager.get("fireNoise.frag");
         if(!program.isCompiled()) System.out.println(program.getLog());
@@ -66,11 +67,11 @@ public class FireOverlay extends Actor {
 
         SpriteBatch batch = new SpriteBatch();
         batch.setShader(program);
-        Vector2 size = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Vector2 size = new Vector2(LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT);
         noise.begin();
         batch.begin();
         program.setUniformf("u_resolution", size);
-        batch.draw(pixel, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(pixel, 0, 0, LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT);
         batch.end();
         noise.end();
         batch.dispose();
@@ -144,8 +145,8 @@ public class FireOverlay extends Actor {
             return;
         super.act(delta);
         game.fireTimer(delta);
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
+        float w = LibgdxChessGame.WORLDWIDTH;
+        float h = LibgdxChessGame.WORLDHEIGHT;
         float width = w * game.getWhiteTimer();
         float height = h * game.getWhiteTimer();
         float sqrt2 = (float)Math.sqrt(2.0f);
@@ -159,7 +160,7 @@ public class FireOverlay extends Actor {
         blackBurn.setPosition(w - width * sqrt2, h - height * sqrt2);
         //whiteBurn.setRadius(dist * game.getWhiteTimer());
         //blackBurn.setRadius(dist * game.getBlackTimer());
-        blackBurn.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        blackBurn.setPosition(LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT);
         /*List<Circle> toDelete = new ArrayList<>();
         for(Circle k : splashes){
          k.radius -= 0.30;
@@ -178,10 +179,10 @@ public class FireOverlay extends Actor {
 
         Matrix4 transform = batch.getTransformMatrix();
         ShaderProgram shader= batch.getShader();
-        batch.setTransformMatrix(new Matrix4());
         batch.setShader(fireProgram);
-        float gxW = Gdx.graphics.getWidth();
-        float gxH = Gdx.graphics.getHeight();
+        batch.setTransformMatrix(new Matrix4());
+        float gxW = LibgdxChessGame.WORLDWIDTH;
+        float gxH = LibgdxChessGame.WORLDHEIGHT;
         float ex = (whiteBurn.x) / gxW;
         float ey = (whiteBurn.y) / gxH;
         fireProgram.setUniformf("burn", ex, ey, whiteBurn.width / 2.0f / gxW, whiteBurn.height / 2.0f/ gxH);
@@ -191,17 +192,20 @@ public class FireOverlay extends Actor {
 
         int i = 0;
         for(Circle c : splashes) {
-            float nX = c.x / Gdx.graphics.getWidth();
-            float nY = c.y / Gdx.graphics.getHeight();
-            float nrX = c.radius / Gdx.graphics.getWidth();
-            float nrY = c.radius / Gdx.graphics.getHeight();
+            float nX = c.x / LibgdxChessGame.WORLDWIDTH;
+            float nY = c.y / LibgdxChessGame.WORLDHEIGHT;
+            float nrX = c.radius / LibgdxChessGame.WORLDWIDTH;
+            float nrY = c.radius / LibgdxChessGame.WORLDHEIGHT;
             fireProgram.setUniformf("u_safePos[" +i + "]", new Color(nX, nY, nrX, nrY));
             i++;
         }
         fireProgram.setUniformi("u_safePosCount", i);
 
-        batch.draw(noise.getColorBufferTexture(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, true);
+        batch.draw(noise.getColorBufferTexture(), 0, 0, LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT, 0, 0, (int) LibgdxChessGame.WORLDWIDTH, (int) LibgdxChessGame.WORLDHEIGHT, false, true);
 
+        /*batch.setTransformMatrix(transform );
+        batch.setShader(shader);
+        DrawDebug(batch);*/
 
         batch.setTransformMatrix(transform );
         batch.setShader(shader);
@@ -226,15 +230,16 @@ public class FireOverlay extends Actor {
         batch.setTransformMatrix(new Matrix4());
         int i = 0;
         for(Circle c : splashes) {
-            float nX = c.x / Gdx.graphics.getWidth();
-            float nY = c.y / Gdx.graphics.getHeight();
-            float nrX = c.radius / Gdx.graphics.getWidth();
-            float nrY = c.radius / Gdx.graphics.getHeight();
+            float nX = c.x / LibgdxChessGame.WORLDWIDTH;
+            float nY = c.y / LibgdxChessGame.WORLDHEIGHT;
+            float nrX = c.radius / LibgdxChessGame.WORLDWIDTH;
+            float nrY = c.radius / LibgdxChessGame.WORLDHEIGHT;
             metaballProgram.setUniformf("u_safePos[" +i + "]", new Color(nX, nY, nrX, nrY));
             i++;
         }
         metaballProgram.setUniformi("u_safePosCount", i);
-        batch.draw(noise.getColorBufferTexture(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, true);
+        batch.draw(noise.getColorBufferTexture(), 0, 0, LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT,
+                0, 0, (int)LibgdxChessGame.WORLDWIDTH, (int)LibgdxChessGame.WORLDHEIGHT, false, true);
 
     }
 

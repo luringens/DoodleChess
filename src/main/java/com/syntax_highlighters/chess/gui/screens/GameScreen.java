@@ -367,7 +367,7 @@ public class GameScreen extends AbstractScreen {
      * NOTE: May want to update this later if we implement arbitrary color
      * choice
      */
-    private void setTurnText() {
+    protected void setTurnText() {
         String p1Name = player1 != null ? player1.getName() : ai1 == null ? "Player 1" : "AI";
         String p2Name = player2 != null ? player2.getName() : ai2 == null ? "Player 2" : "AI";
         if (!isGameOver) {
