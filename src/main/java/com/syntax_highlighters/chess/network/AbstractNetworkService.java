@@ -10,9 +10,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-import com.syntax_highlighters.chess.AbstractGame;
+import com.syntax_highlighters.chess.game.AbstractGame;
 import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.Move;
+import com.syntax_highlighters.chess.move.Move;
 
 public abstract class AbstractNetworkService implements INetworkService {
     static final int HOST_PORT = 6666;

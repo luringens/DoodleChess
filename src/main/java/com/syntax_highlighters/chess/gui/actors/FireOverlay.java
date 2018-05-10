@@ -25,14 +25,14 @@ import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.BurningChess;
+import com.syntax_highlighters.chess.game.BurningChess;
 import com.syntax_highlighters.chess.Position;
-import com.syntax_highlighters.chess.entities.ChessPieceBishop;
-import com.syntax_highlighters.chess.entities.ChessPieceKnight;
-import com.syntax_highlighters.chess.entities.ChessPiecePawn;
-import com.syntax_highlighters.chess.entities.ChessPieceQueen;
-import com.syntax_highlighters.chess.entities.ChessPieceRook;
-import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.chesspiece.ChessPieceBishop;
+import com.syntax_highlighters.chess.chesspiece.ChessPieceKnight;
+import com.syntax_highlighters.chess.chesspiece.ChessPiecePawn;
+import com.syntax_highlighters.chess.chesspiece.ChessPieceQueen;
+import com.syntax_highlighters.chess.chesspiece.ChessPieceRook;
+import com.syntax_highlighters.chess.chesspiece.IChessPiece;
 import com.syntax_highlighters.chess.gui.Audio;
 import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 
@@ -164,7 +164,7 @@ class FireOverlay extends Actor {
             splashSize = tileSize * 1.5f;
         }
         
-        if(piece.getColor() == com.syntax_highlighters.chess.entities.Color.WHITE)
+        if(piece.getColor() == com.syntax_highlighters.chess.Color.WHITE)
             whitesplashes.add(splashcircle);
         else
             blacksplashes.add(splashcircle);
@@ -178,7 +178,7 @@ class FireOverlay extends Actor {
 
         RunnableAction end = new RunnableAction();
         end.setRunnable(() -> {
-            if(piece.getColor() == com.syntax_highlighters.chess.entities.Color.WHITE)
+            if(piece.getColor() == com.syntax_highlighters.chess.Color.WHITE)
                 whitesplashes.remove(splashcircle);
             else
                 blacksplashes.remove(splashcircle);
@@ -186,7 +186,7 @@ class FireOverlay extends Actor {
 
         RunnableAction add = new RunnableAction();
         add.setRunnable(() -> {
-            if(piece.getColor() == com.syntax_highlighters.chess.entities.Color.WHITE)
+            if(piece.getColor() == com.syntax_highlighters.chess.Color.WHITE)
                 whiteAnimations.addAction(new SequenceAction(anim2, end));
             else
                 blackAnimations.addAction(new SequenceAction(anim2, end));
@@ -219,7 +219,7 @@ class FireOverlay extends Actor {
         blackBurn.setPosition(w - width * sqrt2, h - height * sqrt2);
         blackBurn.setPosition(LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT);
 
-        if(game.nextPlayerColor() == com.syntax_highlighters.chess.entities.Color.WHITE)
+        if(game.nextPlayerColor() == com.syntax_highlighters.chess.Color.WHITE)
             whiteAnimations.act(delta);
         else
             blackAnimations.act(delta);

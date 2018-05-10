@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 
 import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.Move;
+import com.syntax_highlighters.chess.move.Move;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.network.Client;
 import com.syntax_highlighters.chess.network.ConnectionStatus;

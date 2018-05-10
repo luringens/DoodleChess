@@ -1,7 +1,7 @@
 package com.syntax_highlighters.chess.gui.screens;
 
-import static com.syntax_highlighters.chess.entities.Color.BLACK;
-import static com.syntax_highlighters.chess.entities.Color.WHITE;
+import static com.syntax_highlighters.chess.Color.BLACK;
+import static com.syntax_highlighters.chess.Color.WHITE;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -16,8 +16,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.syntax_highlighters.chess.NetworkChessGame;
-import com.syntax_highlighters.chess.gui.AbstractScreen;
+import com.syntax_highlighters.chess.game.NetworkChessGame;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.gui.WobbleDrawable;
@@ -36,7 +35,7 @@ public class MultiplayerSetupScreen extends AbstractScreen {
     private boolean uiLock = false;
 
     private AbstractNetworkService service = null;
-    private com.syntax_highlighters.chess.entities.Color color = null;
+    private com.syntax_highlighters.chess.Color color = null;
 
     public MultiplayerSetupScreen(LibgdxChessGame game) {
         super(game);

@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 
-import com.syntax_highlighters.chess.Account;
-import com.syntax_highlighters.chess.AccountManager;
+import com.syntax_highlighters.chess.account.Account;
+import com.syntax_highlighters.chess.account.AccountManager;
 
 import org.junit.jupiter.api.Test;
 

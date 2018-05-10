@@ -11,10 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.syntax_highlighters.chess.AbstractGame;
+import com.syntax_highlighters.chess.game.AbstractGame;
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Position;
-import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.chesspiece.IChessPiece;
 import com.syntax_highlighters.chess.gui.Audio;
 
 /**

@@ -14,12 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.utils.Align;
-import com.syntax_highlighters.chess.Account;
-import com.syntax_highlighters.chess.AccountManager;
 import com.syntax_highlighters.chess.PlayerAttributes;
-import com.syntax_highlighters.chess.entities.AiDifficulty;
-import com.syntax_highlighters.chess.entities.ChessPieceKing;
-import com.syntax_highlighters.chess.gui.AbstractScreen;
+import com.syntax_highlighters.chess.account.Account;
+import com.syntax_highlighters.chess.account.AccountManager;
+import com.syntax_highlighters.chess.ai.AiDifficulty;
+import com.syntax_highlighters.chess.chesspiece.ChessPieceKing;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.gui.actors.AccountOverlay;
@@ -490,5 +489,4 @@ public class SetupScreen extends AbstractScreen {
         stage.getViewport().update(width, height, true);
 
     }
-
 }

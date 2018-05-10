@@ -1,11 +1,12 @@
-package com.syntax_highlighters.chess.entities;
+package com.syntax_highlighters.chess.chesspiece;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.CastlingMove;
-import com.syntax_highlighters.chess.Move;
+import com.syntax_highlighters.chess.Color;
+import com.syntax_highlighters.chess.move.CastlingMove;
+import com.syntax_highlighters.chess.move.Move;
 import com.syntax_highlighters.chess.Position;
 
 /**

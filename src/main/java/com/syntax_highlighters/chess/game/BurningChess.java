@@ -1,6 +1,14 @@
-package com.syntax_highlighters.chess;
+package com.syntax_highlighters.chess.game;
 
-import com.syntax_highlighters.chess.entities.*;
+import com.syntax_highlighters.chess.AsyncPlayer;
+import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.Color;
+import com.syntax_highlighters.chess.Position;
+import com.syntax_highlighters.chess.ai.AiDifficulty;
+import com.syntax_highlighters.chess.ai.MiniMaxAIPlayer;
+import com.syntax_highlighters.chess.chesspiece.*;
+import com.syntax_highlighters.chess.move.Move;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

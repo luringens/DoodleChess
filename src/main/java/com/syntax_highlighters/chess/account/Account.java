@@ -1,4 +1,4 @@
-package com.syntax_highlighters.chess;
+package com.syntax_highlighters.chess.account;
 
 /**
  * Class containing information about a player account.

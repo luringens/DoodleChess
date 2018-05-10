@@ -2,8 +2,8 @@ package com.syntax_highlighters.chess.speedtest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.syntax_highlighters.chess.ChessGame;
-import com.syntax_highlighters.chess.entities.AiDifficulty;
+import com.syntax_highlighters.chess.game.ChessGame;
+import com.syntax_highlighters.chess.ai.AiDifficulty;
 
 import org.junit.jupiter.api.Test;
 

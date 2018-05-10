@@ -9,11 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.syntax_highlighters.chess.Move;
+import com.syntax_highlighters.chess.move.Move;
 import com.syntax_highlighters.chess.Position;
-import com.syntax_highlighters.chess.SjadamGame;
-import com.syntax_highlighters.chess.entities.Color;
-import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.game.SjadamGame;
+import com.syntax_highlighters.chess.Color;
+import com.syntax_highlighters.chess.chesspiece.IChessPiece;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -16,7 +16,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.syntax_highlighters.chess.AccountManager;
+import com.syntax_highlighters.chess.account.AccountManager;
 import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
 
 /**

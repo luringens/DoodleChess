@@ -1,8 +1,11 @@
 package com.syntax_highlighters.chess.general;
 
 import com.syntax_highlighters.chess.*;
-import com.syntax_highlighters.chess.entities.*;
+import com.syntax_highlighters.chess.chesspiece.*;
 
+import com.syntax_highlighters.chess.game.ChessGame;
+import com.syntax_highlighters.chess.move.EnPassantMove;
+import com.syntax_highlighters.chess.move.Move;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 

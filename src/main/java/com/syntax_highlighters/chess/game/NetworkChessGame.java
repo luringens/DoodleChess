@@ -1,10 +1,8 @@
-package com.syntax_highlighters.chess;
+package com.syntax_highlighters.chess.game;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.syntax_highlighters.chess.entities.Color;
-import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.AsyncPlayer;
+import com.syntax_highlighters.chess.Color;
+import com.syntax_highlighters.chess.move.Move;
 import com.syntax_highlighters.chess.network.AbstractNetworkService;
 import com.syntax_highlighters.chess.network.ConnectionStatus;
 

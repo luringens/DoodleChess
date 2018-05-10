@@ -1,8 +1,8 @@
 package com.syntax_highlighters.chess.general;
 
-import com.syntax_highlighters.chess.ChessGame;
-import com.syntax_highlighters.chess.Move;
-import com.syntax_highlighters.chess.entities.*;
+import com.syntax_highlighters.chess.ai.AiDifficulty;
+import com.syntax_highlighters.chess.game.ChessGame;
+import com.syntax_highlighters.chess.move.Move;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;

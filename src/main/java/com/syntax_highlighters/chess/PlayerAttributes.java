@@ -1,7 +1,8 @@
 package com.syntax_highlighters.chess;
 
 import com.badlogic.gdx.graphics.Color;
-import com.syntax_highlighters.chess.entities.AiDifficulty;
+import com.syntax_highlighters.chess.account.Account;
+import com.syntax_highlighters.chess.ai.AiDifficulty;
 
 /**
  * Contains information about the player which the GUI uses to determine things

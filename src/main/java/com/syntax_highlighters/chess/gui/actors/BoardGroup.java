@@ -16,13 +16,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.syntax_highlighters.chess.AbstractGame;
+import com.syntax_highlighters.chess.game.AbstractGame;
 import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.BurningChess;
-import com.syntax_highlighters.chess.Move;
+import com.syntax_highlighters.chess.game.BurningChess;
+import com.syntax_highlighters.chess.move.Move;
 import com.syntax_highlighters.chess.Position;
-import com.syntax_highlighters.chess.PromotionMove;
-import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.move.PromotionMove;
+import com.syntax_highlighters.chess.chesspiece.IChessPiece;
 import com.syntax_highlighters.chess.gui.AssetLoader;
 
 /**

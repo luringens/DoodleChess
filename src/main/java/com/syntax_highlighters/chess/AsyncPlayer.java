@@ -1,5 +1,8 @@
 package com.syntax_highlighters.chess;
 
+import com.syntax_highlighters.chess.game.AbstractGame;
+import com.syntax_highlighters.chess.move.Move;
+
 /**
  * Interface for async players players.
  *
@@ -9,7 +12,7 @@ package com.syntax_highlighters.chess;
 public class AsyncPlayer {
     private final Wrapper wrapper;
 
-    AsyncPlayer(IBlockingPlayer p) {
+    public AsyncPlayer(IBlockingPlayer p) {
         wrapper = new Wrapper(p);
     }
 
@@ -18,7 +21,7 @@ public class AsyncPlayer {
      * @param game The game to work with.
      * @return The received move or null.
      */
-    Move getMove(AbstractGame game) {
+    public Move getMove(AbstractGame game) {
         return wrapper.getMoveSynchronous(game);
     }
 
@@ -27,7 +30,7 @@ public class AsyncPlayer {
      * @param game The game to work with.
      * @return The received move or null.
      */
-    Move pollMove(AbstractGame game) {
+    public Move pollMove(AbstractGame game) {
         switch (wrapper.getState()) {
             case Done: return wrapper.getResult();
             case Waiting: wrapper.startProcess(game);

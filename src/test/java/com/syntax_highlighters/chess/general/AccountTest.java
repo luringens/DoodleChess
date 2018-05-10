@@ -2,7 +2,7 @@ package com.syntax_highlighters.chess.general;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.syntax_highlighters.chess.Account;
+import com.syntax_highlighters.chess.account.Account;
 
 import org.junit.jupiter.api.Test;
 

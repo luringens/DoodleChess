@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.Move;
+import com.syntax_highlighters.chess.move.Move;
 import com.syntax_highlighters.chess.Position;
-import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.chesspiece.IChessPiece;
 
 /**
  * Actor representing one chess tile

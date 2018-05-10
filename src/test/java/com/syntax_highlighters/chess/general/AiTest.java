@@ -3,19 +3,19 @@ package com.syntax_highlighters.chess.general;
 import java.util.ArrayList;
 
 import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.ChessGame;
+import com.syntax_highlighters.chess.game.ChessGame;
 import com.syntax_highlighters.chess.Position;
-import com.syntax_highlighters.chess.entities.AiDifficulty;
-import com.syntax_highlighters.chess.entities.ChessPieceBishop;
-import com.syntax_highlighters.chess.entities.ChessPieceKing;
-import com.syntax_highlighters.chess.entities.ChessPieceKnight;
-import com.syntax_highlighters.chess.entities.ChessPiecePawn;
-import com.syntax_highlighters.chess.entities.ChessPieceQueen;
-import com.syntax_highlighters.chess.entities.ChessPieceRook;
-import com.syntax_highlighters.chess.entities.Color;
-import com.syntax_highlighters.chess.entities.IAiPlayer;
-import com.syntax_highlighters.chess.entities.IChessPiece;
-import com.syntax_highlighters.chess.entities.MiniMaxAIPlayer;
+import com.syntax_highlighters.chess.ai.AiDifficulty;
+import com.syntax_highlighters.chess.chesspiece.ChessPieceBishop;
+import com.syntax_highlighters.chess.chesspiece.ChessPieceKing;
+import com.syntax_highlighters.chess.chesspiece.ChessPieceKnight;
+import com.syntax_highlighters.chess.chesspiece.ChessPiecePawn;
+import com.syntax_highlighters.chess.chesspiece.ChessPieceQueen;
+import com.syntax_highlighters.chess.chesspiece.ChessPieceRook;
+import com.syntax_highlighters.chess.Color;
+import com.syntax_highlighters.chess.ai.IAiPlayer;
+import com.syntax_highlighters.chess.chesspiece.IChessPiece;
+import com.syntax_highlighters.chess.ai.MiniMaxAIPlayer;
 
 import org.junit.jupiter.api.Test;
 

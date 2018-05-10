@@ -1,12 +1,14 @@
-package com.syntax_highlighters.chess;
+package com.syntax_highlighters.chess.move;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import com.syntax_highlighters.chess.entities.AbstractChessPiece;
-import com.syntax_highlighters.chess.entities.Color;
-import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.Position;
+import com.syntax_highlighters.chess.chesspiece.AbstractChessPiece;
+import com.syntax_highlighters.chess.Color;
+import com.syntax_highlighters.chess.chesspiece.IChessPiece;
 
 /**
  * Promotion move includes info about pawns moving to the 1st or eigth rank, and

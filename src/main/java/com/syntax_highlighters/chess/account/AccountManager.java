@@ -1,4 +1,4 @@
-package com.syntax_highlighters.chess;
+package com.syntax_highlighters.chess.account;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;

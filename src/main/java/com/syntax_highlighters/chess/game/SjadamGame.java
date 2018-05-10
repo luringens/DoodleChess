@@ -1,4 +1,4 @@
-package com.syntax_highlighters.chess;
+package com.syntax_highlighters.chess.game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,10 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.syntax_highlighters.chess.entities.ChessPieceKing;
-import com.syntax_highlighters.chess.entities.ChessPieceQueen;
-import com.syntax_highlighters.chess.entities.Color;
-import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.Position;
+import com.syntax_highlighters.chess.chesspiece.ChessPieceKing;
+import com.syntax_highlighters.chess.chesspiece.ChessPieceQueen;
+import com.syntax_highlighters.chess.Color;
+import com.syntax_highlighters.chess.chesspiece.IChessPiece;
+import com.syntax_highlighters.chess.move.Move;
+import com.syntax_highlighters.chess.move.PromotionMove;
 
 /**
  * Custom game mode with sjadam rules.
@@ -33,13 +37,13 @@ public class SjadamGame extends AbstractGame {
     }
 
     private IChessPiece lastPiece(){
-        return board.getAtPosition(board.getLastMove().newPos);
+        return board.getAtPosition(board.getLastMove().getPosition());
     }
 
     private boolean lastJumpedPieceWasEnemy() {
         if (getLastJumpedPosition() == null) return false;
         Move m = board.getLastMove();
-        Position mid = m.oldPos.stepsToPosition(m.newPos).get(1);
+        Position mid = m.getOldPosition().stepsToPosition(m.getPosition()).get(1);
         return board.getAtPosition(mid).getColor() == nextPlayerColor.opponentColor();
     }
     
@@ -179,7 +183,7 @@ public class SjadamGame extends AbstractGame {
     public void performMove(Move move) {
         Color col = nextPlayerColor();
         IChessPiece piece = move.getPiece(board);
-        boolean endTurn = piece.canMoveTo(move.newPos, board);
+        boolean endTurn = piece.canMoveTo(move.getPosition(), board);
         if (endTurn) { // this is a regular chess move
             col = col.opponentColor(); // end turn
         }
@@ -187,16 +191,16 @@ public class SjadamGame extends AbstractGame {
         
         Position oldPos = getLastJumpedPosition();
         if (endTurn || !jumpedFromPositions.isEmpty()
-                && move.newPos.equals(jumpedFromPositions.get(0))) {
+                && move.getPosition().equals(jumpedFromPositions.get(0))) {
             jumpedFromPositions = new ArrayList<>(); // clear jumped positions
         }
-        else if (move.newPos.equals(oldPos)) {
+        else if (move.getPosition().equals(oldPos)) {
             // drop last position from list of jumped positions
             jumpedFromPositions.remove(jumpedFromPositions.size()-1);
         }
         else {
             // put old piece position in list of jumped positions
-            jumpedFromPositions.add(move.oldPos);
+            jumpedFromPositions.add(move.getOldPosition());
         }
         nextPlayerColor = col; // set next player color to the correct color
     }

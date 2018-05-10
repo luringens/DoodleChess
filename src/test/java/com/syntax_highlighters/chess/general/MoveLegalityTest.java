@@ -1,8 +1,9 @@
 package com.syntax_highlighters.chess.general;
 
 import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.Color;
 import com.syntax_highlighters.chess.Position;
-import com.syntax_highlighters.chess.entities.*;
+import com.syntax_highlighters.chess.chesspiece.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

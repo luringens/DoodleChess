@@ -1,12 +1,14 @@
-package com.syntax_highlighters.chess.entities;
+package com.syntax_highlighters.chess.ai;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import com.syntax_highlighters.chess.AbstractGame;
-import com.syntax_highlighters.chess.Move;
+import com.syntax_highlighters.chess.Color;
+import com.syntax_highlighters.chess.chesspiece.IChessPiece;
+import com.syntax_highlighters.chess.game.AbstractGame;
+import com.syntax_highlighters.chess.move.Move;
 
 /**
  * A chess AI trying to find the best move by using a minimaxing algorithm.
@@ -153,7 +155,7 @@ public class MiniMaxAIPlayer implements IAiPlayer {
      * optimally for depth number of moves
      */
     private int MiniMaxScore(int depth, AbstractGame game, boolean isMaximizing, int alpha, int beta) {
-        Color maximizerColor = isMaximizing ? game.nextPlayerColor() 
+        Color maximizerColor = isMaximizing ? game.nextPlayerColor()
                                             : game.nextPlayerColor().opponentColor();
         
         if (depth <= 0) return game.evaluateScore(maximizerColor);

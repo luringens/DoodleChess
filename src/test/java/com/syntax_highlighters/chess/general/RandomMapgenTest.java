@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Random;
 
 import com.syntax_highlighters.chess.Board;
-import com.syntax_highlighters.chess.entities.ChessPieceKing;
+import com.syntax_highlighters.chess.chesspiece.ChessPieceKing;
 
 import org.junit.jupiter.api.Test;
 
