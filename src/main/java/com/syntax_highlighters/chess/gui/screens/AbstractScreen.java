@@ -1,4 +1,4 @@
-package com.syntax_highlighters.chess.gui;
+package com.syntax_highlighters.chess.gui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -9,6 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.syntax_highlighters.chess.gui.Audio;
+import com.syntax_highlighters.chess.gui.LibgdxChessGame;
+import com.syntax_highlighters.chess.gui.WobbleDrawable;
 import com.syntax_highlighters.chess.gui.actors.DoodleActor;
 import com.syntax_highlighters.chess.gui.actors.PaperBackground;
 
