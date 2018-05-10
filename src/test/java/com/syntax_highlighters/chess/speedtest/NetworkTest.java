@@ -1,4 +1,4 @@
-package com.syntax_highlighters.chess.general;
+package com.syntax_highlighters.chess.speedtest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
