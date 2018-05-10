@@ -23,8 +23,10 @@ public class RadioButton extends AbstractSelectableButton {
     @Override
     protected void setSelectableTexture() {
         boxTexture = assetManager.get("circle.png", Texture.class);
+        boxTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         box = new WobbleDrawable(boxTexture, assetManager);
         checkedTexture = assetManager.get("dot.png", Texture.class);
+        checkedTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         checked = new WobbleDrawable(checkedTexture, assetManager);
     }
 }
