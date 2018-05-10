@@ -47,7 +47,7 @@ public class ChessPieceKing extends AbstractChessPiece {
         };
     }
 
-    private int[] endgamePositionScoreTable = new int[] {
+    private final int[] endgamePositionScoreTable = new int[] {
         -50, -40, -30, -20, -20, -30, -40, -50,
         -30, -20, -10,   0,   0, -10, -20, -30,
         -30, -10,  20,  30,  30,  20, -10, -30,

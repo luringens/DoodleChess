@@ -11,7 +11,7 @@ import com.syntax_highlighters.chess.entities.AiDifficulty;
 public class PlayerAttributes {
     private Account acc;
     private AiDifficulty difficulty;
-    private Color color;
+    private final Color color;
 
     /**
      * Define a human player with an associated Account and Color.

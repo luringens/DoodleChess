@@ -48,7 +48,7 @@ class BoardStartupTest {
                 }
             }
         }
-        assertEquals(true, isEmpty);
+        assertTrue(isEmpty);
 
     }
 
@@ -162,11 +162,8 @@ class BoardStartupTest {
     void BlackCannotMoveFirst(){
         ChessGame game = new ChessGame(null,null);
         board = game.getBoard();
-        Position pos1 = new Position(1,7);
-        Position pos2 = new Position(1,6);
 
         IChessPiece testPawn = board.getAtPosition(new Position(1,7));
-        Move move = new Move(pos1,pos2,board);
 
         assertEquals(0, game.allPossibleMoves(testPawn).size());
         assertEquals(new Position(1,7), testPawn.getPosition());

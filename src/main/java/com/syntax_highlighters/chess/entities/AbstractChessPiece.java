@@ -17,9 +17,9 @@ import com.syntax_highlighters.chess.Position;
  /* adequate at simply describing a piece of a given kind at a given position.
  */
 public abstract class AbstractChessPiece implements IChessPiece {
-    protected final Color color;
-    protected Position position;
-    protected boolean hasMoved = false;
+    final Color color;
+    Position position;
+    private boolean hasMoved = false;
 
     /**
      * Chess piece at given position with given color.
@@ -27,7 +27,7 @@ public abstract class AbstractChessPiece implements IChessPiece {
      * @param color The color of the piece.
      * @param pos The position the piece is created at
      */
-    public AbstractChessPiece(Position pos, Color color) {
+    AbstractChessPiece(Position pos, Color color) {
         this.color = color;
         this.position = pos;
     }
@@ -183,7 +183,7 @@ public abstract class AbstractChessPiece implements IChessPiece {
      * @param board The board to look at.
      * @return A list containing all possible moves in a direction
      */
-    protected List<Move> movesInDirection(int dx, int dy, Board board) {
+    List<Move> movesInDirection(int dx, int dy, Board board) {
         ArrayList<Move> moves = new ArrayList<>();
         Position nextPos = new Position(position.getX() + dx, position.getY() + dy);
 

@@ -36,23 +36,23 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.gui.Audio;
 import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 
-public class FireOverlay extends Actor {
+class FireOverlay extends Actor {
 
-    BurningChess game;
-    private List<ChessTileActor> tiles;
-    private List<Circle> blacksplashes = new ArrayList<>();
-    private List<Circle> whitesplashes = new ArrayList<>();
-    private Group blackAnimations = new Group();
-    private Group whiteAnimations = new Group();
-    ShapeRenderer renderer;
-    Ellipse whiteBurn;
-    Ellipse blackBurn;
+    private final BurningChess game;
+    private final List<ChessTileActor> tiles;
+    private final List<Circle> blacksplashes = new ArrayList<>();
+    private final List<Circle> whitesplashes = new ArrayList<>();
+    private final Group blackAnimations = new Group();
+    private final Group whiteAnimations = new Group();
+    private final ShapeRenderer renderer;
+    private final Ellipse whiteBurn;
+    private final Ellipse blackBurn;
 
-    FrameBuffer noise;
-    FrameBuffer fire;
-    ShaderProgram fireProgram;
-    ShaderProgram metaballProgram;
-    AssetManager manager;
+    private final FrameBuffer noise;
+    private final FrameBuffer fire;
+    private final ShaderProgram fireProgram;
+    private final ShaderProgram metaballProgram;
+    private final AssetManager manager;
 
     public FireOverlay(AssetManager manager, BurningChess game, List<ChessTileActor> tiles) {
         this.game = game;
@@ -84,7 +84,7 @@ public class FireOverlay extends Actor {
         noise.begin();
         batch.begin();
         program.setUniformf("u_resolution", size);
-        batch.draw(pixel, 0, 0, (int)Gdx.graphics.getWidth(), (int)Gdx.graphics.getHeight());
+        batch.draw(pixel, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
         noise.end();
         batch.dispose();
@@ -315,11 +315,11 @@ public class FireOverlay extends Actor {
     }
 
     private class CircleAnimation extends TemporalAction {
-        Circle target;
-        float destination;
+        final Circle target;
+        final float destination;
         float start = 0.0f;
 
-        public CircleAnimation(Circle t, float dst) {
+        CircleAnimation(Circle t, float dst) {
             target = t;
             destination = dst;
         }

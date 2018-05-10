@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 
 public class PaperBackground extends Actor {
-    private Texture pixel;
+    private final Texture pixel;
 
     public PaperBackground(AssetManager manager) {
         pixel = manager.get("pixel.png");

@@ -21,9 +21,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class PencilSelector extends Group {
     private final Image background;
-    private ArrayList<Pencil> pencils = new ArrayList<>();
-    private ArrayList<Float> pencilOffsets = new ArrayList<>();
-    ColorAction colorAction;
+    private final ArrayList<Pencil> pencils = new ArrayList<>();
+    private final ArrayList<Float> pencilOffsets = new ArrayList<>();
+    private final ColorAction colorAction;
 
     private float myY = 0;
 
@@ -195,13 +195,13 @@ public class PencilSelector extends Group {
     }
 
     public class ColorSelectEvent extends Event {
-        private Pencil pencil;
+        private final Pencil pencil;
 
-        public ColorSelectEvent(Pencil pencil) {
+        ColorSelectEvent(Pencil pencil) {
             this.pencil = pencil;
         }
 
-        public Color getColor() {
+        Color getColor() {
             return pencil.getColor();
         }
     }

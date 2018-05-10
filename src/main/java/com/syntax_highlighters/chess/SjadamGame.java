@@ -29,9 +29,7 @@ public class SjadamGame extends AbstractGame {
         Move m = board.getLastMove();
         if (m == null) return false;
         Color col = m.getColor(board);
-        if(col == nextPlayerColor)
-            return true;
-        return false;
+        return col == nextPlayerColor;
     }
 
     private IChessPiece lastPiece(){
@@ -91,11 +89,7 @@ public class SjadamGame extends AbstractGame {
         return allMoves.stream()
             .filter(m -> {
                 IChessPiece p = m.getPiece(board);
-                List<IChessPiece> b = burned.get(m.getPosition());
-                if (b == null) {
-                    b = new ArrayList<>();
-                    burned.put(m.getPosition(), b);
-                }
+                List<IChessPiece> b = burned.computeIfAbsent(m.getPosition(), k -> new ArrayList<>());
                 if (b.contains(p)) {
                     return false;
                 }
@@ -142,7 +136,7 @@ public class SjadamGame extends AbstractGame {
         Position p = piece.getPosition();
         Position next = dir.transform(p);
         Position next2 = dir.transform(next);
-        if (!isOnBoard(next2)) return;
+        if (isOutsideBoard(next2)) return;
         if (board.isOccupied(next) && ! board.isOccupied(next2))
             list.add(new Move(p, next2, board));
     }
@@ -167,11 +161,10 @@ public class SjadamGame extends AbstractGame {
      * Validate and perform a move.
      * @param from Coordinate from
      * @param to Coordinate to
-     * @return If the move was valid and performed.
      */
-    public List<Move> performMove(Position from, Position to) {
+    public void performMove(Position from, Position to) {
         IChessPiece piece = getPieceAtPosition(from);
-        if (piece == null) return new ArrayList<>();
+        if (piece == null) return;
         List<Move> movesToPos = allPossibleMoves(piece).stream()
             .filter(m -> m.getPosition().equals(to))
             .collect(Collectors.toList());
@@ -180,7 +173,6 @@ public class SjadamGame extends AbstractGame {
             Move move = movesToPos.get(0);
             performMove(move);
         }
-        return movesToPos;
     }
 
     @Override

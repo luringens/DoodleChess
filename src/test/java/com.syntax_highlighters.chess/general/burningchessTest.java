@@ -14,14 +14,13 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
 
 import org.junit.jupiter.api.Test;
 
-public class burningchessTest {
-    BurningChess burning;
-    Board b = new Board();
-    List<Position> l = new ArrayList<>();
+class burningchessTest {
+    private BurningChess burning;
+    private final Board b = new Board();
 
     @Test
-    public void allPossibleMovesTest() {
-        burning = burning.setupTestBoard(b, Color.WHITE);
+    void allPossibleMovesTest() {
+        burning = BurningChess.setupTestBoard(b, Color.WHITE);
         Board bo = burning.getBoard();
         IChessPiece piece = new ChessPiecePawn(new Position(2, 2), Color.WHITE);
         bo.putAtPosition(new Position(2, 2), piece);
@@ -31,7 +30,7 @@ public class burningchessTest {
     }
 
     @Test
-    public void killPieceTest(){
+    void killPieceTest(){
         burning = burning.setupTestBoard(b,Color.WHITE);
         Board bo = burning.getBoard();
         IChessPiece piece = new ChessPiecePawn(new Position(2,2),Color.WHITE);
@@ -42,7 +41,7 @@ public class burningchessTest {
     }
 
     @Test
-    public void revivePieceTest(){
+    void revivePieceTest(){
         burning = burning.setupTestBoard(b, Color.WHITE);
         Board bo = burning.getBoard();
         IChessPiece piece = new ChessPiecePawn(new Position(2, 2), Color.WHITE);

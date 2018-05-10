@@ -32,7 +32,7 @@ public class LibgdxChessGame extends Game {
 	private Texture table;
 	public Skin skin;
 
-	public static final float aspectRatio = 1.6f;
+	private static final float aspectRatio = 1.6f;
 	public static final float WORLDWIDTH = 800 * (aspectRatio > 1.0f ? aspectRatio : 1.0f);
 	public static final float WORLDHEIGHT = 800.f / (aspectRatio <= 1.0f ? aspectRatio : 1.0f);
 
@@ -66,11 +66,6 @@ public class LibgdxChessGame extends Game {
 		table.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
 		setScreen(new MainMenuScreen(this));
-	}
-
-	@Override
-	public void resize(int width, int height) {
-		super.resize(width, height);
 	}
 
 	/**

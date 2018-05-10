@@ -18,12 +18,12 @@ public class Color implements java.io.Serializable {
     /**
      * The instance of color that is white.
      */
-    public static Color WHITE = new Color(WHITE_B);
+    public static final Color WHITE = new Color(WHITE_B);
 
     /**
      * The instance of color that is black.
      */
-    public static Color BLACK = new Color(BLACK_B);
+    public static final Color BLACK = new Color(BLACK_B);
 
     private Color(boolean color) {
         this.color = color;

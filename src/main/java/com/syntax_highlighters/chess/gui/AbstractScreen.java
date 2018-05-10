@@ -46,8 +46,8 @@ public abstract class AbstractScreen implements Screen {
         "Doodle/Horse.png"
     };
 
-    public static final float WORLDWIDTH = LibgdxChessGame.WORLDWIDTH;
-    public static final float WORLDHEIGHT = LibgdxChessGame.WORLDHEIGHT;
+    protected static final float WORLDWIDTH = LibgdxChessGame.WORLDWIDTH;
+    protected static final float WORLDHEIGHT = LibgdxChessGame.WORLDHEIGHT;
 
     /**
      * Create a screen based on a ChessGame.

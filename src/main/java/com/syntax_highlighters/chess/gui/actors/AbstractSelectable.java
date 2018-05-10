@@ -19,7 +19,7 @@ public abstract class AbstractSelectable extends Actor {
      * Describes an action which should be performed if this selectable actor is
      * selected or deselected
      */
-    public static interface Callback {
+    public interface Callback {
         void callback(boolean selected);
     }
 

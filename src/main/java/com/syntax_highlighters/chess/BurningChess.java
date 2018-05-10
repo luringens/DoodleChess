@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class BurningChess extends AbstractGame{
     private float blackTimer = 0;
     private float whiteTimer = 0;
-    private static final float TENMINS = 1 * 60;
+    private static final float TENMINS = 60;
     public static final float SPLASHTIME = 20; // in seconds
 
     public BurningChess(AiDifficulty whiteAi, AiDifficulty blackAi) {
@@ -25,7 +25,7 @@ public class BurningChess extends AbstractGame{
         this.board.setupNewGame();
     }
 
-    public BurningChess(Board board, Color nextPlayerColor) {
+    private BurningChess(Board board, Color nextPlayerColor) {
         this.board = board;
         this.nextPlayerColor = nextPlayerColor;
     }
@@ -34,7 +34,7 @@ public class BurningChess extends AbstractGame{
         return new BurningChess(board, nextPlayerColor);
     }
 
-    List<Position> unreachablePos = new ArrayList<>();
+    private List<Position> unreachablePos = new ArrayList<>();
 
     public void fireTimer(float seconds){
         if(nextPlayerColor.isWhite()) {
@@ -65,15 +65,14 @@ public class BurningChess extends AbstractGame{
         if(piece instanceof ChessPieceKing)
             forceGameEnd();
         board.removePiece(piece);
-        pieceSplash(piece);
+        pieceSplash();
     }
 
     public void reviveTile(Position tile) {
-        if (unreachablePos.contains(tile))
-            unreachablePos.remove(tile);
+        unreachablePos.remove(tile);
     }
 
-    public void pieceSplash(IChessPiece piece){
+    private void pieceSplash(){
         unreachablePos = new ArrayList<>();
     }
 
@@ -133,7 +132,7 @@ public class BurningChess extends AbstractGame{
      * @return true if the game should be drawn due to insufficient material,
      * false otherwise
      */
-    public boolean insufficientMaterial() {
+    private boolean insufficientMaterial() {
         List<IChessPiece> pieces = board.getAllPieces();
 
         List<IChessPiece> kings = pieces.stream()

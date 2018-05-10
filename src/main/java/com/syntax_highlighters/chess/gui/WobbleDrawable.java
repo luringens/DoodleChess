@@ -17,9 +17,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 
 public class WobbleDrawable extends BaseDrawable {
-    private Texture texture;
-    private static HashMap<String, ArrayList<FrameBuffer>> preRender = new HashMap<>();
-    private static SpriteBatch spriteBatch = new SpriteBatch();
+    private final Texture texture;
+    private static final HashMap<String, ArrayList<FrameBuffer>> preRender = new HashMap<>();
+    private static final SpriteBatch spriteBatch = new SpriteBatch();
     private long lastframe = 0;
     private int textureId = 0;
     private boolean doAnimation = true;

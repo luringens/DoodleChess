@@ -28,7 +28,7 @@ public class Host extends AbstractNetworkService {
      * @param timeout Timeout waiting for connection in ms.
      * @param port The port to use.
      */
-    public Host(int timeout, int port) throws IOException, SocketTimeoutException {
+    public Host(int timeout, int port) throws IOException {
         // Open the socket
         serverSocket = new ServerSocket(port);
         serverSocket.setSoTimeout(timeout);

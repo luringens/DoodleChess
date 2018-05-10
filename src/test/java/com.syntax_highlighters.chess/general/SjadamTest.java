@@ -22,17 +22,17 @@ import org.junit.jupiter.api.Test;
  * Test that the SjadamGame class behaves as expected when the player attempts
  * to particular things relating to the rules in sjadam.
  */
-public class SjadamTest {
+class SjadamTest {
     private SjadamGame game; // a game initialized to starting positions
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         // setup a new game
         game = new SjadamGame();
     }
 
     @Test
-    public void everyPieceHasAMoveFromStartingPositions() {
+    void everyPieceHasAMoveFromStartingPositions() {
         // check that every piece has a move from the starting positions (note
         // that not all of the moves are sjadam moves, but the pieces in the
         // back, most of which cannot move from the starting positions in
@@ -49,7 +49,7 @@ public class SjadamTest {
     }
     
     @Test
-    public void pieceCanJumpOverOtherPieces() {
+    void pieceCanJumpOverOtherPieces() {
         // check that the king has a move that that takes it over the pawn in
         // front of it, and that performing this move works as expected
         Position kingPos = Position.fromChessNotation("e1"); // white king
@@ -71,7 +71,7 @@ public class SjadamTest {
     }
     
     @Test
-    public void playerCannotJumpWithOnePieceAndImmediatelyJumpWithAnother() {
+    void playerCannotJumpWithOnePieceAndImmediatelyJumpWithAnother() {
         // let the king jump over the pawn, then try to make the pawn jump over
         // the king that's now in front of it, and make sure that the game
         // doesn't allow this
@@ -92,7 +92,7 @@ public class SjadamTest {
     }
 
     @Test
-    public void onlyPreviouslyMovedPieceCanMoveAfterJumpingHasStarted() {
+    void onlyPreviouslyMovedPieceCanMoveAfterJumpingHasStarted() {
         // try to jump with the king, and check that after the move has been
         // performed, the only possible moves in the game are moves which use
         // the king piece
@@ -109,7 +109,7 @@ public class SjadamTest {
     }
 
     @Test
-    public void turnOfPlayerDoesNotEndAfterJumpingOverOwnPieceOnce() {
+    void turnOfPlayerDoesNotEndAfterJumpingOverOwnPieceOnce() {
         // try to jump with the king, and ensure that it's still the same
         // player's turn after the jump
         Position kingPos = Position.fromChessNotation("e1");
@@ -124,7 +124,7 @@ public class SjadamTest {
     }
     
     @Test
-    public void turnOfPlayerDoesNotEndAfterJumpingOverEnemyPieceOnce() {
+    void turnOfPlayerDoesNotEndAfterJumpingOverEnemyPieceOnce() {
         // setup: move queen to d6, and the black rook from h8 to e6 by jumping
         // over the pawn in front of it and then making a regular chess move to
         // bring it up next to the queen. Then try to jump over the rook before
@@ -147,7 +147,7 @@ public class SjadamTest {
     }
 
     @Test
-    public void pieceCannotMoveToNonEmptySquare() {
+    void pieceCannotMoveToNonEmptySquare() {
         // check that the king cannot jump over the queen or the right bishop
         // from its starting position
         Position kingPos = Position.fromChessNotation("e1");
@@ -162,7 +162,7 @@ public class SjadamTest {
     }
 
     @Test
-    public void pieceCannotJumpToOutsideOfTheBoard() {
+    void pieceCannotJumpToOutsideOfTheBoard() {
         // the knight at g1 could jump over the rook to its right if the
         // position on the other side was on the board, but since it isn't, it
         // shouldn't be in the possible moves
@@ -172,11 +172,11 @@ public class SjadamTest {
         
         // ensure there is no move such that the target position is outside the
         // board
-        assertFalse(moves.stream().anyMatch(m -> !game.isOnBoard(m.getPosition())));
+        assertFalse(moves.stream().anyMatch(m -> game.isOutsideBoard(m.getPosition())));
     }
 
     @Test
-    public void turnEndsAfterPlayerHasJumpedAndThenDoneChessMove() {
+    void turnEndsAfterPlayerHasJumpedAndThenDoneChessMove() {
         // store color to check later
         Color color = game.nextPlayerColor();
         
@@ -194,7 +194,7 @@ public class SjadamTest {
     }
 
     @Test
-    public void chessPieceCanJumpOverSamePieceWithSameColorTwice() {
+    void chessPieceCanJumpOverSamePieceWithSameColorTwice() {
         Position pos = Position.fromChessNotation("e1");
         Position next = pos.north(2);
 
@@ -209,7 +209,7 @@ public class SjadamTest {
     }
 
     @Test
-    public void chessPieceCanMoveBackAfterJumpingOverEnemyPiece() {
+    void chessPieceCanMoveBackAfterJumpingOverEnemyPiece() {
         // setup: make queen north until the enemy pawn line, and make pawn jump
         // over the queen
         whiteQueenToD6(); // move queen to d6
@@ -227,7 +227,7 @@ public class SjadamTest {
     }
 
     @Test
-    public void chessPieceCannotJumpOverMoreThanOneEnemyPiece() {
+    void chessPieceCannotJumpOverMoreThanOneEnemyPiece() {
         // setup: make queen north until the enemy pawn line, move black bishop
         // to the position southeast of the queen, and make the black pawn jump
         // over the queen. The pawn should then only be allowed to make a chess
@@ -260,7 +260,7 @@ public class SjadamTest {
     }
 
     @Test
-    public void pieceCanPerformChessMoveWithoutJumpingFirst() {
+    void pieceCanPerformChessMoveWithoutJumpingFirst() {
         Position a2 = Position.fromChessNotation("a2");
         Position a3 = Position.fromChessNotation("a3");
 
@@ -273,7 +273,7 @@ public class SjadamTest {
 
     // sorry about the long test names
     @Test
-    public void playerCanMoveDifferentPieceIfThePiecePreviouslyMovedIsReplacedInItsStartingPosition() {
+    void playerCanMoveDifferentPieceIfThePiecePreviouslyMovedIsReplacedInItsStartingPosition() {
         // NOTE: This replicates the behavior found in the sjadam game
         // implemented at https://sjadam.no (so it's not just something random I
         // made up to create problems, although it might feel like it)

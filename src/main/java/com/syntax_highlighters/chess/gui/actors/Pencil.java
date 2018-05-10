@@ -8,15 +8,15 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class Pencil extends Actor {
-    private Color color;
-    private ShaderProgram setColorShader;
+class Pencil extends Actor {
+    private final Color color;
+    private final ShaderProgram setColorShader;
 
     private final int baseCount = 2;
     private final int woodCount = 3;
 
-    private Texture base;
-    private Texture wood;
+    private final Texture base;
+    private final Texture wood;
 
     private boolean isSelected = false;
 

@@ -6,11 +6,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class MenuIcon extends Actor {
-    private Texture bgr;
-    private Texture icon;
+class MenuIcon extends Actor {
+    private final Texture bgr;
+    private final Texture icon;
     public static final float SIZE = 80;
-    private static final int BORDER_WIDTH = 2;
+    private static final int BORDER_THICKNESS = 2;
     
     public MenuIcon(Texture icon) {
         this.icon = icon;
@@ -21,7 +21,8 @@ public class MenuIcon extends Actor {
         pixmap.setColor(Color.BLACK);
         pixmap.fillRectangle(0, 0, iSize, iSize);
         pixmap.setColor(Color.WHITE);
-        pixmap.fillRectangle(BORDER_WIDTH, BORDER_WIDTH, iSize-2*BORDER_WIDTH, iSize-2*BORDER_WIDTH);
+        pixmap.fillRectangle(BORDER_THICKNESS, BORDER_THICKNESS,
+            iSize-2* BORDER_THICKNESS, iSize-2* BORDER_THICKNESS);
         this.bgr = new Texture(pixmap);
         pixmap.dispose();
     }

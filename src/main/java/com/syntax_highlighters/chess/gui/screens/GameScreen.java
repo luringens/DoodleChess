@@ -42,41 +42,41 @@ import com.syntax_highlighters.chess.gui.actors.Text;
  * Game main screen.
  */
 public class GameScreen extends AbstractScreen {
-    protected final AssetManager assetManager;
+    final AssetManager assetManager;
 
-    protected AbstractGame game;
+    AbstractGame game;
     //private final UiBoard board;
-    protected final BoardGroup board;
-    protected final Text turnText;
-    protected final Button giveUp;
-    protected final Button getHelp;
-    protected final Button showResults;
-    protected final Image mute;
-    protected final List<String> history;
-    protected final ScrollPane historyPane;
-    protected final Table historyList;
+    final BoardGroup board;
+    final Text turnText;
+    final Button giveUp;
+    private final Button getHelp;
+    private final Button showResults;
+    final Image mute;
+    private final List<String> history;
+    private final ScrollPane historyPane;
+    final Table historyList;
 
-    protected boolean isGameOver = false;
-    protected int winner = 0; // NOTE: do not consider this valid until isGameOver
-    protected final GameOverOverlay gameOverOverlay;
+    private boolean isGameOver = false;
+    private int winner = 0; // NOTE: do not consider this valid until isGameOver
+    private final GameOverOverlay gameOverOverlay;
 
-    protected final Account player1;
-    protected final Account player2;
-    protected final AiDifficulty ai1;
-    protected final AiDifficulty ai2;
-    protected final Color player1Color;
-    protected final Color player2Color;
-    protected Boolean paused = false;
+    private final Account player1;
+    private final Account player2;
+    private final AiDifficulty ai1;
+    private final AiDifficulty ai2;
+    private final Color player1Color;
+    private final Color player2Color;
+    private Boolean paused = false;
 
-    protected final LibgdxChessGame chessGame;
-    protected Button endTurnButton;
+    private final LibgdxChessGame chessGame;
+    private Button endTurnButton;
 
     /**
      * Set up a new gamescreen using a game instance and default settings.
      * @param chessGame current ChessGame.
      * @param game The game to use instead of chessgame.
      */
-    public GameScreen(LibgdxChessGame chessGame, AbstractGame game) {
+    GameScreen(LibgdxChessGame chessGame, AbstractGame game) {
         this(
             chessGame,
             null,
@@ -275,7 +275,7 @@ public class GameScreen extends AbstractScreen {
             this.game.getBoard().setupPracticeGame((int)(Math.random() * 5) + 20);
     }
 
-    protected void gameOver(int winner) {
+    void gameOver(int winner) {
         this.winner = winner;
         isGameOver = true;
         board.unselectSelected();
@@ -371,7 +371,7 @@ public class GameScreen extends AbstractScreen {
      * NOTE: May want to update this later if we implement arbitrary color
      * choice
      */
-    protected void setTurnText() {
+    void setTurnText() {
         String p1Name = player1 != null ? player1.getName() : ai1 == null ? "Player 1" : "AI";
         String p2Name = player2 != null ? player2.getName() : ai2 == null ? "Player 2" : "AI";
         if (!isGameOver) {
@@ -383,8 +383,6 @@ public class GameScreen extends AbstractScreen {
                             "It's a draw!");
         }
 
-        float size = Math.min(WORLDWIDTH, WORLDHEIGHT);
-        size = Math.min(size, 1000);
         turnText.setCenter(WORLDWIDTH / 4.f * 3.f, WORLDHEIGHT - 20.f);
     }
 

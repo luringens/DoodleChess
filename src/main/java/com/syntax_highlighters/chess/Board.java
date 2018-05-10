@@ -279,9 +279,7 @@ public class    Board {
         // list of the board
         // This does not fully encapsulate the board, but it does hopefully help
         // against accidentally adding/removing pieces without intending to
-        List<IChessPiece> copied = new ArrayList<>();
-        copied.addAll(this.pieces);
-        return copied;
+        return new ArrayList<>(this.pieces);
     }
 
     /**

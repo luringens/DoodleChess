@@ -29,17 +29,17 @@ import com.syntax_highlighters.chess.gui.AssetLoader;
  * An actor representing the board in the chess game
  */
 public class BoardGroup extends Group {
-    private AbstractGame game;
-    private AssetManager assetManager;
+    private final AbstractGame game;
+    private final AssetManager assetManager;
     private ChessPieceActor selected;
-    private Color blackColor;
-    private Color whiteColor;
+    private final Color blackColor;
+    private final Color whiteColor;
     private boolean isAnimating = false;
-    private Group pieceGroup;
+    private final Group pieceGroup;
     private final float LEGEND_OFFSET = 50;
-    private PopupSelectionMenu promotionSelection;
+    private final PopupSelectionMenu promotionSelection;
     private Move suggestedMove = null;
-    private List<ChessTileActor> tiles = new ArrayList<>();
+    private final List<ChessTileActor> tiles = new ArrayList<>();
 
     /**
      * Constructor
@@ -257,7 +257,7 @@ public class BoardGroup extends Group {
         }
     }
 
-    private static interface AnimationCompletedCallback {
+    private interface AnimationCompletedCallback {
         void callback(Move movePerformed);
     }
 
@@ -274,7 +274,7 @@ public class BoardGroup extends Group {
         if (chessPieceActor.getPiece().getColor() != game.nextPlayerColor()) return false;
 
         selected = chessPieceActor;
-        if(selected != null) selected.setSelected(true);
+        selected.setSelected(true);
         return true;
     }
 
@@ -335,7 +335,7 @@ public class BoardGroup extends Group {
         return suggestedMove;
     }
 
-    public void clearSuggestion() {
+    private void clearSuggestion() {
         suggestedMove = null;
     }
 

@@ -1,8 +1,5 @@
 package com.syntax_highlighters.chess.general;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.ArrayList;
 
 import com.syntax_highlighters.chess.Board;
@@ -21,6 +18,8 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.entities.MiniMaxAIPlayer;
 
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests pertaining to the behavior of the AI.
@@ -47,7 +46,7 @@ class AiTest {
         IAiPlayer ai = new MiniMaxAIPlayer(AiDifficulty.ShortSighted);
 
         System.out.println(board);
-        //ai.PerformMove(game);
+        ai.PerformMove(game);
         System.out.println(board);
 
         assertFalse(board.getAllPieces().contains(queen));
@@ -69,7 +68,7 @@ class AiTest {
         IAiPlayer ai = new MiniMaxAIPlayer(AiDifficulty.ShortSighted);
 
         System.out.println(board);
-        //ai.PerformMove(game);
+        ai.PerformMove(game);
         System.out.println(board);
 
         assertTrue(game.isGameOver());
@@ -91,7 +90,7 @@ class AiTest {
         IAiPlayer ai = new MiniMaxAIPlayer(AiDifficulty.ShortSighted);
 
         System.out.println(board);
-        //ai.PerformMove(game);
+        ai.PerformMove(game);
         System.out.println(board);
         Position queenPos = queen.getPosition() ;
 
@@ -186,7 +185,7 @@ class AiTest {
         System.out.println(board);
         Position rookPos = rook.getPosition() ;
 
-        assertTrue(rookPos != new Position(5,1));
+        assertNotSame(rookPos, new Position(5, 1));
     }
     @Test
     void RookSuicideTest2(){

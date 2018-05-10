@@ -7,9 +7,9 @@ package com.syntax_highlighters.chess;
  * rather than have a blocking interface.
  */
 public class AsyncPlayer {
-    Wrapper wrapper;
+    private final Wrapper wrapper;
 
-    public AsyncPlayer(IBlockingPlayer p) {
+    AsyncPlayer(IBlockingPlayer p) {
         wrapper = new Wrapper(p);
     }
 
@@ -18,7 +18,7 @@ public class AsyncPlayer {
      * @param game The game to work with.
      * @return The received move or null.
      */
-    public Move getMove(AbstractGame game) {
+    Move getMove(AbstractGame game) {
         return wrapper.getMoveSynchronous(game);
     }
 
@@ -27,7 +27,7 @@ public class AsyncPlayer {
      * @param game The game to work with.
      * @return The received move or null.
      */
-    public Move pollMove(AbstractGame game) {
+    Move pollMove(AbstractGame game) {
         switch (wrapper.getState()) {
             case Done: return wrapper.getResult();
             case Waiting: wrapper.startProcess(game);
@@ -39,7 +39,7 @@ public class AsyncPlayer {
      * Returns true if the player can no longer perform moves.
      * @return true if the player can no longer perform moves.
      */
-    public boolean hasCrashed() {
+    private boolean hasCrashed() {
         return wrapper.getEx() == null;
     }
 
@@ -55,23 +55,26 @@ public class AsyncPlayer {
 class Wrapper {
     private State state = State.Waiting;
     private Move result = null;
-    private IBlockingPlayer player;
+    private final IBlockingPlayer player;
     private Exception ex;
 
-    public Wrapper(IBlockingPlayer player) {
+    Wrapper(IBlockingPlayer player) {
         this.player = player;
     }
 
-    public Move getMoveSynchronous(AbstractGame game) {
+    Move getMoveSynchronous(AbstractGame game) {
         return player.GetMove(game);
     }
 
-    public void startProcess(AbstractGame game) {
+    void startProcess(AbstractGame game) {
         if (state != State.Waiting) return;
         state = State.Runnning;
-        new Thread(new Runnable(){
-            public void run() {
+        new Thread(() -> {
+            try {
                 result = player.GetMove(game);
+            } catch (Exception ex) {
+                this.ex = ex;
+            } finally {
                 state = State.Done;
             }
         }).start();
@@ -81,7 +84,7 @@ class Wrapper {
         return state;
     }
 
-    public Move getResult() {
+    Move getResult() {
         if (state == State.Done) {
             Move r = result;
             result = null;
@@ -91,7 +94,7 @@ class Wrapper {
         else return null;
     }
 
-    public Exception getEx() {
+    Exception getEx() {
         return ex;
     }
 

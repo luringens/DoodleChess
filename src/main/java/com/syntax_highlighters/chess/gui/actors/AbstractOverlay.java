@@ -12,12 +12,12 @@ import com.syntax_highlighters.chess.gui.WobbleDrawable;
 /**
  * Abstract overlay class implementing common functionality between overlays.
  */
-public class AbstractOverlay extends Actor {
+class AbstractOverlay extends Actor {
     private final Texture pixel;
     private final WobbleDrawable overlay;
     private final Text title;
 
-    public AbstractOverlay(String titleText, AssetManager assetManager) {
+    AbstractOverlay(String titleText, AssetManager assetManager) {
         pixel = assetManager.get("pixel.png", Texture.class);
         overlay = new WobbleDrawable(assetManager.get("overlay.png", Texture.class), assetManager);
         overlay.doAnimation(false);

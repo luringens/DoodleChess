@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 
-public class PopupSelectionMenu extends Actor {
-    private List<MenuIcon> buttons = new ArrayList<>();
+class PopupSelectionMenu extends Actor {
+    private List<MenuIcon> buttons;
 
     private ClickListener listener;
     
@@ -33,8 +33,7 @@ public class PopupSelectionMenu extends Actor {
     @Override
     public void setY(float y) {
         super.setY(y);
-        for (int i = 0; i < buttons.size(); i++) {
-            MenuIcon ic = buttons.get(i);
+        for (MenuIcon ic : buttons) {
             ic.setY(y);
         }
     }

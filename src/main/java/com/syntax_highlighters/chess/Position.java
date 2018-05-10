@@ -195,7 +195,7 @@ public class Position implements Serializable {
         return intermediatePositions;
     }
 
-    public static interface Manipulator {
+    public interface Manipulator {
         Position transform(Position pos);
     }
 

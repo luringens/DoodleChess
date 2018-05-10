@@ -79,7 +79,7 @@ class coordPieceTest {
 
     @Test
     void equalPositionsAreConsideredEqual(){
-    assertTrue(p.equals(new Position (3,2)));
+        assertEquals(p, new Position(3, 2));
     }
 
     @Test

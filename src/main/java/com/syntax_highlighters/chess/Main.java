@@ -11,7 +11,7 @@ import com.syntax_highlighters.chess.gui.LibgdxChessGame;
  *
  * Creates a new application running our amazing version of chess!
  */
-public class Main {
+class Main {
     /**
      * Program entry point.
      *

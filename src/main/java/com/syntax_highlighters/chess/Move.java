@@ -30,9 +30,9 @@ public class Move implements Serializable {
     boolean hasDoneMove = false;
     Position oldPos;
     Position newPos;
-    protected boolean hadMoved;
-    protected transient IChessPiece tookPiece = null;
-    protected String pieceString;
+    boolean hadMoved;
+    transient IChessPiece tookPiece = null;
+    String pieceString;
 
     /**
      * IMPORTANT: This must be changed on every release of the class
@@ -43,7 +43,7 @@ public class Move implements Serializable {
     /**
      * For inheritance only!
      */
-    protected Move() {}
+    Move() {}
     
     /**
      * Construct a new Move from the given position to the given position using
@@ -66,7 +66,7 @@ public class Move implements Serializable {
      *
      * Used in subclasses.
      */
-    protected void setTakenPiece(IChessPiece piece) {
+    void setTakenPiece(IChessPiece piece) {
         this.tookPiece = piece;
     }
 
@@ -75,7 +75,7 @@ public class Move implements Serializable {
      *
      * Used in subclasses.
      */
-    protected IChessPiece getTakenPiece() {
+    IChessPiece getTakenPiece() {
         return this.tookPiece;
     }
     
@@ -247,9 +247,9 @@ public class Move implements Serializable {
     }
 
     public static class PositionChange {
-        public IChessPiece pieceMoved;
-        public Position oldPos;
-        public Position newPos;
+        public final IChessPiece pieceMoved;
+        final Position oldPos;
+        public final Position newPos;
         
         /**
          * Convenience constructor.
@@ -258,7 +258,7 @@ public class Move implements Serializable {
          * @param op Start position
          * @param np End position
          */
-        public PositionChange(IChessPiece p, Position op, Position np) {
+        PositionChange(IChessPiece p, Position op, Position np) {
             pieceMoved = p;
             oldPos = op;
             newPos = np;

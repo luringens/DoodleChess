@@ -5,7 +5,6 @@ import com.syntax_highlighters.chess.entities.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestTemplate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -202,7 +201,7 @@ class ChessRulesTest {
         enpassant.get().DoMove(board);
 
         // check that white pawn gets captured
-        assertTrue(board.getAtPosition(whitePos) == null, "En passant does not capture enemy piece");
+        assertNull(board.getAtPosition(whitePos), "En passant does not capture enemy piece");
     }
 
     @Test
@@ -393,7 +392,7 @@ class ChessRulesTest {
         pieces.add(new ChessPieceKing(new Position(5,1),Color.WHITE));
         pieces.add(new ChessPieceKing(new Position(5,8),Color.BLACK));
         Board b = new Board(pieces);
-        ChessGame game = ChessGame.setupTestBoard(board, Color.WHITE);
+        ChessGame game = ChessGame.setupTestBoard(b, Color.WHITE);
 
         assertTrue(game.isGameOver());
     }

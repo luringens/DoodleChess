@@ -66,7 +66,7 @@ class NetworkTest {
      * Assert that the game can (de)serialize moves between instances.
      */
     @Test
-    void canTransferMovesToSelf() throws Exception {
+    void canTransferMovesToSelf() {
         // Send a move
         Board hostBoard = new Board();
         hostBoard.setupNewGame();
@@ -87,13 +87,11 @@ class HostWrapper {
     private Exception ex;
 
     public HostWrapper(int timeout, int port) {
-        new Thread(new Runnable(){
-            public void run() {
-                try {
-                    host = new Host(timeout, port);
-                } catch (IOException e) {
-                    ex = e;
-                }
+        new Thread(() -> {
+            try {
+                host = new Host(timeout, port);
+            } catch (IOException e) {
+                ex = e;
             }
         }).start();
     }

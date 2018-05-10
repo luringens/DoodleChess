@@ -31,8 +31,7 @@ public class Button extends Actor {
     private boolean selected = false;
 
     private static final int TEXTURE_COUNT = 20;
-    private static boolean hasRendered = false;
-    public static ArrayList<FrameBuffer> preRenderedButtons = new ArrayList<>();
+    private static final ArrayList<FrameBuffer> preRenderedButtons = new ArrayList<>();
     private long lastFrame = 0;
 
     public Button(String buttonText, AssetManager manager)
@@ -50,6 +49,7 @@ public class Button extends Actor {
             System.out.println(shader.getLog());
         }
 
+        boolean hasRendered = false;
         if(!hasRendered)
             renderTextures(TEXTURE_COUNT, texture, shader);
 
@@ -72,7 +72,7 @@ public class Button extends Actor {
      * Button builder for easier, more declarative button creation.
      */
     public static class Builder {
-        private Button b;
+        private final Button b;
         public Builder(String text, AssetManager assetManager) {
             b = new Button(text, assetManager);
         }
@@ -137,7 +137,7 @@ public class Button extends Actor {
          * Specify the size of this button
          * @param x The x position of the button
          * @param y The y position of the button
-         * @return
+         * @return This object.
          */
         public Builder position(float x, float y) {
             b.setPosition(x, y);
@@ -157,7 +157,7 @@ public class Button extends Actor {
     /**
      * Callback interface for ease of adding listeners.
      */
-    public static interface Callback {
+    public interface Callback {
         /**
          * The action to be performed when the button is clicked.
          *

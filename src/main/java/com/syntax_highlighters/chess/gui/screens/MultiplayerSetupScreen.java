@@ -29,13 +29,8 @@ import com.syntax_highlighters.chess.network.ConnectionStatus;
 import com.syntax_highlighters.chess.network.Host;
 
 public class MultiplayerSetupScreen extends AbstractScreen {
-    private AssetManager assetManager;
-    private final Button mainMenuButton;
-    private final Button connectButton;
-    private final Button hostButton;
     private final TextField opponentTextField;
-    private final Text opponentTextFieldLabel;
-    
+
     private final Text statusLabel;
     private Timer statusUpdater = null;
     private boolean uiLock = false;
@@ -45,32 +40,32 @@ public class MultiplayerSetupScreen extends AbstractScreen {
 
     public MultiplayerSetupScreen(LibgdxChessGame game) {
         super(game);
-        this.assetManager = game.getAssetManager();
+        AssetManager assetManager = game.getAssetManager();
 
-        mainMenuButton = new Button.Builder("Main menu", assetManager)
-            .position(WORLDWIDTH / 2.0f - 250/2.f - 250 - 10, WORLDHEIGHT / 2.0f - 400.f + 25.f)
-            .size(250, 75)
-            .callback(() -> {
-                if (!uiLock) {
-                    game.setScreen(new MainMenuScreen(game));
-                }
-            })
-            .stage(stage)
-            .create();
+        new Button.Builder("Main menu", assetManager)
+                .position(WORLDWIDTH / 2.0f - 250 / 2.f - 250 - 10, WORLDHEIGHT / 2.0f - 400.f + 25.f)
+                .size(250, 75)
+                .callback(() -> {
+                    if (!uiLock) {
+                        game.setScreen(new MainMenuScreen(game));
+                    }
+                })
+                .stage(stage)
+                .create();
 
-        connectButton = new Button.Builder("Connect", assetManager)
-            .position(WORLDWIDTH / 2.0f - 250/2.f, WORLDHEIGHT / 2.0f - 75.f - 40)
-            .size(250, 75)
-            .callback(() -> {connect();})
-            .stage(stage)
-            .create();
+        new Button.Builder("Connect", assetManager)
+                .position(WORLDWIDTH / 2.0f - 250 / 2.f, WORLDHEIGHT / 2.0f - 75.f - 40)
+                .size(250, 75)
+                .callback(this::connect)
+                .stage(stage)
+                .create();
 
-        hostButton = new Button.Builder("Host", assetManager)
-            .position(WORLDWIDTH / 2.0f - 250/2.f + 10.f + 250.f, WORLDHEIGHT / 2.0f - 400.f + 25.f)
-            .size(250, 75)
-            .callback(() -> {host();})
-            .stage(stage)
-            .create();
+        new Button.Builder("Host", assetManager)
+                .position(WORLDWIDTH / 2.0f - 250 / 2.f + 10.f + 250.f, WORLDHEIGHT / 2.0f - 400.f + 25.f)
+                .size(250, 75)
+                .callback(this::host)
+                .stage(stage)
+                .create();
         
         // opponent text field style
         // For more stuff on using text fields, check out 
@@ -91,7 +86,7 @@ public class MultiplayerSetupScreen extends AbstractScreen {
         stage.addActor(opponentTextField);
 
         // label for opponent text field
-        opponentTextFieldLabel = new Text(AssetLoader.GetDefaultFont(assetManager, false));
+        Text opponentTextFieldLabel = new Text(AssetLoader.GetDefaultFont(assetManager, false));
         opponentTextFieldLabel.setText("Enter opponent:");
         opponentTextFieldLabel.setColor(Color.BLACK);
         opponentTextFieldLabel.setCenter(WORLDWIDTH / 2.f, WORLDHEIGHT / 2.f + 40);
@@ -187,7 +182,7 @@ public class MultiplayerSetupScreen extends AbstractScreen {
         statusLabel.setText(message);
         float y = stage.getWidth()/2.f - statusLabel.getWidth()/2.f;
         float x = stage.getHeight()/2.f - 130;
-        statusLabel.setPosition(y, x);
+        statusLabel.setPosition(x, y);
     }
 
     private void nextScreen() {

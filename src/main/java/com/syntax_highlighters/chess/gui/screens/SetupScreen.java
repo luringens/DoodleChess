@@ -57,12 +57,12 @@ public class SetupScreen extends AbstractScreen {
     private SelectBox<String> player1Title;
     private SelectBox<String> player2Title;
     
-    private SelectBox<String> gameModes;
+    private final SelectBox<String> gameModes;
     
 
     // buttons for displaying the color picker dialog for each player
-    private Button player1ColorShow;
-    private Button player2ColorShow;
+    private final Button player1ColorShow;
+    private final Button player2ColorShow;
     private int selectingPlayer = -1;
 
     private final Button playButton;    // start game
@@ -72,10 +72,10 @@ public class SetupScreen extends AbstractScreen {
     private final PencilSelector selector; // color picker
 
     // constants
-    final float buttonBigWidth = 200;
-    final float buttonBigHeight = 60;
-    final float buttonSmallWidth = 175;
-    final float buttonSmallHeight = 50;
+    private final float buttonBigWidth = 200;
+    private final float buttonBigHeight = 60;
+    private final float buttonSmallWidth = 175;
+    private final float buttonSmallHeight = 50;
 
     // logical color variables of the two players
     private Color player1Color = Color.WHITE;
@@ -86,10 +86,10 @@ public class SetupScreen extends AbstractScreen {
 
     // radio button groups for each player indicating whether the player is a
     // human player or AI player
-    private RadioGroup rb1;
-    private RadioGroup rb2;
+    private final RadioGroup rb1;
+    private final RadioGroup rb2;
 
-    private CheckButton randomCheckButton;
+    private final CheckButton randomCheckButton;
 
     public SetupScreen(LibgdxChessGame game)
     {
@@ -121,7 +121,7 @@ public class SetupScreen extends AbstractScreen {
 
         // lists
         final List<String> accounts = game.getAccountManager().getAll().stream()
-            .map(a->a.getName())
+            .map(Account::getName)
             .collect(Collectors.toList());
         final List<String> pl1Accounts = Stream.concat(Stream.of("Player1"), accounts.stream())
             .collect(Collectors.toList());

@@ -17,8 +17,6 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
  * Helper class which loads the assets used in the game.
  */
 public class AssetLoader {
-    public static BitmapFont font;
-
     public static BitmapFont GetDefaultFont(AssetManager assetManager) {
         return GetDefaultFont(assetManager, 24);
     }

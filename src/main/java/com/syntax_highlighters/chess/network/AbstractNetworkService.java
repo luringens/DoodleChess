@@ -15,12 +15,12 @@ import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.Move;
 
 public abstract class AbstractNetworkService implements INetworkService {
-    protected static final int HOST_PORT = 6666;
-    protected Socket socket;
-    protected BufferedReader inputReader;
-    protected DataOutputStream outputStream;
-    protected ConnectionStatus status = ConnectionStatus.NotConnected;
-    protected String lastError = null;
+    static final int HOST_PORT = 6666;
+    Socket socket;
+    BufferedReader inputReader;
+    DataOutputStream outputStream;
+    ConnectionStatus status = ConnectionStatus.NotConnected;
+    private String lastError = null;
 
     /** {@inheritDoc} */
 	@Override

@@ -12,9 +12,9 @@ import com.syntax_highlighters.chess.network.ConnectionStatus;
  * Game class keeping track of the game state and an opponent on the internet.
  */
 public class NetworkChessGame extends ChessGame {
-    protected Color opponentColor;
-    AbstractNetworkService opponent;
-    AsyncPlayer opponentAsync;
+    private final Color opponentColor;
+    private final AbstractNetworkService opponent;
+    private final AsyncPlayer opponentAsync;
 
     /**
      * Creates a new, blank game and sets up the board.
@@ -31,19 +31,17 @@ public class NetworkChessGame extends ChessGame {
 
     /** {@inheritDoc} */
     @Override
-    public Move PerformAIMove() {
+    public void PerformAIMove() {
         if (nextPlayerIsAI() && !gameOver) {
             Move move = opponentAsync.getMove(this);
             if (move != null) {
                 performMove(move);
-                return move;
             }
             else if (opponent.GetStatus() != ConnectionStatus.Connected) {
                 forceGameEnd();
             }
         }
-        
-        return null;
+
     }
     
     /** {@inheritDoc} */
@@ -67,25 +65,6 @@ public class NetworkChessGame extends ChessGame {
     @Override
     public boolean nextPlayerIsAI() {
         return nextPlayerColor == opponentColor;
-    }
-
-    /** {@inheritDoc} */
-    public List<Move> performMove(Position from, Position to) {
-        IChessPiece piece = getPieceAtPosition(from);
-        
-        // Check that the piece exists
-        if (piece == null) return new ArrayList<>(); // there is no piece at the given position
-        
-        // Check that the piece belongs to the current player
-        if (piece.getColor() != nextPlayerColor) return new ArrayList<>(); // wrong color of piece
-        
-        // Performs move if valid, returns whether move was performed
-        List<Move> result = board.getMove(piece, to);
-        if (result.size() == 1) {
-            Move move = result.get(0);
-            performMove(move);
-        }
-        return result;
     }
     
     /** {@inheritDoc} */

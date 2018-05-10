@@ -10,9 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class RadioGroup extends Group implements ISelectableGroup {
-    List<RadioButton> buttons = new ArrayList<>();
-    private AssetManager assetManager;
-    private boolean horizontal;
+    private final List<RadioButton> buttons = new ArrayList<>();
+    private final AssetManager assetManager;
+    private final boolean horizontal;
     private Callback callback; // callback when something changes
 
     public RadioGroup(AssetManager assetManager, boolean horizontal) {
@@ -89,7 +89,7 @@ public class RadioGroup extends Group implements ISelectableGroup {
     @Override
     public float getHeight() {
         return buttons.stream()
-            .map(b -> b.getHeight())
+            .map(AbstractSelectableButton::getHeight)
             .reduce(0f, (x, y) -> horizontal? Math.max(x, y) : x+y);
     }
     
@@ -180,7 +180,7 @@ public class RadioGroup extends Group implements ISelectableGroup {
         this.callback = callback;
     }
 
-    public static interface Callback {
+    public interface Callback {
         void callback();
     }
 } 

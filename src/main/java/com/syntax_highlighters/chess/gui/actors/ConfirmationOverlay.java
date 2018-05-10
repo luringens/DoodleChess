@@ -50,7 +50,7 @@ public class ConfirmationOverlay extends AbstractOverlay {
      * Confirmation dialog builder.
      */
     public static class Builder {
-        private AssetManager assetManager;
+        private final AssetManager assetManager;
         
         private String titleContent;
         private String confirmTextContent = "Confirm"; // default text for confirm button
@@ -126,13 +126,13 @@ public class ConfirmationOverlay extends AbstractOverlay {
          */
         public ConfirmationOverlay create() {
             // checking that all the required things are in place
-            if (!(titleContent != null)) {
+            if (titleContent == null) {
                 throw new IllegalStateException("title must be specified");
             }
-            if (!(confirmTextContent != null)) {
+            if (confirmTextContent == null) {
                 throw new IllegalStateException("confirmText must be specified");
             }
-            if (!(cancelTextContent != null)) {
+            if (cancelTextContent == null) {
                 throw new IllegalStateException("cancelText must be specified");
             }
             

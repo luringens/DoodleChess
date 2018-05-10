@@ -8,15 +8,15 @@ import com.syntax_highlighters.chess.gui.AssetLoader;
 import com.syntax_highlighters.chess.gui.WobbleDrawable;
 
 public abstract class AbstractSelectableButton extends AbstractSelectable {
-    protected Texture boxTexture;
-    protected Texture checkedTexture;
-    protected WobbleDrawable box;
-    protected WobbleDrawable checked;
-    private Text text;
+    Texture boxTexture;
+    Texture checkedTexture;
+    WobbleDrawable box;
+    WobbleDrawable checked;
+    private final Text text;
     private final static float SELECTABLE_BUTTON_SIZE = 20f;
-    protected AssetManager assetManager;
+    final AssetManager assetManager;
 
-    public AbstractSelectableButton(AssetManager am, String buttonText, Color textColor) {
+    AbstractSelectableButton(AssetManager am, String buttonText, Color textColor) {
         this.assetManager = am;
         text = new Text(AssetLoader.GetDefaultFont(assetManager, false));
         text.setText(buttonText);

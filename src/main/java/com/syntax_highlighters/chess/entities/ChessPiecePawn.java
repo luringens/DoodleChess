@@ -164,7 +164,7 @@ public class ChessPiecePawn extends AbstractChessPiece {
      *
      * @param board The board
      * @param possibleMoves The list to add the move(s) to
-     * @param pos The position the move(s) lead to
+     * @param to The position the move(s) lead to
      */
     private void addRegularMove(Board board, ArrayList<Move> possibleMoves, Position to) {
         Position from = getPosition();

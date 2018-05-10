@@ -10,7 +10,7 @@ import com.syntax_highlighters.chess.entities.ChessPieceKing;
 import org.junit.jupiter.api.Test;
 
 class RandomMapgenTest{
-    private Random rdm = new Random();
+    private final Random rdm = new Random();
 
     @Test
     void SetupPracGamehasKingsTest(){

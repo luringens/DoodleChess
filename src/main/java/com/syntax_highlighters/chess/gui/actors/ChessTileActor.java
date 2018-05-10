@@ -15,11 +15,11 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
 /**
  * Actor representing one chess tile
  */
-public class ChessTileActor extends Actor {
-    private boolean isBlack;
-    private Position position;
-    private AssetManager assetManager;
-    private BoardGroup boardGroup;
+class ChessTileActor extends Actor {
+    private final boolean isBlack;
+    private final Position position;
+    private final AssetManager assetManager;
+    private final BoardGroup boardGroup;
 
     /**
      * Constructor

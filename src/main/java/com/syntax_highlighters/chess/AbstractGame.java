@@ -17,12 +17,12 @@ import com.syntax_highlighters.chess.entities.IChessPiece;
  * the game.
  */
 public abstract class AbstractGame {
-    protected Board board;
-    protected AsyncPlayer whiteAI = null;
-    protected AsyncPlayer blackAI = null;
-    protected Color nextPlayerColor = Color.WHITE;
-    protected List<Move> moveHistory = new ArrayList<>();
-    protected boolean gameOver = false;
+    Board board;
+    AsyncPlayer whiteAI = null;
+    AsyncPlayer blackAI = null;
+    Color nextPlayerColor = Color.WHITE;
+    List<Move> moveHistory = new ArrayList<>();
+    boolean gameOver = false;
 
     /**
      * Return a List of String containing all moves to date.
@@ -100,10 +100,8 @@ public abstract class AbstractGame {
      *
      * If the next player is an AI player, make the player perform a move, and
      * then change turns. Otherwise do nothing.
-     *
-     * @return The move that was performed or null if no move was performed.
      */
-    public Move PerformAIMove() {
+    public void PerformAIMove() {
         if (nextPlayerIsAI()) {
             Move move;
             if (nextPlayerColor.isWhite()) {
@@ -113,9 +111,7 @@ public abstract class AbstractGame {
                 move = blackAI.getMove(this);
             }
             if (move != null) this.performMove(move);
-            return move;
         }
-        return null;
     }
     
     /**
@@ -170,8 +166,8 @@ public abstract class AbstractGame {
      * @param p The position to check
      * @return true if the position is on the board, false otherwise
      */
-    public boolean isOnBoard(Position p) {
-        return board.isOnBoard(p);
+    public boolean isOutsideBoard(Position p) {
+        return !board.isOnBoard(p);
     }
 
     /**
@@ -221,7 +217,7 @@ public abstract class AbstractGame {
      * @param p2 A position to compare.
      * @return true if the squares are the same color, false otherwise
      */
-    public boolean sameColoredSquare(Position p1, Position p2) {
+    boolean sameColoredSquare(Position p1, Position p2) {
         return (p1.getX() + p1.getY()) % 2 == (p2.getX() + p2.getY()) % 2;
     }
 
@@ -317,8 +313,8 @@ public abstract class AbstractGame {
      */
     public abstract AbstractGame copy();
 
-    protected List<Move> copyMoveHistory() {
-        return moveHistory.stream().map(m -> m.copy()).collect(Collectors.toList());
+    List<Move> copyMoveHistory() {
+        return moveHistory.stream().map(Move::copy).collect(Collectors.toList());
     }
 
     /**

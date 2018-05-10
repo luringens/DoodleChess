@@ -21,10 +21,10 @@ import com.syntax_highlighters.chess.gui.Audio;
  * A drawable wrapper for a IChessPiece.
  */
 public class ChessPieceActor extends Actor {
-    private IChessPiece piece;
-    private AbstractGame game;
-    private AssetManager assetManager;
-    private ShaderProgram setColorShader;
+    private final IChessPiece piece;
+    private final AbstractGame game;
+    private final AssetManager assetManager;
+    private final ShaderProgram setColorShader;
     private boolean isAnimating = false;
     private boolean isSelected = false;
     private Color color;
@@ -149,9 +149,8 @@ public class ChessPieceActor extends Actor {
         float height = getHeight();
         float tileWidth = this.getParent().getWidth() / Board.BOARD_WIDTH;
         float tileHeight = this.getParent().getHeight() / Board.BOARD_HEIGHT;
-        Position pos = position;
         MoveToAction action = new MoveToAction();
-        action.setPosition(pos.getX() * tileWidth - tileWidth / 2.0f - width/2.0f, pos.getY() * tileHeight - tileHeight / 2.0f - height/2.0f);
+        action.setPosition(position.getX() * tileWidth - tileWidth / 2.0f - width/2.0f, position.getY() * tileHeight - tileHeight / 2.0f - height/2.0f);
         action.setDuration(0.4f);
         action.setInterpolation(Interpolation.pow2);
         setSize(tileWidth, tileHeight);

@@ -19,7 +19,7 @@ import com.syntax_highlighters.chess.gui.actors.Text;
  * Screen displaying the scores of the top ten players accounts in the accounts
  * data.
  */
-public class ScoreScreen extends AbstractScreen {
+class ScoreScreen extends AbstractScreen {
     private final Text title;
 
     private final Table scoreList;

@@ -95,7 +95,7 @@ public class ChessGame extends AbstractGame {
      * @return true if the game should be drawn due to insufficient material,
      * false otherwise
      */
-    public boolean insufficientMaterial() {
+    private boolean insufficientMaterial() {
         List<IChessPiece> pieces = board.getAllPieces();
 
         List<IChessPiece> kings = pieces.stream()

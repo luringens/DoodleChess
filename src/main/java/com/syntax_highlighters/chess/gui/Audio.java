@@ -16,7 +16,7 @@ public class Audio {
         music.setVolume(1.0f);
         music.play();
         music.setLooping(true);
-        if(num == false) music.setVolume(0.0f);
+        if(!num) music.setVolume(0.0f);
 
     }
 

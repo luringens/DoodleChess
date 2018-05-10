@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class DoodleActor extends Actor {
-    private Texture tex;
-    private float angle;
+    private final Texture tex;
+    private final float angle;
     private final static float CENTER_DISTANCE = 650.f;
     private final static float CENTER_OFFSET_BOUND = 200.f;
     private final static float SIZE = 150.f;

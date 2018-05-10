@@ -1,6 +1,6 @@
 package com.syntax_highlighters.chess.gui.actors;
 
-public interface ISelectableGroup {
+interface ISelectableGroup {
     void signalChanged(AbstractSelectable changed);
     void addSelectable(AbstractSelectable selectable, AbstractSelectable.Callback callback);
     int size();

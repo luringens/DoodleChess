@@ -39,7 +39,6 @@ public class MiniMaxAIPlayer implements IAiPlayer {
     /**
      * Create a minimaxing AI player with the given color and difficulty.
      *
-     * @param color Whether or not the AI player plays with the white pieces
      * @param diff The difficulty setting of the AI
      */
     public MiniMaxAIPlayer(AiDifficulty diff) {
@@ -89,7 +88,6 @@ public class MiniMaxAIPlayer implements IAiPlayer {
      * Modifies the board state by making the move it deems the "best move".
      * 
      * @param depth The number of moves to look ahead
-     * @param board The current board state
      * @return The suggested best move.
      */
     private Move MiniMaxMove(int depth, AbstractGame game) {
@@ -135,7 +133,7 @@ public class MiniMaxAIPlayer implements IAiPlayer {
         }).collect(Collectors.toList());
         Optional<result> optionalMove = movess.stream().max(Comparator.comparing(result -> result.score));
 
-        return optionalMove.isPresent() ? optionalMove.get().move : null;
+        return optionalMove.map(result -> result.move).orElse(null);
     }
 
     /**
@@ -146,7 +144,6 @@ public class MiniMaxAIPlayer implements IAiPlayer {
      * This method uses alpha-beta pruning.
      *
      * @param depth The remaining depth to consider
-     * @param board The board state at this stage of the lookahead
      * @param isMaximizing Whether the player should maximize or minimize at
      * this point
      * @param alpha The current alpha value
@@ -216,6 +213,6 @@ class result {
         move = m;
         score = s;
     }
-    Move move;
-    int score;
+    final Move move;
+    final int score;
 }

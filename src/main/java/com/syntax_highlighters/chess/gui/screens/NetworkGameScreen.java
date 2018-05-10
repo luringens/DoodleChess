@@ -9,7 +9,7 @@ import com.syntax_highlighters.chess.gui.actors.Text;
 
 /** Game screen with additional network UI elements. */
 public class NetworkGameScreen extends GameScreen {
-    protected final Text netText;
+    private final Text netText;
 
     /** {@inheritDoc} */
     public NetworkGameScreen(LibgdxChessGame chessGame, NetworkChessGame game) {
