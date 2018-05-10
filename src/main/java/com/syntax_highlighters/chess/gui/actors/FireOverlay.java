@@ -14,15 +14,18 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.BurningChess;
+import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 import com.syntax_highlighters.chess.gui.Audio;
 import com.syntax_highlighters.chess.gui.LibgdxChessGame;
+import com.syntax_highlighters.chess.gui.screens.GameScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +34,10 @@ public class FireOverlay extends Actor {
 
     BurningChess game;
     private List<ChessTileActor> tiles;
-    private List<Circle> splashes = new ArrayList<>();
+    private List<Circle> blacksplashes = new ArrayList<>();
+    private List<Circle> whitesplashes = new ArrayList<>();
+    private Group blackAnimations = new Group();
+    private Group whiteAnimations = new Group();
     ShapeRenderer renderer;
     Ellipse whiteBurn;
     Ellipse blackBurn;
@@ -106,7 +112,11 @@ public class FireOverlay extends Actor {
 
     private boolean inSplash(float x, float y) {
         float v = 0.0f;
-        for(Circle k : splashes){
+        for(Circle k : whitesplashes){
+            Vector2 ballPos = new Vector2(x - k.x, y - k.y);
+            v += k.radius * k.radius / (ballPos.x * ballPos.x + ballPos.y * ballPos.y);
+        }
+        for(Circle k : blacksplashes){
             Vector2 ballPos = new Vector2(x - k.x, y - k.y);
             v += k.radius * k.radius / (ballPos.x * ballPos.x + ballPos.y * ballPos.y);
         }
@@ -122,7 +132,10 @@ public class FireOverlay extends Actor {
 
         Circle splashcircle = new Circle(pos.x, pos.y,0.0f);
 
-        splashes.add(splashcircle);
+        if(piece.getColor() == com.syntax_highlighters.chess.entities.Color.WHITE)
+            whitesplashes.add(splashcircle);
+        else
+            blacksplashes.add(splashcircle);
 
         CircleAnimation anim = new CircleAnimation(splashcircle, 200.0f);
         anim.setDuration(0.3f);
@@ -132,9 +145,17 @@ public class FireOverlay extends Actor {
         anim2.setInterpolation(Interpolation.linear);
 
         RunnableAction end = new RunnableAction();
-        end.setRunnable(() -> splashes.remove(splashcircle));
+        end.setRunnable(() -> {
+            if(piece.getColor() == com.syntax_highlighters.chess.entities.Color.WHITE)
+                whitesplashes.remove(splashcircle);
+            else
+                blacksplashes.remove(splashcircle);
+        });
 
-        this.addAction(new SequenceAction(anim, anim2, end));
+        if(piece.getColor() == com.syntax_highlighters.chess.entities.Color.WHITE)
+            whiteAnimations.addAction(new SequenceAction(anim, anim2, end));
+        else
+            blackAnimations.addAction(new SequenceAction(anim, anim2, end));
         Audio.SplashingSound(manager);
 
     }
@@ -158,16 +179,12 @@ public class FireOverlay extends Actor {
         height = h * game.getBlackTimer();
         blackBurn.setSize(width * 2.0f * sqrt2, height * 2.0f * sqrt2);
         blackBurn.setPosition(w - width * sqrt2, h - height * sqrt2);
-        //whiteBurn.setRadius(dist * game.getWhiteTimer());
-        //blackBurn.setRadius(dist * game.getBlackTimer());
         blackBurn.setPosition(LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT);
-        /*List<Circle> toDelete = new ArrayList<>();
-        for(Circle k : splashes){
-         k.radius -= 0.30;
-         if(k.radius <= 0.0)
-            toDelete.add(k);
-        }
-        splashes.removeAll(toDelete);*/
+
+        if(game.nextPlayerColor() == com.syntax_highlighters.chess.entities.Color.WHITE)
+            whiteAnimations.act(delta);
+        else
+            blackAnimations.act(delta);
 
         checkCircle(blackBurn);
         checkCircle(whiteBurn);
@@ -191,7 +208,15 @@ public class FireOverlay extends Actor {
         fireProgram.setUniformf("burn2", new Color(ex, ey, blackBurn.width / 2.0f / gxW, blackBurn.height / 2.0f / gxH));
 
         int i = 0;
-        for(Circle c : splashes) {
+        for(Circle c : whitesplashes) {
+            float nX = c.x / LibgdxChessGame.WORLDWIDTH;
+            float nY = c.y / LibgdxChessGame.WORLDHEIGHT;
+            float nrX = c.radius / LibgdxChessGame.WORLDWIDTH;
+            float nrY = c.radius / LibgdxChessGame.WORLDHEIGHT;
+            fireProgram.setUniformf("u_safePos[" +i + "]", new Color(nX, nY, nrX, nrY));
+            i++;
+        }
+        for(Circle c : blacksplashes) {
             float nX = c.x / LibgdxChessGame.WORLDWIDTH;
             float nY = c.y / LibgdxChessGame.WORLDHEIGHT;
             float nrX = c.radius / LibgdxChessGame.WORLDWIDTH;
@@ -229,7 +254,15 @@ public class FireOverlay extends Actor {
         batch.setShader(metaballProgram);
         batch.setTransformMatrix(new Matrix4());
         int i = 0;
-        for(Circle c : splashes) {
+        for(Circle c : whitesplashes) {
+            float nX = c.x / LibgdxChessGame.WORLDWIDTH;
+            float nY = c.y / LibgdxChessGame.WORLDHEIGHT;
+            float nrX = c.radius / LibgdxChessGame.WORLDWIDTH;
+            float nrY = c.radius / LibgdxChessGame.WORLDHEIGHT;
+            metaballProgram.setUniformf("u_safePos[" +i + "]", new Color(nX, nY, nrX, nrY));
+            i++;
+        }
+        for(Circle c : blacksplashes) {
             float nX = c.x / LibgdxChessGame.WORLDWIDTH;
             float nY = c.y / LibgdxChessGame.WORLDHEIGHT;
             float nrX = c.radius / LibgdxChessGame.WORLDWIDTH;
