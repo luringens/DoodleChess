@@ -234,12 +234,12 @@ public class BoardGroup extends Group {
             }
             // actor should now have the correct actor
             final int index = i;
+            setTouchable(Touchable.disabled);
             actor.animateTo(change.newPos, () -> {
                 if (index == posChanges.size()-1) {
                     isAnimating = false;
-                    try {
-                        callback.callback(move);
-                    } catch(Exception e) {isAnimating = false;}
+                    callback.callback(move);
+                    setTouchable(Touchable.enabled);
                     System.out.println("Animation done");
                 }
             });
