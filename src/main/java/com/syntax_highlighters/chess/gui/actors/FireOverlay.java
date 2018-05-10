@@ -157,6 +157,11 @@ public class FireOverlay extends Actor {
         if(piece instanceof ChessPieceKnight) {
             splashSize = tileSize * 1.5f;
         }
+        
+        if(piece.getColor() == com.syntax_highlighters.chess.entities.Color.WHITE)
+            whitesplashes.add(splashcircle);
+        else
+            blacksplashes.add(splashcircle);
 
         CircleAnimation anim = new CircleAnimation(splashcircle, splashSize);
         anim.setDuration(0.3f);
@@ -175,10 +180,6 @@ public class FireOverlay extends Actor {
 
         RunnableAction add = new RunnableAction();
         add.setRunnable(() -> {
-            if(piece.getColor() == com.syntax_highlighters.chess.entities.Color.WHITE)
-                whitesplashes.add(splashcircle);
-            else
-                blacksplashes.add(splashcircle);
             if(piece.getColor() == com.syntax_highlighters.chess.entities.Color.WHITE)
                 whiteAnimations.addAction(new SequenceAction(anim2, end));
             else

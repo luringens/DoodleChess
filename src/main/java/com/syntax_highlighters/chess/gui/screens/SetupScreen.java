@@ -99,8 +99,8 @@ public class SetupScreen extends AbstractScreen {
         sjadamMultiplayerErrorMsg.setVisible(false);
         sameAccountErrorMsg.setVisible(false); // display only if player tries to use same account on both sides
 
-        float column1 = WORLDWIDTH / 4.f;
-        float column2 = WORLDWIDTH / 4.f * 3.f;
+        float column1 = WORLDWIDTH / 2.f - buttonBigWidth;
+        float column2 = WORLDWIDTH / 2.f + buttonBigWidth;
 
         // display which player setup belongs to which player
         whiteKing = new ChessPieceActor(new ChessPieceKing(null, null), player1Color, null, assetManager);
@@ -135,7 +135,6 @@ public class SetupScreen extends AbstractScreen {
         player2Title = pl2;
         
         gameModes = createDropdownMenu(modes, true, buttonBigWidth + 40, buttonBigHeight); // set the game mode select box
-        gameModes.setPosition(WORLDWIDTH / 2.f - gameModes.getWidth() / 2.f, y);
 
         rb1 = new RadioGroup(assetManager, false);
         rb2 = new RadioGroup(assetManager, false);
@@ -216,12 +215,14 @@ public class SetupScreen extends AbstractScreen {
         player2ColorShow.setPosition(column2 - buttonSmallWidth / 2.f, y);
 
 
-        y -= buttonBigHeight;
+        y = 275.f;
 
+        gameModes.setPosition(WORLDWIDTH / 2.f - gameModes.getWidth() / 2.f, y);
+        y -= gameModes.getHeight() + 15.f;
         randomCheckButton.setPosition(WORLDWIDTH / 2.f - randomCheckButton.getWidth() / 2.f,
-                y + randomCheckButton.getHeight() / 2.f);
+                y + randomCheckButton.getHeight());
 
-        y -= buttonBigHeight;
+        y = 100.f;
 
         float cw = WORLDWIDTH / 2.f - buttonBigWidth / 2.f;
         playButton.setPosition(column2 - buttonBigWidth / 2.f, y);
