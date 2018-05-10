@@ -17,19 +17,11 @@ import com.syntax_highlighters.chess.entities.Color;
  * www.sjadam.no
  */
 public class SjadamGame extends AbstractGame {
-    private List<IChessPiece> lastMovePieces;
     private List<Position> jumpedFromPositions = new ArrayList<>();
 
     public SjadamGame() {
         this.board = new Board();
         this.board.setupNewGame();
-        lastMovePieces = getPieces();
-    }
-
-    private boolean lastMoveTookEnemy(){
-        if(lastMovePieces.size() != getPieces().size())
-            return true;
-        return false;
     }
 
     private boolean lastMoveWasSameColour(){
