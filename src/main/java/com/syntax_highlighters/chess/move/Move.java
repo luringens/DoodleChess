@@ -266,4 +266,27 @@ public class Move implements Serializable {
             newPos = np;
         }
     }
+
+    void writeObject(java.io.ObjectOutputStream oos) 
+      throws java.io.IOException {
+        oos.writeInt(oldPos.getX());
+        oos.writeInt(oldPos.getY());
+        oos.writeInt(newPos.getX());
+        oos.writeInt(newPos.getY());
+        oos.writeBoolean(hadMoved);
+        oos.writeUTF(pieceString);
+    }
+ 
+    void readObject(java.io.ObjectInputStream ois) 
+      throws ClassNotFoundException, java.io.IOException {
+        int x1 = ois.readInt();
+        int y1 = ois.readInt();
+        int x2 = ois.readInt();
+        int y2 = ois.readInt();        
+        oldPos = new Position(x1, y1);
+        newPos = new Position(x2, y2);
+
+        hadMoved = ois.readBoolean();
+        pieceString = ois.readUTF();
+    }
 }

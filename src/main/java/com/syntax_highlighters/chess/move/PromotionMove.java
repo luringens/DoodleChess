@@ -132,4 +132,19 @@ public class PromotionMove extends Move {
         m.oldPiece = oldPiece;
         return m;
     }
+
+    void writeObject(java.io.ObjectOutputStream oos) 
+      throws java.io.IOException {
+        super.writeObject(oos);
+        oos.writeUTF(promoteToStringrep);
+        oos.writeBoolean(color.isWhite());
+    }
+ 
+    void readObject(java.io.ObjectInputStream ois) 
+      throws ClassNotFoundException, java.io.IOException {
+        super.readObject(ois);
+        promoteToStringrep = ois.readUTF();
+        Boolean isWhite = ois.readBoolean();
+        color = isWhite ? Color.WHITE : Color.BLACK;
+    }
 }

@@ -24,8 +24,8 @@ import com.syntax_highlighters.chess.chesspiece.IChessPiece;
  * between the king and the rook.
  */
 public class CastlingMove extends Move {
-    private final Position rookOldPos;
-    private final Position rookNewPos;
+    private Position rookOldPos;
+    private Position rookNewPos;
 
     private CastlingMove(Position rookOldPos, Position rookNewPos) {
         this.rookOldPos = rookOldPos;
@@ -135,5 +135,25 @@ public class CastlingMove extends Move {
         m.tookPiece = tookPiece;
         m.hasDoneMove = hasDoneMove;
         return m;
+    }
+
+    void writeObject(java.io.ObjectOutputStream oos) 
+      throws java.io.IOException {
+        super.writeObject(oos);
+        oos.writeInt(rookOldPos.getX());
+        oos.writeInt(rookOldPos.getY());
+        oos.writeInt(rookNewPos.getX());
+        oos.writeInt(rookNewPos.getY());
+    }
+ 
+    void readObject(java.io.ObjectInputStream ois) 
+      throws ClassNotFoundException, java.io.IOException {
+        super.readObject(ois);
+        int x1 = ois.readInt();
+        int y1 = ois.readInt();
+        int x2 = ois.readInt();
+        int y2 = ois.readInt();        
+        rookOldPos = new Position(x1, y1);
+        rookNewPos = new Position(x2, y2);
     }
 }

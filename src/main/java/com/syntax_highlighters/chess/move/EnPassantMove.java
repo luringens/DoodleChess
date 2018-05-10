@@ -18,7 +18,7 @@ import com.syntax_highlighters.chess.chesspiece.IChessPiece;
  * two steps forward.
  */
 public class EnPassantMove extends Move {
-    private final Position passantTakesPos;
+    private Position passantTakesPos;
     private transient IChessPiece passantTakesPiece = null;
 
     private EnPassantMove(Position passantTakesPos) {
@@ -98,5 +98,20 @@ public class EnPassantMove extends Move {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), this.passantTakesPos, this.passantTakesPiece);
+    }
+
+    void writeObject(java.io.ObjectOutputStream oos) 
+      throws java.io.IOException {
+        super.writeObject(oos);
+        oos.writeInt(passantTakesPos.getX());
+        oos.writeInt(passantTakesPos.getY());
+    }
+ 
+    void readObject(java.io.ObjectInputStream ois) 
+      throws ClassNotFoundException, java.io.IOException {
+        super.readObject(ois);
+        int x = ois.readInt();
+        int y = ois.readInt();       
+        passantTakesPos = new Position(x, y);
     }
 }
