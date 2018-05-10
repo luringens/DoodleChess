@@ -35,6 +35,8 @@ import com.syntax_highlighters.chess.chesspiece.ChessPieceRook;
 import com.syntax_highlighters.chess.chesspiece.IChessPiece;
 import com.syntax_highlighters.chess.gui.Audio;
 import com.syntax_highlighters.chess.gui.LibgdxChessGame;
+import com.syntax_highlighters.chess.gui.particles.Ember;
+import com.syntax_highlighters.chess.gui.particles.ParticleSystem;
 
 class FireOverlay extends Actor {
 
@@ -47,6 +49,8 @@ class FireOverlay extends Actor {
     private final ShapeRenderer renderer;
     private final Ellipse whiteBurn;
     private final Ellipse blackBurn;
+    private final ParticleSystem<Ember> whiteembers;
+    private final ParticleSystem<Ember> blackembers;
 
     private final FrameBuffer noise;
     private final FrameBuffer fire;
@@ -90,6 +94,9 @@ class FireOverlay extends Actor {
         batch.dispose();
         System.out.println(program.getLog());
         this.manager = manager;
+
+        whiteembers = new ParticleSystem<>(100000, Ember.class, manager);
+        blackembers = new ParticleSystem<>(100000, Ember.class, manager);
     }
 
     private void checkCircle(Ellipse c) {
@@ -117,18 +124,24 @@ class FireOverlay extends Actor {
         }
     }
 
-    private boolean inSplash(float x, float y) {
+    private float getV(Circle k, float x, float y) {
+        Vector2 ballPos = new Vector2(x - k.x, y - k.y);
+        return k.radius * k.radius / (ballPos.x * ballPos.x + ballPos.y * ballPos.y);
+    }
+
+    private float splashV(float x, float y) {
         float v = 0.0f;
         for(Circle k : whitesplashes){
-            Vector2 ballPos = new Vector2(x - k.x, y - k.y);
-            v += k.radius * k.radius / (ballPos.x * ballPos.x + ballPos.y * ballPos.y);
+            v += getV(k, x, y);
         }
         for(Circle k : blacksplashes){
-            Vector2 ballPos = new Vector2(x - k.x, y - k.y);
-            v += k.radius * k.radius / (ballPos.x * ballPos.x + ballPos.y * ballPos.y);
+            v += getV(k, x, y);
         }
+        return v;
+    }
 
-        return v > 1.2f;
+    private boolean inSplash(float x, float y) {
+        return splashV(x, y) > 1.2f;
     }
 
     private void splashing(IChessPiece piece){
@@ -226,6 +239,36 @@ class FireOverlay extends Actor {
 
         checkCircle(blackBurn);
         checkCircle(whiteBurn);
+
+        if(game.nextPlayerColor() == com.syntax_highlighters.chess.Color.WHITE) {
+            float r = (float) Math.sqrt(whiteBurn.width * whiteBurn.width + whiteBurn.height * whiteBurn.height);
+            for (int i = 0; i < Math.ceil(r / 500.f); ++i) {
+                double angle = Math.random() * Math.PI / 2.f;
+                float eX = (float) ((whiteBurn.width - 40.f * game.getWhiteTimer() - 10.f) / 2.0f * Math.cos(angle));
+                float eY = (float) ((whiteBurn.height - 40.f * game.getWhiteTimer() - 10.f) / 2.0f * Math.sin(angle));
+                float x = eX + whiteBurn.x;
+                float y = eY + whiteBurn.y;
+                float v = splashV(x, y);
+                if (v > 1.2f) continue;
+                whiteembers.spawnParticle(eX + whiteBurn.x, eY + whiteBurn.y, (float) (Math.PI + angle), (float) (10.0f * Math.random() + 40.f));
+            }
+
+            whiteembers.act(delta);
+        }
+        else {
+            float r = (float) Math.sqrt(blackBurn.width * blackBurn.width + blackBurn.height * blackBurn.height);
+            for (int i = 0; i < Math.ceil(r / 500.f); ++i) {
+                double angle = Math.random() * Math.PI / 2.f + Math.PI;
+                float eX = (float) ((blackBurn.width - 40.f * game.getWhiteTimer() - 10.f) / 2.0f * Math.cos(angle));
+                float eY = (float) ((blackBurn.height - 40.f * game.getWhiteTimer() - 10.f) / 2.0f * Math.sin(angle));
+                float x = eX + blackBurn.x;
+                float y = eY + blackBurn.y;
+                float v = splashV(x, y);
+                if (v > 1.2f) continue;
+                blackembers.spawnParticle(eX + blackBurn.x, eY + blackBurn.y, (float) (Math.PI + angle), (float) (10.0f * Math.random() + 40.f));
+            }
+            blackembers.act(delta);
+        }
     }
 
     @Override
@@ -270,8 +313,11 @@ class FireOverlay extends Actor {
        // batch.setShader(shader);
         //DrawDebug(batch);
 
-        batch.setTransformMatrix(transform );
         batch.setShader(shader);
+        whiteembers.draw(batch);
+        blackembers.draw(batch);
+        batch.setTransformMatrix(transform );
+
     }
 
     void DrawDebug(Batch batch) {
