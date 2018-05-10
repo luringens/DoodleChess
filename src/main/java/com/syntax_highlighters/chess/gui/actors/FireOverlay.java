@@ -136,10 +136,6 @@ public class FireOverlay extends Actor {
 
         Circle splashcircle = new Circle(pos.x, pos.y,0.0f);
 
-        if(piece.getColor() == com.syntax_highlighters.chess.entities.Color.WHITE)
-            whitesplashes.add(splashcircle);
-        else
-            blacksplashes.add(splashcircle);
        float splashSize = 200.0f;
         float tileSize = (float)Math.sqrt(width*width + height*height);
         if(piece instanceof ChessPiecePawn) {
@@ -177,10 +173,20 @@ public class FireOverlay extends Actor {
                 blacksplashes.remove(splashcircle);
         });
 
-        if(piece.getColor() == com.syntax_highlighters.chess.entities.Color.WHITE)
-            whiteAnimations.addAction(new SequenceAction(anim, anim2, end));
-        else
-            blackAnimations.addAction(new SequenceAction(anim, anim2, end));
+        RunnableAction add = new RunnableAction();
+        add.setRunnable(() -> {
+            if(piece.getColor() == com.syntax_highlighters.chess.entities.Color.WHITE)
+                whitesplashes.add(splashcircle);
+            else
+                blacksplashes.add(splashcircle);
+            if(piece.getColor() == com.syntax_highlighters.chess.entities.Color.WHITE)
+                whiteAnimations.addAction(new SequenceAction(anim2, end));
+            else
+                blackAnimations.addAction(new SequenceAction(anim2, end));
+        });
+
+        this.addAction(new SequenceAction(anim, add));
+
         Audio.SplashingSound(manager);
 
     }
