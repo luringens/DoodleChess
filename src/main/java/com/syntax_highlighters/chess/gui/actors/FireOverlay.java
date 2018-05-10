@@ -73,11 +73,12 @@ public class FireOverlay extends Actor {
 
         SpriteBatch batch = new SpriteBatch();
         batch.setShader(program);
+        Gdx.gl.glViewport(0,0, (int)LibgdxChessGame.WORLDWIDTH, (int)LibgdxChessGame.WORLDHEIGHT);
         Vector2 size = new Vector2(LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT);
         noise.begin();
         batch.begin();
         program.setUniformf("u_resolution", size);
-        batch.draw(pixel, 0, 0, LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT);
+        batch.draw(pixel, 0, 0, (int)Gdx.graphics.getWidth(), (int)Gdx.graphics.getHeight());
         batch.end();
         noise.end();
         batch.dispose();
@@ -250,7 +251,7 @@ public class FireOverlay extends Actor {
         }
         fireProgram.setUniformi("u_safePosCount", i);
 
-        batch.draw(noise.getColorBufferTexture(), 0, 0, LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT, 0, 0, (int) LibgdxChessGame.WORLDWIDTH, (int) LibgdxChessGame.WORLDHEIGHT, false, true);
+        batch.draw(noise.getColorBufferTexture(), 0, 0, LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT, 0, 0, noise.getWidth(), noise.getHeight(), false, true);
 
        // batch.setTransformMatrix(transform );
        // batch.setShader(shader);
