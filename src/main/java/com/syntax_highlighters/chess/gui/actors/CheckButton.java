@@ -22,8 +22,10 @@ public class CheckButton extends AbstractSelectableButton {
 
     public void setSelectableTexture() {
         boxTexture = assetManager.get("square.png", Texture.class);
+        boxTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         box = new WobbleDrawable(boxTexture, assetManager);
         checkedTexture = assetManager.get("tick.png", Texture.class);
+        checkedTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         checked = new WobbleDrawable(checkedTexture, assetManager);
     }
 }
