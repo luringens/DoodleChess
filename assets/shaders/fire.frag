@@ -40,6 +40,8 @@ void main()
     float noiseX = texture2D(u_texture, uv).r;
     // Normalize noise from [0-1]
     noiseX = noiseX * 2.0f - 1.0f;
+
+    gl_FragColor = vec4(0);
     
     // Calculate metaball strength (Best word i could find >.>)
     float v = 0.0f;
