@@ -1,8 +1,9 @@
 package com.syntax_highlighters.chess.general;
 
 import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.ChessGame;
 import com.syntax_highlighters.chess.Position;
-import com.syntax_highlighters.chess.entities.ChessPieceKing;
+import com.syntax_highlighters.chess.entities.*;
 import com.syntax_highlighters.chess.entities.Color;
 import com.syntax_highlighters.chess.entities.IChessPiece;
 
@@ -126,5 +127,53 @@ class BoardTest {
         Board h = new Board();
         h.setupNewGame();
         assertNotEquals(k.getAllPieces().size(),32);
+    }
+    @Test
+    void KingVSKingAndBishopShouldBeGameOverTest(){
+        ArrayList<IChessPiece> pieces = new ArrayList<>();
+        pieces.add(new ChessPieceKing(new Position(5,1),Color.WHITE));
+        pieces.add(new ChessPieceKing(new Position(5,8),Color.BLACK));
+        pieces.add(new ChessPieceBishop(new Position(2,1),Color.WHITE));
+        Board board = new Board(pieces);
+
+        ChessGame game = ChessGame.setupTestBoard(board,Color.BLACK);
+
+        assertTrue(game.isGameOver());
+    }
+    @Test
+    void KingVSKingShouldBeGameOverTest(){
+        ArrayList<IChessPiece> pieces = new ArrayList<>();
+        pieces.add(new ChessPieceKing(new Position(5,1),Color.WHITE));
+        pieces.add(new ChessPieceKing(new Position(5,8),Color.BLACK));
+        Board board = new Board(pieces);
+
+        ChessGame game = ChessGame.setupTestBoard(board,Color.BLACK);
+
+        assertTrue(game.isGameOver());
+    }
+    @Test
+    void KingAndBishopVSKingAndBishopShouldBeGameOverTest(){
+        ArrayList<IChessPiece> pieces = new ArrayList<>();
+        pieces.add(new ChessPieceKing(new Position(5,1),Color.WHITE));
+        pieces.add(new ChessPieceKing(new Position(5,8),Color.BLACK));
+        pieces.add(new ChessPieceBishop(new Position(2,1),Color.WHITE));
+        pieces.add(new ChessPieceBishop(new Position(7,8),Color.BLACK));
+        Board board = new Board(pieces);
+
+        ChessGame game = ChessGame.setupTestBoard(board,Color.BLACK);
+
+        assertTrue(game.isGameOver());
+    }
+    @Test
+    void KingVSKingAndRookShouldBeGameOverTest(){
+        ArrayList<IChessPiece> pieces = new ArrayList<>();
+        pieces.add(new ChessPieceKing(new Position(5,1),Color.WHITE));
+        pieces.add(new ChessPieceKing(new Position(5,8),Color.BLACK));
+        pieces.add(new ChessPieceKnight(new Position(3,1),Color.WHITE));
+        Board board = new Board(pieces);
+
+        ChessGame game = ChessGame.setupTestBoard(board,Color.BLACK);
+
+        assertTrue(game.isGameOver());
     }
 }
