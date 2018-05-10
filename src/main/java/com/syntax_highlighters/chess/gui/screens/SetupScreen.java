@@ -424,7 +424,11 @@ public class SetupScreen extends AbstractScreen {
         // Create player attribute objects
         PlayerAttributes attrib1 = createAttributes(player1, player1Difficulty, player1Color);
         PlayerAttributes attrib2 = createAttributes(player2, player2Difficulty, player2Color);
-        game.setScreen(new GameScreen(game, selectedMode, attrib1, attrib2, randomBoard));
+
+        if(selectedMode.equals("Fire Chess"))
+            game.setScreen(new BurningChessScreen(game, attrib1, attrib2, randomBoard));
+        else
+            game.setScreen(new GameScreen(game, selectedMode, attrib1, attrib2, randomBoard));
     }
 
     /**
