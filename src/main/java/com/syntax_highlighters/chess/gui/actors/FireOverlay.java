@@ -20,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import com.syntax_highlighters.chess.Board;
 import com.syntax_highlighters.chess.BurningChess;
 import com.syntax_highlighters.chess.Position;
-import com.syntax_highlighters.chess.entities.IChessPiece;
+import com.syntax_highlighters.chess.entities.*;
 import com.syntax_highlighters.chess.gui.Audio;
 import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 
@@ -116,6 +116,9 @@ public class FireOverlay extends Actor {
 
     private void splashing(IChessPiece piece){
         Vector2 pos = this.localToStageCoordinates(new Vector2(0,0));
+
+        float width = (this.getParent().getWidth() / Board.BOARD_WIDTH);
+        float height = (this.getParent().getHeight() / Board.BOARD_HEIGHT);
         Position piecePos = piece.getPosition();
         pos.add((piecePos.getX()-1) * (this.getParent().getWidth() / Board.BOARD_WIDTH) + (this.getParent().getWidth() / Board.BOARD_WIDTH) / 2.0f,
                 (piecePos.getY()-1) * (this.getParent().getHeight() / Board.BOARD_HEIGHT) + (this.getParent().getHeight() / Board.BOARD_HEIGHT) / 2.0f);
@@ -123,8 +126,29 @@ public class FireOverlay extends Actor {
         Circle splashcircle = new Circle(pos.x, pos.y,0.0f);
 
         splashes.add(splashcircle);
+       float splashSize = 200.0f;
+        float tileSize = (float)Math.sqrt(width*width + height*height);
+        if(piece instanceof ChessPiecePawn) {
+           splashSize = tileSize * 1.f;
+       }
 
-        CircleAnimation anim = new CircleAnimation(splashcircle, 200.0f);
+        if(piece instanceof ChessPieceQueen) {
+            splashSize = tileSize * 3.f;
+        }
+
+        if(piece instanceof ChessPieceRook) {
+            splashSize = tileSize * 2.f;
+        }
+
+        if(piece instanceof ChessPieceBishop) {
+            splashSize = tileSize * 1.5f;
+        }
+
+        if(piece instanceof ChessPieceKnight) {
+            splashSize = tileSize * 1.5f;
+        }
+
+        CircleAnimation anim = new CircleAnimation(splashcircle, splashSize);
         anim.setDuration(0.3f);
         anim.setInterpolation(Interpolation.exp10Out);
         CircleAnimation anim2 = new CircleAnimation(splashcircle, 0.0f);
@@ -203,9 +227,9 @@ public class FireOverlay extends Actor {
 
         batch.draw(noise.getColorBufferTexture(), 0, 0, LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT, 0, 0, (int) LibgdxChessGame.WORLDWIDTH, (int) LibgdxChessGame.WORLDHEIGHT, false, true);
 
-        batch.setTransformMatrix(transform );
-        batch.setShader(shader);
-        DrawDebug(batch);
+       // batch.setTransformMatrix(transform );
+       // batch.setShader(shader);
+        //DrawDebug(batch);
 
         batch.setTransformMatrix(transform );
         batch.setShader(shader);
