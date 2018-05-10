@@ -1,12 +1,14 @@
-package com.syntax_highlighters.chess.gui.screens;
+package com.syntax_highlighters.chess.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.syntax_highlighters.chess.gui.LibgdxChessGame;
 import com.syntax_highlighters.chess.gui.actors.DoodleActor;
 import com.syntax_highlighters.chess.gui.actors.PaperBackground;
 
@@ -17,6 +19,8 @@ public abstract class AbstractScreen implements Screen {
     private final LibgdxChessGame game;
     private boolean firstDraw = true;
     protected final Stage stage;
+    protected final Image mute;
+    private Boolean paused = false;
     private final static int N_DOODLES_PER_SCREEN = 10;
     private final static String[] DOODLES = new String[]{
         "Doodle/eye.png",
@@ -72,6 +76,27 @@ public abstract class AbstractScreen implements Screen {
         this.stage.addActor(new PaperBackground(game.getAssetManager()));
         if (createDoodles)
             addDoodles();
+
+        AssetManager assetManager = game.getAssetManager();
+        WobbleDrawable soundDrawable = new WobbleDrawable(assetManager.get("soundbutton.png", Texture.class), assetManager);
+        WobbleDrawable muteDrawable = new WobbleDrawable(assetManager.get("mutebutton.png", Texture.class), assetManager);
+        mute = new Image(soundDrawable);
+        mute.setSize(100, 100);
+        mute.setPosition(10, 10);
+        stage.addActor(mute);
+
+        mute.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if (paused)
+                    mute.setDrawable(soundDrawable);
+                else
+                    mute.setDrawable(muteDrawable);
+                Audio.themeMusic(assetManager, paused);
+                paused = !paused;
+            }
+        });
     }
 
     private void addDoodles() {

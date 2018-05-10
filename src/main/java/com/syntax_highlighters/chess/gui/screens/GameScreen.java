@@ -50,7 +50,6 @@ public class GameScreen extends AbstractScreen {
     final Button giveUp;
     private final Button getHelp;
     private final Button showResults;
-    final Image mute;
     private final List<String> history;
     private final ScrollPane historyPane;
     final Table historyList;
@@ -65,7 +64,6 @@ public class GameScreen extends AbstractScreen {
     private final AiDifficulty ai2;
     private final Color player1Color;
     private final Color player2Color;
-    private Boolean paused = false;
 
     private final LibgdxChessGame chessGame;
     private Button endTurnButton;
@@ -177,26 +175,6 @@ public class GameScreen extends AbstractScreen {
         turnText.setText(this.game.nextPlayerColor().isWhite() ? "White's turn" : "Black's turn");
 
 
-        WobbleDrawable soundDrawable = new WobbleDrawable(assetManager.get("soundbutton.png", Texture.class), assetManager);
-        WobbleDrawable muteDrawable = new WobbleDrawable(assetManager.get("mutebutton.png", Texture.class), assetManager);
-
-        mute = new Image(soundDrawable);
-        mute.setSize(100, 100);
-        mute.setPosition(WORLDWIDTH - 110, 10.f);
-        stage.addActor(mute);
-
-        mute.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                if (paused)
-                    mute.setDrawable(soundDrawable);
-                else
-                    mute.setDrawable(muteDrawable);
-                Audio.themeMusic(assetManager, paused);
-                paused = !paused;
-            }
-        });
 
         getHelp = new Button("Get hint", assetManager);
         getHelp.setSize(200, 75);
@@ -253,6 +231,9 @@ public class GameScreen extends AbstractScreen {
             .stage(stage)
             .visible(false)
             .create();
+
+        mute.setPosition(WORLDWIDTH - 110, 10.f);
+
     }
 
     private void initChessGame(String mode, AiDifficulty ai1, AiDifficulty ai2, boolean random) {
