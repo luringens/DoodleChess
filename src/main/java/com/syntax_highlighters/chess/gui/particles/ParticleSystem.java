@@ -23,7 +23,7 @@ public class ParticleSystem <T extends Particle> {
 
     public void spawnParticle(float x, float y, float angle, float speed) {
         Particle p = particles[front];
-        if(p.isAlive) {
+        if(p.isAlive || (front + 1) % maxParticles == back) {
             System.out.println("Max size of particle system not big enough!");
             return;
         }
@@ -38,14 +38,21 @@ public class ParticleSystem <T extends Particle> {
     }
 
     public void act(float delta) {
-        while(!particles[back].isAlive && back < front) back = (back + 1) % maxParticles;
-        for(int i = back; i < front; ++i)
-        {
-            particles[i].lifeTime += delta;
-            particles[i].act(delta);
-        }
+        while(!particles[back].isAlive && (back + 1) % maxParticles != front) back = (back + 1) % maxParticles;
         if(front < back) {
+            for(int i = back; i < maxParticles; ++i)
+            {
+                particles[i].lifeTime += delta;
+                particles[i].act(delta);
+            }
             for(int i = 0; i < front; ++i) {
+                particles[i].lifeTime += delta;
+                particles[i].act(delta);
+            }
+        } else {
+
+            for(int i = back; i < front; ++i)
+            {
                 particles[i].lifeTime += delta;
                 particles[i].act(delta);
             }
@@ -56,15 +63,24 @@ public class ParticleSystem <T extends Particle> {
     public void draw(Batch batch) {
         Texture tex = assetManager.get(particles[0].getTexture());
 
-        for(int i = back; i < front; ++i)
-        {
-            Particle p = particles[i];
-            batch.setColor(p.getColor());
-            batch.draw(tex, p.x, p.y, p.width, p.height);
-        }
         if(front < back) {
+            for(int i = back; i < maxParticles; ++i)
+            {
+                Particle p = particles[i];
+                batch.setColor(p.getColor());
+                batch.draw(tex, p.x, p.y, p.width, p.height);
+            }
+
             for(int i = 0; i < front; ++i) {
                 Particle p = particles[i];
+                batch.setColor(p.getColor());
+                batch.draw(tex, p.x, p.y, p.width, p.height);
+            }
+        } else {
+            for(int i = back; i < front; ++i)
+            {
+                Particle p = particles[i];
+                batch.setColor(p.getColor());
                 batch.draw(tex, p.x, p.y, p.width, p.height);
             }
         }

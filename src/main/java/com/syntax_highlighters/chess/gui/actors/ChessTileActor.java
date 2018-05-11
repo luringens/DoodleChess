@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.syntax_highlighters.chess.Board;
+import com.syntax_highlighters.chess.gui.particles.Glow;
+import com.syntax_highlighters.chess.gui.particles.ParticleSystem;
 import com.syntax_highlighters.chess.move.Move;
 import com.syntax_highlighters.chess.Position;
 import com.syntax_highlighters.chess.chesspiece.IChessPiece;

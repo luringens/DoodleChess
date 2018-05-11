@@ -19,6 +19,11 @@ public abstract class Particle {
             for(int i = 0; i < maxParticles; ++i) em[i] = new Ember();
             return (T[]) em;
         }
+        if(particleType == Glow.class) {
+            Glow[] em = new Glow[maxParticles];
+            for(int i = 0; i < maxParticles; ++i) em[i] = new Glow();
+            return (T[]) em;
+        }
         return null;
     }
 

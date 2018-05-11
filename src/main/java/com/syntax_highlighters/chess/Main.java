@@ -26,6 +26,8 @@ class Main {
 		config.addIcon("icon256.png", Files.FileType.Internal);
 		config.addIcon("icon32.png", Files.FileType.Internal);
 		config.addIcon("icon16.png", Files.FileType.Internal);
+		config.backgroundFPS = 60;
+		config.foregroundFPS = 60;
 		new LwjglApplication(new LibgdxChessGame(), config);
 
 	}
