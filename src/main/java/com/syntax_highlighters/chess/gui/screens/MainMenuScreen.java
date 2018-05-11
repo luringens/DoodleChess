@@ -54,6 +54,13 @@ public class MainMenuScreen extends AbstractScreen {
                 .callback(() -> game.setScreen(new ScoreScreen(game)))
                 .stage(stage)
                 .create();
+
+        Button quit = new Button.Builder("Quit", assetManager)
+                .position(x, WORLDHEIGHT / 1.75f - 225)
+                .size(250, 75)
+                .callback(() -> Gdx.app.exit())
+                .stage(stage)
+                .create();
         
         Gdx.input.setInputProcessor(stage);
 

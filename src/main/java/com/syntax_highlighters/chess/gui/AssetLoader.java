@@ -103,8 +103,7 @@ public class AssetLoader {
                 "dot.png",
                 "square.png",
                 "tick.png",
-                "table.jpg",
-                "ember.png"
+                "table.jpg"
         };
 
         for (String path : textures) {

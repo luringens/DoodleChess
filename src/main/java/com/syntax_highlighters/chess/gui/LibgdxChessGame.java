@@ -17,6 +17,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.syntax_highlighters.chess.account.AccountManager;
+import com.syntax_highlighters.chess.gui.screens.LoadingScreen;
 import com.syntax_highlighters.chess.gui.screens.MainMenuScreen;
 
 /**
@@ -29,6 +30,7 @@ public class LibgdxChessGame extends Game {
 	private AccountManager accountManager;
 	private Texture table;
 	public Skin skin;
+	private boolean finishedLoading = false;
 
 	private static final float aspectRatio = 1.6f;
 	public static final float WORLDWIDTH = 800 * (aspectRatio > 1.0f ? aspectRatio : 1.0f);
@@ -39,11 +41,15 @@ public class LibgdxChessGame extends Game {
      */
 	@Override
 	public void create () {
+		ShaderProgram.pedantic = false;
 		assetManager = new AssetManager();
 		AssetLoader.LoadAssets(assetManager);
-		// TODO: Loading screen to prevent the black frames before load
-		assetManager.finishLoading();
 
+		setScreen(new LoadingScreen(this));
+	}
+
+	public void finishedLoading() {
+		finishedLoading = true;
 		accountManager = new AccountManager(AssetLoader.getAccountPath());
 
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("uiskin.atlas"));
@@ -58,10 +64,9 @@ public class LibgdxChessGame extends Game {
 		batch = new SpriteBatch();
 		background = new SpriteBatch();
 
+		assetManager.finishLoadingAsset("table.jpg");
 		table = assetManager.get("table.jpg");
 		table.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
-		setScreen(new MainMenuScreen(this));
 	}
 
 	/**
@@ -90,17 +95,16 @@ public class LibgdxChessGame extends Game {
 	public void render () {
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.setColor(1,1,1,1);
+		if(finishedLoading) {
+			batch.setColor(1,1,1,1);
 
-		// Draw paper background
-		// TODO: Paper to actor in AbstractScreen
+			Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			background.begin();
+			background.draw(table, 0, 0);
+			background.end();
 
-		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		background.begin();
-		background.draw(table, 0, 0);
-		background.end();
-
-		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		}
 		super.render();
 	}
 

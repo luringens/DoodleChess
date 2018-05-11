@@ -35,6 +35,7 @@ public class PaperBackground extends Actor {
      */
     private void recomputeBackground(Batch batch)
     {
+        Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
         Gdx.gl.glViewport(0, 0, (int)LibgdxChessGame.WORLDWIDTH, (int)LibgdxChessGame.WORLDHEIGHT);
         batch.setShader(noiseShader);
         Matrix4 trans = batch.getTransformMatrix();
@@ -59,6 +60,6 @@ public class PaperBackground extends Actor {
             batch.begin();
         }
         super.draw(batch, parentAlpha);
-        batch.draw(paperBuffer.getColorBufferTexture(), 0, 0, LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT);
+        batch.draw(paperBuffer.getColorBufferTexture(), 0, 0, getWidth(), getHeight());
     }
 }

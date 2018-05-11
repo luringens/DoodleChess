@@ -76,7 +76,9 @@ public abstract class AbstractScreen implements Screen {
     protected AbstractScreen(LibgdxChessGame game, boolean createDoodles) {
         this.game = game;
         this.stage = new Stage(new FitViewport(WORLDWIDTH, WORLDHEIGHT), game.getBatch());
-        this.stage.addActor(new PaperBackground(game.getAssetManager()));
+        PaperBackground paper = new PaperBackground(game.getAssetManager());
+        paper.setSize(WORLDWIDTH, WORLDHEIGHT);
+        this.stage.addActor(paper);
         if (createDoodles)
             addDoodles();
 
