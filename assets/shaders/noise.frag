@@ -69,7 +69,7 @@ void main()
         noise += 1.0/i * snoise(v_texCoords * 25.0 * thing);
     }
     noise = (noise + 1.0) / 4.0;
-    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0) * (1.0 - noise * 0.03);
+    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0) * (1.0 - noise * 0.015);
     //gl_FragColor = texCol;
     //ragColor = texture(iChannel1, v_texCoords);
 }

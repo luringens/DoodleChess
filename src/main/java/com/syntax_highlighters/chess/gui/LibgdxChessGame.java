@@ -26,8 +26,6 @@ public class LibgdxChessGame extends Game {
 	private AssetManager assetManager;
 	private SpriteBatch background;
 	private SpriteBatch batch;
-	private ShaderProgram noiseShader;
-	private FrameBuffer paperBuffer;
 	private AccountManager accountManager;
 	private Texture table;
 	public Skin skin;
@@ -59,8 +57,6 @@ public class LibgdxChessGame extends Game {
 		skin.load(Gdx.files.internal("uiskin.json"));
 		batch = new SpriteBatch();
 		background = new SpriteBatch();
-		noiseShader = new ShaderProgram(Gdx.files.internal("shaders/id.vert"), Gdx.files.internal("shaders/noise.frag"));
-		paperBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
 		table = assetManager.get("table.jpg");
 		table.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -84,7 +80,6 @@ public class LibgdxChessGame extends Game {
 	    if(this.getScreen() != null)
 	        this.getScreen().dispose();
 		super.setScreen(screen);
-        recomputeBackground();
 	}
 
     /**
@@ -103,7 +98,6 @@ public class LibgdxChessGame extends Game {
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		background.begin();
 		background.draw(table, 0, 0);
-		//background.draw(paperBuffer.getColorBufferTexture(), Gdx.graphics.getWidth() / 2.0f - WORLDWIDTH / 2.0f,0, WORLDWIDTH, WORLDHEIGHT);
 		background.end();
 
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -117,8 +111,6 @@ public class LibgdxChessGame extends Game {
 	public void dispose () {
 	    assetManager.dispose();
 	    batch.dispose();
-		noiseShader.dispose();
-	    paperBuffer.dispose();
 	}
 
     /**
@@ -127,29 +119,6 @@ public class LibgdxChessGame extends Game {
      */
     public AssetManager getAssetManager() {
         return assetManager;
-    }
-
-    /**
-     * Will regenerate the wrinkles for the background using a custom built shader.
-     * We generate it in an offscreen buffer to prevent lag from computing the image every single draw call.
-     *
-     * For more information on how the shader works, check out "assets/shaders/paper.frag"
-     */
-    private void recomputeBackground()
-    {
-		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		batch.setShader(noiseShader);
-		Matrix4 trans = batch.getTransformMatrix();
-		batch.setTransformMatrix(new Matrix4());
-		paperBuffer.begin();
-		batch.begin();
-		noiseShader.setUniformf("u_offset", new Vector2((float)Math.random() * 100.f, (float)Math.random() * 100.f));
-		batch.draw(paperBuffer.getColorBufferTexture(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		batch.end();
-		paperBuffer.end();
-		batch.setShader(null);
-		batch.setTransformMatrix(trans);
-		Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
     }
 
 	/**
