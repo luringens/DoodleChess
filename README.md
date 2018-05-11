@@ -42,9 +42,7 @@ A fat-jar is a jar file with all the dependencies aswell
 ./gradlew fatjar
 ```
 
-the jar should now be available in `build/libs/DoodleChess-fat.jar` and can be run using `java -jar build/libs/DoodleChess-fat.jar`
-
-Note: This will not run the tests
+the jar should now be available in `./build/distributions/DoodleChess-fat.jar` and can be run using `java -jar ./build/distributions/DoodleChess-fat.jar`
 
 ### Running tests
 
