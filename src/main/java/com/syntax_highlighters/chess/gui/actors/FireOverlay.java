@@ -305,6 +305,20 @@ class FireOverlay extends Actor {
             fireProgram.setUniformf("u_safePos[" +i + "]", new Color(nX, nY, nrX, nrY));
             i++;
         }
+        float nX = 50.f / LibgdxChessGame.WORLDWIDTH;
+        float nY = 50.f / LibgdxChessGame.WORLDHEIGHT;
+        float nrX = 50 / LibgdxChessGame.WORLDWIDTH;
+        float nrY = 50.f / LibgdxChessGame.WORLDHEIGHT;
+        fireProgram.setUniformf("u_safePos[" +i + "]", new Color(nX, nY, nrX, nrY));
+        i++;
+
+        nX = (LibgdxChessGame.WORLDWIDTH - 110.f) / LibgdxChessGame.WORLDWIDTH;
+        nY = (20.f + 75.f / 2.f) / LibgdxChessGame.WORLDHEIGHT;
+        nrX = 100.f / LibgdxChessGame.WORLDWIDTH;
+        nrY = 75.f/2.f / LibgdxChessGame.WORLDHEIGHT;
+        fireProgram.setUniformf("u_safePos[" +i + "]", new Color(nX, nY, nrX, nrY));
+        i++;
+
         fireProgram.setUniformi("u_safePosCount", i);
 
         batch.draw(noise.getColorBufferTexture(), 0, 0, LibgdxChessGame.WORLDWIDTH, LibgdxChessGame.WORLDHEIGHT, 0, 0, noise.getWidth(), noise.getHeight(), false, true);
