@@ -80,8 +80,7 @@ public class ChessGame extends AbstractGame {
                 || board.checkMate(Color.WHITE)
                 || board.checkMate(Color.BLACK)
                 || insufficientMaterial()
-                || board.getAllPieces().stream()
-                .filter(p -> p.getColor() == nextPlayerColor)
+                || board.getAllPieces(nextPlayerColor).stream()
                 .noneMatch(p -> p.allPossibleMoves(board).size() > 0);
     }
 
@@ -133,8 +132,7 @@ public class ChessGame extends AbstractGame {
      */
     @Override
     public List<Move> allPossibleMoves() {
-        return getPieces().stream()
-            .filter(p -> p.getColor() == nextPlayerColor())
+        return board.getAllPieces(nextPlayerColor).stream()
             .flatMap(p -> p.allPossibleMoves(getBoard()).stream())
             .collect(Collectors.toList());
     }

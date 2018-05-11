@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.HashMap;
 
 import com.syntax_highlighters.chess.chesspiece.AbstractChessPiece;
 import com.syntax_highlighters.chess.chesspiece.ChessPieceBishop;
@@ -36,6 +38,7 @@ public class    Board {
 
     // for performance
     private final int[][] positionsLookupTable = new int[BOARD_HEIGHT][BOARD_WIDTH];
+    private final Map<Color, List<IChessPiece>> piecesOfColor = new HashMap<>();
 
     private List<IChessPiece> pieces = new ArrayList<>();
 
@@ -71,6 +74,13 @@ public class    Board {
         for (int i = 0; i < this.pieces.size(); i++) {
             updatePositionIndex(this.pieces.get(i).getPosition(), i);
         }
+
+        piecesOfColor.put(Color.WHITE, new ArrayList<>(pieces.stream()
+                .filter(p->p.getColor()==Color.WHITE)
+                .collect(Collectors.toList())));
+        piecesOfColor.put(Color.BLACK, new ArrayList<>(pieces.stream()
+                .filter(p->p.getColor()==Color.BLACK)
+                .collect(Collectors.toList())));
     }
 
     /**
@@ -164,8 +174,7 @@ public class    Board {
      * @return True if a move was performed, False if there were no legal moves.
      */
     private boolean doRandomMove(Color color) {
-        List<Move> moves = getAllPieces().stream()
-                .filter(p -> p.getColor() == color)
+        List<Move> moves = getAllPieces(color).stream()
                 .flatMap(p -> p.allPossibleMoves(this).stream())
                 .collect(Collectors.toList());
         if (moves.size() == 0) return false;
@@ -196,6 +205,7 @@ public class    Board {
         if (!this.pieces.contains(piece)) {
             this.pieces.add(piece);
             updatePositionIndex(pos, this.pieces.size()-1); // the index of the newly added piece
+            piecesOfColor.get(piece.getColor()).add(piece);
         }
         else {
             updatePositionIndex(pos, this.pieces.indexOf(piece));
@@ -280,6 +290,10 @@ public class    Board {
         // This does not fully encapsulate the board, but it does hopefully help
         // against accidentally adding/removing pieces without intending to
         return new ArrayList<>(this.pieces);
+    }
+    
+    public List<IChessPiece> getAllPieces(Color color) {
+        return new ArrayList<>(piecesOfColor.get(color));
     }
 
     /**
@@ -384,8 +398,7 @@ public class    Board {
         List<IChessPiece> allPieces = getAllPieces();
         if (allPieces.size() == 0) return false; // not possible
         ChessPieceKing king = (ChessPieceKing)getKing(playerColor);
-        return king == null || king.isThreatened(this) && allPieces.stream()
-                .filter(p -> p.getColor() == playerColor)
+        return king == null || king.isThreatened(this) && getAllPieces(playerColor).stream()
                 .mapToLong(p -> p.allPossibleMoves(this).size()).sum() == 0;
     }
 
@@ -437,6 +450,7 @@ public class    Board {
         // p should now be at the end of the list
         pieces.remove(pieces.size()-1);
         updatePositionIndex(p.getPosition(), -1);
+        piecesOfColor.get(p.getColor()).remove(p);
     }
 
     /**
@@ -448,16 +462,16 @@ public class    Board {
     public IChessPiece getKing(Color color) {
         if (color.isWhite()) {
             if (whiteKing == null) {
-                whiteKing = getAllPieces().stream()
-                        .filter(p -> p.getColor().isWhite() && p instanceof ChessPieceKing)
+                whiteKing = getAllPieces(Color.WHITE).stream()
+                        .filter(p -> p instanceof ChessPieceKing)
                         .findFirst().orElse(null);
             }
             return whiteKing;
         }
         else {
             if (blackKing == null) {
-                blackKing = getAllPieces().stream()
-                        .filter(p -> p.getColor().isBlack() && p instanceof ChessPieceKing)
+                blackKing = getAllPieces(Color.BLACK).stream()
+                        .filter(p -> p instanceof ChessPieceKing)
                         .findFirst().orElse(null);
             }
             return blackKing;

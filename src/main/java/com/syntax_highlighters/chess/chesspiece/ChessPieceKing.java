@@ -150,8 +150,7 @@ public class ChessPieceKing extends AbstractChessPiece {
             Position finalPos = pos; // hax to make the compiler shut up
             if (!board.isOnBoard(pos)
                     || board.isOccupied(pos)
-                    || board.getAllPieces().stream()
-                            .filter(p -> p.getColor() != color)
+                    || board.getAllPieces(color.opponentColor()).stream()
                             .anyMatch(p -> p.threatens(finalPos, board))                    )
                 return false;
         } while (!direction.transform(pos).equals(target));
@@ -174,8 +173,7 @@ public class ChessPieceKing extends AbstractChessPiece {
      * @return true if a piece threatens the king, false otherwise
      */
     public boolean isThreatened(Board board) {
-        return board.getAllPieces().stream()
-            .filter(p -> p.getColor() != this.getColor())
+        return board.getAllPieces(getColor().opponentColor()).stream()
             .anyMatch(p -> p.threatens(getPosition(), board));
     }
 
