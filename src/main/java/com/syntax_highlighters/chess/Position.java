@@ -195,7 +195,16 @@ public class Position implements Serializable {
         return intermediatePositions;
     }
 
+    /**
+     * Interface for generic position manipulation.
+     */
     public interface Manipulator {
+        /**
+         * Given a position, return the next position.
+         *
+         * @param pos The position to manipulate
+         * @return The next position
+         */
         Position transform(Position pos);
     }
 

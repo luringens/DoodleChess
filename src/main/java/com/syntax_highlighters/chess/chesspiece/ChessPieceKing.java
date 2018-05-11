@@ -59,6 +59,10 @@ public class ChessPieceKing extends AbstractChessPiece {
         -50, -30, -30, -30, -30, -30, -30, -50
     };
 
+    /**
+     * Get the endgame positional score, as it may differ from the early
+     * game score at the same position.
+     */
     public int getEndgamePositionalScore() {
         Position p = getPosition();
         int x = p.getX();

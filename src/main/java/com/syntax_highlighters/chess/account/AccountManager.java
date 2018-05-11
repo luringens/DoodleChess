@@ -20,6 +20,12 @@ public class AccountManager {
     private List<Account> myAccounts = new ArrayList<>();
     private final String filename;
 
+    /**
+     * Create an account manager loading/saving databases to the given database
+     * file.
+     *
+     * @param filename The name of the database to load from/save to
+     */
     public AccountManager(String filename) {
         this.filename = filename;
 
@@ -38,6 +44,11 @@ public class AccountManager {
         else load();
     }
 
+    /**
+     * Get the number of accounts in the manager.
+     *
+     * @return The size of the account manager
+     */
     public int accountSize () {
         return myAccounts.size();
     }
@@ -49,7 +60,6 @@ public class AccountManager {
      * @return The account whose name equals the parameter, or null if no such
      * account exists
      */
-
     public Account getAccount (String name) {
         for (Account a : myAccounts)
             if (a.getName().equals(name))
@@ -155,6 +165,12 @@ public class AccountManager {
         }
     }
 
+    /**
+     * Helper method: Connect to the SQL database.
+     *
+     * @return A connection object
+     * @throws SQLException in the case of an SQL connection error
+     */
     private Connection connect() throws SQLException {
         // SQLite connection string
         String pathh = Paths.get(filename).toAbsolutePath().toString();
@@ -162,6 +178,11 @@ public class AccountManager {
         return DriverManager.getConnection(url);
     }
 
+    /**
+     * Helper method: Create a new database from the filename.
+     *
+     * @throws RuntimeException if there was an error.
+     */
     private void createDatabase() {
         String pathh = Paths.get(filename).toAbsolutePath().toString();
         String url = "jdbc:sqlite:" + pathh;
@@ -175,6 +196,11 @@ public class AccountManager {
         }
     }
 
+    /**
+     * Helper method: Create the table "person" in the database.
+     *
+     * Assumes the table doesn't exist already.
+     */
     private void createTable() {
         String pathh = Paths.get(filename).toAbsolutePath().toString();
         String url = "jdbc:sqlite:" + pathh;

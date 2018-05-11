@@ -18,7 +18,9 @@ public abstract class AbstractNetworkService implements INetworkService {
     ConnectionStatus status = ConnectionStatus.NotConnected;
     private String lastError = null;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public void SendMove(Move move) {
         try {
@@ -30,12 +32,16 @@ public abstract class AbstractNetworkService implements INetworkService {
         }
     }
     
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public Move GetMove(AbstractGame game) {
         return ReceiveMove(game.getBoard(), 0);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public Move ReceiveMove(Board board, int timeout) {
         try {
@@ -61,7 +67,9 @@ public abstract class AbstractNetworkService implements INetworkService {
         }
 	}
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc} 
+     */
 	@Override
 	public void Disconnect() {
         status = ConnectionStatus.Closed;
@@ -83,13 +91,17 @@ public abstract class AbstractNetworkService implements INetworkService {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public ConnectionStatus GetStatus() {
 		return status;
 	}
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public String GetLastFailureDescription() {
 		return lastError;

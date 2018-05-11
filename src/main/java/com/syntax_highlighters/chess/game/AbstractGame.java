@@ -43,11 +43,24 @@ public abstract class AbstractGame {
         return moves;
     }
 
+    /**
+     * Helper method: add move to move history.
+     *
+     * @param m The move to add to the history
+     */
     private void addMoveToHistory(Move m)
     {
         moveHistory.add(m);
     }
 
+    /**
+     * Get a list of moves that can be made from one position to another.
+     *
+     * @param from The position to move from
+     * @param to The position to move to
+     *
+     * @return All legal moves between the two positions.
+     */
     public List<Move> getMoves(Position from, Position to) {
         IChessPiece piece = getPieceAtPosition(from);
         
@@ -81,6 +94,10 @@ public abstract class AbstractGame {
 
     /**
      * Undoes the last performed move.
+     *
+     * Subclasses should ensure that they are correctly overriding this in order
+     * to ensure that the game state cannot be corrupted, if undoing of moves is
+     * to be allowed.
      */
     public void undoMove() {
         // Don't undo if there's nothing left to do
@@ -104,6 +121,9 @@ public abstract class AbstractGame {
      *
      * If the next player is an AI player, make the player perform a move, and
      * then change turns. Otherwise do nothing.
+     *
+     * NOTE: Name is misleading, since any async player is supported (not just
+     * AI)
      */
     public void PerformAIMove() {
         if (nextPlayerIsAI()) {
@@ -123,6 +143,9 @@ public abstract class AbstractGame {
      *
      * If the next player is an AI player, make the player perform a move, and
      * then change turns. Otherwise do nothing.
+     *
+     * NOTE: Name is misleading, since any async player is supported (not just
+     * AI)
      *
      * @return The move that was performed or null if no move was performed.
      */
@@ -250,6 +273,7 @@ public abstract class AbstractGame {
     /**
      * Get a list of all possible moves a given piece can make this turn.
      *
+     * @param piece The piece to get the moves of
      * @return A list of the possible moves that can be made by the current
      * player using this piece.
      */

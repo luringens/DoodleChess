@@ -46,7 +46,9 @@ public class Host extends AbstractNetworkService {
         status = ConnectionStatus.Connected;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public void Disconnect() {
         super.Disconnect();

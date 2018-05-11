@@ -104,6 +104,9 @@ public abstract class AbstractScreen implements Screen {
         });
     }
 
+    /**
+     * Helper method: add some random doodles to the stage.
+     */
     private void addDoodles() {
         AssetManager assetManager = game.getAssetManager();
 

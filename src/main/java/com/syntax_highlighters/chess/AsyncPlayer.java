@@ -12,6 +12,9 @@ import com.syntax_highlighters.chess.move.Move;
 public class AsyncPlayer {
     private final Wrapper wrapper;
 
+    /**
+     * Create an AsyncPlayer wrapping a blocking player.
+     */
     public AsyncPlayer(IBlockingPlayer p) {
         wrapper = new Wrapper(p);
     }
@@ -55,20 +58,43 @@ public class AsyncPlayer {
     }
 }
 
+/**
+ * Helper class: wrapper for the blocking player interface.
+ */
 class Wrapper {
     private State state = State.Waiting;
     private Move result = null;
     private final IBlockingPlayer player;
     private Exception ex;
 
+    /**
+     * Construct a new Wrapper.
+     *
+     * @param player The blocking player to wrap
+     */
     Wrapper(IBlockingPlayer player) {
         this.player = player;
     }
 
+    /**
+     * Get a move in a synchronous manner.
+     *
+     * Presumably assumes that the player *can* perform a move.
+     *
+     * @param game The current game state
+     * @return The move chosen by the blocking player
+     */
     Move getMoveSynchronous(AbstractGame game) {
         return player.GetMove(game);
     }
 
+    /**
+     * Start a new thread where the blocking player attempts to retrieve a move.
+     *
+     * Sets the state of the wrapper.
+     *
+     * @param game The game state
+     */
     void startProcess(AbstractGame game) {
         if (state != State.Waiting) return;
         state = State.Runnning;
@@ -83,10 +109,21 @@ class Wrapper {
         }).start();
     }
 
+    /**
+     * Determine the wrapper state.
+     *
+     * @return The current state of the player attempting to get a move
+     */
     public State getState() {
         return state;
     }
 
+    /**
+     * Get the resulting move from the player.
+     *
+     * @return The move the player made, or null if either no move has been made
+     * or the process of getting a move has not yet started.
+     */
     Move getResult() {
         if (state == State.Done) {
             Move r = result;
@@ -97,10 +134,23 @@ class Wrapper {
         else return null;
     }
 
+    /**
+     * Get the last exception that was thrown.
+     * 
+     * Makes it possible to figure out what went wrong and display a helpful
+     * message in the UI, while handling errors in a graceful (non-crashing)
+     * manner.
+     *
+     * @return The last thrown exception
+     */
     Exception getEx() {
         return ex;
     }
 
+    /**
+     * State of the wrapper: determines which stage of the move getting process
+     * it is in.
+     */
     public enum State {
         Waiting,
         Runnning,

@@ -25,6 +25,11 @@ public class Color implements java.io.Serializable {
      */
     public static final Color BLACK = new Color(BLACK_B);
 
+    /**
+     * Helper constructor: Create a new Color object.
+     *
+     * @param color true if the color is white, otherwise false if it is black
+     */
     private Color(boolean color) {
         this.color = color;
     }

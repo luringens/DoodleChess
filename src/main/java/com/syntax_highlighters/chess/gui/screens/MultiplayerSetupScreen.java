@@ -27,6 +27,16 @@ import com.syntax_highlighters.chess.network.Client;
 import com.syntax_highlighters.chess.network.ConnectionStatus;
 import com.syntax_highlighters.chess.network.Host;
 
+/**
+ * Setup screen for a multiplayer game.
+ * 
+ * Input a host name (like an IP address or localhost) in the text box and click
+ * connect, or click host to become a host for a game. Note that if you try to
+ * connect, there needs to be a running host ready to accept on the other end.
+ *
+ * If you try to host but nobody connects, the connection times out after 30
+ * seconds.
+ */
 public class MultiplayerSetupScreen extends AbstractScreen {
     private final TextField opponentTextField;
 
@@ -37,6 +47,11 @@ public class MultiplayerSetupScreen extends AbstractScreen {
     private AbstractNetworkService service = null;
     private com.syntax_highlighters.chess.Color color = null;
 
+    /**
+     * Create the setup screen for a multiplayer game.
+     *
+     * @param game The Libgdx game instance
+     */
     public MultiplayerSetupScreen(LibgdxChessGame game) {
         super(game);
         AssetManager assetManager = game.getAssetManager();
@@ -101,6 +116,9 @@ public class MultiplayerSetupScreen extends AbstractScreen {
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
+    /**
+     * Helper method: Try to host a game.
+     */
     private void host() {
         if (!lockui("Waiting for someone to join")) return;
         class HostConstructor implements Runnable {
@@ -126,6 +144,9 @@ public class MultiplayerSetupScreen extends AbstractScreen {
         t.start();
     }
     
+    /**
+     * Helper method: try to connect to a host.
+     */
     private void connect() {
         if (!lockui("Connecting")) return;
         String address = opponentTextField.getText();
@@ -150,7 +171,14 @@ public class MultiplayerSetupScreen extends AbstractScreen {
         t.start();
     }
     
-    /** Returns whether or not the lock was gotten. */
+    /**
+     * Helper method: Returns whether or not the lock was acquired.
+     *
+     * @param message The message to display while the UI is locked
+     *
+     * @return true if the UI was locked, false if it was already in a locked
+     * state
+     */
     private boolean lockui(String message) {
         if (uiLock) return false;
         uiLock = true;
@@ -171,12 +199,21 @@ public class MultiplayerSetupScreen extends AbstractScreen {
         return true;
     }
     
+    /**
+     * Helper method: Unlock the UI.
+     * @param message The message to show as the UI is unlocked
+     */
     private void unlockui(String message) {
         setStatusLabel(message);
         uiLock = false;
         statusUpdater.cancel();
     }
 
+    /**
+     * Helper method: Set the status message displayed to the user.
+     *
+     * @param message The message the user will see
+     */
     private void setStatusLabel(String message) {
         statusLabel.setText(message);
         float x = stage.getWidth()/2.f - statusLabel.getWidth()/2.f;
@@ -184,6 +221,9 @@ public class MultiplayerSetupScreen extends AbstractScreen {
         statusLabel.setPosition(x, y);
     }
 
+    /**
+     * Helper method: Change the screen to a NetworkGameScreen.
+     */
     private void nextScreen() {
         assert color != null && service != null;
         NetworkChessGame game = new NetworkChessGame(color, service);
@@ -192,6 +232,9 @@ public class MultiplayerSetupScreen extends AbstractScreen {
         getGame().setScreen(screen);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void render(float delta) {
         if (color != null && service != null) {
@@ -201,6 +244,9 @@ public class MultiplayerSetupScreen extends AbstractScreen {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);

@@ -27,7 +27,9 @@ public class NetworkChessGame extends ChessGame {
         this.opponentAsync = new AsyncPlayer(opponent);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void PerformAIMove() {
         if (nextPlayerIsAI() && !gameOver) {
@@ -42,7 +44,9 @@ public class NetworkChessGame extends ChessGame {
 
     }
     
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Move PerformAIMoveAsync() {
         if (nextPlayerIsAI() && !gameOver) {
@@ -59,13 +63,17 @@ public class NetworkChessGame extends ChessGame {
         return null;
     }
     
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean nextPlayerIsAI() {
         return nextPlayerColor == opponentColor;
     }
     
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void performMove(Move move) {
         if (!nextPlayerIsAI()) {
@@ -76,6 +84,8 @@ public class NetworkChessGame extends ChessGame {
     
     /**
      * Get the network state.
+     *
+     * @return The current connection status
      */
     public ConnectionStatus getNetworkState() {
         return opponent.GetStatus();
@@ -83,6 +93,8 @@ public class NetworkChessGame extends ChessGame {
     
     /** 
      * Get a description of the last error the network client ran into.
+     *
+     * @return A string describing what caused the last error
      */
     public String getNetworkError() {
         return opponent.GetLastFailureDescription();

@@ -46,6 +46,10 @@ public class ChessGame extends AbstractGame {
         this.board.setupNewGame();
     }
 
+    /**
+     * Helper constructor: Create a game with the given board state and set the
+     * color of the starting player.
+     */
     private ChessGame(Board board, Color nextPlayerColor) {
         this.board = board;
         this.nextPlayerColor = nextPlayerColor;
@@ -144,6 +148,9 @@ public class ChessGame extends AbstractGame {
         return piece.allPossibleMoves(getBoard());
     }
 
+    /**
+     * {inheritDoc}
+     */
     @Override 
     public boolean canMoveTo(IChessPiece piece, Position pos) {
         return piece.canMoveTo(pos, board);

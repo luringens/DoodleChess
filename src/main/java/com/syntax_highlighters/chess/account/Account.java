@@ -114,6 +114,14 @@ public class Account {
         return (wins / (double)(wins+losses));
     }
 
+    /**
+     * Helper method: Get SQL insert statement for an account.
+     *
+     * NOTE: Shouldn't really exist.
+     *
+     * @return An SQL statement as a string, usable in a prepared statement for
+     * inserting an account in the database
+     */
     public String insertStatement() {
         return "INSERT INTO person(name, score, wins, losses) VALUES (?, ?, ?, ?)";
     }

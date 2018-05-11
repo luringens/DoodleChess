@@ -242,12 +242,23 @@ public class Move implements Serializable {
         return m;
     }
 
+    /**
+     * Get the position changes resulting from this move being performed.
+     *
+     * Allows multi-piece and/or multi-step animation.
+     *
+     * @param b The current board state
+     * @return All the position changes the move results in
+     */
     public List<PositionChange> getPositionChanges(Board b) {
         List<PositionChange> ret = new ArrayList<>();
         ret.add(new PositionChange(getPiece(b), getOldPosition(), getPosition()));
         return ret;
     }
 
+    /**
+     * A structure for holding the position change data.
+     */
     public static class PositionChange {
         public final IChessPiece pieceMoved;
         final Position oldPos;
@@ -267,6 +278,13 @@ public class Move implements Serializable {
         }
     }
 
+    /**
+     * Helper method: Write object to output stream.
+     *
+     * @param oos The output stream to write to
+     *
+     * @throws IOException if there is an IO error while writing the object
+     */
     void writeObject(java.io.ObjectOutputStream oos) 
       throws java.io.IOException {
         oos.writeInt(oldPos.getX());
@@ -277,6 +295,14 @@ public class Move implements Serializable {
         oos.writeUTF(pieceString);
     }
  
+    /**
+     * Helper method: Read object from input stream
+     * @param ois The input stream to read from
+     *
+     * @throws IOException if there is an IO error while reading the object
+     * @throws ClassNotFoundException if attempting to read the wrong kind of
+     * object
+     */
     void readObject(java.io.ObjectInputStream ois) 
       throws ClassNotFoundException, java.io.IOException {
         int x1 = ois.readInt();

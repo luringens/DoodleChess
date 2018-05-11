@@ -90,6 +90,11 @@ public class SetupScreen extends AbstractScreen {
 
     private final CheckButton randomCheckButton;
 
+    /**
+     * Create a new SetupScreen.
+     *
+     * @param game The Libgdx game instance
+     */
     public SetupScreen(LibgdxChessGame game)
     {
         super(game);
@@ -241,17 +246,38 @@ public class SetupScreen extends AbstractScreen {
 
     }
 
+    /**
+     * Helper method: Show one selectbox, hide the other, and return the visible
+     * one.
+     *
+     * @param show The SelectBox to show
+     * @param hide The SelectBox to hide
+     * @return The SelectBox which was turned visible
+     */
     private SelectBox<String> swapDropdownMenu(SelectBox<String> show, SelectBox<String> hide) {
         show.setVisible(true);
         hide.setVisible(false);
         return show;
     }
 
+    /**
+     * Construct a setup screen with the "random board" variable set.
+     *
+     * @param game The Libgdx game instance
+     * @param randomBoard Whether the starting positions should be randomized
+     */
     public SetupScreen(LibgdxChessGame game, boolean randomBoard) {
         this(game);
         this.randomBoard = randomBoard;
     }
 
+    /**
+     * Update the list of accounts in the database based on the contents of the
+     * account select boxes.
+     *
+     * @param game The Libgdx game instance (used for getting the account
+     * manager)
+     */
     public void updateAccountLists(LibgdxChessGame game)
     {
         ArrayList<String> accounts = new ArrayList<>();
@@ -484,6 +510,9 @@ public class SetupScreen extends AbstractScreen {
         selectingPlayer = -1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);

@@ -125,6 +125,14 @@ public abstract class AbstractChessPiece implements IChessPiece {
         }
     }
 
+    /**
+     * Given the score of the piece, figure out what piece it is.
+     *
+     * @param x The x coordinate of the piece - used to determine piece position
+     * @param y The y coordinate of the piece - used to determine piece position
+     * @param score The piece score - used to determine piece type
+     * @param color The piece color - used to determine piece color
+     */
     public static IChessPiece GetPiecefromScore(int x, int y, int score, Color color){
 
         Position pos = new Position(x,y);

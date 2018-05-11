@@ -233,6 +233,11 @@ public class GameScreen extends AbstractScreen {
 
     }
 
+    /**
+     * Helper method: Create a new chess game with the given game mode, the
+     * given AI levels, and whether or not the game should use randomized
+     * starting positions.
+     */
     private void initChessGame(String mode, AiDifficulty ai1, AiDifficulty ai2, boolean random) {
         switch (mode) {
             case "Regular Chess":
@@ -252,6 +257,11 @@ public class GameScreen extends AbstractScreen {
             this.game.getBoard().setupPracticeGame((int)(Math.random() * 5) + 20);
     }
 
+    /**
+     * Set the game state to over with the given winner.
+     *
+     * @param winner The winner of the game
+     */
     void gameOver(int winner) {
         this.winner = winner;
         isGameOver = true;

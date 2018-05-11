@@ -21,6 +21,12 @@ public class EnPassantMove extends Move {
     private Position passantTakesPos;
     private transient IChessPiece passantTakesPiece = null;
 
+    /**
+     * Helper constructor: Create an EnPassantMove while setting the position of
+     * the pawn being taken in en passant.
+     *
+     * @param passantTakesPos The position of the captured pawn
+     */
     private EnPassantMove(Position passantTakesPos) {
         this.passantTakesPos = passantTakesPos;
     }
@@ -32,7 +38,7 @@ public class EnPassantMove extends Move {
     private static final long serialVersionUID = 1;
 
     /**
-     * Constructor.
+     * Create an EnPassantMove instance.
      *
      * @param oldPos The old position of the pawn
      * @param newPos The new position of the pawn
@@ -100,6 +106,9 @@ public class EnPassantMove extends Move {
         return Objects.hash(super.hashCode(), this.passantTakesPos, this.passantTakesPiece);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     void writeObject(java.io.ObjectOutputStream oos) 
       throws java.io.IOException {
         super.writeObject(oos);
@@ -107,6 +116,9 @@ public class EnPassantMove extends Move {
         oos.writeInt(passantTakesPos.getY());
     }
  
+    /**
+     * {@inheritDoc}
+     */
     void readObject(java.io.ObjectInputStream ois) 
       throws ClassNotFoundException, java.io.IOException {
         super.readObject(ois);

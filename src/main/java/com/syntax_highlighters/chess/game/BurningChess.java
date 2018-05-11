@@ -13,12 +13,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Fire Chess game mode variant: As the board burns, more and more of the tiles
+ * are rendered unusable, and pieces consumed by the flames disappear in a
+ * blaze, blasting the flames clear of their immediate surroundings.
+ */
 public class BurningChess extends AbstractGame{
     private float blackTimer = 0;
     private float whiteTimer = 0;
     private static final float TENMINS = 60 * 10.0f;
     public static final float SPLASHTIME = 30.0f; // in seconds
+    private List<Position> unreachablePos = new ArrayList<>();
 
+    /**
+     * Create a new BurningChess instance.
+     *
+     * NOTE: The AI players are unused, should be removed.
+     *
+     * @param whiteAi The difficulty of the white AI player (unused)
+     * @param blackAi The difficulty of the black AI player (unused)
+     */
     public BurningChess(AiDifficulty whiteAi, AiDifficulty blackAi) {
         if (whiteAi != null) {
             MiniMaxAIPlayer ai = new MiniMaxAIPlayer(whiteAi);
@@ -33,17 +47,35 @@ public class BurningChess extends AbstractGame{
         this.board.setupNewGame();
     }
 
+    /**
+     * Helper constructor: Create a game with the given board and set which
+     * player has the first move.
+     *
+     * @param board The state of the board the game should start in
+     * @param nextPlayerColor The color who should have the first move
+     */
     private BurningChess(Board board, Color nextPlayerColor) {
         this.board = board;
         this.nextPlayerColor = nextPlayerColor;
     }
 
+    /**
+     * Set up a BurningChess board for testing purposes.
+     *
+     * Do not use except in tests.
+     *
+     * @return A BurningChess game with the given board and starting color
+     */
     public static BurningChess setupTestBoard(Board board, Color nextPlayerColor) {
         return new BurningChess(board, nextPlayerColor);
     }
 
-    private List<Position> unreachablePos = new ArrayList<>();
-
+    /**
+     * Increment the timer of the currently active player with the given delta
+     * value.
+     *
+     * @param seconds The delta value in seconds
+     */
     public void fireTimer(float seconds){
         if(nextPlayerColor.isWhite()) {
             whiteTimer += seconds;
@@ -53,13 +85,41 @@ public class BurningChess extends AbstractGame{
         }
     }
 
+    /**
+     * Get the timer value of the white player.
+     *
+     * @return The timer value of the white player as a percentage of ten
+     * minutes
+     */
     public float getWhiteTimer() { return whiteTimer / TENMINS; }
+    
+    /**
+     * Get the timer value of the black player.
+     *
+     * @return The timer value of the black player as a percentage of ten
+     * minutes
+     */
     public float getBlackTimer() { return blackTimer / TENMINS; }
 
+    /**
+     * Retrieve the list of unreachable positions.
+     *
+     * @return The list of positions which have been consumed by the roaring
+     * inferno
+     */
     public List<Position> tileUnreachable(){
         return unreachablePos;
     }
 
+    /**
+     * Let the given tile be destroyed in fire.
+     *
+     * If a piece was standing on the tile, remove the piece and create a
+     * splash.
+     *
+     * @param tile The tile to destroy
+     * @return The piece that was standing on the tile, if any
+     */
     public IChessPiece killTile(Position tile) {
         IChessPiece piece = getPieceAtPosition(tile);
         if (piece != null)
@@ -68,7 +128,13 @@ public class BurningChess extends AbstractGame{
         return piece;
     }
 
-
+    /**
+     * Remove the given piece from the board and create a splash.
+     *
+     * If the removed piece is the king, the game is over.
+     *
+     * @param piece The piece to remove
+     */
     public void killPiece(IChessPiece piece) {
         if(piece instanceof ChessPieceKing)
             forceGameEnd();
@@ -76,14 +142,39 @@ public class BurningChess extends AbstractGame{
         pieceSplash();
     }
 
+    /**
+     * Allow a specific tile to be revived (and thus made reachable again).
+     * 
+     * NOTE: unused
+     *
+     * @param tile The tile to make reachable
+     */
+    @Deprecated
     public void reviveTile(Position tile) {
         unreachablePos.remove(tile);
     }
 
+    /**
+     * Reset all unreachable positions.
+     *
+     * NOTE: This works because the next time the FireOverlay interacts with the
+     * game, it will determine which parts of the board are still covered in
+     * flames and kill them again right away. Thus, this only breaks the game's
+     * state *briefly*.
+     */
     private void pieceSplash(){
         unreachablePos = new ArrayList<>();
     }
 
+    /**
+     * Get a list of all the possible moves that can be made during this turn.
+     *
+     * Filters the regular chess moves by current player as well as not leading
+     * to an unreachable position.
+     *
+     * @return A list of all the possible moves that can be made by the current
+     * player.
+     */
     @Override
     public List<Move> allPossibleMoves() {
         return getPieces().stream()
@@ -93,6 +184,17 @@ public class BurningChess extends AbstractGame{
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Get a list of all possible moves a given piece can make this turn.
+     *
+     * If the piece does not belong to the current player, no moves are possible
+     * with that piece. Otherwise, filter the piece's moved by not leading to an
+     * unreachable position.
+     *
+     * @param piece The piece to get the moves of
+     * @return A list of the possible moves that can be made by the current
+     * player using this piece.
+     */
     @Override
     public List<Move> allPossibleMoves(IChessPiece piece) {
         if (piece.getColor() != nextPlayerColor())
@@ -164,6 +266,10 @@ public class BurningChess extends AbstractGame{
                 && sameColoredSquare(bishops.get(0).getPosition(), bishops.get(1).getPosition());
 
     }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AbstractGame copy() {
         BurningChess copy = new BurningChess(board.copy(), nextPlayerColor);
@@ -177,6 +283,9 @@ public class BurningChess extends AbstractGame{
         return copy;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean canMoveTo(IChessPiece piece, Position pos) {
         return piece.canMoveTo(pos, board) && !unreachablePos.contains(pos);

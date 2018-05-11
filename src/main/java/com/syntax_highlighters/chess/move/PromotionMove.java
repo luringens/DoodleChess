@@ -51,6 +51,9 @@ public class PromotionMove extends Move {
         color = promoteToPiece.getColor();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<PositionChange> getPositionChanges(Board b) {
         List<PositionChange> ret = new ArrayList<>();
@@ -133,6 +136,10 @@ public class PromotionMove extends Move {
         return m;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     void writeObject(java.io.ObjectOutputStream oos) 
       throws java.io.IOException {
         super.writeObject(oos);
@@ -140,6 +147,10 @@ public class PromotionMove extends Move {
         oos.writeBoolean(color.isWhite());
     }
  
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     void readObject(java.io.ObjectInputStream ois) 
       throws ClassNotFoundException, java.io.IOException {
         super.readObject(ois);

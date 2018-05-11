@@ -24,11 +24,20 @@ import com.syntax_highlighters.chess.move.PromotionMove;
 public class SjadamGame extends AbstractGame {
     private List<Position> jumpedFromPositions = new ArrayList<>();
 
+    /**
+     * Create a new SjadamGame instance.
+     */
     public SjadamGame() {
         this.board = new Board();
         this.board.setupNewGame();
     }
 
+    /**
+     * Unused; should be removed.
+     *
+     * @return true if the last move was performed by a piece of the same color,
+     * false otherwise
+     */
     private boolean lastMoveWasSameColour(){
         Move m = board.getLastMove();
         if (m == null) return false;
@@ -36,10 +45,29 @@ public class SjadamGame extends AbstractGame {
         return col == nextPlayerColor;
     }
 
+    /**
+     * Helper method: Retrieve the last moved piece.
+     *
+     * @return The piece moved by the last move that was made.
+     */
     private IChessPiece lastPiece(){
         return board.getAtPosition(board.getLastMove().getPosition());
     }
 
+    /**
+     * Helper method: Determine if the last piece the player jumped over was an
+     * enemy piece.
+     *
+     * If the player hasn't jumped over any pieces this turn (all pieces are in
+     * their starting positions from the start of the turn), the method
+     * interprets this as not having jumped over an enemy piece.
+     *
+     * If the piece returns to the position it was at before it jumped over the
+     * enemy piece, it is as if the piece did not jump.
+     *
+     * @return true if the last piece the player jumped over this turn was an
+     * enemy, false otherwise
+     */
     private boolean lastJumpedPieceWasEnemy() {
         if (getLastJumpedPosition() == null) return false;
         Move m = board.getLastMove();
@@ -47,6 +75,17 @@ public class SjadamGame extends AbstractGame {
         return board.getAtPosition(mid).getColor() == nextPlayerColor.opponentColor();
     }
     
+    /**
+     * Helper method: Get the last position the currently jumping piece jumped
+     * from.
+     *
+     * If returning to its starting position, it is as if the piece had not
+     * jumped.
+     *
+     * @return The position the piece was standing on before making its last
+     * jump, or null if the piece is in the starting position from the start of
+     * the turn.
+     */
     private Position getLastJumpedPosition() {
         if (jumpedFromPositions.size() == 0) return null;
         return jumpedFromPositions.get(jumpedFromPositions.size()-1);
@@ -151,6 +190,7 @@ public class SjadamGame extends AbstractGame {
      * Takes care of any restrictions put in place due to stateful changes in
      * the SjadamGame.
      *
+     * @param piece The piece to move
      * @return A list of the possible moves that can be made by the current
      * player using this piece.
      */
@@ -179,6 +219,11 @@ public class SjadamGame extends AbstractGame {
         }
     }
 
+    /**
+     * Given a legal move, perform this move.
+     *
+     * @param move A legal move given the current game state
+     */
     @Override
     public void performMove(Move move) {
         Color col = nextPlayerColor();
@@ -205,16 +250,25 @@ public class SjadamGame extends AbstractGame {
         nextPlayerColor = col; // set next player color to the correct color
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean canMoveTo(IChessPiece piece, Position pos) {
         return allPossibleMoves(piece).stream().anyMatch(m -> m.getPosition().equals(pos));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SjadamGame copy() {
         throw new RuntimeException("Copy not implemented for sjadam");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Move> getMoves(Position from, Position to) {
         return allPossibleMoves().stream()
@@ -222,6 +276,9 @@ public class SjadamGame extends AbstractGame {
             .collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isGameOver() {
         return super.isGameOver()
@@ -229,11 +286,21 @@ public class SjadamGame extends AbstractGame {
             || allPossibleMoves().size() == 0;
     }
 
+    /**
+     * Helper method: allows an external entity to force a player's turn to end.
+     *
+     * Used by UI as the "end turn" callback.
+     */
     public void endTurn() {
         nextPlayerColor = nextPlayerColor.opponentColor();
         jumpedFromPositions = new ArrayList<>(); // clear jumped positions
     }
     
+    /**
+     * Helper method: allows an external entity to determine if the piece has
+     * jumped (or should be considered as if it has jumped) during the current
+     * turn.
+     */
     public boolean hasJumped() {
         return getLastJumpedPosition() != null;
     }

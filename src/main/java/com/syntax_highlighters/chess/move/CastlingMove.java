@@ -27,6 +27,14 @@ public class CastlingMove extends Move {
     private Position rookOldPos;
     private Position rookNewPos;
 
+    /**
+     * Helper constructor: Construct a CastlingMove based solely on the
+     * old and new positions of the rook, assuming the king to be in its
+     * starting position.
+     *
+     * @param rookOldPos The position of the rook before castling
+     * @param rookNewPos The position of the rook after castling
+     */
     private CastlingMove(Position rookOldPos, Position rookNewPos) {
         this.rookOldPos = rookOldPos;
         this.rookNewPos = rookNewPos;
@@ -58,6 +66,9 @@ public class CastlingMove extends Move {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<PositionChange> getPositionChanges(Board b) {
         List<PositionChange> ret = new ArrayList<>();
@@ -137,6 +148,9 @@ public class CastlingMove extends Move {
         return m;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     void writeObject(java.io.ObjectOutputStream oos) 
       throws java.io.IOException {
         super.writeObject(oos);
@@ -146,6 +160,9 @@ public class CastlingMove extends Move {
         oos.writeInt(rookNewPos.getY());
     }
  
+    /**
+     * {@inheritDoc}
+     */
     void readObject(java.io.ObjectInputStream ois) 
       throws ClassNotFoundException, java.io.IOException {
         super.readObject(ois);
