@@ -157,24 +157,29 @@ class FireOverlay extends Actor {
 
        float splashSize = 200.0f;
         float tileSize = (float)Math.sqrt(width*width + height*height);
+        float timeMultiplier = 1.f;
         if(piece instanceof ChessPiecePawn) {
            splashSize = tileSize * 1.f;
        }
 
         if(piece instanceof ChessPieceQueen) {
             splashSize = tileSize * 3.f;
+            timeMultiplier= 3.f;
         }
 
         if(piece instanceof ChessPieceRook) {
             splashSize = tileSize * 2.f;
+            timeMultiplier = 2.f;
         }
 
         if(piece instanceof ChessPieceBishop) {
             splashSize = tileSize * 1.5f;
+            timeMultiplier = 1.5f;
         }
 
         if(piece instanceof ChessPieceKnight) {
             splashSize = tileSize * 1.5f;
+            timeMultiplier = 1.5f;
         }
         
         if(piece.getColor() == com.syntax_highlighters.chess.Color.WHITE)
@@ -186,7 +191,7 @@ class FireOverlay extends Actor {
         anim.setDuration(0.3f);
         anim.setInterpolation(Interpolation.exp10Out);
         CircleAnimation anim2 = new CircleAnimation(splashcircle, 0.0f);
-        anim2.setDuration(BurningChess.SPLASHTIME);
+        anim2.setDuration(BurningChess.SPLASHTIME * timeMultiplier);
         anim2.setInterpolation(Interpolation.linear);
 
         RunnableAction end = new RunnableAction();
