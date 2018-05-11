@@ -356,12 +356,8 @@ public class    Board {
      * @return true if the move is safe, false otherwise
      */
     public boolean moveDoesntPutKingInCheck(Move m, Color kingColor) {
-        Optional<IChessPiece> a = getAllPieces().stream()
-            .filter(p -> p.getColor() == kingColor && p instanceof ChessPieceKing)
-            .findFirst();
-        if (!a.isPresent()) return true; // no move can put king in check
-        
-        ChessPieceKing king = (ChessPieceKing)a.get();
+        ChessPieceKing king = (ChessPieceKing)getKing(kingColor);
+        if (king == null) return true;
         m.DoMove(this);
         boolean inCheck = king.isThreatened(this);
         m.UndoMove(this);
@@ -387,9 +383,7 @@ public class    Board {
     public boolean checkMate(Color playerColor) {
         List<IChessPiece> allPieces = getAllPieces();
         if (allPieces.size() == 0) return false; // not possible
-        ChessPieceKing king = allPieces.stream()
-                .filter(p -> p instanceof ChessPieceKing && p.getColor() == playerColor)
-                .map(p -> (ChessPieceKing)p).findFirst().orElse(null);
+        ChessPieceKing king = (ChessPieceKing)getKing(playerColor);
         return king == null || king.isThreatened(this) && allPieces.stream()
                 .filter(p -> p.getColor() == playerColor)
                 .mapToLong(p -> p.allPossibleMoves(this).size()).sum() == 0;
