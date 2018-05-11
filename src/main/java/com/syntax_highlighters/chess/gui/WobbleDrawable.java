@@ -58,15 +58,15 @@ public class WobbleDrawable extends BaseDrawable {
         Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0, 0, 0, 0);
-        Gdx.gl.glViewport(0,0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        Gdx.gl.glViewport(0,0,texture.getWidth(), texture.getHeight());
         batch.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0, 0, 0, 0);
         wobble.setUniformf("u_time", (float) Math.random() * 10000.f);
         wobble.setUniformf("u_resolution", new Vector2(texture.getWidth(), texture.getHeight()));
 
-        batch.draw(texture, 0, 0, texture.getWidth(), texture.getHeight());
+        batch.draw(texture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
 
         buffer.end();
